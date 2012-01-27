@@ -86,6 +86,15 @@ int displayedMenu = 0;
  */
 int intArrow = 0;
 
+/*
+ * This variable is used to count the number of steps of the Munching Squares
+ */
+int munchingSquaresNumSteps = 0;
+int munchingSquaresThreshold = 0;
+int munchingSquaresOptionComp = 0; // 0 smaller than; 1 equal to;
+int munchingSquaresOptionOp = 0; // 0 XOR; 1 AND;
+bool munchingSquaresCondition = false;
+
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
 
 /*
@@ -466,67 +475,78 @@ int drawElementaryCellularAutomata()
 
 /*********************************** START MUNCHING SQUARES FUNCTIONS ******************************************************/
 
-void drawSquare(int column, int row, int width, unsigned short color)
+int drawSquare(int column, int row, int width, unsigned short color)
 {
     for (int k = 0; k < width; k++)
     {
         drawHLine(32 + width * column, width * row + k, width, color);
     }
+    
+    return 0;
 }
 
-void drawMunchingSquares()
+int initializeMunchingSquares()
 {
-    int n = 0;
-    int threshold = 0;
-    int optionComp = 0; // 0 smaller than; 1 equal to;
-	int optionOp = 0; // 0 XOR; 1 AND;
- 	bool condition = false;
+    munchingSquaresNumSteps = 0;
+    munchingSquaresCondition = false;
+    
+    return 0;
+}
 
-    while (n < 64)   
+int drawNextStepMunchingSquares()
+{
+    if (munchingSquaresNumSteps < 64)   
     {
         for (int i = 0; i < 64; i++)
         {
             for (int j = 0; j < 64; j++)
             {
-				if (optionComp == 0)
+				if (munchingSquaresOptionComp == 0)
 				{
-					if (optionOp == 0)
+					if (munchingSquaresOptionOp == 0)
 					{
-						condition = ((i xor j) < (n + threshold));
+						munchingSquaresCondition = ((i xor j) < (munchingSquaresNumSteps + munchingSquaresThreshold));
 					}
-					else if (optionOp == 1)
+					else if (munchingSquaresOptionOp == 1)
 					{
-						condition = ((i and j) < (n + threshold));
+						munchingSquaresCondition = ((i and j) < (munchingSquaresNumSteps + munchingSquaresThreshold));
 					}
                 	//if ((i xor j) < (n + threshold))
                 	//{
                     //	drawSquare(i, j, 3, RGB15(15,15,15));
                 	//}
 				}
-				else if (optionComp == 1)
+				else if (munchingSquaresOptionComp == 1)
 				{
 					//if ((i xor j) == (n + threshold))
 					//{
 					//	drawSquare(i, j, 3, RGB15(15,15,15));
 					//}
-                     if (optionOp == 0)
+                     if (munchingSquaresOptionOp == 0)
                      {
-                     	condition = ((i xor j) == (n + threshold));
+                     	munchingSquaresCondition = ((i xor j) == (munchingSquaresNumSteps + munchingSquaresThreshold));
                      }
-                     else if (optionOp == 1)
+                     else if (munchingSquaresOptionOp == 1)
                      {
-                         condition = ((i and j) == (n + threshold));
+                         munchingSquaresCondition = ((i and j) == (munchingSquaresNumSteps + munchingSquaresThreshold));
                      }
 				}
-				if (condition == true)
+				if (munchingSquaresCondition == true)
 				{
 					//drawSquare(i, j, 3, RGB15(15,15,15));
 					drawSquare(i, j, 3, FG_color);
 				}
             }
         }
-		n++;
+		munchingSquaresNumSteps++;
     }
+    else
+    {
+        cleanScreen();
+        initializeMunchingSquares();
+    }    
+    
+    return 0;
 }
 
 /*********************************** END MUNCHING SQUARES FUNCTIONS ********************************************************/
@@ -640,6 +660,8 @@ int runAutomata()
     }
     else if (automataType == 2)
     {
+        showFB();
+        initializeMunchingSquares();
     }
     
     return 0;
@@ -763,8 +785,10 @@ int main(void)
                     intArrow = 0;                    
                     displayedMenu = 3;
                     
-                    showFB();
-                    drawMunchingSquares();
+                    //showFB();
+                    //drawMunchingSquares();
+                    
+                    runAutomata();
                 }
             }
         }
@@ -914,6 +938,8 @@ int main(void)
   		    }
             
             //drawMunchingSquares();
+            
+            drawNextStepMunchingSquares();
         }
     }
     
