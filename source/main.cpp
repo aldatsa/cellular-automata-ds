@@ -82,7 +82,7 @@ int displayedMenu = 0;
 /* The position of the arrow
  * Elementary Cellular Automata: in the top screen (0-7) and in the bottom screen (8)
  * ????
- * Munching Squares: in the bottom screen (0)
+ * Munching Squares: in the bottom screen (0-2)
  */
 int intArrow = 0;
 
@@ -587,10 +587,31 @@ int printMenuArrow(int row)
     return 0;
 }
 
-int printMSmenu()
+int printMSasterisks()
 {
-    iprintf("\x1b[11;2HBack to main menu");
-    printMenuArrow(11);
+    if (munchingSquaresOptionComp == 0)
+    {
+        iprintf("\x1b[12;3H*");
+        iprintf("\x1b[13;3H ");        
+    }
+    else
+    {
+        iprintf("\x1b[12;3H ");
+        iprintf("\x1b[13;3H*");        
+    }
+    return 0;
+}
+
+int printMSmenu()
+{   
+    iprintf("\x1b[11;2HType of comparation:");        
+    iprintf("\x1b[12;5HSmaller than");
+    iprintf("\x1b[13;5HEqual to    ");    
+    
+
+    
+    iprintf("\x1b[15;2HBack to main menu");
+    printMenuArrow(12);
     return 0;
 }
 
@@ -607,6 +628,23 @@ int printAutomataTypeArrow(int index)
     else if (index == 2)
     {    
         printMenuArrow(MENU_AUTOMATA_TYPE_ROW_MS); // Print the arrow for option 2 (Munching squares)
+    }
+    return 0;
+}
+
+int printMunchingSquaresArrow(int index)
+{
+    if (index == 0)
+    {
+        printMenuArrow(12); // Print the arrow for option 0 (Comparation type: Smaller than)
+    }
+    else if (index == 1)
+    {
+        printMenuArrow(13); // Print the arrow for option 1 (Comparation type: Equal to)
+    }
+    else if (index == 2)
+    {    
+        printMenuArrow(15); // Print the arrow for option 2 (Back to main menu)
     }
     return 0;
 }
@@ -639,6 +677,23 @@ int deleteAutomataTypeArrow(int index)
         deleteMenuArrow(MENU_AUTOMATA_TYPE_ROW_MS);    // Delete the arrow for option 2 (Munching squares)
     }
     return 0;    
+}
+
+int deleteMunchingSquaresArrow(int index)
+{
+    if (index == 0)
+    {
+        deleteMenuArrow(12); // Print the arrow for option 0 (Comparation type: Smaller than)
+    }
+    else if (index == 1)
+    {
+        deleteMenuArrow(13); // Print the arrow for option 1 (Comparation type: Equal to)
+    }
+    else if (index == 2)
+    {    
+        deleteMenuArrow(15); // Print the arrow for option 2 (Back to main menu)
+    }
+    return 0;
 }
 
 int deleteECAarrow()
@@ -787,7 +842,8 @@ int main(void)
                     
                     //showFB();
                     //drawMunchingSquares();
-                    
+
+  		            printMSasterisks();                    
                     runAutomata();
                 }
             }
@@ -934,9 +990,54 @@ int main(void)
         {
   		    if(keys_released & KEY_A)
   		    {
-  		        showAutomataTypeMenu();
+  		        if (intArrow == 0) // Comparation type: Less than
+  		        {
+  		            munchingSquaresOptionComp = 0;
+  		            printMSasterisks();  		            
+  		            runAutomata();
+  		        }
+  		        else if (intArrow == 1) // Comparation type: Equal to
+  		        {
+  		            munchingSquaresOptionComp = 1;
+  		            printMSasterisks();
+  		            runAutomata();  		            
+  		        }
+  		        else if (intArrow == 2) // Back to main menu
+  		        {
+  		            showAutomataTypeMenu();
+  		        }
   		    }
-            
+		    else if(keys_pressed & KEY_UP)
+		    {
+		        deleteMunchingSquaresArrow(intArrow);
+		        
+		        if (intArrow == 0)
+		        {
+		            intArrow = 2;
+		        }
+		        else
+		        {
+		            intArrow = intArrow - 1;
+		        }
+		        
+		        printMunchingSquaresArrow(intArrow);
+		    }
+		    else if(keys_pressed & KEY_DOWN)
+		    {
+		        deleteMunchingSquaresArrow(intArrow);
+		        
+		        if (intArrow == 2)
+		        {
+		            intArrow = 0;
+		        }
+		        else
+		        {
+		            intArrow = intArrow + 1;
+		        }
+		        
+		        printMunchingSquaresArrow(intArrow);		    
+		    }            
+		    
             //drawMunchingSquares();
             
             drawNextStepMunchingSquares();
