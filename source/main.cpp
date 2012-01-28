@@ -21,26 +21,40 @@
 #include <cmath>    // To calculate powers of 2 in the calculateRuleNumber function. Is it possible to do it in a more simple way? Using binary operators?
 #include <stdlib.h>
 
-// The flash image (grit outputs a nice header to reference data)
-#include "flash.h"
+#include "flash.h"  // Include for the header of the flash image (grit outputs a nice header to reference data)
 
 
-// Definition of constants
+/*
+ * Constant for the version number of the application
+ */
 #define VERSION "0.2.3"
 
+/*
+ * Constants for the rows where the menu items of the automata type selection menu are printed
+ */
 #define MENU_AUTOMATA_TYPE_ROW_ECA 8
 #define MENU_AUTOMATA_TYPE_ROW_MS 10
 
+/*
+ * Constant for the row where the rule of the Elementary Cellular Automaton is printed
+ */
 #define ECA_RULE_NUMBER_ROW 9
 
+/*
+ * Constants for the variable automataType:
+ * 0: Elementary Cellular Automata
+ * 1: ????????
+ * 2: Munching Squares
+ */
 #define ELEMENTARY_CELLULAR_AUTOMATA 0
+#define MUNCHING_SQUARES 2
 
-// Color used on the BackGround (White)
-unsigned short BG_color = RGB15(31,31,31);
-// Color used on the ForeGround (Black)
-unsigned short FG_color = RGB15(0,0,0);
-// Color used to draw the lines (Grey)
-unsigned short line_color = RGB15(15,15,15);
+/*
+ * Variables for the colors of the background, the elements on the foreground and the lines
+ */
+unsigned short BG_color = RGB15(31,31,31);      // Color used on the BackGround (Default: White)
+unsigned short FG_color = RGB15(0,0,0);         // Color used on the ForeGround (Default: Black)
+unsigned short line_color = RGB15(15,15,15);    // Color used to draw the lines (Default: Grey)
 
 /*
  * The rules for the Elementary Cellular Automata
@@ -58,12 +72,16 @@ unsigned short ruleCenter[8] = {FG_color,FG_color,BG_color,BG_color,FG_color,FG_
 unsigned short ruleRight[8] = {FG_color,BG_color,FG_color,BG_color,FG_color,BG_color,FG_color,BG_color};
 
 // The rule that will be displayed on start on the Elementary Cellular Automata
-unsigned short ruleDown[8] = {BG_color,FG_color,BG_color,FG_color,FG_color,BG_color,FG_color,BG_color}; //Rule 90
+unsigned short ruleDown[8] = {BG_color,FG_color,BG_color,FG_color,FG_color,BG_color,FG_color,BG_color}; //Rule 90 (Default)
 
-// Pointer to the start of VRAM_A, the memory that we'll use as framebuffer
+/*
+ * Pointer to the start of VRAM_A, the memory that we'll use as the main framebuffer
+ */ 
 unsigned short* fb = VRAM_A;
 
-// A variable for the position of the touch
+/*
+ * A variable for the position of the touch
+ */
 touchPosition touch;
 
 /* This variable sets the type of automata that is going to execute
@@ -76,6 +94,8 @@ int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
 /* This variable sets the menu that is going to be displayed
  * 0: Select automata menu
  * 1: Elementary cellular automata menu
+ * 2: ??????????
+ * 3: Munching squares menu
  */
 int displayedMenu = 0;
 
@@ -87,13 +107,13 @@ int displayedMenu = 0;
 int intArrow = 0;
 
 /*
- * This variable is used to count the number of steps of the Munching Squares
+ * Variables used for the munching squares
  */
-int munchingSquaresNumSteps = 0;
+int munchingSquaresNumSteps = 0; // This variable is used to count the number of steps of the Munching Squares
 int munchingSquaresThreshold = 0;
 int munchingSquaresOptionComp = 0; // 0 smaller than; 1 equal to;
 int munchingSquaresOptionOp = 0; // 0 XOR; 1 AND;
-bool munchingSquaresCondition = false;
+bool munchingSquaresCondition = false; // if true draw square else don't
 
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
 
@@ -141,19 +161,26 @@ int cleanScreen()
 	return 0;
 }
 
+/*
+ *
+ */
 int showFB()
 {
-	//Pantaila nagusiaren konfigurazioa
-	REG_DISPCNT = MODE_FB0;		//Framebufferra
+	// Configuration of the main screen
+	REG_DISPCNT = MODE_FB0;		//Framebuffer
 	
-	//VRAM A blokea konfiguratu
+	// Configure the VRAM A block
 	VRAM_A_CR = VRAM_ENABLE | VRAM_A_LCD;
 
+    // Paint the screen with the BG color
 	cleanScreen();
 	
 	return 0;
 }
 
+/*
+ * Show the flash screen on the main screen
+ */
 int showFlash()
 {
     // set the mode for 2 text layers and two extended background layers
@@ -458,15 +485,13 @@ int drawElementaryCellularAutomata()
 		}
 	}
 	
-	drawRule(0);
-	drawRule(1);
-	drawRule(2);
-	drawRule(3);
-	drawRule(4);
-	drawRule(5);
-	drawRule(6);
-	drawRule(7);
+	// Draw the rules (0-7)
+	for (int i = 0; i < 8; i++)
+	{
+	    drawRule(i);
+	}
 
+    // Draw the arrow 
 	drawArrow(intArrow, line_color);
 	
 	return 0;
@@ -511,17 +536,9 @@ int drawNextStepMunchingSquares()
 					{
 						munchingSquaresCondition = ((i and j) < (munchingSquaresNumSteps + munchingSquaresThreshold));
 					}
-                	//if ((i xor j) < (n + threshold))
-                	//{
-                    //	drawSquare(i, j, 3, RGB15(15,15,15));
-                	//}
 				}
 				else if (munchingSquaresOptionComp == 1)
 				{
-					//if ((i xor j) == (n + threshold))
-					//{
-					//	drawSquare(i, j, 3, RGB15(15,15,15));
-					//}
                      if (munchingSquaresOptionOp == 0)
                      {
                      	munchingSquaresCondition = ((i xor j) == (munchingSquaresNumSteps + munchingSquaresThreshold));
@@ -533,7 +550,6 @@ int drawNextStepMunchingSquares()
 				}
 				if (munchingSquaresCondition == true)
 				{
-					//drawSquare(i, j, 3, RGB15(15,15,15));
 					drawSquare(i, j, 3, FG_color);
 				}
             }
@@ -713,7 +729,7 @@ int runAutomata()
     {
         cleanScreen();
     }
-    else if (automataType == 2)
+    else if (automataType == MUNCHING_SQUARES)
     {
         showFB();
         initializeMunchingSquares();
@@ -830,7 +846,7 @@ int main(void)
                 else if (automataType == 1)
                 {
                 }
-                else if (automataType == 2)
+                else if (automataType == MUNCHING_SQUARES)
                 {   
                     consoleClear();
                     printCredits();
@@ -840,9 +856,6 @@ int main(void)
                     intArrow = 0;                    
                     displayedMenu = 3;
                     
-                    //showFB();
-                    //drawMunchingSquares();
-
   		            printMSasterisks();                    
                     runAutomata();
                 }
@@ -854,17 +867,13 @@ int main(void)
 		    {
 		        if (intArrow != 8)
 		        {
-        //			printf("A : %d \n", ruleDown[intArrow]);
-			
 			        if(ruleDown[intArrow] == FG_color)
 			        {
 				        ruleDown[intArrow] = BG_color;
-        //				printf("%d \n", ruleDown[intArrow]);
 			        }
 			        else
 			        {
 				        ruleDown[intArrow] = FG_color;
-        //				printf("%d \n", ruleDown[intArrow]);
 			        }
 			        drawRule(0);
 			
@@ -930,7 +939,6 @@ int main(void)
 			    }
 			    else if(intArrow < 4)
 			    {
-				    //intArrow = intArrow + 4;
 				    intArrow = 8;
 			    }
 			    else
@@ -968,11 +976,9 @@ int main(void)
 			    }
 			    else
 			    {
-				    //intArrow = intArrow - 4;
 				    intArrow = 8;
 			    }
 			    
-			    //drawArrow(intArrow, line_color);
 			    if (intArrow != 8)
 		        {
 			        drawArrow(intArrow, line_color);
@@ -1037,8 +1043,6 @@ int main(void)
 		        
 		        printMunchingSquaresArrow(intArrow);		    
 		    }            
-		    
-            //drawMunchingSquares();
             
             drawNextStepMunchingSquares();
         }
