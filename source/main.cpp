@@ -741,7 +741,7 @@ int printCredits()
 /*
  *
  */
-int printMenuArrow(int row)
+int printArrow(int row)
 {
     iprintf("\x1b[%d;0H->", row); // Print the menu arrow
     
@@ -751,26 +751,35 @@ int printMenuArrow(int row)
 /*
  *
  */
+int deleteArrow(int row)
+{
+    iprintf("\x1b[%d;0H  ", row); // Delete the menu arrow
+    
+    return 0;
+}
+
+/*
+ *
+ */
 int printMenu(int intDisplayedMenu)
 {
-    if (displayedMenu == 0)
+    if (displayedMenu == 0) //The menu to select the type of automata
     {
-        // Print the menu to select the type of automata
         iprintf("\x1b[%d;2HElementary Cellular Automata", MENU_AUTOMATA_TYPE_ROW_ECA);
         iprintf("\x1b[%d;2HLangton's ant", MENU_AUTOMATA_TYPE_ROW_LA);
         iprintf("\x1b[%d;2HMunching Squares", MENU_AUTOMATA_TYPE_ROW_MS);
     }
-    else if (displayedMenu == 1)
+    else if (displayedMenu == 1) // The menu of the Elementary Cellular Automaton
     {
         iprintf("\x1b[11;2HBack to main menu");
     }
-    else if (displayedMenu == 2)
+    else if (displayedMenu == 2) // The menu of the Langton's ant
     {
         iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);
         iprintf("\x1b[13;2HBack to main menu");
-        printMenuArrow(13);        
+        printArrow(13);        
     }
-    else if (displayedMenu == 3)
+    else if (displayedMenu == 3) // The menu of the munching squares
     {
         iprintf("\x1b[11;2HType of comparation:");        
         iprintf("\x1b[12;5HSmaller than");
@@ -781,7 +790,7 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[16;5HAND");    
             
         iprintf("\x1b[18;2HBack to main menu");
-        printMenuArrow(12);        
+        printArrow(12);        
     }
     return 0;
 }
@@ -818,159 +827,78 @@ int printMSasterisks()
 /*
  *
  */
-int printAutomataTypeArrow(int index)
+int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
 {
-    if (index == 0)
-    {
-        printMenuArrow(MENU_AUTOMATA_TYPE_ROW_ECA); // Print the arrow for option 0 (Elementary Cellular Automata)
-    }
-    else if (index == 1)
-    {
-        printMenuArrow(MENU_AUTOMATA_TYPE_ROW_LA); // Print the arrow for option 1 (Langton's ant)
-    }
-    else if (index == 2)
-    {    
-        printMenuArrow(MENU_AUTOMATA_TYPE_ROW_MS); // Print the arrow for option 2 (Munching squares)
-    }
-    return 0;
-}
-
-/*
- *
- */
-int printLangtonAntArrow(int index)
-{
-    if (index == 0) // Print the arrow in the option to choose the size of the ant
-    {
-        printMenuArrow(11);
-    }
-    else if (index == 1) // Print the arrow in the option to go back to main menu
-    {
-        printMenuArrow(13);
-    }
-    return 0;
-}
-
-/*
- *
- */
-int printMunchingSquaresArrow(int index)
-{
-    if (index == 0)
-    {
-        printMenuArrow(12); // Print the arrow for option 0 (Comparation type: Smaller than)
-    }
-    else if (index == 1)
-    {
-        printMenuArrow(13); // Print the arrow for option 1 (Comparation type: Equal to)
-    }
-    else if (index == 2)
-    {    
-        printMenuArrow(15); // Print the arrow for option 2 (Boolean operator: XOR)
-    }
-    else if (index == 3)
-    {    
-        printMenuArrow(16); // Print the arrow for option 3 (Boolean operator: AND)
-    }
-    else if (index == 4)
-    {    
-        printMenuArrow(18); // Print the arrow for option 4 (Back to main menu)
-    }    
+    int row;
     
-    return 0;
-}
-
-/*
- *
- */
-int printECAarrow()
-{
-    printMenuArrow(11);
-    return 0;
-}
-
-/*
- *
- */
-int deleteMenuArrow(int row)
-{
-    iprintf("\x1b[%d;0H  ", row); // Delete the menu arrow
-    
-    return 0;
-}
-
-/*
- *
- */
-int deleteAutomataTypeArrow(int index)
-{
-    if (index == 0)
+    if (intDisplayedMenu == 0) // Main menu
     {
-        deleteMenuArrow(MENU_AUTOMATA_TYPE_ROW_ECA); // Delete the arrow for option 0 (Elementary Cellular Automata)
-    }
-    else if (index == 1)
-    {
-        deleteMenuArrow(MENU_AUTOMATA_TYPE_ROW_LA); // Delete the arrow for option 1 (Langton's ant)
-    }
-    else if (index == 2)
-    {
-        deleteMenuArrow(MENU_AUTOMATA_TYPE_ROW_MS);    // Delete the arrow for option 2 (Munching squares)
-    }
-    return 0;    
-}
-
-/*
- *
- */
-int deleteLangtonAntArrow(int index)
-{
-    if (index == 0) // Print the arrow in the option to choose the size of the ant
-    {
-        deleteMenuArrow(11);
-    }
-    else if (index == 1) // Print the arrow in the option to go back to main menu
-    {
-        deleteMenuArrow(13);
+        if (index == 0) // Elementary Cellular Automata
+        {
+            row = MENU_AUTOMATA_TYPE_ROW_ECA;
+        }
+        else if (index == 1) // Langton's ant
+        {
+            row = MENU_AUTOMATA_TYPE_ROW_LA;
+        }
+        else if (index == 2) // Munching squares
+        {    
+            row = MENU_AUTOMATA_TYPE_ROW_MS;
+        }        
     }
     
-    return 0;
-}
-
-/*
- *
- */
-int deleteMunchingSquaresArrow(int index)
-{
-    if (index == 0)
+    else if (intDisplayedMenu == 1) // Elementary Cellular Automaton menu
     {
-        deleteMenuArrow(12); // Delete the arrow for option 0 (Comparation type: Smaller than)
+        if (index == 8) // The first element of the bottom screen
+        {
+            row = 11;
+        }
     }
-    else if (index == 1)
+    else if (intDisplayedMenu == 2) // Langton's ant menu
     {
-        deleteMenuArrow(13); // Delete the arrow for option 1 (Comparation type: Equal to)
+        if (index == 0) // Print the arrow in the option to choose the size of the ant
+        {
+            row = 11;
+        }
+        else if (index == 1) // Print the arrow in the option to go back to main menu
+        {
+            row = 13;
+        }
     }
-    else if (index == 2)
-    {    
-        deleteMenuArrow(15); // Delete the arrow for option 2 (Boolean operator: XOR)
+    
+    else if (intDisplayedMenu == 3) // Munching squares menu
+    {
+        if (index == 0) // Comparation type: Smaller than
+        {
+            row = 12;
+        }
+        else if (index == 1) // Comparation type: Equal to
+        {
+            row = 13;
+        }
+        else if (index == 2) // Boolean operator: XOR
+        {    
+            row = 15;
+        }
+        else if (index == 3) // Boolean operator: AND
+        {    
+            row = 16;
+        }
+        else if (index == 4) // Back to main menu
+        {    
+            row = 18;
+        }            
     }
-    else if (index == 3)
-    {    
-        deleteMenuArrow(16); // Delete the arrow for option 3 (Boolean operator: AND)
+    
+    if (boolDelete == false)
+    {
+        printArrow(row);
     }
-    else if (index == 4)
-    {    
-        deleteMenuArrow(18); // Delete the arrow for option 4 (Back to main menu)
-    }    
-
-    return 0;
-}
-
-/*
- *
- */
-int deleteECAarrow()
-{
-    deleteMenuArrow(11);
+    else
+    {
+        deleteArrow(row);
+    }
+    
     return 0;
 }
 
@@ -1009,7 +937,7 @@ int showAutomataTypeMenu()
     consoleClear();
     printCredits();
     printMenu(displayedMenu);
-    printAutomataTypeArrow(automataType);
+    printMenuArrow(displayedMenu, automataType, false);
     
     return 0;
 }
@@ -1022,9 +950,7 @@ int main(void)
 {
 	consoleDemoInit();
 
-    printCredits();
-    printMenu(displayedMenu);
-    printAutomataTypeArrow(automataType);
+    showAutomataTypeMenu();
     
 /*    printf("This program is free software:\n");
     printf("you can redistribute it and/or\n");
@@ -1071,30 +997,30 @@ int main(void)
             {
                 if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
                 {
-                    deleteAutomataTypeArrow(automataType);
+                    printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType - 1;
-                    printAutomataTypeArrow(automataType);
+                    printMenuArrow(displayedMenu, automataType, false); // Print new arrow
                 }
                 else
                 {
-                    deleteAutomataTypeArrow(automataType);
+                    printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = 2;
-                    printAutomataTypeArrow(automataType);
+                    printMenuArrow(displayedMenu, automataType, false); // Print new arrow
                 }   
             }
             else if (keys_released & KEY_DOWN)
             {
                 if (automataType != 2)
                 {
-                    deleteAutomataTypeArrow(automataType);
+                    printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType + 1;
-                    printAutomataTypeArrow(automataType);
+                    printMenuArrow(displayedMenu, automataType, false); // Print new arrow                   
                 }
                 else
                 {
-                    deleteAutomataTypeArrow(automataType);
+                    printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = ELEMENTARY_CELLULAR_AUTOMATA;
-                    printAutomataTypeArrow(automataType);
+                    printMenuArrow(displayedMenu, automataType, false); // Print new arrow                    
                 }   
             }
             else if (keys_released & KEY_A)
@@ -1214,7 +1140,7 @@ int main(void)
 			    }
 			    else
 			    {
-			        deleteECAarrow();
+			        printMenuArrow(displayedMenu, intArrow, true);
 			    }
 			    
 			    if (intArrow == 8)
@@ -1236,7 +1162,7 @@ int main(void)
 			    }
 			    else 
 			    {
-			        printECAarrow();
+			        printMenuArrow(displayedMenu, intArrow, false);
 			    }
 		    }
 		    else if(keys_pressed & KEY_DOWN)
@@ -1247,7 +1173,7 @@ int main(void)
 			    }
 			    else
 			    {
-			        deleteECAarrow();
+			        printMenuArrow(displayedMenu, intArrow, true);			        
 			    }
 
 			    if (intArrow == 8)
@@ -1269,7 +1195,7 @@ int main(void)
 			    }
 			    else
 			    {
-			        printECAarrow();
+			        printMenuArrow(displayedMenu, intArrow, false);			        
 			    }
 		    }
         }
@@ -1301,8 +1227,9 @@ int main(void)
 		    }
 		    else if(keys_pressed & KEY_UP)
 		    {
-		        deleteLangtonAntArrow(intArrow);
-		        
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+
+		        // Calculate the next position of the arrow		        
 		        if (intArrow == 0)
 		        {
 		            intArrow = 1;
@@ -1312,12 +1239,13 @@ int main(void)
 		            intArrow = intArrow - 1;
 		        }
 		        
-		        printLangtonAntArrow(intArrow);
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
 		    }
 		    else if(keys_pressed & KEY_DOWN)
 		    {
-		        deleteLangtonAntArrow(intArrow);
-		        
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+		     
+		        // Calculate the next position of the arrow   
 		        if (intArrow == 1)
 		        {
 		            intArrow = 0;
@@ -1326,8 +1254,8 @@ int main(void)
 		        {
 		            intArrow = intArrow + 1;
 		        }
-		        
-		        printLangtonAntArrow(intArrow);		    
+		           
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
 		    }
 		    else if (keys_pressed & KEY_LEFT)
 		    {
@@ -1393,7 +1321,7 @@ int main(void)
   		    }
 		    else if(keys_pressed & KEY_UP)
 		    {
-		        deleteMunchingSquaresArrow(intArrow);
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
 		        
 		        if (intArrow == 0)
 		        {
@@ -1404,11 +1332,11 @@ int main(void)
 		            intArrow = intArrow - 1;
 		        }
 		        
-		        printMunchingSquaresArrow(intArrow);
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
 		    }
 		    else if(keys_pressed & KEY_DOWN)
 		    {
-		        deleteMunchingSquaresArrow(intArrow);
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow        
 		        
 		        if (intArrow == 4)
 		        {
@@ -1419,7 +1347,7 @@ int main(void)
 		            intArrow = intArrow + 1;
 		        }
 		        
-		        printMunchingSquaresArrow(intArrow);		    
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
 		    }            
             
             drawNextStepMunchingSquares();
