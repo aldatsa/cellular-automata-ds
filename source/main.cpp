@@ -607,7 +607,13 @@ int drawNextStepMunchingSquares()
 /*********************************** START LANGTON'S ANT FUNCTIONS *********************************************************/
 
 /*
- *
+ * References: 
+ * http://en.wikipedia.org/wiki/Langton%27s_ant
+ * http://mathworld.wolfram.com/LangtonsAnt.html
+ */
+ 
+/*
+ * Calculates the new angle of the ant
  */
 int rotateAnt(unsigned char rotateTo)
 {
@@ -637,7 +643,9 @@ int rotateAnt(unsigned char rotateTo)
 }
 
 /*
- *
+ * Paints the cell where the ant is.
+ * The cell is painted black if it was white
+ * and white if it was black.
  */
 int paintAnt()
 {
@@ -663,7 +671,7 @@ int paintAnt()
 }
 
 /*
- *
+ * Moves the ant forward to the next cell
  */
 int forwardAnt()
 {
@@ -686,7 +694,10 @@ int forwardAnt()
 }
 
 /*
- *
+ * This function combines the previous 3 functions:
+ * First, depending on the color of the cell, rotates the ant to one side or the other.
+ * Next, paints the cell.
+ * Finally, moves the ant to the next cell.
  */
 void stepAnt()
 {
@@ -723,8 +734,10 @@ int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned
 
 /*********************************** END LANGTON'S ANT FUNCTIONS ***********************************************************/
 
+/******************************************* START MENU FUNCTIONS **********************************************************/
+
 /*
- *
+ * Prints app's credits
  */
 int printCredits()
 {
@@ -739,7 +752,7 @@ int printCredits()
 }    
 
 /*
- *
+ * Prints the arrow ("->") used to highlight the currently selected menu 
  */
 int printArrow(int row)
 {
@@ -749,7 +762,7 @@ int printArrow(int row)
 }
 
 /*
- *
+ * Deletes the arrow ("  ") used to highlight the currently selected menu
  */
 int deleteArrow(int row)
 {
@@ -759,7 +772,8 @@ int deleteArrow(int row)
 }
 
 /*
- *
+ * Prints the menu items but without the arrow.
+ * Use printMenuArrow() to print the arrow
  */
 int printMenu(int intDisplayedMenu)
 {
@@ -796,7 +810,7 @@ int printMenu(int intDisplayedMenu)
 }
 
 /*
- *
+ * Prints the asterisk used to mark the options in the menu of the Munching Squares
  */
 int printMSasterisks()
 {
@@ -825,7 +839,7 @@ int printMSasterisks()
 }
 
 /*
- *
+ * Prints the arrow used to highlight the currently selected menu item
  */
 int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
 {
@@ -903,6 +917,24 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
 }
 
 /*
+ * Shows the menu used to select the automata type (a.k.a. main menu)
+ */
+int showAutomataTypeMenu()
+{
+    displayedMenu = 0;
+    automataType = ELEMENTARY_CELLULAR_AUTOMATA;
+    showFlash();
+    consoleClear();
+    printCredits();
+    printMenu(displayedMenu);
+    printMenuArrow(displayedMenu, automataType, false);
+    
+    return 0;
+}
+
+/************************************************** END MENU FUNCTIONS ***********************************************************/
+
+/*
  *
  */
 int runAutomata()
@@ -926,23 +958,8 @@ int runAutomata()
     return 0;
 }
 
-/*
- *
- */
-int showAutomataTypeMenu()
-{
-    displayedMenu = 0;
-    automataType = ELEMENTARY_CELLULAR_AUTOMATA;
-    showFlash();
-    consoleClear();
-    printCredits();
-    printMenu(displayedMenu);
-    printMenuArrow(displayedMenu, automataType, false);
-    
-    return 0;
-}
-
 /*********************************** START MAIN FUNCTION *************************************************************************/
+
 /*
  *
  */
