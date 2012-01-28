@@ -34,7 +34,8 @@
  */
 #define MENU_AUTOMATA_TYPE_ROW_ECA 8
 #define MENU_AUTOMATA_TYPE_ROW_LA 9
-#define MENU_AUTOMATA_TYPE_ROW_MS 10
+#define MENU_AUTOMATA_TYPE_ROW_LHA 10
+#define MENU_AUTOMATA_TYPE_ROW_MS 11
 
 /*
  * Constant for the row where the rule of the Elementary Cellular Automaton is printed
@@ -44,12 +45,14 @@
 /*
  * Constants for the variable automataType:
  * 0: Elementary Cellular Automata
- * 1: ????????
- * 2: Munching Squares
+ * 1: Langton's ant
+ * 2: Langton's hexagonal ant
+ * 3: Munching Squares
  */
 #define ELEMENTARY_CELLULAR_AUTOMATA 0
 #define LANGTON_ANT 1
-#define MUNCHING_SQUARES 2
+#define LANGTON_HEXAGONAL_ANT 2
+#define MUNCHING_SQUARES 3
 
 /*
  * Variables for the colors of the background, the elements on the foreground and the lines
@@ -89,7 +92,8 @@ touchPosition touch;
 /* This variable sets the type of automata that is going to execute
  * 0: Elementary Cellular Automata
  * 1: Langton's ant
- * 2: Munching Squares
+ * 2: Langton's hexagonal ant
+ * 3: Munching Squares
  */
 int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
 
@@ -97,13 +101,15 @@ int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
  * 0: Select automata menu
  * 1: Elementary cellular automata menu
  * 2: Langton's ant menu
- * 3: Munching squares menu
+ * 3: Langton's hexagonal ant menu
+ * 4: Munching squares menu
  */
 int displayedMenu = 0;
 
 /* The position of the arrow
  * Elementary Cellular Automata: in the top screen (0-7) and in the bottom screen (8)
- * ????
+ * Langton's ant: ????
+ * Langton's hexagonal ant: ????
  * Munching Squares: in the bottom screen (0-2)
  */
 int intArrow = 0;
@@ -118,13 +124,13 @@ int munchingSquaresOptionOp = 0; // 0 XOR; 1 AND;
 bool munchingSquaresCondition = false; // if true draw square else don't
 
 /*
- * Variables used for the Langton's ant
+ * Variables used for the Langton's ant (normal and hexagonal)
  */
 unsigned short antPosX;
 unsigned short antPosY;
 unsigned short antAngle;
 unsigned int antNumSteps;
-unsigned short antNumPixels = 4;
+unsigned short antNumPixels = 4; // Only used by the normal ant not by the hexagonal one
 bool antStop = false;
  
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
@@ -716,7 +722,7 @@ void stepAnt()
 }
 
 /*
- *
+ * Initializes the Langton's ant
  */
 int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned short intAntAngle, unsigned short intAntNumPixels)
 {
@@ -733,6 +739,198 @@ int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned
 }
 
 /*********************************** END LANGTON'S ANT FUNCTIONS ***********************************************************/
+
+/****************************** START HEXAGONAL LANGTON'S ANT FUNCTIONS ****************************************************/
+
+/*
+ *
+ */
+int rotateHexAnt(unsigned char rotateTo)
+{
+	if (rotateTo == 'R') // right 60
+	{
+		if (antAngle < 300)
+		{
+			antAngle = antAngle + 60;
+		}
+		else
+		{
+			antAngle = 0;
+		}
+	}
+	else if (rotateTo == 'L') // left 60
+	{
+		if (antAngle != 0)
+		{	
+			antAngle = antAngle - 60;	
+		}	
+		else
+		{
+			antAngle = 300;
+		}
+	}
+	return 0;
+}
+
+/*
+ *
+ */
+int paintHexAnt()
+{
+
+	unsigned short tempColor;
+	
+	if (fb[antPosY * 256 + antPosX] == FG_color)
+	{
+		tempColor = BG_color;
+	}
+	else
+	{
+		tempColor = FG_color;
+	}
+
+	drawHLine(antPosX, antPosY, 3, tempColor);
+	drawHLine(antPosX - 1, antPosY + 1, 5, tempColor);
+	drawHLine(antPosX, antPosY + 2, 3, tempColor);
+	
+	return 0;
+}
+
+/*
+ *
+ */
+int forwardHexAnt()
+{
+	switch(antAngle)
+	{
+		case 0:
+		 	antPosY = antPosY - 4;
+			break;
+		case 60:
+			antPosX = antPosX + 4;
+			antPosY = antPosY - 2;
+			break;
+		case 120:
+			antPosX = antPosX + 4;
+			antPosY = antPosY + 2;
+			break;
+
+		case 180:
+			antPosY = antPosY + 4;
+			break;
+		case 240:
+			antPosX = antPosX - 4;
+			antPosY = antPosY + 2;
+			break;
+		case 300:
+			antPosX = antPosX - 4;
+			antPosY = antPosY - 2;
+			break;
+	}
+	return 0;
+}
+
+/*
+ *
+ */
+int stepHexAnt()
+{
+	if (fb[antPosY * 256 + antPosX] == BG_color)
+	{
+		rotateHexAnt('R');
+	}
+	else
+	{
+		rotateHexAnt('L');
+	}
+
+	paintHexAnt();
+	forwardHexAnt();
+	
+	return 0;
+}
+
+/*
+ *
+ */
+int initializeHexAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned short intAntAngle)
+{   
+    cleanScreen();
+    
+    antPosX = intAntPosX;
+    antPosY = intAntPosY;
+    antAngle = intAntAngle;
+    antNumSteps = 0;
+    antStop = false;
+    
+    return 0;
+}
+
+/******************************* END HEXAGONAL LANGTON'S ANT FUNCTIONS *****************************************************/
+
+/*********************************** START HEXAGONAL GRID FUNCTIONS ********************************************************/
+
+/*
+ *
+ */
+int hexGridLineOne(int y)
+{
+	for(int i = 0; i < 32; i++)
+	{
+		for(int j=0; j<3; j++)
+		{
+			fb[256 * y + (4 + j + 8 * i)] = line_color;
+		}
+	}
+	return 0;
+}
+
+/*
+ *
+ */
+int hexGridLineTwo(int y)
+{
+	for(int i = 0; i < 64; i++)
+	{
+		fb[256 * y + (3 + 4 * i)] = line_color;
+	}
+	return 0;
+}
+
+/*
+ *
+ */
+int hexGridLineThree(int y)
+{
+	for(int i = 0; i < 32; i++)
+	{
+		for(int j = 0; j < 3; j++)
+		{
+			fb[256 * y + (j + 8 * i)] = line_color;
+		}
+	}
+	return 0;
+}
+
+/*
+ *
+ */
+int drawHexGrid()
+{
+    cleanScreen();
+    
+	for (int i = 0; i < 48; i++)
+	{
+		hexGridLineOne(4 * i);
+		hexGridLineTwo(4 * i + 1);
+		hexGridLineThree(4 * i + 2);
+		hexGridLineTwo(4 * i + 3);
+	}
+	
+    return 0;
+}
+
+/************************************* END HEXAGONAL GRID FUNCTIONS ********************************************************/
 
 /******************************************* START MENU FUNCTIONS **********************************************************/
 
@@ -781,6 +979,7 @@ int printMenu(int intDisplayedMenu)
     {
         iprintf("\x1b[%d;2HElementary Cellular Automata", MENU_AUTOMATA_TYPE_ROW_ECA);
         iprintf("\x1b[%d;2HLangton's ant", MENU_AUTOMATA_TYPE_ROW_LA);
+        iprintf("\x1b[%d;2HLangton's hexagonal ant", MENU_AUTOMATA_TYPE_ROW_LHA);
         iprintf("\x1b[%d;2HMunching Squares", MENU_AUTOMATA_TYPE_ROW_MS);
     }
     else if (displayedMenu == 1) // The menu of the Elementary Cellular Automaton
@@ -793,7 +992,12 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[13;2HBack to main menu");
         printArrow(13);        
     }
-    else if (displayedMenu == 3) // The menu of the munching squares
+    else if (displayedMenu == 3) // The menu of the Langton's hexagonal ant
+    {
+        iprintf("\x1b[13;2HBack to main menu");
+        printArrow(13);
+    }
+    else if (displayedMenu == 4) // The menu of the munching squares
     {
         iprintf("\x1b[11;2HType of comparation:");        
         iprintf("\x1b[12;5HSmaller than");
@@ -855,7 +1059,11 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {
             row = MENU_AUTOMATA_TYPE_ROW_LA;
         }
-        else if (index == 2) // Munching squares
+        else if (index == 2) // Langton's hexagonal ant
+        {
+            row = MENU_AUTOMATA_TYPE_ROW_LHA;
+        }        
+        else if (index == 3) // Munching squares
         {    
             row = MENU_AUTOMATA_TYPE_ROW_MS;
         }        
@@ -879,8 +1087,14 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 13;
         }
     }
-    
-    else if (intDisplayedMenu == 3) // Munching squares menu
+    else if (intDisplayedMenu == 3) // Langton's hexagonal ant menu
+    {
+        if (index == 0)
+        {
+            row = 13;
+        }
+    }
+    else if (intDisplayedMenu == 4) // Munching squares menu
     {
         if (index == 0) // Comparation type: Smaller than
         {
@@ -948,6 +1162,12 @@ int runAutomata()
     {
         showFB();
         initializeAnt(127, 95, 90, antNumPixels);        
+    }
+    else if (automataType == LANGTON_HEXAGONAL_ANT)
+    {
+        showFB();
+        drawHexGrid();
+        initializeHexAnt(92, 93, 0);
     }
     else if (automataType == MUNCHING_SQUARES)
     {
@@ -1021,13 +1241,13 @@ int main(void)
                 else
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
-                    automataType = 2;
+                    automataType = 3;
                     printMenuArrow(displayedMenu, automataType, false); // Print new arrow
                 }   
             }
             else if (keys_released & KEY_DOWN)
             {
-                if (automataType != 2)
+                if (automataType != 3)
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType + 1;
@@ -1069,6 +1289,19 @@ int main(void)
                     
                     runAutomata();
                 }
+                else if (automataType == LANGTON_HEXAGONAL_ANT)
+                {
+                    consoleClear();
+                    printCredits();
+                    printf("Current type:\n Langton's hexagonal ant");
+                    
+                    intArrow = 0;
+                    displayedMenu = 3;
+                    
+                    printMenu(displayedMenu);
+                    
+                    runAutomata();
+                }
                 else if (automataType == MUNCHING_SQUARES)
                 {   
                     consoleClear();
@@ -1076,7 +1309,7 @@ int main(void)
                     printf("Current type:\n Munching Squares");
                     
                     intArrow = 0;                    
-                    displayedMenu = 3;
+                    displayedMenu = 4;
                     
                     printMenu(displayedMenu);
                     
@@ -1301,9 +1534,36 @@ int main(void)
 		    }
         }
         /*
+         * Langton's hexagonal ant menu
+         */                
+        else if (displayedMenu == 3)
+        {
+		    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or antPosY + antNumPixels > 191)
+    	    {
+    	        antStop = true;
+    	    }
+    	    
+    	    if (antStop == false)
+    	    {
+    	        stepHexAnt();
+    	        antNumSteps++;
+    	        iprintf("\x1b[9;0HStep #: %d", antNumSteps);
+    	        swiWaitForVBlank();
+    	    }
+    	    
+    	    if(keys_released & KEY_A)
+		    {
+		        if (intArrow == 0)
+		        {
+		            // Go back to the selection of the type of automata
+                    showAutomataTypeMenu();
+                }                    
+		    }
+        }
+        /*
          * Munching squares menu
          */
-        else if (displayedMenu == 3)
+        else if (displayedMenu == 4)
         {
   		    if(keys_released & KEY_A)
   		    {
