@@ -205,6 +205,15 @@ int showFlash()
 /*********************************** START ELEMENTARY CELLULAR AUTOMATA FUNCTIONS **************************************************/
 
 /*
+ * References:
+ * http://mathworld.wolfram.com/ElementaryCellularAutomaton.html
+ * http://atlas.wolfram.com/01/01/
+ * http://en.wikipedia.org/wiki/Cellular_automaton#Elementary_cellular_automata
+ * http://en.wikipedia.org/wiki/Elementary_cellular_automaton
+ * 
+ */
+ 
+/*
  * int paintInitialCell()
  * Paints the initial cell in the center of the first row
  */
@@ -500,6 +509,16 @@ int drawElementaryCellularAutomata()
 
 /*********************************** START MUNCHING SQUARES FUNCTIONS ******************************************************/
 
+/*
+ * References: 
+ * http://en.wikipedia.org/wiki/Munching_square
+ * http://mathworld.wolfram.com/MunchingSquares.html
+ * http://www.inwap.com/pdp10/hbaker/hakmem/hacks.html#item146
+ */
+
+/*
+ *
+ */
 int drawSquare(int column, int row, int width, unsigned short color)
 {
     for (int k = 0; k < width; k++)
@@ -510,6 +529,9 @@ int drawSquare(int column, int row, int width, unsigned short color)
     return 0;
 }
 
+/*
+ *
+ */
 int initializeMunchingSquares()
 {
     munchingSquaresNumSteps = 0;
@@ -518,6 +540,9 @@ int initializeMunchingSquares()
     return 0;
 }
 
+/*
+ *
+ */
 int drawNextStepMunchingSquares()
 {
     if (munchingSquaresNumSteps < 64)   
@@ -567,6 +592,9 @@ int drawNextStepMunchingSquares()
 
 /*********************************** END MUNCHING SQUARES FUNCTIONS ********************************************************/
 
+/*
+ *
+ */
 int printCredits()
 {
 	printf("Cellular Automata DS\n");
@@ -579,6 +607,9 @@ int printCredits()
     return 0;
 }    
 
+/*
+ *
+ */
 int printSelectAutomataTypeMenu()
 {
     // Print the menu to select the type of automata
@@ -589,6 +620,9 @@ int printSelectAutomataTypeMenu()
     return 0;
 }
 
+/*
+ *
+ */
 int printECAmenu()
 {
     iprintf("\x1b[11;2HBack to main menu");
@@ -596,6 +630,9 @@ int printECAmenu()
     return 0;
 }
 
+/*
+ *
+ */
 int printMenuArrow(int row)
 {
     iprintf("\x1b[%d;0H->", row); // Print the menu arrow
@@ -603,6 +640,9 @@ int printMenuArrow(int row)
     return 0;
 }
 
+/*
+ *
+ */
 int printMSasterisks()
 {
     if (munchingSquaresOptionComp == 0)
@@ -629,6 +669,9 @@ int printMSasterisks()
     return 0;
 }
 
+/*
+ *
+ */
 int printMSmenu()
 {   
     iprintf("\x1b[11;2HType of comparation:");        
@@ -644,6 +687,9 @@ int printMSmenu()
     return 0;
 }
 
+/*
+ *
+ */
 int printAutomataTypeArrow(int index)
 {
     if (index == 0)
@@ -661,6 +707,9 @@ int printAutomataTypeArrow(int index)
     return 0;
 }
 
+/*
+ *
+ */
 int printMunchingSquaresArrow(int index)
 {
     if (index == 0)
@@ -687,12 +736,18 @@ int printMunchingSquaresArrow(int index)
     return 0;
 }
 
+/*
+ *
+ */
 int printECAarrow()
 {
     printMenuArrow(11);
     return 0;
 }
 
+/*
+ *
+ */
 int deleteMenuArrow(int row)
 {
     iprintf("\x1b[%d;0H  ", row); // Delete the menu arrow
@@ -700,6 +755,9 @@ int deleteMenuArrow(int row)
     return 0;
 }
 
+/*
+ *
+ */
 int deleteAutomataTypeArrow(int index)
 {
     if (index == 0)
@@ -717,6 +775,9 @@ int deleteAutomataTypeArrow(int index)
     return 0;    
 }
 
+/*
+ *
+ */
 int deleteMunchingSquaresArrow(int index)
 {
     if (index == 0)
@@ -743,12 +804,18 @@ int deleteMunchingSquaresArrow(int index)
     return 0;
 }
 
+/*
+ *
+ */
 int deleteECAarrow()
 {
     deleteMenuArrow(11);
     return 0;
 }
 
+/*
+ *
+ */
 int runAutomata()
 {
     if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
@@ -769,6 +836,9 @@ int runAutomata()
     return 0;
 }
 
+/*
+ *
+ */
 int showAutomataTypeMenu()
 {
     displayedMenu = 0;
@@ -783,6 +853,9 @@ int showAutomataTypeMenu()
 }
 
 /*********************************** START MAIN FUNCTION *************************************************************************/
+/*
+ *
+ */
 int main(void)
 {
 	consoleDemoInit();
@@ -826,8 +899,11 @@ int main(void)
 		keys_pressed = keysDown();
 		keys_held = keysHeld();
 		keys_released = keysUp();
-        
-        if (displayedMenu == 0) // The main menu to select the type of automata
+
+        /*
+         * The main menu to select the type of automata
+         */        
+        if (displayedMenu == 0)
         {
             if (keys_released & KEY_UP)
             {
@@ -892,7 +968,10 @@ int main(void)
                 }
             }
         }
-        else if (displayedMenu == 1) // The Elementary Cellular Automata menu
+        /*
+         * The Elementary Cellular Automata menu
+         */                
+        else if (displayedMenu == 1)
         {
 		    if(keys_released & KEY_A)
 		    {
@@ -1020,10 +1099,16 @@ int main(void)
 			    }
 		    }
         }
-        else if (displayedMenu == 2) // ??????????????
+        /*
+         * ??????????????
+         */                
+        else if (displayedMenu == 2)
         {
         }
-        else if (displayedMenu == 3) // Munching squares
+        /*
+         * Munching squares menu
+         */                
+        else if (displayedMenu == 3)
         {
   		    if(keys_released & KEY_A)
   		    {
