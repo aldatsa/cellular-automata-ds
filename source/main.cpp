@@ -124,7 +124,7 @@ unsigned short antPosX;
 unsigned short antPosY;
 unsigned short antAngle;
 unsigned int antNumSteps;
-unsigned short antNumPixels;
+unsigned short antNumPixels = 4;
 bool antStop = false;
  
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
@@ -823,8 +823,9 @@ int printMSmenu()
  */
 int printLAmenu()
 {
-    iprintf("\x1b[12;2HBack to main menu");
-    printMenuArrow(12);    
+    iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);
+    iprintf("\x1b[13;2HBack to main menu");
+    printMenuArrow(13);    
     return 0;
 }
 
@@ -844,6 +845,22 @@ int printAutomataTypeArrow(int index)
     else if (index == 2)
     {    
         printMenuArrow(MENU_AUTOMATA_TYPE_ROW_MS); // Print the arrow for option 2 (Munching squares)
+    }
+    return 0;
+}
+
+/*
+ *
+ */
+int printLangtonAntArrow(int index)
+{
+    if (index == 0) // Print the arrow in the option to choose the size of the ant
+    {
+        printMenuArrow(11);
+    }
+    else if (index == 1) // Print the arrow in the option to go back to main menu
+    {
+        printMenuArrow(13);
     }
     return 0;
 }
@@ -919,6 +936,23 @@ int deleteAutomataTypeArrow(int index)
 /*
  *
  */
+int deleteLangtonAntArrow(int index)
+{
+    if (index == 0) // Print the arrow in the option to choose the size of the ant
+    {
+        deleteMenuArrow(11);
+    }
+    else if (index == 1) // Print the arrow in the option to go back to main menu
+    {
+        deleteMenuArrow(13);
+    }
+    
+    return 0;
+}
+
+/*
+ *
+ */
 int deleteMunchingSquaresArrow(int index)
 {
     if (index == 0)
@@ -967,7 +1001,7 @@ int runAutomata()
     else if (automataType == LANGTON_ANT)
     {
         showFB();
-        initializeAnt(127, 95, 90, 5);        
+        initializeAnt(127, 95, 90, antNumPixels);        
     }
     else if (automataType == MUNCHING_SQUARES)
     {
@@ -1097,12 +1131,12 @@ int main(void)
                     consoleClear();
                     printCredits();
                     printf("Current type:\n Langton's ant");
-                    printLAmenu();
                               
                     intArrow = 0;
                     displayedMenu = 2;
                     
                     runAutomata();
+                    printLAmenu();
                 }
                 else if (automataType == MUNCHING_SQUARES)
                 {   
@@ -1270,8 +1304,66 @@ int main(void)
     	    
     	    if(keys_released & KEY_A)
 		    {
-		        // Go back to the selection of the type of automata
-                showAutomataTypeMenu();
+		        if (intArrow == 1)
+		        {
+		            // Go back to the selection of the type of automata
+                    showAutomataTypeMenu();
+                }                    
+		    }
+		    else if(keys_pressed & KEY_UP)
+		    {
+		        deleteLangtonAntArrow(intArrow);
+		        
+		        if (intArrow == 0)
+		        {
+		            intArrow = 1;
+		        }
+		        else
+		        {
+		            intArrow = intArrow - 1;
+		        }
+		        
+		        printLangtonAntArrow(intArrow);
+		    }
+		    else if(keys_pressed & KEY_DOWN)
+		    {
+		        deleteLangtonAntArrow(intArrow);
+		        
+		        if (intArrow == 1)
+		        {
+		            intArrow = 0;
+		        }
+		        else
+		        {
+		            intArrow = intArrow + 1;
+		        }
+		        
+		        printLangtonAntArrow(intArrow);		    
+		    }
+		    else if (keys_pressed & KEY_LEFT)
+		    {
+                if (intArrow == 0)
+                {
+                    if (antNumPixels > 0)
+                    {
+                        antNumPixels = antNumPixels - 1;
+                        iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);                        
+                        runAutomata();
+            	        iprintf("\x1b[9;0HStep #:    ");                                                
+            	        iprintf("\x1b[9;0HStep #: %d", antNumSteps);                        
+                    }                        
+                }		        
+		    }
+		    else if (keys_pressed & KEY_RIGHT)
+		    {
+                if (intArrow == 0)
+                {
+                    antNumPixels = antNumPixels + 1;
+                    iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);
+                    runAutomata();                
+          	        iprintf("\x1b[9;0HStep #:    ");                                                                    
+           	        iprintf("\x1b[9;0HStep #: %d", antNumSteps);                    
+                }		    
 		    }
         }
         /*
