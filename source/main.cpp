@@ -615,6 +615,17 @@ int printMSasterisks()
         iprintf("\x1b[12;3H ");
         iprintf("\x1b[13;3H*");        
     }
+    
+    if (munchingSquaresOptionOp == 0)
+    {
+        iprintf("\x1b[15;3H*");
+        iprintf("\x1b[16;3H ");        
+    }
+    else
+    {
+        iprintf("\x1b[15;3H ");
+        iprintf("\x1b[16;3H*");        
+    }    
     return 0;
 }
 
@@ -622,11 +633,13 @@ int printMSmenu()
 {   
     iprintf("\x1b[11;2HType of comparation:");        
     iprintf("\x1b[12;5HSmaller than");
-    iprintf("\x1b[13;5HEqual to    ");    
+    iprintf("\x1b[13;5HEqual to");    
     
-
-    
-    iprintf("\x1b[15;2HBack to main menu");
+    iprintf("\x1b[14;2HType of boolean operator:");
+    iprintf("\x1b[15;5HXOR");
+    iprintf("\x1b[16;5HAND");    
+        
+    iprintf("\x1b[18;2HBack to main menu");
     printMenuArrow(12);
     return 0;
 }
@@ -660,8 +673,17 @@ int printMunchingSquaresArrow(int index)
     }
     else if (index == 2)
     {    
-        printMenuArrow(15); // Print the arrow for option 2 (Back to main menu)
+        printMenuArrow(15); // Print the arrow for option 2 (Boolean operator: XOR)
     }
+    else if (index == 3)
+    {    
+        printMenuArrow(16); // Print the arrow for option 3 (Boolean operator: AND)
+    }
+    else if (index == 4)
+    {    
+        printMenuArrow(18); // Print the arrow for option 4 (Back to main menu)
+    }    
+    
     return 0;
 }
 
@@ -699,16 +721,25 @@ int deleteMunchingSquaresArrow(int index)
 {
     if (index == 0)
     {
-        deleteMenuArrow(12); // Print the arrow for option 0 (Comparation type: Smaller than)
+        deleteMenuArrow(12); // Delete the arrow for option 0 (Comparation type: Smaller than)
     }
     else if (index == 1)
     {
-        deleteMenuArrow(13); // Print the arrow for option 1 (Comparation type: Equal to)
+        deleteMenuArrow(13); // Delete the arrow for option 1 (Comparation type: Equal to)
     }
     else if (index == 2)
     {    
-        deleteMenuArrow(15); // Print the arrow for option 2 (Back to main menu)
+        deleteMenuArrow(15); // Delete the arrow for option 2 (Boolean operator: XOR)
     }
+    else if (index == 3)
+    {    
+        deleteMenuArrow(16); // Delete the arrow for option 3 (Boolean operator: AND)
+    }
+    else if (index == 4)
+    {    
+        deleteMenuArrow(18); // Delete the arrow for option 4 (Back to main menu)
+    }    
+
     return 0;
 }
 
@@ -1008,7 +1039,19 @@ int main(void)
   		            printMSasterisks();
   		            runAutomata();  		            
   		        }
-  		        else if (intArrow == 2) // Back to main menu
+  		        else if (intArrow == 2) // Boolean operator type: XOR
+  		        {
+  		            munchingSquaresOptionOp = 0;
+  		            printMSasterisks();  		            
+  		            runAutomata();
+  		        }
+  		        else if (intArrow == 3) // Boolean operator type: AND
+  		        {
+  		            munchingSquaresOptionOp = 1;
+  		            printMSasterisks();
+  		            runAutomata();  		            
+  		        }
+  		        else if (intArrow == 4) // Back to main menu
   		        {
   		            showAutomataTypeMenu();
   		        }
@@ -1019,7 +1062,7 @@ int main(void)
 		        
 		        if (intArrow == 0)
 		        {
-		            intArrow = 2;
+		            intArrow = 4;
 		        }
 		        else
 		        {
@@ -1032,7 +1075,7 @@ int main(void)
 		    {
 		        deleteMunchingSquaresArrow(intArrow);
 		        
-		        if (intArrow == 2)
+		        if (intArrow == 4)
 		        {
 		            intArrow = 0;
 		        }
