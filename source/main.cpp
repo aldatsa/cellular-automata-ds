@@ -96,7 +96,7 @@ int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
 /* This variable sets the menu that is going to be displayed
  * 0: Select automata menu
  * 1: Elementary cellular automata menu
- * 2: Langton's ant
+ * 2: Langton's ant menu
  * 3: Munching squares menu
  */
 int displayedMenu = 0;
@@ -741,33 +741,48 @@ int printCredits()
 /*
  *
  */
-int printSelectAutomataTypeMenu()
-{
-    // Print the menu to select the type of automata
-    iprintf("\x1b[%d;2HElementary Cellular Automata", MENU_AUTOMATA_TYPE_ROW_ECA);
-    iprintf("\x1b[%d;2HLangton's ant", MENU_AUTOMATA_TYPE_ROW_LA);
-    iprintf("\x1b[%d;2HMunching Squares", MENU_AUTOMATA_TYPE_ROW_MS);
-    
-    return 0;
-}
-
-/*
- *
- */
-int printECAmenu()
-{
-    iprintf("\x1b[11;2HBack to main menu");
-    
-    return 0;
-}
-
-/*
- *
- */
 int printMenuArrow(int row)
 {
     iprintf("\x1b[%d;0H->", row); // Print the menu arrow
     
+    return 0;
+}
+
+/*
+ *
+ */
+int printMenu(int intDisplayedMenu)
+{
+    if (displayedMenu == 0)
+    {
+        // Print the menu to select the type of automata
+        iprintf("\x1b[%d;2HElementary Cellular Automata", MENU_AUTOMATA_TYPE_ROW_ECA);
+        iprintf("\x1b[%d;2HLangton's ant", MENU_AUTOMATA_TYPE_ROW_LA);
+        iprintf("\x1b[%d;2HMunching Squares", MENU_AUTOMATA_TYPE_ROW_MS);
+    }
+    else if (displayedMenu == 1)
+    {
+        iprintf("\x1b[11;2HBack to main menu");
+    }
+    else if (displayedMenu == 2)
+    {
+        iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);
+        iprintf("\x1b[13;2HBack to main menu");
+        printMenuArrow(13);        
+    }
+    else if (displayedMenu == 3)
+    {
+        iprintf("\x1b[11;2HType of comparation:");        
+        iprintf("\x1b[12;5HSmaller than");
+        iprintf("\x1b[13;5HEqual to");    
+        
+        iprintf("\x1b[14;2HType of boolean operator:");
+        iprintf("\x1b[15;5HXOR");
+        iprintf("\x1b[16;5HAND");    
+            
+        iprintf("\x1b[18;2HBack to main menu");
+        printMenuArrow(12);        
+    }
     return 0;
 }
 
@@ -797,35 +812,6 @@ int printMSasterisks()
         iprintf("\x1b[15;3H ");
         iprintf("\x1b[16;3H*");        
     }    
-    return 0;
-}
-
-/*
- *
- */
-int printMSmenu()
-{   
-    iprintf("\x1b[11;2HType of comparation:");        
-    iprintf("\x1b[12;5HSmaller than");
-    iprintf("\x1b[13;5HEqual to");    
-    
-    iprintf("\x1b[14;2HType of boolean operator:");
-    iprintf("\x1b[15;5HXOR");
-    iprintf("\x1b[16;5HAND");    
-        
-    iprintf("\x1b[18;2HBack to main menu");
-    printMenuArrow(12);
-    return 0;
-}
-
-/*
- *
- */
-int printLAmenu()
-{
-    iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);
-    iprintf("\x1b[13;2HBack to main menu");
-    printMenuArrow(13);    
     return 0;
 }
 
@@ -1022,7 +1008,7 @@ int showAutomataTypeMenu()
     showFlash();
     consoleClear();
     printCredits();
-    printSelectAutomataTypeMenu();
+    printMenu(displayedMenu);
     printAutomataTypeArrow(automataType);
     
     return 0;
@@ -1037,7 +1023,7 @@ int main(void)
 	consoleDemoInit();
 
     printCredits();
-    printSelectAutomataTypeMenu();
+    printMenu(displayedMenu);
     printAutomataTypeArrow(automataType);
     
 /*    printf("This program is free software:\n");
@@ -1119,10 +1105,11 @@ int main(void)
                     printCredits();
             	    printf("Current type:\n Elementary Cellular Automata"); 
                     printRuleNumber(calculateRuleNumber());
-                    printECAmenu();
                     
                     intArrow = 0;                    
                     displayedMenu = 1;
+                    
+                    printMenu(displayedMenu);
                     
                     runAutomata();
                 }
@@ -1135,18 +1122,20 @@ int main(void)
                     intArrow = 0;
                     displayedMenu = 2;
                     
+                    printMenu(displayedMenu);
+                    
                     runAutomata();
-                    printLAmenu();
                 }
                 else if (automataType == MUNCHING_SQUARES)
                 {   
                     consoleClear();
                     printCredits();
                     printf("Current type:\n Munching Squares");
-                    printMSmenu();
                     
                     intArrow = 0;                    
                     displayedMenu = 3;
+                    
+                    printMenu(displayedMenu);
                     
   		            printMSasterisks();                    
                     runAutomata();
