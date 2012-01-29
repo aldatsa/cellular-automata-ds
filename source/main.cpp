@@ -35,7 +35,8 @@
 #define MENU_AUTOMATA_TYPE_ROW_ECA 8
 #define MENU_AUTOMATA_TYPE_ROW_LA 9
 #define MENU_AUTOMATA_TYPE_ROW_LHA 10
-#define MENU_AUTOMATA_TYPE_ROW_MS 11
+#define MENU_AUTOMATA_TYPE_ROW_BA 11
+#define MENU_AUTOMATA_TYPE_ROW_MS 12
 
 /*
  * Constant for the row where the rule of the Elementary Cellular Automaton is printed
@@ -52,7 +53,8 @@
 #define ELEMENTARY_CELLULAR_AUTOMATA 0
 #define LANGTON_ANT 1
 #define LANGTON_HEXAGONAL_ANT 2
-#define MUNCHING_SQUARES 3
+#define BOOLEAN_AUTOMATA 3
+#define MUNCHING_SQUARES 4
 
 /*
  * Variables for the colors of the background, the elements on the foreground and the lines
@@ -85,6 +87,11 @@ unsigned short ruleDown[8] = {BG_color,FG_color,BG_color,FG_color,FG_color,BG_co
 unsigned short* fb = VRAM_A;
 
 /*
+ * Pointer to the start of VRAM_B, the memory that we'll use as the secondary framebuffer
+ */ 
+unsigned short* fb2 = VRAM_B;
+
+/*
  * A variable for the position of the touch
  */
 touchPosition touch;
@@ -102,7 +109,8 @@ int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
  * 1: Elementary cellular automata menu
  * 2: Langton's ant menu
  * 3: Langton's hexagonal ant menu
- * 4: Munching squares menu
+ * 4: Boolean automata menu
+ * 5: Munching squares menu
  */
 int displayedMenu = 0;
 
@@ -110,6 +118,7 @@ int displayedMenu = 0;
  * Elementary Cellular Automata: in the top screen (0-7) and in the bottom screen (8)
  * Langton's ant: ????
  * Langton's hexagonal ant: ????
+ * Boolean automata menu: ?????
  * Munching Squares: in the bottom screen (0-2)
  */
 int intArrow = 0;
@@ -132,7 +141,15 @@ unsigned short antAngle;
 unsigned int antNumSteps;
 unsigned short antNumPixels = 4; // Only used by the normal ant not by the hexagonal one
 bool antStop = false;
- 
+
+/*
+ * Variables used for the boolean automaton
+ */
+int automataSteps = 0; // It's equivalent to antNumSteps, I should use only one of them
+int intTypeOfNeighborhood = 0;
+int intBooleanRulesValues [8] = {1, 0, 3, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8};
+
+
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
 
 /*
@@ -163,7 +180,7 @@ int drawVLine(int column, int row, int lenght, unsigned short color)
 
 /*
  * int cleanScreen()
- * Fills the screen with the background color
+ * Fills the main framebuffer with the background color
  */
 int cleanScreen()
 {
@@ -180,6 +197,25 @@ int cleanScreen()
 }
 
 /*
+ * int cleanScreen2()
+ * Fills the secondary framebuffer (fb2) with the background color
+ * I should use only one function, not two (cleanScreen() and cleanScreen2())
+ */
+int cleanScreen2()
+{
+	int row, column;
+
+	for(row = 0; row < 192; row++)
+	{
+		for(column = 0; column < 256; column++)
+		{
+			fb2[row*256 + column] = BG_color;
+	    }
+	}
+    return 0;
+}
+
+/*
  *
  */
 int showFB()
@@ -189,9 +225,20 @@ int showFB()
 	
 	// Configure the VRAM A block
 	VRAM_A_CR = VRAM_ENABLE | VRAM_A_LCD;
+	
+	return 0;
+}
 
-    // Paint the screen with the BG color
-	cleanScreen();
+/*
+ *
+ */
+int showFB2()
+{
+    // Configuration of the main screen
+	REG_DISPCNT = MODE_FB1;		// Use MODE_FB1 for VRAM_B
+	
+	// Configure the VRAM B block
+	VRAM_B_CR = VRAM_ENABLE | VRAM_B_LCD;
 	
 	return 0;
 }
@@ -552,6 +599,7 @@ int drawSquare(int column, int row, int width, unsigned short color)
  */
 int initializeMunchingSquares()
 {
+    cleanScreen();
     munchingSquaresNumSteps = 0;
     munchingSquaresCondition = false;
     
@@ -740,6 +788,69 @@ int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned
 
 /*********************************** END LANGTON'S ANT FUNCTIONS ***********************************************************/
 
+/*********************************** START HEXAGONAL GRID FUNCTIONS ********************************************************/
+
+/*
+ *
+ */
+int hexGridLineOne(int y)
+{
+	for(int i = 0; i < 32; i++)
+	{
+		for(int j=0; j<3; j++)
+		{
+			fb[256 * y + (4 + j + 8 * i)] = line_color;
+		}
+	}
+	return 0;
+}
+
+/*
+ *
+ */
+int hexGridLineTwo(int y)
+{
+	for(int i = 0; i < 64; i++)
+	{
+		fb[256 * y + (3 + 4 * i)] = line_color;
+	}
+	return 0;
+}
+
+/*
+ *
+ */
+int hexGridLineThree(int y)
+{
+	for(int i = 0; i < 32; i++)
+	{
+		for(int j = 0; j < 3; j++)
+		{
+			fb[256 * y + (j + 8 * i)] = line_color;
+		}
+	}
+	return 0;
+}
+
+/*
+ *
+ */
+int drawHexGrid()
+{
+    cleanScreen();
+    
+	for (int i = 0; i < 48; i++)
+	{
+		hexGridLineOne(4 * i);
+		hexGridLineTwo(4 * i + 1);
+		hexGridLineThree(4 * i + 2);
+		hexGridLineTwo(4 * i + 3);
+	}
+    return 0;
+}
+
+/************************************* END HEXAGONAL GRID FUNCTIONS ********************************************************/
+
 /****************************** START HEXAGONAL LANGTON'S ANT FUNCTIONS ****************************************************/
 
 /*
@@ -857,6 +968,8 @@ int initializeHexAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsig
 {   
     cleanScreen();
     
+    drawHexGrid();
+            
     antPosX = intAntPosX;
     antPosY = intAntPosY;
     antAngle = intAntAngle;
@@ -868,69 +981,145 @@ int initializeHexAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsig
 
 /******************************* END HEXAGONAL LANGTON'S ANT FUNCTIONS *****************************************************/
 
-/*********************************** START HEXAGONAL GRID FUNCTIONS ********************************************************/
+/************************************* START BOOLEAN AUTOMATA FUNCTIONS ****************************************************/
 
 /*
  *
  */
-int hexGridLineOne(int y)
+bool booleanRule(int count)
 {
-	for(int i = 0; i < 32; i++)
-	{
-		for(int j=0; j<3; j++)
-		{
-			fb[256 * y + (4 + j + 8 * i)] = line_color;
-		}
-	}
-	return 0;
+    for (int i = 0; i < 8; i++)
+    {
+        if (count == intBooleanRulesValues[i])
+        {
+            return true;
+        }            
+    }
+    return false;
 }
 
 /*
  *
  */
-int hexGridLineTwo(int y)
+int calculateNextStep(int typeOfNeighborhood)
 {
-	for(int i = 0; i < 64; i++)
-	{
-		fb[256 * y + (3 + 4 * i)] = line_color;
-	}
-	return 0;
-}
-
-/*
- *
- */
-int hexGridLineThree(int y)
-{
-	for(int i = 0; i < 32; i++)
-	{
-		for(int j = 0; j < 3; j++)
-		{
-			fb[256 * y + (j + 8 * i)] = line_color;
-		}
-	}
-	return 0;
-}
-
-/*
- *
- */
-int drawHexGrid()
-{
-    cleanScreen();
+    /* typeOfNeighborhood = 0 Von Neumann neighborhood
+     * 4 neighbors.
+     *      x
+     *    x o x
+     *      x
+     * http://en.wikipedia.org/wiki/Von_Neumann_neighborhood
+     *
+     * typeOfNeighborhood = 1 -> Moore neighborhood
+     * 8 neighbors.
+     *    x x x
+     *    x o x
+     *    x x x
+     * http://en.wikipedia.org/wiki/Moore_neighborhood
+     */
+          
+    unsigned short* fbRef;
+    unsigned short* fbNew;
     
-	for (int i = 0; i < 48; i++)
-	{
-		hexGridLineOne(4 * i);
-		hexGridLineTwo(4 * i + 1);
-		hexGridLineThree(4 * i + 2);
-		hexGridLineTwo(4 * i + 3);
-	}
-	
+    int countFG = 0;
+    
+    if (automataSteps % 2 == 0 and automataSteps != 1)
+    {
+        fbRef = fb2;
+        fbNew = fb;
+    }
+    else 
+    {
+        fbRef = fb;
+        fbNew = fb2;
+    }
+    
+    dmaCopy(fbRef, fbNew, 128*1024);
+    
+    for (int i = 1; i < 254; i++)
+    {   
+        for (int j = 1; j < 191; j++)
+        {
+            countFG = 0;        
+            
+
+            // top 
+            if (fbRef[256 * (j - 1) + i] == FG_color)
+            {
+                countFG++;
+            }
+            
+            // left
+            if (fbRef[256 * j + i - 1] == FG_color)
+            {
+                countFG++;
+            }
+            
+            // right    
+            if (fbRef[256 * j + i + 1] == FG_color)
+            {
+                countFG++;
+            }
+            
+            // bottom                            
+            if (fbRef[256 * (j + 1) + i] == FG_color)
+            {
+                countFG++;
+            }
+            
+            if (typeOfNeighborhood == 1)
+            {
+                // Top left
+                if (fbRef[256 * (j - 1) + i - 1] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                // top right                
+                if (fbRef[256 * (j - 1) + i + 1] == FG_color)
+                {
+                    countFG++;
+                }
+                                
+                // Bottom left
+                if (fbRef[256 * (j + 1) + i - 1] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                // bottom right
+                if (fbRef[256 * (j + 1) + i + 1] == FG_color)
+                {
+                    countFG++;
+                }            
+            }
+                        
+            if (countFG != 0 and booleanRule(countFG))
+            {
+                fbNew[256 * j + i] = FG_color;
+            }
+        }
+    }
+    
     return 0;
 }
 
-/************************************* END HEXAGONAL GRID FUNCTIONS ********************************************************/
+/*
+ *
+ */
+int initializeBooleanAutomata(int intX, int intY)
+{    
+    cleanScreen();
+    cleanScreen2();
+    
+    automataSteps = 0;
+        
+    fb[intY * 256 + intX] = FG_color;
+    
+    return 0;
+} 
+ 
+/*************************************** END BOOLEAN AUTOMATA FUNCTIONS ****************************************************/
 
 /******************************************* START MENU FUNCTIONS **********************************************************/
 
@@ -980,6 +1169,7 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[%d;2HElementary Cellular Automata", MENU_AUTOMATA_TYPE_ROW_ECA);
         iprintf("\x1b[%d;2HLangton's ant", MENU_AUTOMATA_TYPE_ROW_LA);
         iprintf("\x1b[%d;2HLangton's hexagonal ant", MENU_AUTOMATA_TYPE_ROW_LHA);
+        iprintf("\x1b[%d;2HBoolean automata", MENU_AUTOMATA_TYPE_ROW_BA);
         iprintf("\x1b[%d;2HMunching Squares", MENU_AUTOMATA_TYPE_ROW_MS);
     }
     else if (displayedMenu == 1) // The menu of the Elementary Cellular Automaton
@@ -997,7 +1187,12 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[13;2HBack to main menu");
         printArrow(13);
     }
-    else if (displayedMenu == 4) // The menu of the munching squares
+    else if (displayedMenu == 4) // The menu of the boolean automaton
+    {
+        iprintf("\x1b[13;2HBack to main menu");
+        printArrow(13);
+    }
+    else if (displayedMenu == 5) // The menu of the munching squares
     {
         iprintf("\x1b[11;2HType of comparation:");        
         iprintf("\x1b[12;5HSmaller than");
@@ -1063,7 +1258,11 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {
             row = MENU_AUTOMATA_TYPE_ROW_LHA;
         }        
-        else if (index == 3) // Munching squares
+        else if (index == 3) // Boolean automata
+        {    
+            row = MENU_AUTOMATA_TYPE_ROW_BA;
+        }        
+        else if (index == 4) // Munching squares
         {    
             row = MENU_AUTOMATA_TYPE_ROW_MS;
         }        
@@ -1094,7 +1293,14 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 13;
         }
     }
-    else if (intDisplayedMenu == 4) // Munching squares menu
+    else if (intDisplayedMenu == 4) // Boolean automata
+    {
+        if (index == 0)
+        {
+            row = 13;
+        }
+    }
+    else if (intDisplayedMenu == 5) // Munching squares menu
     {
         if (index == 0) // Comparation type: Smaller than
         {
@@ -1166,8 +1372,15 @@ int runAutomata()
     else if (automataType == LANGTON_HEXAGONAL_ANT)
     {
         showFB();
-        drawHexGrid();
         initializeHexAnt(92, 93, 0);
+    }
+    else if (automataType == BOOLEAN_AUTOMATA)
+    {
+        showFB();
+        dmaCopy(fb, fb2, 128*1024);
+        showFB2();
+        
+        initializeBooleanAutomata(127, 91);
     }
     else if (automataType == MUNCHING_SQUARES)
     {
@@ -1241,13 +1454,13 @@ int main(void)
                 else
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
-                    automataType = 3;
+                    automataType = 4;
                     printMenuArrow(displayedMenu, automataType, false); // Print new arrow
                 }   
             }
             else if (keys_released & KEY_DOWN)
             {
-                if (automataType != 3)
+                if (automataType != 4)
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType + 1;
@@ -1302,6 +1515,19 @@ int main(void)
                     
                     runAutomata();
                 }
+                else if (automataType == BOOLEAN_AUTOMATA)
+                {
+                    consoleClear();
+                    printCredits();
+                    printf("Current type:\n Boolean automata");
+                    
+                    intArrow = 0;
+                    displayedMenu = 4;
+                    
+                    printMenu(displayedMenu);
+                    
+                    runAutomata();
+                }
                 else if (automataType == MUNCHING_SQUARES)
                 {   
                     consoleClear();
@@ -1309,7 +1535,7 @@ int main(void)
                     printf("Current type:\n Munching Squares");
                     
                     intArrow = 0;                    
-                    displayedMenu = 4;
+                    displayedMenu = 5;
                     
                     printMenu(displayedMenu);
                     
@@ -1561,9 +1787,38 @@ int main(void)
 		    }
         }
         /*
-         * Munching squares menu
+         * Boolean automata
          */
         else if (displayedMenu == 4)
+        {
+            automataSteps++;
+            iprintf("\x1b[9;0HStep #: %d", automataSteps);
+            
+            calculateNextStep(intTypeOfNeighborhood);
+            
+            if (automataSteps % 2 == 0 and automataSteps != 1)
+            {
+                showFB();
+            }
+            else
+            {
+                showFB2();
+            }
+            swiWaitForVBlank();
+            
+       	    if(keys_released & KEY_A)
+		    {
+		        if (intArrow == 0)
+		        {
+		            // Go back to the selection of the type of automata
+                    showAutomataTypeMenu();
+                }                    
+		    }
+        }
+        /*
+         * Munching squares menu
+         */
+        else if (displayedMenu == 5)
         {
   		    if(keys_released & KEY_A)
   		    {
