@@ -146,8 +146,9 @@ bool antStop = false;
  * Variables used for the boolean automaton
  */
 int automataSteps = 0; // It's equivalent to antNumSteps, I should use only one of them
-int intTypeOfNeighborhood = 0;
-int intBooleanRulesValues [8] = {1, 0, 3, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8};
+int intTypeOfNeighborhood = 0; // 0: Von Neumann - 1: Moore
+int intBooleanRulesValuesSqVN [4] = {1, 2, 3, 4}; //{1, 0, 0, 0};    // {1, 2, 3, 4} For the boolean square automata with Von Neumann neighborhood
+int intBooleanRulesValuesSqM [8] = {1, 2, 3, 4, 0, 6, 0, 8}; //{1, 0, 3, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
 
 
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
@@ -988,12 +989,33 @@ int initializeHexAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsig
  */
 bool booleanRule(int count)
 {
-    for (int i = 0; i < 8; i++)
+    int upperLimit;
+    
+    if (intTypeOfNeighborhood == 0) // Von Neumann neighborhood
     {
-        if (count == intBooleanRulesValues[i])
+        upperLimit = 4;
+    }
+    else // Moore neighborhood
+    {
+        upperLimit = 8;
+    }
+    
+    for (int i = 0; i < upperLimit; i++)
+    {
+        if (intTypeOfNeighborhood == 0) // Von Neumann neighborhood    
         {
-            return true;
-        }            
+            if (count == intBooleanRulesValuesSqVN[i])
+            {
+                return true;
+            }
+        }
+        else // Moore neighborhood
+        {
+            if (count == intBooleanRulesValuesSqM[i])
+            {
+                return true;
+            }            
+        }
     }
     return false;
 }
@@ -1141,9 +1163,9 @@ int printCredits()
 /*
  * Prints the arrow ("->") used to highlight the currently selected menu 
  */
-int printArrow(int row)
+int printArrow(int row, int column)
 {
-    iprintf("\x1b[%d;0H->", row); // Print the menu arrow
+    iprintf("\x1b[%d;%dH->", row, column); // Print the menu arrow
     
     return 0;
 }
@@ -1151,9 +1173,9 @@ int printArrow(int row)
 /*
  * Deletes the arrow ("  ") used to highlight the currently selected menu
  */
-int deleteArrow(int row)
+int deleteArrow(int row, int column)
 {
-    iprintf("\x1b[%d;0H  ", row); // Delete the menu arrow
+    iprintf("\x1b[%d;%dH  ", row, column); // Delete the menu arrow
     
     return 0;
 }
@@ -1180,17 +1202,22 @@ int printMenu(int intDisplayedMenu)
     {
         iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);
         iprintf("\x1b[13;2HBack to main menu");
-        printArrow(13);        
+        printArrow(13, 0);        
     }
     else if (displayedMenu == 3) // The menu of the Langton's hexagonal ant
     {
         iprintf("\x1b[13;2HBack to main menu");
-        printArrow(13);
+        printArrow(13, 0);
     }
     else if (displayedMenu == 4) // The menu of the boolean automaton
     {
-        iprintf("\x1b[13;2HBack to main menu");
-        printArrow(13);
+        iprintf("\x1b[13;2H Von Neumann neighborhood");
+        iprintf("\x1b[14;5H 1    2    3    4");
+        iprintf("\x1b[15;2H Moore neighborhood");
+        iprintf("\x1b[16;5H 1    2    3    4");
+        iprintf("\x1b[17;5H 5    6    7    8");        
+        iprintf("\x1b[19;2HBack to main menu");
+        printArrow(13, 0);
     }
     else if (displayedMenu == 5) // The menu of the munching squares
     {
@@ -1203,7 +1230,7 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[16;5HAND");    
             
         iprintf("\x1b[18;2HBack to main menu");
-        printArrow(12);        
+        printArrow(12, 0);        
     }
     return 0;
 }
@@ -1233,7 +1260,137 @@ int printMSasterisks()
     {
         iprintf("\x1b[15;3H ");
         iprintf("\x1b[16;3H*");        
-    }    
+    }
+    
+    return 0;
+}
+
+/*
+ * Prints the asterisk used to mark the options in the menu of the Boolean automata
+ */
+int printBAasterisks()
+{
+    if (intTypeOfNeighborhood == 0)
+    {
+        iprintf("\x1b[13;2H*");
+        iprintf("\x1b[15;2H ");        
+    }
+    else
+    {
+        iprintf("\x1b[13;2H ");
+        iprintf("\x1b[15;2H*");        
+    }
+    
+    // {1, 2, 3, 4} For the boolean square automata with Von Neumann neighborhood
+    if (intBooleanRulesValuesSqVN[0] == 1)
+    {
+        iprintf("\x1b[14;5H*");    
+    }
+    else
+    {
+        iprintf("\x1b[14;5H ");    
+    }
+    
+    if (intBooleanRulesValuesSqVN[1] == 2) 
+    {
+        iprintf("\x1b[14;10H*");    
+    }
+    else
+    {
+        iprintf("\x1b[14;10H ");    
+    }
+            
+    if (intBooleanRulesValuesSqVN[2] == 3) 
+    {
+        iprintf("\x1b[14;15H*");    
+    }
+    else
+    {
+        iprintf("\x1b[14;15H ");    
+    }
+            
+    if (intBooleanRulesValuesSqVN[3] == 4) 
+    {
+        iprintf("\x1b[14;20H*");    
+    }
+    else
+    {
+        iprintf("\x1b[14;20H ");    
+    }
+            
+    // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
+    if (intBooleanRulesValuesSqM[0] == 1) 
+    {
+        iprintf("\x1b[16;5H*");    
+    }
+    else
+    {
+        iprintf("\x1b[16;5H ");    
+    }
+    
+    if (intBooleanRulesValuesSqM[1] == 2) 
+    {
+        iprintf("\x1b[16;10H*");    
+    }
+    else
+    {
+        iprintf("\x1b[16;10H ");    
+    }        
+    
+    if (intBooleanRulesValuesSqM[2] == 3) 
+    {
+        iprintf("\x1b[16;15H*");    
+    }
+    else
+    {
+        iprintf("\x1b[16;15H ");    
+    }
+        
+    if (intBooleanRulesValuesSqM[3] == 4) 
+    {
+        iprintf("\x1b[16;20H*");    
+    }
+    else
+    {
+        iprintf("\x1b[16;20H ");    
+    }
+        
+    if (intBooleanRulesValuesSqM[4] == 5) 
+    {
+        iprintf("\x1b[17;5H*");    
+    }
+    else
+    {
+        iprintf("\x1b[17;5H ");    
+    }
+        
+    if (intBooleanRulesValuesSqM[5] == 6) 
+    {
+        iprintf("\x1b[17;10H*");    
+    }
+    else
+    {
+        iprintf("\x1b[17;10H ");    
+    }
+            
+    if (intBooleanRulesValuesSqM[6] == 7) 
+    {
+        iprintf("\x1b[17;15H*");    
+    }
+    else
+    {
+        iprintf("\x1b[17;15H ");    
+    }
+        
+    if (intBooleanRulesValuesSqM[7] == 8)     
+    {
+        iprintf("\x1b[17;20H*");    
+    }
+    else
+    {
+        iprintf("\x1b[17;20H ");    
+    }
+    
     return 0;
 }
 
@@ -1243,6 +1400,7 @@ int printMSasterisks()
 int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
 {
     int row;
+    int column = 0;
     
     if (intDisplayedMenu == 0) // Main menu
     {
@@ -1295,9 +1453,77 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     }
     else if (intDisplayedMenu == 4) // Boolean automata
     {
-        if (index == 0)
+        if (index == 0) // Von Neumann neighborhood
         {
             row = 13;
+        }
+        else if (index == 1) // 1
+        {
+            row = 14;
+            column = 3;
+        }
+        else if (index == 2) // 2
+        {
+            row = 14;
+            column = 8;
+        }
+        else if (index == 3) // 3
+        {
+            row = 14;
+            column = 13;
+        }
+        else if (index == 4) // 4
+        {
+            row = 14;
+            column = 18;
+        }
+        else if (index == 5) // Moore neighborhood
+        {
+            row = 15;
+        }
+        else if (index == 6) // 1
+        {
+            row = 16;
+            column = 3;
+        }
+        else if (index == 7) // 2
+        {
+            row = 16;
+            column = 8;
+        }
+        else if (index == 8) // 3
+        {
+            row = 16;
+            column = 13;
+        }
+        else if (index == 9) // 4
+        {
+            row = 16;
+            column = 18;
+        }
+        else if (index == 10) // 5
+        {
+            row = 17;
+            column = 3;
+        }
+        else if (index == 11) // 6
+        {
+            row = 17;
+            column = 8;
+        }
+        else if (index == 12) // 7
+        {
+            row = 17;
+            column = 13;
+        }
+        else if (index == 13) // 8
+        {
+            row = 17;
+            column = 18;
+        }
+        else if (index == 14) // Back to main menu
+        {
+            row = 19;
         }
     }
     else if (intDisplayedMenu == 5) // Munching squares menu
@@ -1326,11 +1552,11 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     
     if (boolDelete == false)
     {
-        printArrow(row);
+        printArrow(row, column);
     }
     else
     {
-        deleteArrow(row);
+        deleteArrow(row, column);
     }
     
     return 0;
@@ -1526,6 +1752,7 @@ int main(void)
                     
                     printMenu(displayedMenu);
                     
+                    printBAasterisks();
                     runAutomata();
                 }
                 else if (automataType == MUNCHING_SQUARES)
@@ -1810,10 +2037,143 @@ int main(void)
 		    {
 		        if (intArrow == 0)
 		        {
+		            intTypeOfNeighborhood = 0;
+		            printBAasterisks();
+		            runAutomata();
+		        }
+		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4)
+		        {
+		            if (intBooleanRulesValuesSqVN[intArrow - 1] == intArrow)
+		            {
+		                intBooleanRulesValuesSqVN[intArrow - 1] = 0;
+		            }
+		            else
+		            {
+		                intBooleanRulesValuesSqVN[intArrow - 1] = intArrow;
+		            }
+		            
+		            printBAasterisks();
+		            runAutomata();
+		        }
+		        else if (intArrow == 5)
+		        {
+		            intTypeOfNeighborhood = 1;
+		            printBAasterisks();
+		            runAutomata();
+		        }
+		        else if (intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12 || intArrow == 13)
+		        {
+		            if (intBooleanRulesValuesSqM[intArrow - 6] == intArrow - 5)
+		            {
+		                intBooleanRulesValuesSqM[intArrow - 6] = 0;
+		            }
+		            else
+		            {
+		                intBooleanRulesValuesSqM[intArrow - 6] = intArrow - 5;
+		            }		      
+		            
+		            printBAasterisks();
+		            runAutomata();  
+		        }
+		        else if (intArrow == 14)
+		        {
 		            // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
-                }                    
+                }
+            }
+            else if(keys_released & KEY_UP)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+		        		    
+		        if (intArrow == 0) // Von Neumann -> Back to main menu
+		        {
+		            intArrow = 14;
+		        }
+		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4) // 1, 2, 3, 4 from Von Neumann -> Von Neumann
+		        {
+		            intArrow = 0;
+		        }
+		        else if (intArrow == 5) // Moore -> 1 from Von Neumann
+		        {
+		            intArrow = 1;
+		        }
+		        else if (intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9) // 1, 2, 3, 4 from Moore -> Moore
+		        {
+		            intArrow = 5;
+		        }
+		        else if (intArrow == 10 || intArrow == 11 || intArrow == 12 || intArrow == 13) // 5 -> 1, 6 -> 2, 7 -> 3, 8 -> 4 (Moore)
+		        {
+		            intArrow = intArrow - 4;
+		        }
+		        else if (intArrow == 14) // Back to main menu -> 5 from Moore
+		        {
+		            intArrow = 10;
+		        }
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow		        
 		    }
+            else if(keys_released & KEY_DOWN)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+		        		    
+		        if (intArrow == 0) // Von Neumann -> 1 from Von Neumann
+		        {
+		            intArrow = 1;
+		        }
+		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4) // 1, 2, 3, 4 from Von Neumann -> Moore
+		        {
+		            intArrow = 5;
+		        }
+		        else if (intArrow == 5) // Moore -> 1 from Moore
+		        {
+		            intArrow = 6;
+		        }
+		        else if (intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9) // 1 -> 5, 2 -> 6, 3 -> 7, 4 -> 8 (Moore)
+		        {
+		            intArrow = intArrow + 4;
+		        }
+		        else if (intArrow == 10 || intArrow == 11 || intArrow == 12 || intArrow == 13) // 5, 6, 7, 8 from Moore -> Back to main menu
+		        {
+		            intArrow = 14;
+		        }
+		        else if (intArrow == 14) // Back to main menu -> 1 from Von Neumann
+		        {
+		            intArrow = 0;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow		        
+		    }
+		    else if (keys_released & KEY_LEFT)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+		        		    
+		        if (intArrow == 1 || intArrow == 6 || intArrow == 10) // 1 -> 4 (Von Neumann), 1 -> 4, 5 -> 8 (Moore)
+		        {
+		            intArrow = intArrow + 3;
+		        }
+                // 2 -> 1, 3 -> 2, 4 -> 3 (Von Neumann), 2 -> 1, 3 -> 2, 4 -> 3, 6 -> 5, 7 -> 6, 8 -> 7 (Moore)
+		        else if (intArrow == 2 || intArrow == 3 || intArrow == 4 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 11 || intArrow == 12 || intArrow == 13) 
+		        {
+		            intArrow = intArrow - 1;
+		        }
+
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow		        		        
+		    }
+		    else if (keys_released & KEY_RIGHT)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+		        		    
+		        if (intArrow == 4 || intArrow == 9 || intArrow == 13) // 4 -> 1 (Von Neumann), 4 -> 1, 8 -> 5 (Moore)
+		        {
+		            intArrow = intArrow - 3;
+		        }
+                // 1 -> 2, 2 -> 3, 3 -> 4 (Von Neumann), 1 -> 2, 2 -> 3, 3 -> 4, 5 -> 6, 6 -> 7, 7 -> 8 (Moore)
+		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 10 || intArrow == 11 || intArrow == 12) 
+		        {
+		            intArrow = intArrow + 1;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow		        		        
+		    }		    
         }
         /*
          * Munching squares menu
