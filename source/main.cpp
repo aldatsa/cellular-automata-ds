@@ -36,7 +36,8 @@
 #define MENU_AUTOMATA_TYPE_ROW_LA 9
 #define MENU_AUTOMATA_TYPE_ROW_LHA 10
 #define MENU_AUTOMATA_TYPE_ROW_BA 11
-#define MENU_AUTOMATA_TYPE_ROW_MS 12
+#define MENU_AUTOMATA_TYPE_ROW_BHA 12
+#define MENU_AUTOMATA_TYPE_ROW_MS 13
 
 /*
  * Constant for the row where the rule of the Elementary Cellular Automaton is printed
@@ -54,7 +55,8 @@
 #define LANGTON_ANT 1
 #define LANGTON_HEXAGONAL_ANT 2
 #define BOOLEAN_AUTOMATA 3
-#define MUNCHING_SQUARES 4
+#define BOOLEAN_HEXAGONAL_AUTOMATA 4
+#define MUNCHING_SQUARES 5
 
 /*
  * Variables for the colors of the background, the elements on the foreground and the lines
@@ -100,7 +102,9 @@ touchPosition touch;
  * 0: Elementary Cellular Automata
  * 1: Langton's ant
  * 2: Langton's hexagonal ant
- * 3: Munching Squares
+ * 3: Boolean Square automata
+ * 4: Boolean Hexagonal automata
+ * 5: Munching Squares
  */
 int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
 
@@ -110,7 +114,8 @@ int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
  * 2: Langton's ant menu
  * 3: Langton's hexagonal ant menu
  * 4: Boolean automata menu
- * 5: Munching squares menu
+ * 5: Boolean Hexagonal Automata menu
+ * 6: Munching squares menu
  */
 int displayedMenu = 0;
 
@@ -145,11 +150,11 @@ bool antStop = false;
 /*
  * Variables used for the boolean automaton
  */
-int automataSteps = 0; // It's equivalent to antNumSteps, I should use only one of them
-int intTypeOfNeighborhood = 0; // 0: Von Neumann - 1: Moore
-int intBooleanRulesValuesSqVN [4] = {1, 2, 3, 4}; //{1, 0, 0, 0};    // {1, 2, 3, 4} For the boolean square automata with Von Neumann neighborhood
-int intBooleanRulesValuesSqM [8] = {1, 2, 3, 4, 0, 6, 0, 8}; //{1, 0, 3, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
-
+int automataSteps = 0; // It's equivalent to antNumSteps, I should use only one of them (Used in Boolean Square Automata and Boolean Hexagonal Automata)
+int intTypeOfNeighborhood = 0; // 0: Von Neumann - 1: Moore (Used in Boolean Square Automata)
+int intBooleanRulesValuesSqVN [4] = {1, 2, 3, 4}; //{1, 0, 0, 0};    // {1, 2, 3, 4} For the Boolean Square Automata with Von Neumann neighborhood
+int intBooleanRulesValuesSqM [8] = {1, 2, 3, 4, 0, 6, 0, 8}; //{1, 0, 3, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8} For the Boolean Square Automata with Moore neighborhood
+int intBooleanRulesValuesHex [6] = {1, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6}; For the Boolean Hexagonal Automata
 
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
 
@@ -157,11 +162,11 @@ int intBooleanRulesValuesSqM [8] = {1, 2, 3, 4, 0, 6, 0, 8}; //{1, 0, 3, 0, 0, 0
  * int drawHLine(int column, int row, int lenght, unsigned short color)
  * Draws a horizontal line of the specified color
  */
-int drawHLine(int column, int row, int lenght, unsigned short color)
+int drawHLine(int column, int row, int lenght, unsigned short color, unsigned short* framebuffer)
 {
 	for(int i = column; i < column + lenght; i++)
 	{
-		fb[row * 256 + i] = color;
+		framebuffer[row * 256 + i] = color;
 	}
 	return 0;
 }
@@ -375,13 +380,13 @@ int drawArrow(char nth, unsigned short color)
 		 	break;	
 	}
 	
-	drawHLine(intColumn - 3, intRow - 3, 1, color);
-	drawHLine(intColumn - 3, intRow - 2, 2, color);
-	drawHLine(intColumn - 6, intRow - 1,  6, color);
-	drawHLine(intColumn - 6, intRow, 7, color);
-	drawHLine(intColumn - 6, intRow + 1, 6, color);
-	drawHLine(intColumn - 3, intRow + 2, 2, color);
-	drawHLine(intColumn - 3, intRow + 3, 1, color);
+	drawHLine(intColumn - 3, intRow - 3, 1, color, fb);
+	drawHLine(intColumn - 3, intRow - 2, 2, color, fb);
+	drawHLine(intColumn - 6, intRow - 1,  6, color, fb);
+	drawHLine(intColumn - 6, intRow, 7, color, fb);
+	drawHLine(intColumn - 6, intRow + 1, 6, color, fb);
+	drawHLine(intColumn - 3, intRow + 2, 2, color, fb);
+	drawHLine(intColumn - 3, intRow + 3, 1, color, fb);
 
 	return 0;
 }
@@ -399,8 +404,8 @@ int drawRectangle(char chrYesNo, int intRowStart, int intColumnStart, int length
 	unsigned char row = 0;
 	unsigned short color;
 	
-	drawHLine(intColumnStart, intRowStart, width, line_color);
-	drawHLine(intColumnStart, intRowStart + length, width, line_color);
+	drawHLine(intColumnStart, intRowStart, width, line_color, fb);
+	drawHLine(intColumnStart, intRowStart + length, width, line_color, fb);
 	drawVLine(intColumnStart, intRowStart, length, line_color);
 	drawVLine(intColumnStart + width, intRowStart, length, line_color);
 	
@@ -589,7 +594,7 @@ int drawSquare(int column, int row, int width, unsigned short color)
 {
     for (int k = 0; k < width; k++)
     {
-        drawHLine(32 + width * column, width * row + k, width, color);
+        drawHLine(32 + width * column, width * row + k, width, color, fb);
     }
     
     return 0;
@@ -850,6 +855,19 @@ int drawHexGrid()
     return 0;
 }
 
+/*
+ * Draws the hexagonal cell in the coordinates (intPosX, intPosY) of the specified framebuffer with the specified color
+ */
+int paintHexCell(int intPosX, int intPosY, unsigned short color, unsigned short* framebuffer)
+{
+
+	drawHLine(intPosX, intPosY, 3, color, framebuffer);
+	drawHLine(intPosX - 1, intPosY + 1, 5, color, framebuffer);
+	drawHLine(intPosX, intPosY + 2, 3, color, framebuffer);
+	
+	return 0;
+}
+
 /************************************* END HEXAGONAL GRID FUNCTIONS ********************************************************/
 
 /****************************** START HEXAGONAL LANGTON'S ANT FUNCTIONS ****************************************************/
@@ -901,9 +919,7 @@ int paintHexAnt()
 		tempColor = FG_color;
 	}
 
-	drawHLine(antPosX, antPosY, 3, tempColor);
-	drawHLine(antPosX - 1, antPosY + 1, 5, tempColor);
-	drawHLine(antPosX, antPosY + 2, 3, tempColor);
+	paintHexCell(antPosX, antPosY, tempColor, fb);
 	
 	return 0;
 }
@@ -1023,6 +1039,23 @@ bool booleanRule(int count)
 /*
  *
  */
+bool booleanHexagonalRule(int count)
+{
+    for (int i = 0; i < 6; i++)
+    {
+        //if (count == values[i])
+        if (count == intBooleanRulesValuesHex[i])
+        {
+            return true;
+        }            
+    }
+    
+    return false;
+}
+
+/*
+ *
+ */
 int calculateNextStep(int typeOfNeighborhood)
 {
     /* typeOfNeighborhood = 0 Von Neumann neighborhood
@@ -1126,6 +1159,132 @@ int calculateNextStep(int typeOfNeighborhood)
     return 0;
 }
 
+int calculateNextStepHex()
+{          
+    unsigned short* fbRef;
+    unsigned short* fbNew;
+    
+    int countFG = 0;
+    
+    if (automataSteps % 2 == 0 and automataSteps != 1)
+    {
+        fbRef = fb2;
+        fbNew = fb;
+    }
+    else 
+    {
+        fbRef = fb;
+        fbNew = fb2;
+    }
+    
+    dmaCopy(fbRef, fbNew, 128*1024);
+    
+    for (int i = 8; i < 254; i = i + 8)
+    {   
+        for (int j = 3; j < 191; j = j + 4)
+        {
+            countFG = 0;        
+
+            // top left
+            if (fbRef[256 * j + i - 2] == FG_color)
+            {
+                countFG++;
+            }
+
+            // top 
+            if (fbRef[256 * (j - 2) + i] == FG_color)
+            {
+                countFG++;
+            }
+            
+            
+            // top right
+            if (fbRef[256 * j + i + 4] == FG_color)
+            {
+                countFG++;
+            }
+            
+            // bottom left    
+            if (fbRef[256 * (j + 2) + i - 2] == FG_color)
+            {
+                countFG++;
+            }
+            
+            // bottom                            
+            if (fbRef[256 * (j + 4) + i] == FG_color)
+            {
+                countFG++;
+            }
+
+            // bottom right                         
+            if (fbRef[256 * (j + 2) + i + 4] == FG_color)
+            {
+                countFG++;
+            }
+                        
+            //if (countFG ==  1 or countFG == 2)
+            if (countFG != 0 and booleanHexagonalRule(countFG))
+            {
+                //fbNew[256 * j + i] = FG_color;
+                paintHexCell(i, j, FG_color, fbNew);
+            }
+        }
+    }
+    for (int i = 4; i < 252; i = i + 8)
+    {   
+        for (int j = 5; j < 189; j = j + 4)
+        {
+            countFG = 0;        
+
+            // top left
+            if (fbRef[256 * j + i - 2] == FG_color)
+            {
+                countFG++;
+            }
+
+            // top 
+            if (fbRef[256 * (j - 2) + i] == FG_color)
+            {
+                countFG++;
+            }
+            
+            
+            // top right
+            if (fbRef[256 * j + i + 4] == FG_color)
+            {
+                countFG++;
+            }
+            
+            // bottom left    
+            if (fbRef[256 * (j + 2) + i - 2] == FG_color)
+            {
+                countFG++;
+            }
+            
+            // bottom                            
+            if (fbRef[256 * (j + 4) + i] == FG_color)
+            {
+                countFG++;
+            }
+
+            // bottom right                         
+            if (fbRef[256 * (j + 2) + i + 4] == FG_color)
+            {
+                countFG++;
+            }
+                        
+            //if (countFG ==  1 or countFG == 2)
+            if (countFG != 0 and booleanHexagonalRule(countFG))
+            {
+                //fbNew[256 * j + i] = FG_color;
+                paintHexCell(i, j, FG_color, fbNew);
+            }
+        }
+    }
+    
+    return 0;
+}
+
 /*
  *
  */
@@ -1140,7 +1299,21 @@ int initializeBooleanAutomata(int intX, int intY)
     
     return 0;
 } 
- 
+
+int initializeBooleanHexagonalAutomata(int intX, int intY)
+{
+    cleanScreen();
+    cleanScreen2();
+    
+    drawHexGrid();
+    
+    automataSteps = 0;
+        
+    paintHexCell(intX, intY, FG_color, fb);
+    
+    return 0;
+}
+
 /*************************************** END BOOLEAN AUTOMATA FUNCTIONS ****************************************************/
 
 /******************************************* START MENU FUNCTIONS **********************************************************/
@@ -1192,6 +1365,7 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[%d;2HLangton's ant", MENU_AUTOMATA_TYPE_ROW_LA);
         iprintf("\x1b[%d;2HLangton's hexagonal ant", MENU_AUTOMATA_TYPE_ROW_LHA);
         iprintf("\x1b[%d;2HBoolean automata", MENU_AUTOMATA_TYPE_ROW_BA);
+        iprintf("\x1b[%d;2HBoolean Hexagonal automata", MENU_AUTOMATA_TYPE_ROW_BHA);
         iprintf("\x1b[%d;2HMunching Squares", MENU_AUTOMATA_TYPE_ROW_MS);
     }
     else if (displayedMenu == 1) // The menu of the Elementary Cellular Automaton
@@ -1219,7 +1393,12 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[19;2HBack to main menu");
         printArrow(13, 0);
     }
-    else if (displayedMenu == 5) // The menu of the munching squares
+    else if (displayedMenu == 5) // The menu of the Boolean Hexagonal Automaton
+    {
+        iprintf("\x1b[13;2HBack to main menu");
+        printArrow(13, 0);    
+    }
+    else if (displayedMenu == 6) // The menu of the munching squares
     {
         iprintf("\x1b[11;2HType of comparation:");        
         iprintf("\x1b[12;5HSmaller than");
@@ -1419,8 +1598,12 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         else if (index == 3) // Boolean automata
         {    
             row = MENU_AUTOMATA_TYPE_ROW_BA;
-        }        
-        else if (index == 4) // Munching squares
+        }
+        else if (index == 4) // Boolean Hexagonal Automata
+        {
+            row = MENU_AUTOMATA_TYPE_ROW_BHA;
+        }
+        else if (index == 5) // Munching squares
         {    
             row = MENU_AUTOMATA_TYPE_ROW_MS;
         }        
@@ -1526,7 +1709,14 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 19;
         }
     }
-    else if (intDisplayedMenu == 5) // Munching squares menu
+    else if (intDisplayedMenu == 5) // Boolean Hexagonal Automata
+    {
+        if (index == 0)
+        {
+            row = 13;
+        }
+    }
+    else if (intDisplayedMenu == 6) // Munching squares menu
     {
         if (index == 0) // Comparation type: Smaller than
         {
@@ -1608,6 +1798,14 @@ int runAutomata()
         
         initializeBooleanAutomata(127, 91);
     }
+    else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
+    {
+        showFB();
+        dmaCopy(fb, fb2, 128* 1024);
+        showFB2();
+
+        initializeBooleanHexagonalAutomata(124, 93);
+    }
     else if (automataType == MUNCHING_SQUARES)
     {
         showFB();
@@ -1680,13 +1878,13 @@ int main(void)
                 else
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
-                    automataType = 4;
+                    automataType = 5;
                     printMenuArrow(displayedMenu, automataType, false); // Print new arrow
                 }   
             }
             else if (keys_released & KEY_DOWN)
             {
-                if (automataType != 4)
+                if (automataType != 5)
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType + 1;
@@ -1755,6 +1953,19 @@ int main(void)
                     printBAasterisks();
                     runAutomata();
                 }
+                else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
+                {
+                    consoleClear();
+                    printCredits();
+                    printf("Current type:\n Boolean Hexagonal Automata");
+                    
+                    intArrow = 0;
+                    displayedMenu = 5;
+                    
+                    printMenu(displayedMenu);
+                    
+                    runAutomata();
+                }
                 else if (automataType == MUNCHING_SQUARES)
                 {   
                     consoleClear();
@@ -1762,7 +1973,7 @@ int main(void)
                     printf("Current type:\n Munching Squares");
                     
                     intArrow = 0;                    
-                    displayedMenu = 5;
+                    displayedMenu = 6;
                     
                     printMenu(displayedMenu);
                     
@@ -2176,9 +2387,39 @@ int main(void)
 		    }		    
         }
         /*
+         * Boolean hexagonal automata menu
+         */                
+        else if (displayedMenu == 5)
+        {
+            automataSteps++;
+            iprintf("\x1b[9;0HStep #: %d", automataSteps);
+            
+            calculateNextStepHex();
+            
+            if (automataSteps % 2 == 0 and automataSteps != 1)
+            {
+                showFB();
+            }
+            else
+            {
+                showFB2();
+            }
+            
+            swiWaitForVBlank();
+            
+            if (keys_released & KEY_A)
+		    {
+		        if (intArrow == 0)
+		        {
+		            // Go back to the selection of the type of automata
+                    showAutomataTypeMenu();
+                }                    
+		    }
+        }
+        /*
          * Munching squares menu
          */
-        else if (displayedMenu == 5)
+        else if (displayedMenu == 6)
         {
   		    if(keys_released & KEY_A)
   		    {
