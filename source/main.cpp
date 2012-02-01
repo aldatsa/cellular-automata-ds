@@ -1395,8 +1395,11 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == 5) // The menu of the Boolean Hexagonal Automaton
     {
-        iprintf("\x1b[13;2HBack to main menu");
-        printArrow(13, 0);    
+        iprintf("\x1b[13;2HNeighborhood:");
+        iprintf("\x1b[14;5H 1    2    3");
+        iprintf("\x1b[15;5H 4    5    6");
+        iprintf("\x1b[17;2HBack to main menu");
+        printArrow(14, 3);    
     }
     else if (displayedMenu == 6) // The menu of the munching squares
     {
@@ -1574,6 +1577,69 @@ int printBAasterisks()
 }
 
 /*
+ * Prints the asterisk used to mark the options in the menu of the Boolean hexagonal automata
+ */
+int printBHAasterisks()
+{
+    // {1, 2, 3, 4, 5, 6} For the boolean square automata with Moore neighborhood
+    if (intBooleanRulesValuesHex[0] == 1) 
+    {
+        iprintf("\x1b[14;5H*");    
+    }
+    else
+    {
+        iprintf("\x1b[14;5H ");    
+    }
+    
+    if (intBooleanRulesValuesHex[1] == 2) 
+    {
+        iprintf("\x1b[14;10H*");    
+    }
+    else
+    {
+        iprintf("\x1b[14;10H ");    
+    }        
+    
+    if (intBooleanRulesValuesHex[2] == 3) 
+    {
+        iprintf("\x1b[14;15H*");    
+    }
+    else
+    {
+        iprintf("\x1b[14;15H ");    
+    }
+        
+    if (intBooleanRulesValuesHex[3] == 4) 
+    {
+        iprintf("\x1b[15;5H*");    
+    }
+    else
+    {
+        iprintf("\x1b[15;5H ");    
+    }
+        
+    if (intBooleanRulesValuesHex[4] == 5) 
+    {
+        iprintf("\x1b[15;10H*");    
+    }
+    else
+    {
+        iprintf("\x1b[15;10H ");    
+    }
+        
+    if (intBooleanRulesValuesHex[5] == 6) 
+    {
+        iprintf("\x1b[15;15H*");    
+    }
+    else
+    {
+        iprintf("\x1b[15;15H ");    
+    }
+    
+    return 0;
+}
+
+/*
  * Prints the arrow used to highlight the currently selected menu item
  */
 int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
@@ -1713,7 +1779,37 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0)
         {
-            row = 13;
+            row = 14;
+            column = 3;
+        }
+        else if (index == 1)
+        {
+            row = 14;
+            column = 8;
+        }
+        else if (index == 2)
+        {
+            row = 14;
+            column = 13;
+        }
+        else if (index == 3)
+        {
+            row = 15;
+            column = 3;
+        }
+        else if (index == 4)
+        {
+            row = 15;
+            column = 8;
+        }                  
+        else if (index == 5)
+        {
+            row = 15;
+            column = 13;
+        }              
+        else if (index == 6)
+        {
+            row = 17;
         }
     }
     else if (intDisplayedMenu == 6) // Munching squares menu
@@ -1964,6 +2060,7 @@ int main(void)
                     
                     printMenu(displayedMenu);
                     
+                    printBHAasterisks();                    
                     runAutomata();
                 }
                 else if (automataType == MUNCHING_SQUARES)
@@ -2409,12 +2506,94 @@ int main(void)
             
             if (keys_released & KEY_A)
 		    {
-		        if (intArrow == 0)
+		        if (intArrow == 0 || intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4 || intArrow == 5)
+		        {
+		            if (intBooleanRulesValuesHex[intArrow] == intArrow + 1)
+		            {
+		                intBooleanRulesValuesHex[intArrow] = 0;
+		            }
+		            else
+		            {
+		                intBooleanRulesValuesHex[intArrow] = intArrow + 1;
+		            }
+		            
+		            printBHAasterisks();
+		            runAutomata();
+		        }                
+                else if (intArrow == 6)
 		        {
 		            // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
-                }                    
+                }                    		        
 		    }
+            else if(keys_released & KEY_UP)
+            {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+
+		        if (intArrow == 0 or intArrow == 1 or intArrow == 2) // 1, 2, 3-> Back to main menu
+		        {
+		            intArrow = 6;
+		        }
+		        else if (intArrow == 3 or intArrow == 4 or intArrow == 5) // 4 -> 1, 5 -> 2, 6 -> 3
+		        {
+		            intArrow = intArrow - 3;
+		        }
+		        else if (intArrow == 6) // Back to main menu -> 4
+		        {
+		            intArrow = 3;
+                }		            
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow		        		        		        
+            }		    
+            else if(keys_released & KEY_DOWN)
+            {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+
+		        if (intArrow == 0 or intArrow == 1 or intArrow == 2) // 1 -> 4, 2 -> 5, 3 -> 6
+		        {
+		            intArrow = intArrow + 3;
+		        }
+		        else if (intArrow == 3 or intArrow == 4 or intArrow == 5) // 4, 5, 6 -> Back to main menu
+		        {
+		            intArrow = 6;
+		        }
+		        else if (intArrow == 6) // Back to main menu -> 1
+		        {
+		            intArrow = 0;
+                }		            
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow		        		        		        
+            }		                
+            else if(keys_released & KEY_LEFT)
+            {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+
+		        if (intArrow == 0 or intArrow == 3) // 1 -> 3, 4 -> 6
+		        {
+		            intArrow = intArrow + 2;
+		        }
+		        else if (intArrow == 1 or intArrow == 2 or intArrow == 4 or intArrow == 5) // 2 -> 1, 3 -> 2, 5 -> 4, 6 -> 5
+		        {
+		            intArrow = intArrow - 1;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
+            }		        		        		        		                    
+            else if(keys_released & KEY_RIGHT)
+            {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+
+		        if (intArrow == 2 or intArrow == 5) // 3 -> 1, 6 -> 4
+		        {
+		            intArrow = intArrow - 2;
+		        }
+		        else if (intArrow == 0 or intArrow == 1 or intArrow == 3 or intArrow == 4) // 1 -> 2, 2 -> 3, 4 -> 5, 5 -> 6
+		        {
+		            intArrow = intArrow + 1;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
+            }            
         }
         /*
          * Munching squares menu
