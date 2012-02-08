@@ -554,16 +554,19 @@ int drawElementaryCellularAutomata()
 					}
 					else if(column == 0)
 					{
-						
-						if(BG_color == ruleLeft[i]  && fb[(row - 1)*256 + column] == ruleCenter[i] && fb[(row - 1)*256 + (column+1)] == ruleRight[i])
+						// The left cell is out of the screen, instead we'll use the center cell (column 0) to compare to ruleLeft
+						if(fb[(row - 1)*256 + column] == ruleLeft[i]  && fb[(row - 1)*256 + column] == ruleCenter[i] && fb[(row - 1)*256 + (column+1)] == ruleRight[i])
 						{
 							fb[row*256 + column] = ruleDown[i];								
 						}
 					}	
 					else if(column == 255)
 					{
-						if(fb[(row - 1)*256 + (column-1)] == ruleLeft[i] && fb[(row - 1)*256 + column] == ruleCenter[i] && BG_color == ruleRight[i])
+                        // The right cell is out of the screen, instead we'll use the center cell (column 255) to compare to ruleRight
+						if(fb[(row - 1)*256 + (column-1)] == ruleLeft[i] && fb[(row - 1)*256 + column] == ruleCenter[i] && fb[(row - 1)*256 + column] == ruleRight[i])
+                        {
 							fb[row*256 + column] = ruleDown[i];								
+                        }
 					}
 				}
 			}
