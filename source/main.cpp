@@ -1298,11 +1298,24 @@ int calculateNextStep(int typeOfNeighborhood)
     return changeCount;
 }
 
+/*
+ * Calculates and draws the next step of the boolean hexagonal automata.
+ * The return value indicates if the automata has finished (return 0)
+ * or not (return != 0)
+ */
 int calculateNextStepHex()
 {          
     unsigned short* fbRef;
     unsigned short* fbNew;
-    
+
+    /*
+     * changeCount is used to know if the next step is different from the current step.
+     * If changeCount == 0 then there're no changes and the automata has finished,
+     * so we can start again from step 0.
+     * If changeCount != 0 then the automata has not finished yet.
+     */ 
+    int changeCount = 0; 
+        
     int countFG = 0;
     
     if (automataSteps % 2 == 0 and automataSteps != 1)
@@ -1361,11 +1374,15 @@ int calculateNextStepHex()
                 countFG++;
             }
                         
-            //if (countFG ==  1 or countFG == 2)
             if (countFG != 0 and booleanHexagonalRule(countFG))
             {
-                //fbNew[256 * j + i] = FG_color;
-                paintHexCell(i, j, FG_color, fbNew);
+                // If the current cell's color is not already changed, change it to FG_color.
+                // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                if (fbNew[256 * j + i] != FG_color) 
+                {
+                    paintHexCell(i, j, FG_color, fbNew);
+                    ++changeCount;
+                }
             }
         }
     }
@@ -1412,16 +1429,20 @@ int calculateNextStepHex()
                 countFG++;
             }
                         
-            //if (countFG ==  1 or countFG == 2)
             if (countFG != 0 and booleanHexagonalRule(countFG))
             {
-                //fbNew[256 * j + i] = FG_color;
-                paintHexCell(i, j, FG_color, fbNew);
+                // If the current cell's color is not already changed, change it to FG_color.
+                // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                if (fbNew[256 * j + i] != FG_color) 
+                {
+                    paintHexCell(i, j, FG_color, fbNew);
+                    ++changeCount;
+                }
             }
         }
     }
     
-    return 0;
+    return changeCount;
 }
 
 /*
@@ -2807,19 +2828,23 @@ int main(void)
         {
             automataSteps++;
             iprintf("\x1b[9;0HStep #: %d", automataSteps);
-            
-            calculateNextStepHex();
-            
-            if (automataSteps % 2 == 0 and automataSteps != 1)
+
+            if (calculateNextStepHex() == 0) // The automata has finished so we are going to reinitiate the cycle
             {
-                showFB();
+                runAutomata(); 
             }
-            else
+            else // the automata has not finished yet
             {
-                showFB2();
+                if (automataSteps % 2 == 0 and automataSteps != 1)
+                {
+                    showFB();
+                }
+                else
+                {
+                    showFB2();
+                }
+                swiWaitForVBlank();
             }
-            
-            swiWaitForVBlank();
             
             if (keys_released & KEY_A)
 		    {
