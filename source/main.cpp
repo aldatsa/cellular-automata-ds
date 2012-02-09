@@ -1446,7 +1446,9 @@ int calculateNextStepHex()
 }
 
 /*
- *
+ * Calculates and draws the next step of the boolean triangular automata.
+ * The return value indicates if the automata has finished (return 0)
+ * or not (return != 0)
  */
 int calculateNextStepTriangular(int typeOfNeighborhood)
 {          
@@ -1474,7 +1476,15 @@ int calculateNextStepTriangular(int typeOfNeighborhood)
      */
     unsigned short* fbRef;
     unsigned short* fbNew;
-    
+
+    /*
+     * changeCount is used to know if the next step is different from the current step.
+     * If changeCount == 0 then there're no changes and the automata has finished,
+     * so we can start again from step 0.
+     * If changeCount != 0 then the automata has not finished yet.
+     */ 
+    int changeCount = 0; 
+        
     int countFG = 0;
     
     if (automataSteps % 2 == 0 and automataSteps != 1)
@@ -1558,12 +1568,18 @@ int calculateNextStepTriangular(int typeOfNeighborhood)
             
             if (countFG != 0 and booleanTriangularRule(countFG))
             {
-                paintTriangularCell(i, j, FG_color, fbNew);
+                // If the current cell's color is not already changed, change it to FG_color.
+                // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                if (fbNew[256 * j + i] != FG_color) 
+                {
+                    paintTriangularCell(i, j, FG_color, fbNew);
+                    changeCount++;
+                }
             }
         }
     }
     
-    return 0;
+    return changeCount;
 }
 
 /*
@@ -2655,7 +2671,7 @@ int main(void)
 		    }
         }
         /*
-         * Boolean automata
+         * Boolean square automata
          */
         else if (displayedMenu == 4)
         {
@@ -2938,25 +2954,29 @@ int main(void)
             }            
         }
         /*
-         * Boolean hexagonal automata menu
+         * Boolean triangular automata menu
          */                
         else if (displayedMenu == 6)
         {
             automataSteps++;
             iprintf("\x1b[9;0HStep #: %d", automataSteps);
             
-            calculateNextStepTriangular(intTypeOfNeighborhood);
-            
-            if (automataSteps % 2 == 0 and automataSteps != 1)
+            if (calculateNextStepTriangular(intTypeOfNeighborhood) == 0) // The automata has finished so we are going to reinitiate the cycle
             {
-                showFB();
+                runAutomata(); 
             }
-            else
+            else // the automata has not finished yet
             {
-                showFB2();
+                if (automataSteps % 2 == 0 and automataSteps != 1)
+                {
+                    showFB();
+                }
+                else
+                {
+                    showFB2();
+                }
+                swiWaitForVBlank();
             }
-            
-            swiWaitForVBlank();
             
             if (keys_released & KEY_A)
 		    {
