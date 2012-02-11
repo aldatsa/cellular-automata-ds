@@ -39,6 +39,7 @@
 #define MENU_AUTOMATA_TYPE_ROW_BHA 12
 #define MENU_AUTOMATA_TYPE_ROW_BTA 13
 #define MENU_AUTOMATA_TYPE_ROW_MS 14
+#define MENU_SELECT_COLORS 16
 
 /*
  * Constant for the row where the rule of the Elementary Cellular Automaton is printed
@@ -62,13 +63,31 @@
 #define BOOLEAN_HEXAGONAL_AUTOMATA 4
 #define BOOLEAN_TRIANGULAR_AUTOMATA 5
 #define MUNCHING_SQUARES 6
+#define SELECT_COLORS 7
 
 /*
- * Variables for the colors of the background, the elements on the foreground and the lines
+ * Variables for the colors of the background
  */
-unsigned short BG_color = RGB15(31,31,31);      // Color used on the BackGround (Default: White)
-unsigned short FG_color = RGB15(0,0,0);         // Color used on the ForeGround (Default: Black)
-unsigned short line_color = RGB15(15,15,15);    // Color used to draw the lines (Default: Grey)
+unsigned short BG_R = 31;
+unsigned short BG_G = 31;
+unsigned short BG_B = 31;
+unsigned short BG_color = RGB15(BG_R, BG_G, BG_B);      // Color used on the BackGround (Default: White)
+
+/*
+ * Variables for the colors of the elements on the foreground
+ */
+unsigned short FG_R = 0;
+unsigned short FG_G = 0;
+unsigned short FG_B = 0; 
+unsigned short FG_color = RGB15(FG_R, FG_G, FG_B);         // Color used on the ForeGround (Default: Black)
+
+/*
+ * Variables for the color of the lines (different grids, squares for the rules, ...)
+ */
+unsigned short line_R = 15;
+unsigned short line_G = 15;
+unsigned short line_B = 15; 
+unsigned short line_color = RGB15(line_R, line_G, line_B);    // Color used to draw the lines (Default: Grey)
 
 /*
  * The rules for the Elementary Cellular Automata
@@ -120,7 +139,9 @@ int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
  * 3: Langton's hexagonal ant menu
  * 4: Boolean automata menu
  * 5: Boolean Hexagonal Automata menu
- * 6: Munching squares menu
+ * 6: Boolean Triangular Automata menu
+ * 7: Munching squares menu
+ * 8: Select colors
  */
 int displayedMenu = 0;
 
@@ -168,7 +189,6 @@ int intBooleanRulesValuesTriM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5,
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
 
 /*
- * int drawHLine(int column, int row, int lenght, unsigned short color)
  * Draws a horizontal line of the specified color
  */
 int drawHLine(int column, int row, int lenght, unsigned short color, unsigned short* framebuffer)
@@ -181,7 +201,6 @@ int drawHLine(int column, int row, int lenght, unsigned short color, unsigned sh
 }
 
 /*
- * int drawVLine(int column, int row, int lenght, unsigned short color)
  * Draws a vertical line of the specified color
  */ 
 int drawVLine(int column, int row, int lenght, unsigned short color)
@@ -194,7 +213,6 @@ int drawVLine(int column, int row, int lenght, unsigned short color)
 }
 
 /*
- * int cleanScreen()
  * Fills the main framebuffer with the background color
  */
 int cleanScreen()
@@ -212,7 +230,6 @@ int cleanScreen()
 }
 
 /*
- * int cleanScreen2()
  * Fills the secondary framebuffer (fb2) with the background color
  * I should use only one function, not two (cleanScreen() and cleanScreen2())
  */
@@ -292,9 +309,56 @@ int showFlash()
  * http://en.wikipedia.org/wiki/Elementary_cellular_automaton
  * 
  */
- 
+
 /*
- * int paintInitialCell()
+ * Updates the colors of the background, foreground and lines
+ * It's used to update the colors when new colors are selected
+ * in the color selection menu
+ */
+int updateColors()
+{
+
+ruleLeft[0] = FG_color;
+ruleLeft[1] = FG_color;
+ruleLeft[2] = FG_color;
+ruleLeft[3] = FG_color;
+ruleLeft[4] = BG_color;
+ruleLeft[5] = BG_color;
+ruleLeft[6] = BG_color;
+ruleLeft[7] = BG_color;
+
+ruleCenter[0] = FG_color;
+ruleCenter[1] = FG_color;
+ruleCenter[2] = BG_color;
+ruleCenter[3] = BG_color;
+ruleCenter[4] = FG_color;
+ruleCenter[5] = FG_color;
+ruleCenter[6] = BG_color;
+ruleCenter[7] = BG_color;
+
+ruleRight[0] = FG_color;
+ruleRight[1] = BG_color;
+ruleRight[2] = FG_color;
+ruleRight[3] = BG_color;
+ruleRight[4] = FG_color;
+ruleRight[5] = BG_color;
+ruleRight[6] = FG_color;
+ruleRight[7] = BG_color;
+
+// The rule that will be displayed on start on the Elementary Cellular Automata
+ruleDown[0] = BG_color;
+ruleDown[1] = FG_color;
+ruleDown[2] = BG_color;
+ruleDown[3] = FG_color;
+ruleDown[4] = FG_color;
+ruleDown[5] = BG_color;
+ruleDown[6] = FG_color;
+ruleDown[7] = BG_color;
+
+return 0;
+}
+
+/*
  * Paints the initial cell in the center of the first row
  */
 int paintInitialCell()
@@ -305,7 +369,6 @@ int paintInitialCell()
 }
 
 /*
- * int calculateRuleNumber()
  * Calculates the rule number for the current rule of the Elementary Cellular Automata
  */ 
 int calculateRuleNumber()
@@ -324,7 +387,6 @@ int calculateRuleNumber()
 }
 
 /*
- *  int printRuleNumber(int intRuleNumber)
  *  Converts to char array and prints the given intRuleNumber of the Elementary Cellular Automata
  */
 int printRuleNumber(int intRuleNumber)
@@ -344,7 +406,6 @@ int printRuleNumber(int intRuleNumber)
 }
 
 /*
- * int drawArrow(char nth, unsigned short color)
  * Draws an arrow in the top screen (0-7) of the Elementary Cellular Automata
  */
 int drawArrow(char nth, unsigned short color)
@@ -401,13 +462,12 @@ int drawArrow(char nth, unsigned short color)
 }
 
 /*
- * int drawRectangle(char chrYesNo, int intRowStart, int intColumnStart, int length, int width)
  * Draws a rectangle, filled with FG_color or BG_color
  * This function is used by drawRule() to draw the rectangles to visualize the current rule
  */
-int drawRectangle(char chrYesNo, int intRowStart, int intColumnStart, int length, int width)
+int drawRectangle(bool fill, int intRowStart, int intColumnStart, int length, int width)
 {
-	// chrYesNo	1 -> Yes, fill with FG_color		2 -> No, fill with BG_color
+	// fill-> true, fill with FG_color		fill -> false, fill with BG_color
 
 	unsigned char column = 0;
 	unsigned char row = 0;
@@ -418,7 +478,7 @@ int drawRectangle(char chrYesNo, int intRowStart, int intColumnStart, int length
 	drawVLine(intColumnStart, intRowStart, length, line_color);
 	drawVLine(intColumnStart + width, intRowStart, length, line_color);
 	
-	if(chrYesNo == 1)
+	if(fill == true)
 	{
 		color = FG_color;		
 	}
@@ -439,13 +499,11 @@ int drawRectangle(char chrYesNo, int intRowStart, int intColumnStart, int length
 }
 
 /*
- * int drawRule(int nth)
  * Draws the current rule of the Elementary Cellular Automata
  */
 int drawRule(int nth)
 {
-	char chrYesNo = 0;
-	
+	bool fill = false;
 	int intRowStart = 0;
 	int intColumnStart = 0;
 
@@ -491,43 +549,42 @@ int drawRule(int nth)
 
 	if(ruleLeft[nth] == FG_color)
 	{
-		chrYesNo = 1;	
+		fill = true;	
 	}
 	
-	drawRectangle(chrYesNo, intRowStart, intColumnStart, intLength, intWidth);
+	drawRectangle(fill, intRowStart, intColumnStart, intLength, intWidth);
 
-	chrYesNo = 0;
+	fill = false;
 
 	if(ruleCenter[nth] == FG_color)
 	{
-		chrYesNo = 1;	
+		fill = true;
 	}
 		
-	drawRectangle(chrYesNo, intRowStart, intColumnStart + 8, intLength, intWidth);
+	drawRectangle(fill, intRowStart, intColumnStart + 8, intLength, intWidth);
 
-	chrYesNo = 0;
+	fill = false;
 
 	if(ruleRight[nth] == FG_color)
 	{
-		chrYesNo = 1;	
+        fill = true;
 	}
 
-	drawRectangle(chrYesNo, intRowStart, intColumnStart + 16, intLength, intWidth);
+	drawRectangle(fill, intRowStart, intColumnStart + 16, intLength, intWidth);
 
-	chrYesNo = 0;
+    fill = false;
 
 	if(ruleDown[nth] == FG_color)
 	{
-		chrYesNo = 1;	
+		fill = true;
 	}
 
-	drawRectangle(chrYesNo, intRowStart + 8, intColumnStart + 8, intLength, intWidth);
+	drawRectangle(fill, intRowStart + 8, intColumnStart + 8, intLength, intWidth);
 	
 	return 0;
 }
 
 /*
- * int drawElementaryCellularAutomata()
  * Draws the Elementary Cellular Automata that corresponds to the current rules
  */
 int drawElementaryCellularAutomata()
@@ -1679,6 +1736,7 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[%d;2HBoolean Hexagonal automata", MENU_AUTOMATA_TYPE_ROW_BHA);
         iprintf("\x1b[%d;2HBoolean Triangular automata", MENU_AUTOMATA_TYPE_ROW_BTA);
         iprintf("\x1b[%d;2HMunching Squares", MENU_AUTOMATA_TYPE_ROW_MS);
+        iprintf("\x1b[%d;2HSelect colors", MENU_SELECT_COLORS);
     }
     else if (displayedMenu == 1) // The menu of the Elementary Cellular Automaton
     {
@@ -1688,12 +1746,10 @@ int printMenu(int intDisplayedMenu)
     {
         iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);
         iprintf("\x1b[13;2HBack to main menu");
-        printArrow(13, 0);        
     }
     else if (displayedMenu == 3) // The menu of the Langton's hexagonal ant
     {
         iprintf("\x1b[13;2HBack to main menu");
-        printArrow(13, 0);
     }
     else if (displayedMenu == 4) // The menu of the boolean automaton
     {
@@ -1703,7 +1759,6 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[16;5H 1    2    3    4");
         iprintf("\x1b[17;5H 5    6    7    8");        
         iprintf("\x1b[19;2HBack to main menu");
-        printArrow(13, 0);
     }
     else if (displayedMenu == 5) // The menu of the Boolean Hexagonal Automaton
     {
@@ -1711,7 +1766,6 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[14;5H 1    2    3");
         iprintf("\x1b[15;5H 4    5    6");
         iprintf("\x1b[17;2HBack to main menu");
-        printArrow(14, 3);    
     }
     else if (displayedMenu == 6) // The menu of the Boolean Triangular Automaton
     {
@@ -1721,7 +1775,6 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[16;5H 1    2    3    4");
         iprintf("\x1b[17;5H 5    6    7    8");        
         iprintf("\x1b[19;2HBack to main menu");
-        printArrow(13, 0);
     }
     else if (displayedMenu == 7) // The menu of the munching squares
     {
@@ -1734,8 +1787,27 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[16;5HAND");    
             
         iprintf("\x1b[18;2HBack to main menu");
-        printArrow(12, 0);        
     }
+    else if (displayedMenu == 8) // The menu of color selection
+    {
+        iprintf("\x1b[8;2HBackground:");
+        iprintf("\x1b[9;5HRed < %i > ", BG_R);
+        iprintf("\x1b[10;5HGreen < %i > ", BG_G);
+        iprintf("\x1b[11;5HBlue < %i > ", BG_B);
+        
+        iprintf("\x1b[12;2HForeground:");
+        iprintf("\x1b[13;5HRed < %i > ", FG_R);
+        iprintf("\x1b[14;5HGreen < %i > ", FG_G);
+        iprintf("\x1b[15;5HBlue < %i > ", FG_B);
+                
+        iprintf("\x1b[16;2HLine color:");
+        iprintf("\x1b[17;5HRed < %i > ", line_R);
+        iprintf("\x1b[18;5HGreen < %i > ", line_G);
+        iprintf("\x1b[19;5HBlue < %i > ", line_B);
+                
+        iprintf("\x1b[21;2HBack to main menu");
+    }
+    
     return 0;
 }
 
@@ -2119,6 +2191,10 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {    
             row = MENU_AUTOMATA_TYPE_ROW_MS;
         }        
+        else if (index == 7) // Select colors
+        {
+            row = MENU_SELECT_COLORS;
+        }
     }
     
     else if (intDisplayedMenu == 1) // Elementary Cellular Automaton menu
@@ -2351,6 +2427,49 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 18;
         }            
     }
+    else if (intDisplayedMenu == 8) // Select colors
+    {
+        if (index == 0) // BG red
+        {
+            row = 9;
+        }
+        else if (index == 1) // BG green
+        {
+            row = 10;
+        }
+        else if (index == 2) // BG blue
+        {
+            row = 11;
+        }
+        else if (index == 3) // FG red
+        {
+            row = 13;
+        }
+        else if (index == 4) // FG green
+        {
+            row = 14;
+        }
+        else if (index == 5) // FG blue
+        {
+            row = 15;
+        }
+        else if (index == 6) // Line color red
+        {
+            row = 17;
+        }
+        else if (index == 7) // Line color green
+        {
+            row = 18;
+        }
+        else if (index == 8) // Line color blue
+        {
+            row = 19;
+        }
+        else if (index == 9) // Back to main menu
+        {
+            row = 21;
+        }
+    }
     
     if (boolDelete == false)
     {
@@ -2390,6 +2509,8 @@ int runAutomata()
     if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
     {
         showFB();
+        updateColors();
+        printRuleNumber(calculateRuleNumber());
   	    drawElementaryCellularAutomata();	        
     }
     else if (automataType == LANGTON_ANT)
@@ -2430,6 +2551,37 @@ int runAutomata()
     {
         showFB();
         initializeMunchingSquares();
+    }
+    else if(automataType == SELECT_COLORS)
+    {
+        showFB();
+        cleanScreen();
+                
+        drawRectangle(true, 75, 100, 50, 50);
+
+        // top
+        for (int i = 65; i < 75; ++i)
+        {
+            drawHLine(90, i, 70, line_color, fb);
+        }
+        
+        // bottom
+        for (int i = 126; i < 136; ++i)
+        {
+            drawHLine(90, i, 70, line_color, fb);
+        }
+
+        // left
+        for (int i = 90; i < 100; ++i)
+        {
+            drawVLine(i, 65, 70, line_color);
+        }
+                
+        // right
+        for (int i = 151; i < 161; ++i)
+        {
+            drawVLine(i, 65, 70, line_color);
+        }
     }
     
     return 0;
@@ -2498,13 +2650,13 @@ int main(void)
                 else
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
-                    automataType = 6;
+                    automataType = 7;
                     printMenuArrow(displayedMenu, automataType, false); // Print new arrow
                 }   
             }
             else if (keys_released & KEY_DOWN)
             {
-                if (automataType != 6)
+                if (automataType != 7)
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType + 1;
@@ -2524,7 +2676,7 @@ int main(void)
                     consoleClear();
                     printCredits();
             	    printf("Current type:\n Elementary Cellular Automata"); 
-                    printRuleNumber(calculateRuleNumber());
+                    //printRuleNumber(calculateRuleNumber());
                     
                     intArrow = 0;                    
                     displayedMenu = 1;
@@ -2544,6 +2696,8 @@ int main(void)
                     
                     printMenu(displayedMenu);
                     
+                    printMenuArrow(displayedMenu, intArrow, false);
+                       
                     runAutomata();
                 }
                 else if (automataType == LANGTON_HEXAGONAL_ANT)
@@ -2557,6 +2711,8 @@ int main(void)
                     
                     printMenu(displayedMenu);
                     
+                    printMenuArrow(displayedMenu, intArrow, false);
+                                        
                     runAutomata();
                 }
                 else if (automataType == BOOLEAN_AUTOMATA)
@@ -2569,6 +2725,8 @@ int main(void)
                     displayedMenu = 4;
                     
                     printMenu(displayedMenu);
+                    
+                    printMenuArrow(displayedMenu, intArrow, false);                    
                     
                     printBAasterisks();
                     runAutomata();
@@ -2584,6 +2742,8 @@ int main(void)
                     
                     printMenu(displayedMenu);
                     
+                    printMenuArrow(displayedMenu, intArrow, false);
+                                        
                     printBHAasterisks();                    
                     runAutomata();
                 }
@@ -2598,6 +2758,8 @@ int main(void)
                     
                     printMenu(displayedMenu);
                     
+                    printMenuArrow(displayedMenu, intArrow, false);
+                                        
                     printBTAasterisks();
                     runAutomata();
                 }
@@ -2612,8 +2774,26 @@ int main(void)
                     
                     printMenu(displayedMenu);
                     
+                    printMenuArrow(displayedMenu, intArrow, false);
+                                        
   		            printMSasterisks();                    
                     runAutomata();
+                }
+                else if (automataType == SELECT_COLORS)
+                {
+                    consoleClear();
+                    printCredits();
+                    printf("Select colors:");
+                    
+                    intArrow = 0;
+                    displayedMenu = 8;
+                    
+                    printMenu(displayedMenu);
+                    
+                    printMenuArrow(displayedMenu, intArrow, false);
+                                        
+                    runAutomata();
+                    
                 }
             }
         }
@@ -3385,6 +3565,201 @@ int main(void)
 		    }            
             
             drawNextStepMunchingSquares();
+        }
+        /*
+         * Color selection menu
+         */
+        else if (displayedMenu == 8)
+        {
+  		    if(keys_released & KEY_A)
+  		    {
+  		        if (intArrow == 9) // Back to main menu
+  		        {
+  		            showAutomataTypeMenu();
+  		        }
+  		    }
+		    else if(keys_pressed & KEY_UP)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+		        
+		        if (intArrow == 0)
+		        {
+		            intArrow = 9;
+		        }
+		        else
+		        {
+		            intArrow = intArrow - 1;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
+		    }
+		    else if(keys_pressed & KEY_DOWN)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow        
+		        
+		        if (intArrow == 9)
+		        {
+		            intArrow = 0;
+		        }
+		        else
+		        {
+		            intArrow = intArrow + 1;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
+		    }
+		    else if (keys_pressed & KEY_LEFT)
+		    {
+		        if (intArrow == 0)
+		        {
+		            if (BG_R != 0)
+		            {
+		                --BG_R;
+		            }
+		        }
+		        else if (intArrow == 1)
+		        {
+		            if (BG_G != 0)
+		            {
+		                --BG_G;
+		            }
+		        }		      
+		        else if (intArrow == 2)
+		        {
+		            if (BG_B != 0)
+		            {
+		                --BG_B;
+		            }
+		        }		      
+		        if (intArrow == 3)
+		        {
+		            if (FG_R != 0)
+		            {
+		                --FG_R;
+		            }
+		        }
+		        else if (intArrow == 4)
+		        {
+		            if (FG_G != 0)
+		            {
+		                --FG_G;
+		            }
+		        }		      
+		        else if (intArrow == 5)
+		        {
+		            if (FG_B != 0)
+		            {
+		                --FG_B;
+		            }
+		        }		   
+		        if (intArrow == 6)
+		        {
+		            if (line_R != 0)
+		            {
+		                --line_R;
+		            }
+		        }
+		        else if (intArrow == 7)
+		        {
+		            if (line_G != 0)
+		            {
+		                --line_G;
+		            }
+		        }		      
+		        else if (intArrow == 8)
+		        {
+		            if (line_B != 0)
+		            {
+		                --line_B;
+		            }
+		        }		      		           		            
+
+                printMenu(displayedMenu);		
+                		        
+		        BG_color = RGB15(BG_R, BG_G, BG_B);
+		        FG_color = RGB15(FG_R, FG_G, FG_B);
+                line_color = RGB15(line_R, line_G, line_B);		        
+                
+                runAutomata();
+                
+                swiWaitForVBlank();        
+		    }    
+		    else if (keys_pressed & KEY_RIGHT)
+		    {
+		        if (intArrow == 0)
+		        {
+		            if (BG_R != 31)
+		            {
+		                ++BG_R;
+		            }
+		        }
+		        else if (intArrow == 1)
+		        {
+		            if (BG_G != 31)
+		            {
+		                ++BG_G;
+		            }
+		        }		      
+		        else if (intArrow == 2)
+		        {
+		            if (BG_B != 31)
+		            {
+		                ++BG_B;
+		            }
+		        }		      
+		        if (intArrow == 3)
+		        {
+		            if (FG_R != 31)
+		            {
+		                ++FG_R;
+		            }
+		        }
+		        else if (intArrow == 4)
+		        {
+		            if (FG_G != 31)
+		            {
+		                ++FG_G;
+		            }
+		        }		      
+		        else if (intArrow == 5)
+		        {
+		            if (FG_B != 31)
+		            {
+		                ++FG_B;
+		            }
+		        }		   
+		        if (intArrow == 6)
+		        {
+		            if (line_R != 31)
+		            {
+		                ++line_R;
+		            }
+		        }
+		        else if (intArrow == 7)
+		        {
+		            if (line_G != 31)
+		            {
+		                ++line_G;
+		            }
+		        }		      
+		        else if (intArrow == 8)
+		        {
+		            if (line_B != 31)
+		            {
+		                ++line_B;
+		            }
+		        }	
+		        
+                printMenu(displayedMenu);
+                		        
+		        BG_color = RGB15(BG_R, BG_G, BG_B);
+		        FG_color = RGB15(FG_R, FG_G, FG_B);
+                line_color = RGB15(line_R, line_G, line_B);
+                	      		           		            
+                runAutomata();
+                
+                swiWaitForVBlank();                                	      		           		            
+		    }    		    
         }
     }
     
