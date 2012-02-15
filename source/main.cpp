@@ -473,10 +473,38 @@ int drawRectangle(bool fill, int intRowStart, int intColumnStart, int length, in
 	unsigned char row = 0;
 	unsigned short color;
 	
+	/*
+	 * It must be intRowStart + length - 1 and intColumnStart + width - 1
+	 * else we get this: (using intRowStart + length and intColumnStart + width)
+	 * example: intRowStart = 0, intColumnStart = 0, length = 4, width = 4
+	 *    0 1 2 3 4 
+	 *  0 x x x x x    horizontal line from (0, 0) to (0, 3) and vertical line from (0, 0) to (3, 0)
+	 *  1 x o o o x    
+	 *  2 x o o o x 
+	 *  3 x o o o x  
+	 *  4 x x x x      horizontal line from (4, 0) to (4, 3) and vertical line from (4, 0) to (4, 3)
+	 * 
+	 * The filling was like this:
+	 *	for(column = intColumnStart + 1; column < intColumnStart + width; column++)
+	 *  {
+	 *	    for(row = intRowStart + 1; row < intRowStart + length; row++)
+     *
+	 * But now it must be corrected to:
+	 *	for(column = intColumnStart + 1; column < intColumnStart + width - 1; column++)
+	 *  {
+	 *  	for(row = intRowStart + 1; row < intRowStart + length - 1; row++)
+     *
+     * This way we get the correct drawing:
+	 *    0 1 2 3 
+	 *  0 x x x x    horizontal line from (0, 0) to (0, 3) and vertical line from (0, 0) to (3, 0)
+	 *  1 x o o x    
+	 *  2 x o o x 
+	 *  3 x x x x    horizontal line from (3, 0) to (3, 3) and vertical line from (3, 0) to (3, 3)     
+	 */ 
 	drawHLine(intColumnStart, intRowStart, width, line_color, fb);
-	drawHLine(intColumnStart, intRowStart + length, width, line_color, fb);
+	drawHLine(intColumnStart, intRowStart + length - 1, width, line_color, fb);
 	drawVLine(intColumnStart, intRowStart, length, line_color);
-	drawVLine(intColumnStart + width, intRowStart, length, line_color);
+	drawVLine(intColumnStart + width - 1, intRowStart, length, line_color);
 	
 	if(fill == true)
 	{
@@ -487,9 +515,9 @@ int drawRectangle(bool fill, int intRowStart, int intColumnStart, int length, in
 		color = BG_color;
 	}
 	
-	for(column = intColumnStart + 1; column < intColumnStart + width; column++)
+	for(column = intColumnStart + 1; column < intColumnStart + width - 1; column++)
 	{
-		for(row = intRowStart + 1; row < intRowStart + length; row++)
+		for(row = intRowStart + 1; row < intRowStart + length - 1; row++)
 		{
 			fb[row * 256 + column] = color;
 		}
@@ -507,8 +535,8 @@ int drawRule(int nth)
 	int intRowStart = 0;
 	int intColumnStart = 0;
 
-	int intLength = 8;
-	int intWidth = 8;
+	int intLength = 9;
+	int intWidth = 9;
 	
 	switch (nth)
 	{
@@ -561,7 +589,7 @@ int drawRule(int nth)
 		fill = true;
 	}
 		
-	drawRectangle(fill, intRowStart, intColumnStart + 8, intLength, intWidth);
+	drawRectangle(fill, intRowStart, intColumnStart + intWidth - 1, intLength, intWidth);
 
 	fill = false;
 
@@ -570,7 +598,7 @@ int drawRule(int nth)
         fill = true;
 	}
 
-	drawRectangle(fill, intRowStart, intColumnStart + 16, intLength, intWidth);
+	drawRectangle(fill, intRowStart, intColumnStart + (intWidth - 1) * 2, intLength, intWidth);
 
     fill = false;
 
@@ -579,7 +607,7 @@ int drawRule(int nth)
 		fill = true;
 	}
 
-	drawRectangle(fill, intRowStart + 8, intColumnStart + 8, intLength, intWidth);
+	drawRectangle(fill, intRowStart + intLength - 1, intColumnStart + intWidth -1, intLength, intWidth);
 	
 	return 0;
 }
@@ -2566,7 +2594,7 @@ int runAutomata()
         }
         
         // bottom
-        for (int i = 126; i < 136; ++i)
+        for (int i = 125; i < 135; ++i)
         {
             drawHLine(90, i, 70, line_color, fb);
         }
@@ -2578,7 +2606,7 @@ int runAutomata()
         }
                 
         // right
-        for (int i = 151; i < 161; ++i)
+        for (int i = 150; i < 160; ++i)
         {
             drawVLine(i, 65, 70, line_color);
         }
