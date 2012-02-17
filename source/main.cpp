@@ -1789,7 +1789,7 @@ int calculateNextStepTriangular(int typeOfNeighborhood)
     
     for (int i = 4; i < 253; i = i + 3)
     {   
-        for (int j = 4; j < 190; j = j + 3)
+        for (int j = 4; j < 187; j = j + 3)
         {
             countFG = 0;        
 
