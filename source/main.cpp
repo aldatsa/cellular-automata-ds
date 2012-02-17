@@ -20,14 +20,16 @@
 #include <stdio.h>
 #include <cmath>    // To calculate powers of 2 in the calculateRuleNumber function. Is it possible to do it in a more simple way? Using binary operators?
 #include <stdlib.h>
+#include <string>
 
 #include "flash.h"  // Include for the header of the flash image (grit outputs a nice header to reference data)
 
+using namespace std;
 
 /*
  * Constant for the version number of the application
  */
-#define VERSION "0.2.3"
+const string strVersionNumber = "0.2.3";
 
 /*
  * Constants for the rows where the menu items of the automata type selection menu are printed
@@ -40,6 +42,7 @@
 #define MENU_AUTOMATA_TYPE_ROW_BTA 13
 #define MENU_AUTOMATA_TYPE_ROW_MS 14
 #define MENU_SELECT_COLORS 16
+#define MENU_SELECT_LANGUAGE 17
 
 /*
  * Constant for the row where the rule of the Elementary Cellular Automaton is printed
@@ -55,6 +58,8 @@
  * 4: Boolean Hexagonal Automata
  * 5: Boolean Triangular Automata
  * 6: Munching Squares
+ * 7: Selecet colors
+ * 8: Select language
  */
 #define ELEMENTARY_CELLULAR_AUTOMATA 0
 #define LANGTON_ANT 1
@@ -64,6 +69,7 @@
 #define BOOLEAN_TRIANGULAR_AUTOMATA 5
 #define MUNCHING_SQUARES 6
 #define SELECT_COLORS 7
+#define SELECT_LANGUAGE 8
 
 /*
  * Variables for the colors of the background
@@ -128,9 +134,19 @@ touchPosition touch;
  * 2: Langton's hexagonal ant
  * 3: Boolean Square automata
  * 4: Boolean Hexagonal automata
- * 5: Munching Squares
+ * 5: Boolean Triangular Automata
+ * 6: Munching Squares
+ * 7: Selecet colors
+ * 8: Select language
  */
 int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
+
+/* This variable sets the language used in the menus
+ * "en": english
+ * "es": espanol (spanish)
+ * "eu": euskara (basque)
+ */
+string displayedLanguage = "eu";
 
 /* This variable sets the menu that is going to be displayed
  * 0: Select automata menu
@@ -142,10 +158,12 @@ int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
  * 6: Boolean Triangular Automata menu
  * 7: Munching squares menu
  * 8: Select colors
+ * 9: Select language
  */
 int displayedMenu = 0;
 
 /* The position of the arrow
+ * Select automata menu: ????
  * Elementary Cellular Automata: in the top screen (0-7) and in the bottom screen (8)
  * Langton's ant: ????
  * Langton's hexagonal ant: ????
@@ -153,6 +171,8 @@ int displayedMenu = 0;
  * Boolean Hexagonal Automata menu: ????
  * Boolean Triangular Automata menu: ????
  * Munching Squares: in the bottom screen (0-2)
+ * Select colors: ????
+ * Select language: ????
  */
 int intArrow = 0;
 
@@ -185,6 +205,42 @@ int intBooleanRulesValuesSqM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 
 int intBooleanRulesValuesHex [6] = {1, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6}; For the Boolean Hexagonal Automata
 int intBooleanRulesValuesTriVN [3] = {1, 0, 0}; // {1, 2, 3}; For the Boolean Triangular Automata with Modified Von Neumann neighborhood
 int intBooleanRulesValuesTriM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8}; For the Boolean Triangular Automata with Modified Moore neighborhood
+
+/*
+ * The strings of text used in the app in the default language (english).
+ *
+ */
+string stringRuleNumber = "Rule number";
+string stringElementaryCellularAutomata = "Elementary cellular automata"; // max 30 characters
+string stringLangtonsAnt = "Langton's ant"; // max 30 characters
+string stringLangtonsHexagonalAnt = "Langton's hexagonal ant";
+string stringBooleanAutomata = "Boolean automata";
+string stringBooleanHexagonalAutomata = "Boolean hexagonal automata";
+string stringBooleanTriangularAutomata = "Boolean triangular automata";
+string stringMunchingSquares = "Munching Squares";
+string stringSelectColors = "Select colors";
+string stringBackToMainMenu = "Back to main menu";
+string stringAntsPixels = "Ant's size (pixels)";
+string stringVonNeumannNeighborhood = "Von Neumann neighborhood";
+string stringMooreNeighborhood = "Moore neighborhood";
+string stringNeighborhood = "Neighborhood";
+string stringTypeOfComparation = "Type of comparation";
+string stringSmallerThan = "Smaller than";
+string stringEqualTo = "Equal to";
+string stringTypeOfBooleanOperator = "Type of boolean operator";
+string stringBackgroundColor = "Background color";
+string stringForegroundColor = "Foreground color";
+string stringLineColor = "Line color";
+string stringRed = "Red";
+string stringGreen = "Green";
+string stringBlue = "Blue";
+string stringSteps = "Steps";
+string stringAutomataType = "Automata type";
+string stringVersion = "version " + strVersionNumber;
+string stringSelectLanguage = "Select language";
+string stringEnglish = "English";
+string stringEspanol = "Espanol";
+string stringEuskara = "Euskara";
 
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
 
@@ -279,7 +335,7 @@ int showFB2()
  * Show the flash screen on the main screen
  */
 int showFlash()
-{
+{   
     // set the mode for 2 text layers and two extended background layers
 	videoSetMode(MODE_5_2D);
 
@@ -294,6 +350,152 @@ int showFlash()
 	
 	decompress(flashBitmap, BG_GFX,  LZ77Vram);
 
+    return 0;
+}
+
+/*
+ * Changes the language of the strings of text to the selected language
+ * languageCode is the two letters code for each language
+ * en : english
+ * es : spanish
+ * eu : basque
+ */
+int changeTextLanguage(string languageCode)
+{
+    if (languageCode == "en") // English
+    {
+        stringRuleNumber = "Rule number";
+        
+        stringElementaryCellularAutomata = "Elementary cellular automata"; // max 30 characters
+        stringLangtonsAnt = "Langton's ant"; // max 30 characters
+        stringLangtonsHexagonalAnt = "Langton's hexagonal ant"; // max 30 characters
+        stringBooleanAutomata = "Boolean automata"; // max 30 characters
+        stringBooleanHexagonalAutomata = "Boolean hexagonal automata"; // max 30 characters
+        stringBooleanTriangularAutomata = "Boolean triangular automata"; // max 30 characters
+        stringMunchingSquares = "Munching Squares"; // max 30 characters
+        stringSelectColors = "Select colors"; // max 30 characters
+        stringBackToMainMenu = "Back to main menu"; // max 30 characters
+        
+        stringAntsPixels = "Ant's size (pixels)"; // Max 22 characters
+        
+        stringVonNeumannNeighborhood = "Von Neumann neighborhood";
+        stringMooreNeighborhood = "Moore neighborhood";
+        stringNeighborhood = "Neighborhood";
+        
+        stringTypeOfComparation = "Type of comparation";
+        stringSmallerThan = "Smaller than";
+        stringEqualTo = "Equal to";
+
+        stringTypeOfBooleanOperator = "Type of boolean operator";
+        
+        stringBackgroundColor = "Background color";
+        stringForegroundColor = "Foreground color";
+        stringLineColor = "Line color";
+        stringRed = "Red";
+        stringGreen = "Green";
+        stringBlue = "Blue";
+        
+        stringSteps = "Steps";
+        
+        stringAutomataType = "Automata type";
+        
+        stringVersion = "version " + strVersionNumber;
+        
+        stringSelectLanguage = "Select language";
+        stringEnglish = "English";
+        stringEspanol = "Espanol";
+        stringEuskara = "Euskara";
+        
+    }
+    else if (languageCode == "es") // Spanish
+    {
+        stringRuleNumber = "Regla numero"; // It doesn't print 'ú'. Why?
+        
+        stringElementaryCellularAutomata = "Automata celular elemental"; // max 30 characters
+        stringLangtonsAnt = "Hormiga de Langton"; // max 30 characters
+        stringLangtonsHexagonalAnt = "Hormiga de Langton hexagonal"; // max 30 characters
+        stringBooleanAutomata = "Automata booleano"; // max 30 characters
+        stringBooleanHexagonalAutomata = "Automata booleano hexagonal"; // max 30 characters
+        stringBooleanTriangularAutomata = "Automata booleano triangular"; // max 30 characters
+        stringMunchingSquares = "Munching Squares"; // max 30 characters
+        stringSelectColors = "Seleccionar colores"; // max 30 characters        
+        stringBackToMainMenu = "Volver al menu principal"; // max 30 characters
+
+        stringAntsPixels = "Tamano (pixeles)"; // It doesn't print 'ñ'. Why? And "Tamano de la hormiga (pixeles)" is too long. Max 22 characters
+        
+        stringVonNeumannNeighborhood = "Vecindad de Von Neumann";
+        stringMooreNeighborhood = "Vecindad de Moore";
+        stringNeighborhood = "Vecindad";
+        
+        stringTypeOfComparation = "Tipo de comparacion";
+        stringSmallerThan = "Menor que";
+        stringEqualTo = "Igual que";
+
+        stringTypeOfBooleanOperator = "Tipo de operador booleano";
+        
+        stringBackgroundColor = "Color de fondo";
+        stringForegroundColor = "Color de primer plano";
+        stringLineColor = "Color de lineas";
+        stringRed = "Rojo";
+        stringGreen = "Verde";
+        stringBlue = "Azul";
+        
+        stringSteps = "Pasos";
+        
+        stringAutomataType = "Tipo de automata";
+        
+        stringVersion = "version " + strVersionNumber;
+        
+        stringSelectLanguage = "Seleccionar lenguaje";
+        stringEnglish = "English";
+        stringEspanol = "Espanol";
+        stringEuskara = "Euskara";
+    }
+    else if (languageCode == "eu") // Basque
+    {
+        stringRuleNumber = "Arau zenbakia";
+        
+        stringElementaryCellularAutomata = "Oinarrizko automata zelularra"; // max 30 characters
+        stringLangtonsAnt = "Langton-en inurria"; // max 30 characters
+        stringLangtonsHexagonalAnt = "Langton-en inurri hexagonala"; // max 30 characters
+        stringBooleanAutomata = "Automata boolearra"; // max 30 characters
+        stringBooleanHexagonalAutomata = "Automata boolear hexagonala"; // max 30 characters
+        stringBooleanTriangularAutomata = "Automata boolear triangularra"; // max 30 characters
+        stringMunchingSquares = "Munching Squares"; // max 30 characters
+        stringSelectColors = "Hautatu koloreak"; // max 30 characters
+        stringBackToMainMenu = "Itzuli menu nagusira"; // max 30 characters
+        
+        stringAntsPixels = "Tamaina (pixelak)"; // Max 23 characters
+        
+        stringVonNeumannNeighborhood = "Von Neumann-en auzoa";
+        stringMooreNeighborhood = "Moore-en auzoa";
+        stringNeighborhood = "Auzoa";
+        
+        stringTypeOfComparation = "Konparaketa mota";
+        stringSmallerThan = "Txikiago";
+        stringEqualTo = "Berdin";
+        
+        stringTypeOfBooleanOperator = "Boolear eragile mota";
+        
+        stringBackgroundColor = "Atzeko planoaren kolorea";
+        stringForegroundColor = "Aurreko planoaren kolorea";
+        stringLineColor = "Lerroen kolorea";
+        stringRed = "Gorria";
+        stringGreen = "Berdea";
+        stringBlue = "Urdina";
+        
+        stringSteps = "Pausoak";
+        
+        stringAutomataType = "Automata mota";
+        
+        stringVersion = strVersionNumber + " bertsioa";
+        
+        stringSelectLanguage = "Hautatu hizkuntza";
+        stringEnglish = "English";
+        stringEspanol = "Espanol";
+        stringEuskara = "Euskara";
+    }
+    
     return 0;
 }
 
@@ -397,10 +599,10 @@ int printRuleNumber(int intRuleNumber)
     sprintf(buffer, "%d", intRuleNumber);
     
     // Print 3 spaces to erase the previous rule
-    iprintf("\x1b[%d;2HRule Number:   ", ECA_RULE_NUMBER_ROW);
+    iprintf("\x1b[%d;2H%s:   ", ECA_RULE_NUMBER_ROW, stringRuleNumber.c_str());
     
     // Print it in the appropiate position
-    iprintf("\x1b[%d;2HRule Number:%s", ECA_RULE_NUMBER_ROW, buffer);
+    iprintf("\x1b[%d;2H%s:%s", ECA_RULE_NUMBER_ROW, stringRuleNumber.c_str(), buffer);
     
     return 0;
 }
@@ -1720,7 +1922,7 @@ int initializeBooleanTriangularAutomata(int intX, int intY)
 int printCredits()
 {
 	printf("Cellular Automata DS\n");
-	printf("version %s\n", VERSION);
+	printf("%s\n", stringVersion.c_str());
 	printf("\n");
     printf("(c) 2012\n");
     printf("Asier Iturralde Sarasola\n");
@@ -1757,83 +1959,92 @@ int printMenu(int intDisplayedMenu)
 {
     if (displayedMenu == 0) //The menu to select the type of automata
     {
-        iprintf("\x1b[%d;2HElementary Cellular Automata", MENU_AUTOMATA_TYPE_ROW_ECA);
-        iprintf("\x1b[%d;2HLangton's ant", MENU_AUTOMATA_TYPE_ROW_LA);
-        iprintf("\x1b[%d;2HLangton's hexagonal ant", MENU_AUTOMATA_TYPE_ROW_LHA);
-        iprintf("\x1b[%d;2HBoolean automata", MENU_AUTOMATA_TYPE_ROW_BA);
-        iprintf("\x1b[%d;2HBoolean Hexagonal automata", MENU_AUTOMATA_TYPE_ROW_BHA);
-        iprintf("\x1b[%d;2HBoolean Triangular automata", MENU_AUTOMATA_TYPE_ROW_BTA);
-        iprintf("\x1b[%d;2HMunching Squares", MENU_AUTOMATA_TYPE_ROW_MS);
-        iprintf("\x1b[%d;2HSelect colors", MENU_SELECT_COLORS);
+        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_ECA, stringElementaryCellularAutomata.c_str());
+        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_LA, stringLangtonsAnt.c_str());
+        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_LHA, stringLangtonsHexagonalAnt.c_str());
+        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_BA, stringBooleanAutomata.c_str());
+        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_BHA, stringBooleanHexagonalAutomata.c_str());
+        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_BTA, stringBooleanTriangularAutomata.c_str());
+        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_MS, stringMunchingSquares.c_str());
+        iprintf("\x1b[%d;2H%s", MENU_SELECT_COLORS, stringSelectColors.c_str());
+        iprintf("\x1b[%d;2H%s", MENU_SELECT_LANGUAGE, stringSelectLanguage.c_str());
     }
     else if (displayedMenu == 1) // The menu of the Elementary Cellular Automaton
     {
-        iprintf("\x1b[11;2HBack to main menu");
+        iprintf("\x1b[11;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 2) // The menu of the Langton's ant
     {
-        iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);
-        iprintf("\x1b[13;2HBack to main menu");
+        iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), antNumPixels);
+        iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 3) // The menu of the Langton's hexagonal ant
     {
-        iprintf("\x1b[13;2HBack to main menu");
+        iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 4) // The menu of the boolean automaton
     {
-        iprintf("\x1b[13;2H Von Neumann neighborhood");
+        iprintf("\x1b[13;2H %s", stringVonNeumannNeighborhood.c_str());
         iprintf("\x1b[14;5H 1    2    3    4");
-        iprintf("\x1b[15;2H Moore neighborhood");
+        iprintf("\x1b[15;2H %s", stringMooreNeighborhood.c_str());
         iprintf("\x1b[16;5H 1    2    3    4");
         iprintf("\x1b[17;5H 5    6    7    8");        
-        iprintf("\x1b[19;2HBack to main menu");
+        iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 5) // The menu of the Boolean Hexagonal Automaton
     {
-        iprintf("\x1b[13;2HNeighborhood:");
+        iprintf("\x1b[13;2H%s:", stringNeighborhood.c_str());
         iprintf("\x1b[14;5H 1    2    3");
         iprintf("\x1b[15;5H 4    5    6");
-        iprintf("\x1b[17;2HBack to main menu");
+        iprintf("\x1b[17;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 6) // The menu of the Boolean Triangular Automaton
     {
-        iprintf("\x1b[13;2H Von Neumann neighborhood");
+        iprintf("\x1b[13;2H %s", stringVonNeumannNeighborhood.c_str());
         iprintf("\x1b[14;5H 1    2    3");
-        iprintf("\x1b[15;2H Moore neighborhood");
+        iprintf("\x1b[15;2H %s", stringMooreNeighborhood.c_str());
         iprintf("\x1b[16;5H 1    2    3    4");
         iprintf("\x1b[17;5H 5    6    7    8");        
-        iprintf("\x1b[19;2HBack to main menu");
+        iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 7) // The menu of the munching squares
     {
-        iprintf("\x1b[11;2HType of comparation:");        
-        iprintf("\x1b[12;5HSmaller than");
-        iprintf("\x1b[13;5HEqual to");    
+        iprintf("\x1b[11;2H%s:", stringTypeOfComparation.c_str());        
+        iprintf("\x1b[12;5H%s", stringSmallerThan.c_str());
+        iprintf("\x1b[13;5H%s", stringEqualTo.c_str());    
         
-        iprintf("\x1b[14;2HType of boolean operator:");
+        iprintf("\x1b[14;2H%s:", stringTypeOfBooleanOperator.c_str());
         iprintf("\x1b[15;5HXOR");
         iprintf("\x1b[16;5HAND");    
             
-        iprintf("\x1b[18;2HBack to main menu");
+        iprintf("\x1b[18;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 8) // The menu of color selection
     {
-        iprintf("\x1b[8;2HBackground:");
-        iprintf("\x1b[9;5HRed < %i > ", BG_R);
-        iprintf("\x1b[10;5HGreen < %i > ", BG_G);
-        iprintf("\x1b[11;5HBlue < %i > ", BG_B);
+        iprintf("\x1b[8;2H%s:", stringBackgroundColor.c_str());
+        iprintf("\x1b[9;5H%s < %i > ", stringRed.c_str(), BG_R);
+        iprintf("\x1b[10;5H%s < %i > ", stringGreen.c_str(), BG_G);
+        iprintf("\x1b[11;5H%s < %i > ", stringBlue.c_str(), BG_B);
         
-        iprintf("\x1b[12;2HForeground:");
-        iprintf("\x1b[13;5HRed < %i > ", FG_R);
-        iprintf("\x1b[14;5HGreen < %i > ", FG_G);
-        iprintf("\x1b[15;5HBlue < %i > ", FG_B);
+        iprintf("\x1b[12;2H%s:", stringForegroundColor.c_str());
+        iprintf("\x1b[13;5H%s < %i > ", stringRed.c_str(), FG_R);
+        iprintf("\x1b[14;5H%s < %i > ", stringGreen.c_str(), FG_G);
+        iprintf("\x1b[15;5H%s < %i > ", stringBlue.c_str(), FG_B);
                 
-        iprintf("\x1b[16;2HLine color:");
-        iprintf("\x1b[17;5HRed < %i > ", line_R);
-        iprintf("\x1b[18;5HGreen < %i > ", line_G);
-        iprintf("\x1b[19;5HBlue < %i > ", line_B);
+        iprintf("\x1b[16;2H%s:", stringLineColor.c_str());
+        iprintf("\x1b[17;5H%s < %i > ", stringRed.c_str(), line_R);
+        iprintf("\x1b[18;5H%s < %i > ", stringGreen.c_str(), line_G);
+        iprintf("\x1b[19;5H%s < %i > ", stringBlue.c_str(), line_B);
                 
-        iprintf("\x1b[21;2HBack to main menu");
+        iprintf("\x1b[21;2H%s", stringBackToMainMenu.c_str());
+    }
+    else if (displayedMenu == 9)
+    {
+        iprintf("\x1b[10;3H%s", stringEnglish.c_str());
+        iprintf("\x1b[11;3H%s", stringEspanol.c_str());
+        iprintf("\x1b[12;3H%s", stringEuskara.c_str());
+        
+        iprintf("\x1b[14;2H%s", stringBackToMainMenu.c_str());
     }
     
     return 0;
@@ -1864,6 +2075,33 @@ int printMSasterisks()
     {
         iprintf("\x1b[15;3H ");
         iprintf("\x1b[16;3H*");        
+    }
+    
+    return 0;
+}
+
+/*
+ * Prints the asterisk used to mark the current language in the language selection menu
+ */
+int printLanguageAsterisks()
+{
+    if (displayedLanguage == "en")
+    {
+        iprintf("\x1b[10;2H*");
+        iprintf("\x1b[11;2H ");
+        iprintf("\x1b[12;2H ");
+    }
+    else if (displayedLanguage == "es")
+    {
+        iprintf("\x1b[10;2H ");
+        iprintf("\x1b[11;2H*");
+        iprintf("\x1b[12;2H ");
+    }
+    else if (displayedLanguage == "eu")
+    {
+        iprintf("\x1b[10;2H ");
+        iprintf("\x1b[11;2H ");
+        iprintf("\x1b[12;2H*");
     }
     
     return 0;
@@ -2223,6 +2461,10 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {
             row = MENU_SELECT_COLORS;
         }
+        else if (index == 8) // Select language
+        {
+            row = MENU_SELECT_LANGUAGE;
+        }
     }
     
     else if (intDisplayedMenu == 1) // Elementary Cellular Automaton menu
@@ -2498,7 +2740,25 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 21;
         }
     }
-    
+    else if (intDisplayedMenu == 9) // Select language    
+    {
+        if (index == 0) // English
+        {
+            row = 10;
+        }
+        else if (index == 1) // Espanol
+        {
+            row = 11;
+        }
+        else if (index == 2) // Euskara
+        {
+            row = 12;
+        }
+        else if (index == 3) // Back to main menu
+        {
+            row = 14;
+        }
+    }
     if (boolDelete == false)
     {
         printArrow(row, column);
@@ -2523,6 +2783,72 @@ int showAutomataTypeMenu()
     printCredits();
     printMenu(displayedMenu);
     printMenuArrow(displayedMenu, automataType, false);
+    
+    return 0;
+}
+
+int printAutomataType(int automataType)
+{
+    printf("%s:\n", stringAutomataType.c_str()); 
+    
+    if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
+    {
+        printf("%s", stringElementaryCellularAutomata.c_str());
+    }
+    else if (automataType == LANGTON_ANT)
+    {
+        printf("%s", stringLangtonsAnt.c_str());
+    }
+    else if (automataType == LANGTON_HEXAGONAL_ANT)
+    {
+        printf("%s", stringLangtonsHexagonalAnt.c_str());
+    }
+    else if (automataType == BOOLEAN_AUTOMATA)
+    {
+        printf("%s", stringBooleanAutomata.c_str());
+    }
+    else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
+    {
+        printf("%s", stringBooleanHexagonalAutomata.c_str());
+    }
+    else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
+    {
+        printf("%s", stringBooleanTriangularAutomata.c_str());
+    }
+    else if (automataType == MUNCHING_SQUARES)
+    {
+        printf("%s", stringMunchingSquares.c_str());
+    }
+    
+    return 0;
+}
+
+/*
+ * Prints the number of steps
+ */
+int printNumSteps(int automataType)
+{
+    if (automataType == LANGTON_ANT)
+    {
+        iprintf("\x1b[9;0H%s:     ", stringSteps.c_str());                                                    
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), antNumSteps);
+    }
+    else if (automataType == LANGTON_HEXAGONAL_ANT)
+    {
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), antNumSteps);
+    }
+    else if (automataType == BOOLEAN_AUTOMATA)
+    {
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), automataSteps);
+    }
+    else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
+    {
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), automataSteps);    
+    }
+    else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
+    {
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), automataSteps);
+    }
     
     return 0;
 }
@@ -2611,6 +2937,11 @@ int runAutomata()
             drawVLine(i, 65, 70, line_color);
         }
     }
+    else if (automataType == SELECT_LANGUAGE)
+    {
+        showFlash();
+        cleanScreen();
+    }
     
     return 0;
 }
@@ -2622,6 +2953,8 @@ int runAutomata()
  */
 int main(void)
 {
+    changeTextLanguage(displayedLanguage);
+            
 	consoleDemoInit();
 
     showAutomataTypeMenu();
@@ -2678,13 +3011,13 @@ int main(void)
                 else
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
-                    automataType = 7;
+                    automataType = 8;
                     printMenuArrow(displayedMenu, automataType, false); // Print new arrow
                 }   
             }
             else if (keys_released & KEY_DOWN)
             {
-                if (automataType != 7)
+                if (automataType != 8)
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType + 1;
@@ -2703,8 +3036,8 @@ int main(void)
                 {
                     consoleClear();
                     printCredits();
-            	    printf("Current type:\n Elementary Cellular Automata"); 
-                    //printRuleNumber(calculateRuleNumber());
+                    
+                    printAutomataType(ELEMENTARY_CELLULAR_AUTOMATA);
                     
                     intArrow = 0;                    
                     displayedMenu = 1;
@@ -2717,7 +3050,8 @@ int main(void)
                 {
                     consoleClear();
                     printCredits();
-                    printf("Current type:\n Langton's ant");
+                    
+                    printAutomataType(LANGTON_ANT);
                               
                     intArrow = 0;
                     displayedMenu = 2;
@@ -2732,7 +3066,8 @@ int main(void)
                 {
                     consoleClear();
                     printCredits();
-                    printf("Current type:\n Langton's hexagonal ant");
+                    
+                    printAutomataType(LANGTON_HEXAGONAL_ANT);
                     
                     intArrow = 0;
                     displayedMenu = 3;
@@ -2747,7 +3082,8 @@ int main(void)
                 {
                     consoleClear();
                     printCredits();
-                    printf("Current type:\n Boolean automata");
+                    
+                    printAutomataType(BOOLEAN_AUTOMATA);
                     
                     intArrow = 0;
                     displayedMenu = 4;
@@ -2763,7 +3099,8 @@ int main(void)
                 {
                     consoleClear();
                     printCredits();
-                    printf("Current type:\n Boolean Hexagonal Automata");
+                    
+                    printAutomataType(BOOLEAN_HEXAGONAL_AUTOMATA);
                     
                     intArrow = 0;
                     displayedMenu = 5;
@@ -2779,7 +3116,8 @@ int main(void)
                 {
                     consoleClear();
                     printCredits();
-                    printf("Current type:\n Boolean Triangular Automata");
+                    
+                    printAutomataType(BOOLEAN_TRIANGULAR_AUTOMATA);
                     
                     intArrow = 0;
                     displayedMenu = 6;
@@ -2795,7 +3133,8 @@ int main(void)
                 {   
                     consoleClear();
                     printCredits();
-                    printf("Current type:\n Munching Squares");
+                    
+                    printAutomataType(MUNCHING_SQUARES);
                     
                     intArrow = 0;                    
                     displayedMenu = 7;
@@ -2811,7 +3150,8 @@ int main(void)
                 {
                     consoleClear();
                     printCredits();
-                    printf("Select colors:");
+                    
+                    printf("%s:", stringSelectColors.c_str());
                     
                     intArrow = 0;
                     displayedMenu = 8;
@@ -2821,8 +3161,24 @@ int main(void)
                     printMenuArrow(displayedMenu, intArrow, false);
                                         
                     runAutomata();
-                    
                 }
+                else if (automataType == SELECT_LANGUAGE)
+                {
+                    consoleClear();
+                    printCredits();
+                    
+                    printf("%s:", stringSelectLanguage.c_str());
+                    
+                    intArrow = 0;
+                    displayedMenu = 9;
+                    
+                    printMenu(displayedMenu);
+                    
+                    printMenuArrow(displayedMenu, intArrow, false);
+                    printLanguageAsterisks();
+                    
+                    runAutomata();   
+                }                
             }
         }
         /*
@@ -2970,7 +3326,7 @@ int main(void)
     	    {
     	        stepAnt();
     	        antNumSteps++;
-    	        iprintf("\x1b[9;0HStep #: %d", antNumSteps);
+                printNumSteps(LANGTON_ANT);
     	        swiWaitForVBlank();
     	    }
     	    
@@ -3021,10 +3377,9 @@ int main(void)
                     if (antNumPixels > 0)
                     {
                         antNumPixels = antNumPixels - 1;
-                        iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);                        
+                        iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), antNumPixels);                        
                         runAutomata();
-            	        iprintf("\x1b[9;0HStep #:    ");                                                
-            	        iprintf("\x1b[9;0HStep #: %d", antNumSteps);                        
+                        printNumSteps(LANGTON_ANT);
                     }                        
                 }		        
 		    }
@@ -3033,10 +3388,9 @@ int main(void)
                 if (intArrow == 0)
                 {
                     antNumPixels = antNumPixels + 1;
-                    iprintf("\x1b[11;2HAnt's pixels: < %d >", antNumPixels);
+                    iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), antNumPixels);
                     runAutomata();                
-          	        iprintf("\x1b[9;0HStep #:    ");                                                                    
-           	        iprintf("\x1b[9;0HStep #: %d", antNumSteps);                    
+                    printNumSteps(LANGTON_ANT);                    
                 }		    
 		    }
         }
@@ -3054,7 +3408,7 @@ int main(void)
     	    {
     	        stepHexAnt();
     	        antNumSteps++;
-    	        iprintf("\x1b[9;0HStep #: %d", antNumSteps);
+                printNumSteps(LANGTON_HEXAGONAL_ANT);
     	        swiWaitForVBlank();
     	    }
     	    
@@ -3073,7 +3427,7 @@ int main(void)
         else if (displayedMenu == 4)
         {
             automataSteps++;
-            iprintf("\x1b[9;0HStep #: %d", automataSteps);
+            printNumSteps(BOOLEAN_AUTOMATA);
 
             if (calculateNextStep(intTypeOfNeighborhood) == 0) // The automata has finished so we are going to reinitiate the cycle
             {
@@ -3240,7 +3594,7 @@ int main(void)
         else if (displayedMenu == 5)
         {
             automataSteps++;
-            iprintf("\x1b[9;0HStep #: %d", automataSteps);
+            printNumSteps(BOOLEAN_HEXAGONAL_AUTOMATA);
 
             if (calculateNextStepHex() == 0) // The automata has finished so we are going to reinitiate the cycle
             {
@@ -3356,7 +3710,7 @@ int main(void)
         else if (displayedMenu == 6)
         {
             automataSteps++;
-            iprintf("\x1b[9;0HStep #: %d", automataSteps);
+            printNumSteps(BOOLEAN_TRIANGULAR_AUTOMATA);
             
             if (calculateNextStepTriangular(intTypeOfNeighborhood) == 0) // The automata has finished so we are going to reinitiate the cycle
             {
@@ -3788,6 +4142,94 @@ int main(void)
                 
                 swiWaitForVBlank();                                	      		           		            
 		    }    		    
+        }
+        /*
+         * Language selection menu
+         */
+        else if (displayedMenu == 9)
+        {
+  		    if(keys_released & KEY_A)
+  		    {
+  		        if (intArrow == 0) // Change language to english
+  		        {
+  		            displayedLanguage = "en";
+  		            changeTextLanguage(displayedLanguage);
+
+                    consoleClear();
+                    printCredits();
+                    
+                    printf("%s:", stringSelectLanguage.c_str());
+  		            
+                    printMenu(displayedMenu);
+                    
+                    printMenuArrow(displayedMenu, intArrow, false);
+                    printLanguageAsterisks();
+  		        }
+  		        else if (intArrow == 1) // Change language to spanish
+  		        {
+  		            displayedLanguage = "es";
+  		            changeTextLanguage(displayedLanguage);
+
+                    consoleClear();
+                    printCredits();
+                    
+                    printf("%s:", stringSelectLanguage.c_str());
+
+                    printMenu(displayedMenu);
+
+                    printMenuArrow(displayedMenu, intArrow, false);
+                    printLanguageAsterisks();
+  		        }
+  		        else if (intArrow == 2) // Change language to basque
+  		        {
+  		            displayedLanguage = "eu";
+  		            changeTextLanguage(displayedLanguage);
+
+                    consoleClear();
+                    printCredits();
+                    
+                    printf("%s:", stringSelectLanguage.c_str());
+
+                    printMenu(displayedMenu);
+                    
+                    printMenuArrow(displayedMenu, intArrow, false);
+                    printLanguageAsterisks();
+  		        }
+  		        else if (intArrow == 3) // Back to main menu
+  		        {
+  		            showAutomataTypeMenu();
+  		        }
+  		    }
+		    else if(keys_pressed & KEY_UP)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+		        
+		        if (intArrow == 0)
+		        {
+		            intArrow = 3;
+		        }
+		        else
+		        {
+		            intArrow = intArrow - 1;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
+		    }
+		    else if(keys_pressed & KEY_DOWN)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow        
+		        
+		        if (intArrow == 3)
+		        {
+		            intArrow = 0;
+		        }
+		        else
+		        {
+		            intArrow = intArrow + 1;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
+		    }
         }
     }
     
