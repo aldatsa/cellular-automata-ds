@@ -269,9 +269,9 @@ int drawVLine(int column, int row, int lenght, unsigned short color)
 }
 
 /*
- * Fills the main framebuffer with the background color
+ * Fills the selected framebuffer with the background color
  */
-int cleanScreen()
+int cleanFB(unsigned short* framebuffer)
 {
 	int row, column;
 
@@ -279,28 +279,10 @@ int cleanScreen()
 	{
 	    for(column = 0; column < 256; column++)
 	    {
-		    fb[row*256 + column] = BG_color;
+		    framebuffer[row*256 + column] = BG_color;
 		}
     }
 	return 0;
-}
-
-/*
- * Fills the secondary framebuffer (fb2) with the background color
- * I should use only one function, not two (cleanScreen() and cleanScreen2())
- */
-int cleanScreen2()
-{
-	int row, column;
-
-	for(row = 0; row < 192; row++)
-	{
-		for(column = 0; column < 256; column++)
-		{
-			fb2[row*256 + column] = BG_color;
-	    }
-	}
-    return 0;
 }
 
 /*
@@ -822,7 +804,7 @@ int drawElementaryCellularAutomata()
 	int row, column;
 	unsigned char i;
 	
-	cleanScreen();
+	cleanFB(fb);
 
     paintInitialCell(); // Paints the initial cell in the center of the first row (fb[128] = FG_color)
 
@@ -904,7 +886,7 @@ int drawSquare(int column, int row, int width, unsigned short color)
  */
 int initializeMunchingSquares()
 {
-    cleanScreen();
+    cleanFB(fb);
     munchingSquaresNumSteps = 0;
     munchingSquaresCondition = false;
     
@@ -954,7 +936,7 @@ int drawNextStepMunchingSquares()
     }
     else
     {
-        cleanScreen();
+        cleanFB(fb);
         initializeMunchingSquares();
     }    
     
@@ -1079,7 +1061,7 @@ void stepAnt()
  */
 int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned short intAntAngle, unsigned short intAntNumPixels)
 {
-    cleanScreen();
+    cleanFB(fb);
     
     antPosX = intAntPosX;
     antPosY = intAntPosY;
@@ -1142,7 +1124,7 @@ int hexGridLineThree(int y)
  */
 int drawHexGrid()
 {
-    cleanScreen();
+    cleanFB(fb);
     
 	for (int i = 0; i < 48; i++)
 	{
@@ -1202,7 +1184,7 @@ int triangularGridLineThree(int y)
 
 int drawTriangularGrid()
 {
-    cleanScreen();
+    cleanFB(fb);
     
 	for (int i = 0; i < 31; i++)
 	{
@@ -1347,7 +1329,7 @@ int stepHexAnt()
  */
 int initializeHexAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned short intAntAngle)
 {   
-    cleanScreen();
+    cleanFB(fb);
     
     drawHexGrid();
             
@@ -1874,8 +1856,8 @@ int calculateNextStepTriangular(int typeOfNeighborhood)
  */
 int initializeBooleanAutomata(int intX, int intY)
 {    
-    cleanScreen();
-    cleanScreen2();
+    cleanFB(fb);
+    cleanFB(fb2);
     
     automataSteps = 0;
         
@@ -1886,8 +1868,8 @@ int initializeBooleanAutomata(int intX, int intY)
 
 int initializeBooleanHexagonalAutomata(int intX, int intY)
 {
-    cleanScreen();
-    cleanScreen2();
+    cleanFB(fb);
+    cleanFB(fb2);
     
     drawHexGrid();
     
@@ -1900,8 +1882,8 @@ int initializeBooleanHexagonalAutomata(int intX, int intY)
 
 int initializeBooleanTriangularAutomata(int intX, int intY)
 {
-    cleanScreen();
-    cleanScreen2();
+    cleanFB(fb);
+    cleanFB(fb2);
     
     drawTriangularGrid();
     
@@ -2909,7 +2891,7 @@ int runAutomata()
     else if(automataType == SELECT_COLORS)
     {
         showFB();
-        cleanScreen();
+        cleanFB(fb);
                 
         drawRectangle(true, 75, 100, 50, 50);
 
@@ -2940,7 +2922,7 @@ int runAutomata()
     else if (automataType == SELECT_LANGUAGE)
     {
         showFlash();
-        cleanScreen();
+        cleanFB(fb);
     }
     
     return 0;
