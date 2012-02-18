@@ -501,45 +501,44 @@ int changeTextLanguage(string languageCode)
  */
 int updateColors()
 {
+    ruleLeft[0] = FG_color;
+    ruleLeft[1] = FG_color;
+    ruleLeft[2] = FG_color;
+    ruleLeft[3] = FG_color;
+    ruleLeft[4] = BG_color;
+    ruleLeft[5] = BG_color;
+    ruleLeft[6] = BG_color;
+    ruleLeft[7] = BG_color;
 
-ruleLeft[0] = FG_color;
-ruleLeft[1] = FG_color;
-ruleLeft[2] = FG_color;
-ruleLeft[3] = FG_color;
-ruleLeft[4] = BG_color;
-ruleLeft[5] = BG_color;
-ruleLeft[6] = BG_color;
-ruleLeft[7] = BG_color;
+    ruleCenter[0] = FG_color;
+    ruleCenter[1] = FG_color;
+    ruleCenter[2] = BG_color;
+    ruleCenter[3] = BG_color;
+    ruleCenter[4] = FG_color;
+    ruleCenter[5] = FG_color;
+    ruleCenter[6] = BG_color;
+    ruleCenter[7] = BG_color;
 
-ruleCenter[0] = FG_color;
-ruleCenter[1] = FG_color;
-ruleCenter[2] = BG_color;
-ruleCenter[3] = BG_color;
-ruleCenter[4] = FG_color;
-ruleCenter[5] = FG_color;
-ruleCenter[6] = BG_color;
-ruleCenter[7] = BG_color;
+    ruleRight[0] = FG_color;
+    ruleRight[1] = BG_color;
+    ruleRight[2] = FG_color;
+    ruleRight[3] = BG_color;
+    ruleRight[4] = FG_color;
+    ruleRight[5] = BG_color;
+    ruleRight[6] = FG_color;
+    ruleRight[7] = BG_color;
 
-ruleRight[0] = FG_color;
-ruleRight[1] = BG_color;
-ruleRight[2] = FG_color;
-ruleRight[3] = BG_color;
-ruleRight[4] = FG_color;
-ruleRight[5] = BG_color;
-ruleRight[6] = FG_color;
-ruleRight[7] = BG_color;
+    // The rule that will be displayed on start on the Elementary Cellular Automata
+    ruleDown[0] = BG_color;
+    ruleDown[1] = FG_color;
+    ruleDown[2] = BG_color;
+    ruleDown[3] = FG_color;
+    ruleDown[4] = FG_color;
+    ruleDown[5] = BG_color;
+    ruleDown[6] = FG_color;
+    ruleDown[7] = BG_color;
 
-// The rule that will be displayed on start on the Elementary Cellular Automata
-ruleDown[0] = BG_color;
-ruleDown[1] = FG_color;
-ruleDown[2] = BG_color;
-ruleDown[3] = FG_color;
-ruleDown[4] = FG_color;
-ruleDown[5] = BG_color;
-ruleDown[6] = FG_color;
-ruleDown[7] = BG_color;
-
-return 0;
+    return 0;
 }
 
 /*
@@ -869,7 +868,30 @@ int drawElementaryCellularAutomata()
  */
 
 /*
+ * Draw the square in the position (column, row) with the selected color
+ * where column is a value in the range 0-63 and row is a value in the range 0-63.
+ * To calculate the real x and y of the pixel in the upper left of the square:
+ *      x = width * column + 32
+ *      y = width * row
+ * We add 32 to the x value to center horizontaly the image in the screen
+ * (the width of the screen is 256 pixels so 256 - 32 * 2 = 192 pixels)
+ * <---32---><---192---><---32--->
+ *    0-31      32-191    192-255
  *
+ * For example, if column = 0, row = 1 and width = 3:
+ * The upper left pixel is:
+ *      x = 3 * 0 + 32 = 32
+ *      y = 3 * 1 = 3
+ * We draw horizontal lines that are 3 pixels long starting from:
+ *  k = 0: (32 + 3 * 0, 3 * 1 + 0) that's (32, 3)
+ *  k = 1: (32 + 3 * 0, 3 * 1 + 1) that's (32, 4)
+ *  k = 2: (32 + 3 * 0, 3 * 1 + 2) that's (32, 5) 
+ *      31 32 33 34 35
+ *    2  
+ *    3     x  x  x
+ *    4     x  x  x
+ *    5     x  x  x
+ *    6
  */
 int drawSquare(int column, int row, int width, unsigned short color)
 {
@@ -882,46 +904,68 @@ int drawSquare(int column, int row, int width, unsigned short color)
 }
 
 /*
- *
+ * Cleans the main framebuffer 
+ * and initiliazes the values of the variables used for the munching squares.
  */
 int initializeMunchingSquares()
 {
     cleanFB(fb);
-    munchingSquaresNumSteps = 0;
-    munchingSquaresCondition = false;
+    munchingSquaresNumSteps = 0;    // Reset the number of steps to 0.
+    munchingSquaresCondition = false;   // Reset the boolean value of the condition to false
     
     return 0;
 }
 
 /*
+ * Draws the next step of the munching squares
+ * We use a grid of 64 squares height x 64 squares width where each square is 3 pixels x 3 pixels
+ * 64 * 3 = 192 pixels (the height of the screen)
+ * See the comments of the function drawSquare above.
+ * 
+ * XOR is the logical operator "exclusive disjunction", also called "exclusive or".
+ * http://en.wikipedia.org/wiki/XOR#Bitwise_operation
+ * XOR is a type of logical disjunction on two operands that results in a value of true if exactly one of the operands has a value of true.
+ * 1 xor 1 = 0
+ * 1 xor 0 = 1
+ * 0 xor 1 = 1
+ * 0 xor 0 = 0
+ * For example, 1110 xor 1001 = 0111
  *
  */
 int drawNextStepMunchingSquares()
 {
     if (munchingSquaresNumSteps < 64)   
     {
+        // For each combination of i and j where i = 0, 1, ... 63 and j = 0, 1, ... 63
+        // we check if the value of ...
+        //  * i xor j (if munchingSquaresOptionOp == 0)
+        //  * i and j (if munchingSquaresOptionOp == 1)
+        // is smaller than (if munchingSquaresOptionComp == 0) or equal to (if munchingSquaresOptionComp == 1)
+        // the sum of munchingSquaresNumSteps + munchingSquaresThreshold
+        // If the result of this comparation is true then we draw a square of 3 pixels x 3 pixels using FG color
+        // using the function drawSquare starting from the column i and the row j.
         for (int i = 0; i < 64; i++)
         {
             for (int j = 0; j < 64; j++)
             {
-				if (munchingSquaresOptionComp == 0)
+				if (munchingSquaresOptionComp == 0) // Comparation type: smaller than
 				{
-					if (munchingSquaresOptionOp == 0)
+					if (munchingSquaresOptionOp == 0) // Type of boolean operator: XOR
 					{
 						munchingSquaresCondition = ((i xor j) < (munchingSquaresNumSteps + munchingSquaresThreshold));
 					}
-					else if (munchingSquaresOptionOp == 1)
+					else if (munchingSquaresOptionOp == 1) // Type of boolean operator: AND
 					{
 						munchingSquaresCondition = ((i and j) < (munchingSquaresNumSteps + munchingSquaresThreshold));
 					}
 				}
-				else if (munchingSquaresOptionComp == 1)
+				else if (munchingSquaresOptionComp == 1) // Comparation type: equal to
 				{
-                     if (munchingSquaresOptionOp == 0)
+                     if (munchingSquaresOptionOp == 0) // Type of boolean operator: XOR
                      {
                      	munchingSquaresCondition = ((i xor j) == (munchingSquaresNumSteps + munchingSquaresThreshold));
                      }
-                     else if (munchingSquaresOptionOp == 1)
+                     else if (munchingSquaresOptionOp == 1) // Type of boolean operator: AND
                      {
                          munchingSquaresCondition = ((i and j) == (munchingSquaresNumSteps + munchingSquaresThreshold));
                      }
@@ -936,8 +980,8 @@ int drawNextStepMunchingSquares()
     }
     else
     {
-        cleanFB(fb);
-        initializeMunchingSquares();
+        cleanFB(fb); // Paint the framebuffer with the BG color to erase the last step of the munching squares
+        initializeMunchingSquares(); // Initialize the variables to start another cycle
     }    
     
     return 0;
@@ -1076,9 +1120,10 @@ int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned
 /*********************************** END LANGTON'S ANT FUNCTIONS ***********************************************************/
 
 /*********************************** START HEXAGONAL GRID FUNCTIONS ********************************************************/
-
+ 
 /*
- *
+ * 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ *             x  x  x                 x  x  x   
  */
 int hexGridLineOne(int y)
 {
@@ -1093,7 +1138,8 @@ int hexGridLineOne(int y)
 }
 
 /*
- *
+ * 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ *          x           x           x           x
  */
 int hexGridLineTwo(int y)
 {
@@ -1105,7 +1151,8 @@ int hexGridLineTwo(int y)
 }
 
 /*
- *
+ * 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ * x  x  x                 x  x  x
  */
 int hexGridLineThree(int y)
 {
@@ -1120,7 +1167,16 @@ int hexGridLineThree(int y)
 }
 
 /*
- *
+ *   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ * 0             x  x  x                 x  x  x     hexGridLineOne
+ * 1          x           x           x           x  hexGridLineTwo
+ * 2 x  x  x                 x  x  x                 hexGridLineThree
+ * 3          x           x           x           x  hexGridLineTwo
+ * 4             x  x  x                 x  x  x     hexGridLineOne 
+ * 5          x           x           x           x  hexGridLineTwo
+ * 6 x  x  x                 x  x  x                 hexGridLineThree
+ * 7          x           x           x           x  hexGridLineTwo
+ * 8             x  x  x                 x  x  x     hexGridLineOne 
  */
 int drawHexGrid()
 {
@@ -1153,6 +1209,10 @@ int paintHexCell(int intPosX, int intPosY, unsigned short color, unsigned short*
 
 /************************************* START TRIANGULAR GRID FUNCTIONS *****************************************************/
 
+/*
+ * 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ * x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ */
 int triangularGridLineOne(int y)
 {
 	for(int i = 0; i < 255; i++)
@@ -1162,6 +1222,10 @@ int triangularGridLineOne(int y)
 	return 0;
 }
 
+/*
+ * 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ *          x     x           x     x
+ */
 int triangularGridLineTwo(int y)
 {
 	for(int i = 3; i < 255; i = i + 6)
@@ -1172,6 +1236,10 @@ int triangularGridLineTwo(int y)
 	return 0;
 }
 
+/*
+ * 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ * x     x           x     x           x     x
+ */
 int triangularGridLineThree(int y)
 {
 	for(int i = 0; i < 255; i = i + 6)
@@ -1182,6 +1250,19 @@ int triangularGridLineThree(int y)
 	return 0;
 }
 
+/*
+ *   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ * 0 x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  triangularGridLineOne
+ * 1          x     x           x     x              triangularGridLineTwo
+ * 2 x     x           x     x           x     x     triangularGridLineThree
+ * 3 x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  triangularGridLineOne
+ * 4 x     x           x     x           x     x     triangularGridLineThree
+ * 5          x     x           x     x              triangularGridLineTwo
+ * 6 x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  triangularGridLineOne
+ * 7          x     x           x     x              triangularGridLineTwo
+ * 8 x     x           x     x           x     x     triangularGridLineThree
+ * 9 x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  triangularGridLineOne
+ */
 int drawTriangularGrid()
 {
     cleanFB(fb);
