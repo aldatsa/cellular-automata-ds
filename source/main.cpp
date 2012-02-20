@@ -228,6 +228,7 @@ string stringTypeOfComparation = "Type of comparation";
 string stringSmallerThan = "Smaller than";
 string stringEqualTo = "Equal to";
 string stringTypeOfBooleanOperator = "Type of boolean operator";
+string stringThreshold = "Threshold";
 string stringBackgroundColor = "Background color";
 string stringForegroundColor = "Foreground color";
 string stringLineColor = "Line color";
@@ -367,8 +368,8 @@ int changeTextLanguage(string languageCode)
         stringTypeOfComparation = "Type of comparation";
         stringSmallerThan = "Smaller than";
         stringEqualTo = "Equal to";
-
         stringTypeOfBooleanOperator = "Type of boolean operator";
+        stringThreshold = "Threshold";
         
         stringBackgroundColor = "Background color";
         stringForegroundColor = "Foreground color";
@@ -387,7 +388,6 @@ int changeTextLanguage(string languageCode)
         stringEnglish = "English";
         stringEspanol = "Espanol";
         stringEuskara = "Euskara";
-        
     }
     else if (languageCode == "es") // Spanish
     {
@@ -412,8 +412,8 @@ int changeTextLanguage(string languageCode)
         stringTypeOfComparation = "Tipo de comparacion";
         stringSmallerThan = "Menor que";
         stringEqualTo = "Igual que";
-
         stringTypeOfBooleanOperator = "Tipo de operador booleano";
+        stringThreshold = "Umbral";
         
         stringBackgroundColor = "Color de fondo";
         stringForegroundColor = "Color de primer plano";
@@ -456,8 +456,8 @@ int changeTextLanguage(string languageCode)
         stringTypeOfComparation = "Konparaketa mota";
         stringSmallerThan = "Txikiago";
         stringEqualTo = "Berdin";
-        
         stringTypeOfBooleanOperator = "Boolear eragile mota";
+        stringThreshold = "Ataria";
         
         stringBackgroundColor = "Atzeko planoaren kolorea";
         stringForegroundColor = "Aurreko planoaren kolorea";
@@ -2079,8 +2079,10 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[14;2H%s:", stringTypeOfBooleanOperator.c_str());
         iprintf("\x1b[15;5HXOR");
         iprintf("\x1b[16;5HAND");    
-            
-        iprintf("\x1b[18;2H%s", stringBackToMainMenu.c_str());
+        
+        iprintf("\x1b[17;2H%s: < %d >", stringThreshold.c_str(), munchingSquaresThreshold);
+        
+        iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 8) // The menu of color selection
     {
@@ -2101,7 +2103,7 @@ int printMenu(int intDisplayedMenu)
                 
         iprintf("\x1b[21;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 9)
+    else if (displayedMenu == 9) // The menu of language selection
     {
         iprintf("\x1b[10;3H%s", stringEnglish.c_str());
         iprintf("\x1b[11;3H%s", stringEspanol.c_str());
@@ -2755,9 +2757,13 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {    
             row = 16;
         }
-        else if (index == 4) // Back to main menu
+        else if (index == 4) // Threshold
+        {
+            row = 17;
+        }
+        else if (index == 5) // Back to main menu
         {    
-            row = 18;
+            row = 19;
         }            
     }
     else if (intDisplayedMenu == 8) // Select colors
@@ -3984,7 +3990,7 @@ int main(void)
 		        
 		        if (intArrow == 0)
 		        {
-		            intArrow = 4;
+		            intArrow = 5;
 		        }
 		        else
 		        {
@@ -3997,7 +4003,7 @@ int main(void)
 		    {
 		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow        
 		        
-		        if (intArrow == 4)
+		        if (intArrow == 5)
 		        {
 		            intArrow = 0;
 		        }
@@ -4007,7 +4013,22 @@ int main(void)
 		        }
 		        
 		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
-		    }            
+		    }
+		    else if (intArrow == 4 && keys_pressed & KEY_LEFT)
+		    {
+		        if (munchingSquaresThreshold > 0)
+		        {
+		            --munchingSquaresThreshold;
+                    iprintf("\x1b[17;2H%s: < %d >", stringThreshold.c_str(), munchingSquaresThreshold);
+                    runAutomata();
+		        }
+		    }
+		    else if (intArrow == 4 && keys_pressed & KEY_RIGHT)
+            {
+                ++munchingSquaresThreshold;
+                iprintf("\x1b[17;2H%s: < %d >", stringThreshold.c_str(), munchingSquaresThreshold);
+                runAutomata();
+            }
             
             drawNextStepMunchingSquares();
         }
