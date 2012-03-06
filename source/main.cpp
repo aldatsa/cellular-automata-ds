@@ -3979,7 +3979,7 @@ int main(void)
   		            printMSasterisks();
   		            runAutomata();  		            
   		        }
-  		        else if (intArrow == 4) // Back to main menu
+  		        else if (intArrow == 5) // Back to main menu
   		        {
   		            showAutomataTypeMenu();
   		        }
