@@ -40,7 +40,8 @@ const string strVersionNumber = "0.2.3";
 #define MENU_AUTOMATA_TYPE_ROW_BA 11
 #define MENU_AUTOMATA_TYPE_ROW_BHA 12
 #define MENU_AUTOMATA_TYPE_ROW_BTA 13
-#define MENU_AUTOMATA_TYPE_ROW_MS 14
+#define MENU_AUTOMATA_TYPE_ROW_CGL 14
+#define MENU_AUTOMATA_TYPE_ROW_MS 15
 #define MENU_SELECT_COLORS 16
 #define MENU_SELECT_LANGUAGE 17
 
@@ -57,8 +58,9 @@ const string strVersionNumber = "0.2.3";
  * 3: Boolean Square Automata
  * 4: Boolean Hexagonal Automata
  * 5: Boolean Triangular Automata
+ * 6: Conway's game of life
  * 6: Munching Squares
- * 7: Selecet colors
+ * 7: Select colors
  * 8: Select language
  */
 #define ELEMENTARY_CELLULAR_AUTOMATA 0
@@ -67,9 +69,10 @@ const string strVersionNumber = "0.2.3";
 #define BOOLEAN_AUTOMATA 3
 #define BOOLEAN_HEXAGONAL_AUTOMATA 4
 #define BOOLEAN_TRIANGULAR_AUTOMATA 5
-#define MUNCHING_SQUARES 6
-#define SELECT_COLORS 7
-#define SELECT_LANGUAGE 8
+#define CONWAYS_GAME_OF_LIFE 6
+#define MUNCHING_SQUARES 7
+#define SELECT_COLORS 8
+#define SELECT_LANGUAGE 9
 
 /*
  * Variables for the colors of the background
@@ -135,9 +138,10 @@ touchPosition touch;
  * 3: Boolean Square automata
  * 4: Boolean Hexagonal automata
  * 5: Boolean Triangular Automata
- * 6: Munching Squares
- * 7: Selecet colors
- * 8: Select language
+ * 6: Conway's game of life
+ * 7: Munching Squares
+ * 8: Selecet colors
+ * 9: Select language
  */
 int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
 
@@ -156,9 +160,10 @@ string displayedLanguage = "eu";
  * 4: Boolean automata menu
  * 5: Boolean Hexagonal Automata menu
  * 6: Boolean Triangular Automata menu
- * 7: Munching squares menu
- * 8: Select colors
- * 9: Select language
+ * 7: Conway's game of life
+ * 8: Munching squares menu
+ * 9: Select colors
+ * 10: Select language
  */
 int displayedMenu = 0;
 
@@ -170,6 +175,7 @@ int displayedMenu = 0;
  * Boolean automata menu: ?????
  * Boolean Hexagonal Automata menu: ????
  * Boolean Triangular Automata menu: ????
+ * Conway's game of life: ????
  * Munching Squares: in the bottom screen (0-2)
  * Select colors: ????
  * Select language: ????
@@ -217,6 +223,7 @@ string stringLangtonsHexagonalAnt = "Langton's hexagonal ant";
 string stringBooleanAutomata = "Boolean automata";
 string stringBooleanHexagonalAutomata = "Boolean hexagonal automata";
 string stringBooleanTriangularAutomata = "Boolean triangular automata";
+string stringConwaysGameOfLife = "Conway's game of life";
 string stringMunchingSquares = "Munching Squares";
 string stringSelectColors = "Select colors";
 string stringBackToMainMenu = "Back to main menu";
@@ -355,6 +362,7 @@ int changeTextLanguage(string languageCode)
         stringBooleanAutomata = "Boolean automata"; // max 30 characters
         stringBooleanHexagonalAutomata = "Boolean hexagonal automata"; // max 30 characters
         stringBooleanTriangularAutomata = "Boolean triangular automata"; // max 30 characters
+        stringConwaysGameOfLife = "Conway's game of life";
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringSelectColors = "Select colors"; // max 30 characters
         stringBackToMainMenu = "Back to main menu"; // max 30 characters
@@ -399,6 +407,7 @@ int changeTextLanguage(string languageCode)
         stringBooleanAutomata = "Automata booleano"; // max 30 characters
         stringBooleanHexagonalAutomata = "Automata booleano hexagonal"; // max 30 characters
         stringBooleanTriangularAutomata = "Automata booleano triangular"; // max 30 characters
+        stringConwaysGameOfLife = "Juego de la vida de Conway";
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringSelectColors = "Seleccionar colores"; // max 30 characters        
         stringBackToMainMenu = "Volver al menu principal"; // max 30 characters
@@ -443,6 +452,7 @@ int changeTextLanguage(string languageCode)
         stringBooleanAutomata = "Automata boolearra"; // max 30 characters
         stringBooleanHexagonalAutomata = "Automata boolear hexagonala"; // max 30 characters
         stringBooleanTriangularAutomata = "Automata boolear triangularra"; // max 30 characters
+        stringConwaysGameOfLife = "Conway-ren biziaren jokoa";
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringSelectColors = "Hautatu koloreak"; // max 30 characters
         stringBackToMainMenu = "Itzuli menu nagusira"; // max 30 characters
@@ -1977,6 +1987,138 @@ int initializeBooleanTriangularAutomata(int intX, int intY)
 
 /*************************************** END BOOLEAN AUTOMATA FUNCTIONS ****************************************************/
 
+/**************************************** START CONWAY'S GAME OF LIFE FUNCTIONS ********************************************/
+
+/*
+ * 
+ */
+int initializeConwaysGameOfLife(int intX, int intY)
+{
+    cleanFB(fb);
+    cleanFB(fb2);
+    
+    automataSteps = 0;
+    
+    drawHLine(intX, intY, 5, FG_color, fb);
+    drawHLine(intX + 1, intY + 2, 3, FG_color, fb);
+    drawHLine(intX, intY + 4, 5, FG_color, fb);
+    
+    return 0;
+}
+
+/*
+ * 
+ */
+int calculateNextStepConwaysGameOfLife()
+{          
+    unsigned short* fbRef;
+    unsigned short* fbNew;
+
+    /*
+     * changeCount is used to know if the next step is different from the current step.
+     * If changeCount == 0 then there're no changes and the automata has finished,
+     * so we can start again from step 0.
+     * If changeCount != 0 then the automata has not finished yet.
+     */ 
+    int changeCount = 0; 
+
+    int countFG = 0;
+                
+    if (automataSteps % 2 == 0 and automataSteps != 1)
+    {
+        fbRef = fb2;
+        fbNew = fb;
+    }
+    else 
+    {
+        fbRef = fb;
+        fbNew = fb2;
+    }
+    
+    dmaCopy(fbRef, fbNew, 128*1024);
+    
+    for (int i = 1; i < 254; ++i)
+    {   
+        for (int j = 1; j < 191; ++j)
+        {
+            countFG = 0;        
+
+            // top 
+            if (fbRef[256 * (j - 1) + i] == FG_color)
+            {
+                countFG++;
+            }
+
+      	    //bottom
+            if (fbRef[256 * (j + 1) + i] == FG_color)
+            {
+                countFG++;
+            }        	    
+            
+            // left
+            if (fbRef[256 * j + i - 1] == FG_color)
+            {
+                countFG++;
+            }
+
+            // right
+            if (fbRef[256 * j + i + 1] == FG_color)
+            {
+                countFG++;
+            }
+                        
+            // top left
+            if (fbRef[256 * (j - 1) + i - 1] == FG_color)
+            {
+               countFG++;
+            }
+                
+            // top right
+            if (fbRef[256 * (j - 1) + i + 1] == FG_color)
+            {
+               countFG++;
+            }
+                
+            // bottom left    
+            if (fbRef[256 * (j + 1) + i - 1] == FG_color)
+            {
+                countFG++;
+            }
+
+            // bottom right                         
+            if (fbRef[256 * (j + 1) + i + 1] == FG_color)
+            {
+                countFG++;
+            }
+            
+            if (countFG < 2 && fbRef[256 * j + i] == FG_color) // Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+            {
+                fbNew[256 * j + i] = BG_color;
+                changeCount++;
+            }
+            if ((countFG == 2 || countFG == 3) && fbRef[256 * j + i] == FG_color) // Any live cell with two or three live neighbours lives on to the next generation.
+            {
+                fbNew[256 * j + i] = FG_color;
+                changeCount++;
+            }
+            if (countFG > 3 && fbRef[256 * j + i] == FG_color) // Any live cell with more than three live neighbours dies, as if by overcrowding.
+            {
+                fbNew[256 * j + i] = BG_color;
+                changeCount++;
+            }
+            if (countFG == 3 && fbRef[256 * j + i] == BG_color) // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+            {
+                fbNew[256 * j + i] = FG_color;
+                changeCount++;
+            }            
+        }
+    }
+    
+    return changeCount;
+}
+
+/**************************************** END CONWAY'S GAME OF LIFE FUNCTIONS ********************************************/
+
 /******************************************* START MENU FUNCTIONS **********************************************************/
 
 /*
@@ -2028,6 +2170,7 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_BA, stringBooleanAutomata.c_str());
         iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_BHA, stringBooleanHexagonalAutomata.c_str());
         iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_BTA, stringBooleanTriangularAutomata.c_str());
+        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_CGL, stringConwaysGameOfLife.c_str());
         iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_MS, stringMunchingSquares.c_str());
         iprintf("\x1b[%d;2H%s", MENU_SELECT_COLORS, stringSelectColors.c_str());
         iprintf("\x1b[%d;2H%s", MENU_SELECT_LANGUAGE, stringSelectLanguage.c_str());
@@ -2070,7 +2213,11 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[17;5H 5    6    7    8");        
         iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 7) // The menu of the munching squares
+    else if (displayedMenu == 7) // The menu of the Langton's hexagonal ant
+    {
+        iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
+    }
+    else if (displayedMenu == 8) // The menu of the munching squares
     {
         iprintf("\x1b[11;2H%s:", stringTypeOfComparation.c_str());        
         iprintf("\x1b[12;5H%s", stringSmallerThan.c_str());
@@ -2084,7 +2231,7 @@ int printMenu(int intDisplayedMenu)
         
         iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 8) // The menu of color selection
+    else if (displayedMenu == 9) // The menu of color selection
     {
         iprintf("\x1b[8;2H%s:", stringBackgroundColor.c_str());
         iprintf("\x1b[9;5H%s < %i > ", stringRed.c_str(), BG_R);
@@ -2103,7 +2250,7 @@ int printMenu(int intDisplayedMenu)
                 
         iprintf("\x1b[21;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 9) // The menu of language selection
+    else if (displayedMenu == 10) // The menu of language selection
     {
         iprintf("\x1b[10;3H%s", stringEnglish.c_str());
         iprintf("\x1b[11;3H%s", stringEspanol.c_str());
@@ -2518,15 +2665,19 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {
             row = MENU_AUTOMATA_TYPE_ROW_BTA;
         }
-        else if (index == 6) // Munching squares
+        else if (index == 6) // Boolean Triangular Automata
+        {
+            row = MENU_AUTOMATA_TYPE_ROW_CGL;
+        }        
+        else if (index == 7) // Munching squares
         {    
             row = MENU_AUTOMATA_TYPE_ROW_MS;
         }        
-        else if (index == 7) // Select colors
+        else if (index == 8) // Select colors
         {
             row = MENU_SELECT_COLORS;
         }
-        else if (index == 8) // Select language
+        else if (index == 9) // Select language
         {
             row = MENU_SELECT_LANGUAGE;
         }
@@ -2738,8 +2889,15 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {
             row = 19;
         }
-    }            
-    else if (intDisplayedMenu == 7) // Munching squares menu
+    }
+    else if (intDisplayedMenu == 7) // Conway's game of life menu
+    {
+        if (index == 0)
+        {
+            row = 13;
+        }
+    }
+    else if (intDisplayedMenu == 8) // Munching squares menu
     {
         if (index == 0) // Comparation type: Smaller than
         {
@@ -2766,7 +2924,7 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 19;
         }            
     }
-    else if (intDisplayedMenu == 8) // Select colors
+    else if (intDisplayedMenu == 9) // Select colors
     {
         if (index == 0) // BG red
         {
@@ -2809,7 +2967,7 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 21;
         }
     }
-    else if (intDisplayedMenu == 9) // Select language    
+    else if (intDisplayedMenu == 10) // Select language    
     {
         if (index == 0) // English
         {
@@ -2884,6 +3042,10 @@ int printAutomataType(int automataType)
     {
         printf("%s", stringBooleanTriangularAutomata.c_str());
     }
+    else if (automataType == CONWAYS_GAME_OF_LIFE)
+    {
+        printf("%s", stringConwaysGameOfLife.c_str());
+    }
     else if (automataType == MUNCHING_SQUARES)
     {
         printf("%s", stringMunchingSquares.c_str());
@@ -2918,7 +3080,10 @@ int printNumSteps(int automataType)
     {
         iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), automataSteps);
     }
-    
+    else if (automataType == CONWAYS_GAME_OF_LIFE)
+    {
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), automataSteps);
+    }    
     return 0;
 }
 
@@ -2969,6 +3134,14 @@ int runAutomata()
         showFB2();
         
         initializeBooleanTriangularAutomata(127, 91);
+    }
+    else if (automataType == CONWAYS_GAME_OF_LIFE)
+    {
+        showFB();
+        dmaCopy(fb, fb2, 128*1024);
+        showFB2();
+        
+        initializeConwaysGameOfLife(90, 120);
     }
     else if (automataType == MUNCHING_SQUARES)
     {
@@ -3080,13 +3253,13 @@ int main(void)
                 else
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
-                    automataType = 8;
+                    automataType = 9;
                     printMenuArrow(displayedMenu, automataType, false); // Print new arrow
                 }   
             }
             else if (keys_released & KEY_DOWN)
             {
-                if (automataType != 8)
+                if (automataType != 9)
                 {
                     printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType + 1;
@@ -3198,6 +3371,23 @@ int main(void)
                     printBTAasterisks();
                     runAutomata();
                 }
+                else if (automataType == CONWAYS_GAME_OF_LIFE)
+                {
+                    consoleClear();
+                    printCredits();
+                    
+                    printAutomataType(CONWAYS_GAME_OF_LIFE);
+                    
+                    intArrow = 0;
+                    displayedMenu = 7;
+                    
+                    printMenu(displayedMenu);
+                    
+                    printMenuArrow(displayedMenu, intArrow, false);
+                                        
+                    //printCGLasterisks();
+                    runAutomata();
+                }
                 else if (automataType == MUNCHING_SQUARES)
                 {   
                     consoleClear();
@@ -3206,7 +3396,7 @@ int main(void)
                     printAutomataType(MUNCHING_SQUARES);
                     
                     intArrow = 0;                    
-                    displayedMenu = 7;
+                    displayedMenu = 8;
                     
                     printMenu(displayedMenu);
                     
@@ -3223,7 +3413,7 @@ int main(void)
                     printf("%s:", stringSelectColors.c_str());
                     
                     intArrow = 0;
-                    displayedMenu = 8;
+                    displayedMenu = 9;
                     
                     printMenu(displayedMenu);
                     
@@ -3239,7 +3429,7 @@ int main(void)
                     printf("%s:", stringSelectLanguage.c_str());
                     
                     intArrow = 0;
-                    displayedMenu = 9;
+                    displayedMenu = 10;
                     
                     printMenu(displayedMenu);
                     
@@ -3949,9 +4139,38 @@ int main(void)
 		    }		                
         }
         /*
+         * Conway's game of life
+         */                
+        else if (displayedMenu == 7)
+        {    	    
+            automataSteps++;
+            printNumSteps(CONWAYS_GAME_OF_LIFE);
+            
+            calculateNextStepConwaysGameOfLife();
+            
+            if (automataSteps % 2 == 0 and automataSteps != 1)
+            {
+                showFB();
+            }
+            else
+            {
+                showFB2();
+            }
+            swiWaitForVBlank(); 
+
+    	    if(keys_released & KEY_A)
+		    {
+		        if (intArrow == 0)
+		        {
+		            // Go back to the selection of the type of automata
+                    showAutomataTypeMenu();
+                }                    
+		    }
+        }
+        /*
          * Munching squares menu
          */
-        else if (displayedMenu == 7)
+        else if (displayedMenu == 8)
         {
   		    if(keys_released & KEY_A)
   		    {
@@ -4035,7 +4254,7 @@ int main(void)
         /*
          * Color selection menu
          */
-        else if (displayedMenu == 8)
+        else if (displayedMenu == 9)
         {
   		    if(keys_released & KEY_A)
   		    {
@@ -4230,7 +4449,7 @@ int main(void)
         /*
          * Language selection menu
          */
-        else if (displayedMenu == 9)
+        else if (displayedMenu == 10)
         {
   		    if(keys_released & KEY_A)
   		    {
