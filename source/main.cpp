@@ -1990,18 +1990,45 @@ int initializeBooleanTriangularAutomata(int intX, int intY)
 /**************************************** START CONWAY'S GAME OF LIFE FUNCTIONS ********************************************/
 
 /*
+ * Draws the initial state that develops into the period 3 oscillator called "pulsar".
+ * The "pulsar" is the most common period 3 oscillator.
+ */
+int initializePulsar(int intX, int intY)
+{
+    drawHLine(intX, intY, 5, FG_color, fb);
+    drawHLine(intX + 1, intY + 2, 3, FG_color, fb);
+    drawHLine(intX, intY + 4, 5, FG_color, fb);
+    
+    return 0;
+}
+
+/*
+ * Fills the screen with multiple rows and columns of "pulsars".
+ */
+int fillScreenWithPulsars()
+{
+    for (int i = 12; i < 249; i = i + 16)
+    {
+        for (int j = 12; j < 185; j = j + 16)
+        { 
+            initializePulsar(i, j);
+        }
+    }
+    
+    return 0;
+}
+
+/*
  * 
  */
-int initializeConwaysGameOfLife(int intX, int intY)
+int initializeConwaysGameOfLife()
 {
     cleanFB(fb);
     cleanFB(fb2);
     
     automataSteps = 0;
     
-    drawHLine(intX, intY, 5, FG_color, fb);
-    drawHLine(intX + 1, intY + 2, 3, FG_color, fb);
-    drawHLine(intX, intY + 4, 5, FG_color, fb);
+    fillScreenWithPulsars();
     
     return 0;
 }
@@ -3141,7 +3168,7 @@ int runAutomata()
         dmaCopy(fb, fb2, 128*1024);
         showFB2();
         
-        initializeConwaysGameOfLife(90, 120);
+        initializeConwaysGameOfLife();
     }
     else if (automataType == MUNCHING_SQUARES)
     {
