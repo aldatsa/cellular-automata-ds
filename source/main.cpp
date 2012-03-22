@@ -1990,8 +1990,21 @@ int initializeBooleanTriangularAutomata(int intX, int intY)
 /**************************************** START CONWAY'S GAME OF LIFE FUNCTIONS ********************************************/
 
 /*
+ * References:
+ *  http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+ */
+ 
+/*
  * Draws the initial state that develops into the period 3 oscillator called "pulsar".
  * The "pulsar" is the most common period 3 oscillator.
+ *
+ * The initial state is like that:
+ *
+ *          *****
+ *                  (empty line)
+ *           ***
+ *                  (empty line)
+ *          *****
  */
 int initializePulsar(int intX, int intY)
 {
@@ -2019,6 +2032,26 @@ int fillScreenWithPulsars()
 }
 
 /*
+ * Draws the F-pentomino.
+ * During this early research, Conway discovered that the F-pentomino (which he called the "R-pentomino") failed to stabilize in a small number of generations.
+ * In fact, it takes 1103 generations to stabilize, by which time it has a population of 116 and has fired six escaping gliders (these were the first gliders ever discovered). 
+ * 
+ * The initial state is like that:
+ *
+ *          **
+ *         **
+ *          * 
+ */
+int initializeFpentomino(int intX, int intY)
+{
+    drawHLine(intX, intY, 2, FG_color, fb);
+    drawHLine(intX - 1, intY + 1, 2, FG_color, fb);
+    drawHLine(intX, intY + 2, 1, FG_color, fb);
+    
+    return 0;
+}
+
+/*
  * 
  */
 int initializeConwaysGameOfLife()
@@ -2028,8 +2061,8 @@ int initializeConwaysGameOfLife()
     
     automataSteps = 0;
     
-    fillScreenWithPulsars();
-    
+    //fillScreenWithPulsars();
+    initializeFpentomino(120, 90);
     return 0;
 }
 
