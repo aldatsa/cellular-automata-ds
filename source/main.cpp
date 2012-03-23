@@ -2052,6 +2052,26 @@ int initializeFpentomino(int intX, int intY)
 }
 
 /*
+ * Draws the Acorn
+ * It takes 5206 generations to generate 633 cells including 13 escaped gliders.
+ * 
+ * The initial state is like that:
+ *
+ *           *
+ *             *
+ *          **  ***
+ */
+int initializeAcorn(int intX, int intY)
+{
+    drawHLine(intX, intY, 1, FG_color, fb);
+    drawHLine(intX + 2, intY + 1, 1, FG_color, fb);
+    drawHLine(intX - 1, intY + 2, 2, FG_color, fb);
+    drawHLine(intX + 3, intY + 2, 3, FG_color, fb);    
+    
+    return 0;
+}
+
+/*
  * 
  */
 int initializeConwaysGameOfLife()
@@ -2062,7 +2082,9 @@ int initializeConwaysGameOfLife()
     automataSteps = 0;
     
     //fillScreenWithPulsars();
-    initializeFpentomino(120, 90);
+    //initializeFpentomino(120, 90);
+    initializeAcorn(120, 90);
+    
     return 0;
 }
 
