@@ -140,7 +140,7 @@ touchPosition touch;
  * 5: Boolean Triangular Automata
  * 6: Conway's game of life
  * 7: Munching Squares
- * 8: Selecet colors
+ * 8: Select colors
  * 9: Select language
  */
 int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
@@ -259,7 +259,7 @@ int drawHLine(int column, int row, int lenght, unsigned short color, unsigned sh
 {
 	for(int i = column; i < column + lenght; i++)
 	{
-		framebuffer[row * 256 + i] = color;
+		framebuffer[row * SCREEN_WIDTH + i] = color;
 	}
 	return 0;
 }
@@ -271,7 +271,7 @@ int drawVLine(int column, int row, int lenght, unsigned short color)
 {
     for(int i = row; i < row + lenght; i++)
     {
-        fb[i * 256 + column] = color;
+        fb[i * SCREEN_WIDTH + column] = color;
     }
     return 0;
 }
@@ -283,11 +283,11 @@ int cleanFB(unsigned short* framebuffer)
 {
 	int row, column;
 
-	for(row = 0; row < 192; row++)
+	for(row = 0; row < SCREEN_HEIGHT; row++)
 	{
-	    for(column = 0; column < 256; column++)
+	    for(column = 0; column < SCREEN_WIDTH; column++)
 	    {
-		    framebuffer[row*256 + column] = BG_color;
+		    framebuffer[row * SCREEN_WIDTH + column] = BG_color;
 		}
     }
 	return 0;
@@ -603,43 +603,51 @@ int printRuleNumber(int intRuleNumber)
  */
 int drawArrow(char nth, unsigned short color)
 {	
-	
+
+    const int intTopRow = 149;
+    const int intBottomRow = 181;
+
+    const int intColumn1 = 38;
+    const int intColumn2 = 94;
+    const int intColumn3 = 150;
+    const int intColumn4 = 206;
+    
 	int intRow = 0;
 	int intColumn = 0;
-
+     
 	switch (nth)
 	{
 		case 0 :
-			intRow = 149;
-			intColumn = 38;
+			intRow = intTopRow;
+			intColumn = intColumn1;
 		 	break;
 		case 1 :
-			intRow = 149;
-			intColumn = 94;
+			intRow = intTopRow;
+			intColumn = intColumn2;
 		 	break;		
 		case 2 :
-			intRow = 149;
-			intColumn = 150;
+			intRow = intTopRow;
+			intColumn = intColumn3;
 		 	break;	
 		case 3 :
-			intRow = 149;
-			intColumn = 206;
+			intRow = intTopRow;
+			intColumn = intColumn4;
 		 	break;	
 		case 4 :
-			intRow = 181;
-			intColumn = 38;
+			intRow = intBottomRow;
+			intColumn = intColumn1;
 		 	break;
 		case 5 :
-			intRow = 181;
-			intColumn = 94;
+			intRow = intBottomRow;
+			intColumn = intColumn2;
 		 	break;		
 		case 6 :
-			intRow = 181;
-			intColumn = 150;
+			intRow = intBottomRow;
+			intColumn = intColumn3;
 		 	break;	
 		case 7 :
-			intRow = 181;
-			intColumn = 206;
+			intRow = intBottomRow;
+			intColumn = intColumn4;
 		 	break;	
 	}
 	
@@ -712,7 +720,7 @@ int drawRectangle(bool fill, int intRowStart, int intColumnStart, int length, in
 	{
 		for(row = intRowStart + 1; row < intRowStart + length - 1; row++)
 		{
-			fb[row * 256 + column] = color;
+			fb[row * SCREEN_WIDTH + column] = color;
 		}
 	} 
 	
@@ -724,47 +732,56 @@ int drawRectangle(bool fill, int intRowStart, int intColumnStart, int length, in
  */
 int drawRule(int nth)
 {
+
+    const int intTopRow = 136;
+    const int intBottomRow = 168;
+
+    const int intColumn1 = 32;
+    const int intColumn2 = 88;
+    const int intColumn3 = 144;
+    const int intColumn4 = 200;
+
+	const int intLength = 9;
+	const int intWidth = 9;
+    
 	bool fill = false;
 	int intRowStart = 0;
 	int intColumnStart = 0;
-
-	int intLength = 9;
-	int intWidth = 9;
 	
 	switch (nth)
 	{
 		case 0 :
-			intRowStart = 136;
-			intColumnStart = 32;
+			intRowStart = intTopRow;
+			intColumnStart = intColumn1;
 		 	break;
 		case 1 :
-			intRowStart = 136;
-			intColumnStart = 88;
+			intRowStart = intTopRow;
+			intColumnStart = intColumn2;
 		 	break;		
 		case 2 :
-			intRowStart = 136;
-			intColumnStart = 144;
+			intRowStart = intTopRow;
+			intColumnStart = intColumn3;
 		 	break;	
 		case 3 :
-			intRowStart = 136;
-			intColumnStart = 200;
+			intRowStart = intTopRow;
+			intColumnStart = intColumn4;
 		 	break;	
 
 		case 4 :
-			intRowStart = 168;
-			intColumnStart = 32;
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn1;
 		 	break;
 		case 5 :
-			intRowStart = 168;
-			intColumnStart = 88;
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn2;
 		 	break;		
 		case 6 :
-			intRowStart = 168;
-			intColumnStart = 144;
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn3;
 		 	break;	
 		case 7 :
-			intRowStart = 168;
-			intColumnStart = 200;
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn4;
 		 	break;	
 	}
 
@@ -819,38 +836,38 @@ int drawElementaryCellularAutomata()
 
 	for(row = 0; row < 130; row++)
 	{
-		for(column = 0; column < 256; column++)
+		for(column = 0; column < SCREEN_WIDTH; column++)
 		{
 			if(row != 0 && row < 128)
 			{
-				for(i=0;i<=7;i++)
+				for(i=0; i <= 7; i++)
 				{
-					if(column != 0 && column != 255)
+					if(column != 0 && column != SCREEN_WIDTH - 1)
 					{ 
-						if (fb[(row - 1)*256 + (column-1)] == ruleLeft[i] && fb[(row - 1)*256 + column] == ruleCenter[i] && fb[(row - 1)*256 + (column+1)] == ruleRight[i])
-							fb[row*256 + column] = ruleDown[i];
+						if (fb[(row - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(row - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(row - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
+							fb[row * SCREEN_WIDTH + column] = ruleDown[i];
 					}
 					else if(column == 0)
 					{
 						// The left cell is out of the screen, instead we'll use the center cell (column 0) to compare to ruleLeft
-						if(fb[(row - 1)*256 + column] == ruleLeft[i]  && fb[(row - 1)*256 + column] == ruleCenter[i] && fb[(row - 1)*256 + (column+1)] == ruleRight[i])
+						if(fb[(row - 1) * SCREEN_WIDTH + column] == ruleLeft[i]  && fb[(row - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(row - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
 						{
-							fb[row*256 + column] = ruleDown[i];								
+							fb[row * SCREEN_WIDTH + column] = ruleDown[i];								
 						}
 					}	
-					else if(column == 255)
+					else if(column == SCREEN_WIDTH - 1)
 					{
                         // The right cell is out of the screen, instead we'll use the center cell (column 255) to compare to ruleRight
-						if(fb[(row - 1)*256 + (column-1)] == ruleLeft[i] && fb[(row - 1)*256 + column] == ruleCenter[i] && fb[(row - 1)*256 + column] == ruleRight[i])
+						if(fb[(row - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(row - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(row - 1) * SCREEN_WIDTH + column] == ruleRight[i])
                         {
-							fb[row*256 + column] = ruleDown[i];								
+							fb[row * SCREEN_WIDTH + column] = ruleDown[i];								
                         }
 					}
 				}
 			}
 			else if(row == 129)
 			{
-				fb[row*256 + column] = FG_color;
+				fb[row * SCREEN_WIDTH + column] = FG_color;
 			}
 		}
 	}
@@ -1046,7 +1063,7 @@ int paintAnt()
 {
 	unsigned short tempColor;
 	
-	if (fb[antPosY * 256 + antPosX] == FG_color)
+	if (fb[antPosY * SCREEN_WIDTH + antPosX] == FG_color)
 	{
 		tempColor = BG_color;
 	}
@@ -1059,7 +1076,7 @@ int paintAnt()
 	{
 		for(int j = 0; j < antNumPixels; j++)
 		{		
-			fb[(antPosY + j) * 256 + (antPosX + i)] = tempColor;
+			fb[(antPosY + j) * SCREEN_WIDTH + (antPosX + i)] = tempColor;
 		}
 	}
 	return 0;
@@ -1096,7 +1113,7 @@ int forwardAnt()
  */
 void stepAnt()
 {
-	if (fb[antPosY * 256 + antPosX] == BG_color)
+	if (fb[antPosY * SCREEN_WIDTH + antPosX] == BG_color)
 	{
 		rotateAnt('R');
 	}
@@ -1141,7 +1158,7 @@ int hexGridLineOne(int y)
 	{
 		for(int j=0; j<3; j++)
 		{
-			fb[256 * y + (4 + j + 8 * i)] = line_color;
+			fb[SCREEN_WIDTH * y + (4 + j + 8 * i)] = line_color;
 		}
 	}
 	return 0;
@@ -1155,7 +1172,7 @@ int hexGridLineTwo(int y)
 {
 	for(int i = 0; i < 64; i++)
 	{
-		fb[256 * y + (3 + 4 * i)] = line_color;
+		fb[SCREEN_WIDTH * y + (3 + 4 * i)] = line_color;
 	}
 	return 0;
 }
@@ -1170,7 +1187,7 @@ int hexGridLineThree(int y)
 	{
 		for(int j = 0; j < 3; j++)
 		{
-			fb[256 * y + (j + 8 * i)] = line_color;
+			fb[SCREEN_WIDTH * y + (j + 8 * i)] = line_color;
 		}
 	}
 	return 0;
@@ -1225,9 +1242,9 @@ int paintHexCell(int intPosX, int intPosY, unsigned short color, unsigned short*
  */
 int triangularGridLineOne(int y)
 {
-	for(int i = 0; i < 255; i++)
+	for(int i = 0; i < SCREEN_WIDTH - 1; i++)
 	{
-    	fb[256 * y + i] = line_color;
+    	fb[SCREEN_WIDTH * y + i] = line_color;
 	}
 	return 0;
 }
@@ -1238,10 +1255,10 @@ int triangularGridLineOne(int y)
  */
 int triangularGridLineTwo(int y)
 {
-	for(int i = 3; i < 255; i = i + 6)
+	for(int i = 3; i < SCREEN_WIDTH - 1; i = i + 6)
 	{
-		fb[256 * y + i] = line_color;
-        fb[256 * y + i + 2] = line_color;
+		fb[SCREEN_WIDTH * y + i] = line_color;
+        fb[SCREEN_WIDTH * y + i + 2] = line_color;
 	}
 	return 0;
 }
@@ -1252,10 +1269,10 @@ int triangularGridLineTwo(int y)
  */
 int triangularGridLineThree(int y)
 {
-	for(int i = 0; i < 255; i = i + 6)
+	for(int i = 0; i < SCREEN_WIDTH - 1; i = i + 6)
 	{
-		fb[256 * y + i] = line_color;
-		fb[256 * y + i + 2] = line_color;
+		fb[SCREEN_WIDTH * y + i] = line_color;
+		fb[SCREEN_WIDTH * y + i + 2] = line_color;
 	}
 	return 0;
 }
@@ -1347,7 +1364,7 @@ int paintHexAnt()
 
 	unsigned short tempColor;
 	
-	if (fb[antPosY * 256 + antPosX] == FG_color)
+	if (fb[antPosY * SCREEN_WIDTH + antPosX] == FG_color)
 	{
 		tempColor = BG_color;
 	}
@@ -1400,7 +1417,7 @@ int forwardHexAnt()
  */
 int stepHexAnt()
 {
-	if (fb[antPosY * 256 + antPosX] == BG_color)
+	if (fb[antPosY * SCREEN_WIDTH + antPosX] == BG_color)
 	{
 		rotateHexAnt('R');
 	}
@@ -1581,31 +1598,31 @@ int calculateNextStep(int typeOfNeighborhood)
     
     for (int i = 1; i < 254; i++)
     {   
-        for (int j = 1; j < 191; j++)
+        for (int j = 1; j < SCREEN_HEIGHT - 1; j++)
         {
             countFG = 0;        
             
 
             // top 
-            if (fbRef[256 * (j - 1) + i] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j - 1) + i] == FG_color)
             {
                 countFG++;
             }
             
             // left
-            if (fbRef[256 * j + i - 1] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i - 1] == FG_color)
             {
                 countFG++;
             }
             
             // right    
-            if (fbRef[256 * j + i + 1] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i + 1] == FG_color)
             {
                 countFG++;
             }
             
             // bottom                            
-            if (fbRef[256 * (j + 1) + i] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 1) + i] == FG_color)
             {
                 countFG++;
             }
@@ -1613,25 +1630,25 @@ int calculateNextStep(int typeOfNeighborhood)
             if (typeOfNeighborhood == 1)
             {
                 // Top left
-                if (fbRef[256 * (j - 1) + i - 1] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j - 1) + i - 1] == FG_color)
                 {
                     countFG++;
                 }
                 
                 // top right                
-                if (fbRef[256 * (j - 1) + i + 1] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j - 1) + i + 1] == FG_color)
                 {
                     countFG++;
                 }
                                 
                 // Bottom left
-                if (fbRef[256 * (j + 1) + i - 1] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j + 1) + i - 1] == FG_color)
                 {
                     countFG++;
                 }
                 
                 // bottom right
-                if (fbRef[256 * (j + 1) + i + 1] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j + 1) + i + 1] == FG_color)
                 {
                     countFG++;
                 }            
@@ -1641,9 +1658,9 @@ int calculateNextStep(int typeOfNeighborhood)
             {
                 // If the current cell's color is not already changed, change it to FG_color.
                 // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
-                if (fbNew[256 * j + i] != FG_color) 
+                if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
                 {
-                    fbNew[256 * j + i] = FG_color;
+                    fbNew[SCREEN_WIDTH * j + i] = FG_color;
                     ++changeCount;
                 }
             }
@@ -1693,43 +1710,43 @@ int calculateNextStepHex()
     
     for (int i = 8; i < 254; i = i + 8)
     {   
-        for (int j = 3; j < 191; j = j + 4)
+        for (int j = 3; j < SCREEN_HEIGHT - 1; j = j + 4)
         {
             countFG = 0;        
 
             // top left
-            if (fbRef[256 * j + i - 2] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i - 2] == FG_color)
             {
                 countFG++;
             }
 
             // top 
-            if (fbRef[256 * (j - 2) + i] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
             {
                 countFG++;
             }
             
             
             // top right
-            if (fbRef[256 * j + i + 4] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i + 4] == FG_color)
             {
                 countFG++;
             }
             
             // bottom left    
-            if (fbRef[256 * (j + 2) + i - 2] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 2) + i - 2] == FG_color)
             {
                 countFG++;
             }
             
             // bottom                            
-            if (fbRef[256 * (j + 4) + i] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 4) + i] == FG_color)
             {
                 countFG++;
             }
 
             // bottom right                         
-            if (fbRef[256 * (j + 2) + i + 4] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 2) + i + 4] == FG_color)
             {
                 countFG++;
             }
@@ -1738,7 +1755,7 @@ int calculateNextStepHex()
             {
                 // If the current cell's color is not already changed, change it to FG_color.
                 // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
-                if (fbNew[256 * j + i] != FG_color) 
+                if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
                 {
                     paintHexCell(i, j, FG_color, fbNew);
                     ++changeCount;
@@ -1753,38 +1770,38 @@ int calculateNextStepHex()
             countFG = 0;        
 
             // top left
-            if (fbRef[256 * j + i - 2] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i - 2] == FG_color)
             {
                 countFG++;
             }
 
             // top 
-            if (fbRef[256 * (j - 2) + i] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
             {
                 countFG++;
             }
             
             
             // top right
-            if (fbRef[256 * j + i + 4] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i + 4] == FG_color)
             {
                 countFG++;
             }
             
             // bottom left    
-            if (fbRef[256 * (j + 2) + i - 2] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 2) + i - 2] == FG_color)
             {
                 countFG++;
             }
             
             // bottom                            
-            if (fbRef[256 * (j + 4) + i] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 4) + i] == FG_color)
             {
                 countFG++;
             }
 
             // bottom right                         
-            if (fbRef[256 * (j + 2) + i + 4] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 2) + i + 4] == FG_color)
             {
                 countFG++;
             }
@@ -1793,7 +1810,7 @@ int calculateNextStepHex()
             {
                 // If the current cell's color is not already changed, change it to FG_color.
                 // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
-                if (fbNew[256 * j + i] != FG_color) 
+                if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
                 {
                     paintHexCell(i, j, FG_color, fbNew);
                     ++changeCount;
@@ -1871,7 +1888,7 @@ int calculateNextStepTriangular(int typeOfNeighborhood)
             if (typeOfNeighborhood == 1 or ((i % 2 == 0 and j % 2 == 0) or (i % 2 != 0 and j % 2 != 0)))
             {    
                 // top 
-                if (fbRef[256 * (j - 2) + i] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
                 {
                     countFG++;
                 }
@@ -1881,20 +1898,20 @@ int calculateNextStepTriangular(int typeOfNeighborhood)
             if (typeOfNeighborhood ==  1 or ((i % 2 != 0 and j % 2 == 0) or (i % 2 == 0 and j % 2 != 0)))
         	{
         	    //bottom
-                if (fbRef[256 * (j + 3) + i] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j + 3) + i] == FG_color)
                 {
                     countFG++;
                 }        	    
         	}
             
             // left
-            if (fbRef[256 * j + i - 3] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i - 3] == FG_color)
             {
                 countFG++;
             }
 
             // right
-            if (fbRef[256 * j + i + 3] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i + 3] == FG_color)
             {
                 countFG++;
             }
@@ -1902,25 +1919,25 @@ int calculateNextStepTriangular(int typeOfNeighborhood)
             if (typeOfNeighborhood == 1)            
             {                        
                 // top left
-                if (fbRef[256 * (j - 2) + i - 3] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j - 2) + i - 3] == FG_color)
                 {
                     countFG++;
                 }
                 
                 // top right
-                if (fbRef[256 * (j - 2) + i + 3] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j - 2) + i + 3] == FG_color)
                 {
                     countFG++;
                 }
                 
                 // bottom left    
-                if (fbRef[256 * (j + 3) + i - 3] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j + 3) + i - 3] == FG_color)
                 {
                     countFG++;
                 }
 
                 // bottom right                         
-                if (fbRef[256 * (j + 3) + i + 3] == FG_color)
+                if (fbRef[SCREEN_WIDTH * (j + 3) + i + 3] == FG_color)
                 {
                     countFG++;
                 }
@@ -1930,7 +1947,7 @@ int calculateNextStepTriangular(int typeOfNeighborhood)
             {
                 // If the current cell's color is not already changed, change it to FG_color.
                 // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
-                if (fbNew[256 * j + i] != FG_color) 
+                if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
                 {
                     paintTriangularCell(i, j, FG_color, fbNew);
                     changeCount++;
@@ -1952,7 +1969,7 @@ int initializeBooleanAutomata(int intX, int intY)
     
     automataSteps = 0;
         
-    fb[intY * 256 + intX] = FG_color;
+    fb[intY * SCREEN_WIDTH + intX] = FG_color;
     
     return 0;
 } 
@@ -2121,76 +2138,76 @@ int calculateNextStepConwaysGameOfLife()
     
     for (int i = 1; i < 254; ++i)
     {   
-        for (int j = 1; j < 191; ++j)
+        for (int j = 1; j < SCREEN_HEIGHT - 1; ++j)
         {
             countFG = 0;        
 
             // top 
-            if (fbRef[256 * (j - 1) + i] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j - 1) + i] == FG_color)
             {
                 countFG++;
             }
 
       	    //bottom
-            if (fbRef[256 * (j + 1) + i] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 1) + i] == FG_color)
             {
                 countFG++;
             }        	    
             
             // left
-            if (fbRef[256 * j + i - 1] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i - 1] == FG_color)
             {
                 countFG++;
             }
 
             // right
-            if (fbRef[256 * j + i + 1] == FG_color)
+            if (fbRef[SCREEN_WIDTH * j + i + 1] == FG_color)
             {
                 countFG++;
             }
                         
             // top left
-            if (fbRef[256 * (j - 1) + i - 1] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j - 1) + i - 1] == FG_color)
             {
                countFG++;
             }
                 
             // top right
-            if (fbRef[256 * (j - 1) + i + 1] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j - 1) + i + 1] == FG_color)
             {
                countFG++;
             }
                 
             // bottom left    
-            if (fbRef[256 * (j + 1) + i - 1] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 1) + i - 1] == FG_color)
             {
                 countFG++;
             }
 
             // bottom right                         
-            if (fbRef[256 * (j + 1) + i + 1] == FG_color)
+            if (fbRef[SCREEN_WIDTH * (j + 1) + i + 1] == FG_color)
             {
                 countFG++;
             }
             
-            if (countFG < 2 && fbRef[256 * j + i] == FG_color) // Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+            if (countFG < 2 && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with fewer than two live neighbours dies, as if caused by under-population.
             {
-                fbNew[256 * j + i] = BG_color;
+                fbNew[SCREEN_WIDTH * j + i] = BG_color;
                 changeCount++;
             }
-            if ((countFG == 2 || countFG == 3) && fbRef[256 * j + i] == FG_color) // Any live cell with two or three live neighbours lives on to the next generation.
+            if ((countFG == 2 || countFG == 3) && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with two or three live neighbours lives on to the next generation.
             {
-                fbNew[256 * j + i] = FG_color;
+                fbNew[SCREEN_WIDTH * j + i] = FG_color;
                 changeCount++;
             }
-            if (countFG > 3 && fbRef[256 * j + i] == FG_color) // Any live cell with more than three live neighbours dies, as if by overcrowding.
+            if (countFG > 3 && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with more than three live neighbours dies, as if by overcrowding.
             {
-                fbNew[256 * j + i] = BG_color;
+                fbNew[SCREEN_WIDTH * j + i] = BG_color;
                 changeCount++;
             }
-            if (countFG == 3 && fbRef[256 * j + i] == BG_color) // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+            if (countFG == 3 && fbRef[SCREEN_WIDTH * j + i] == BG_color) // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
             {
-                fbNew[256 * j + i] = FG_color;
+                fbNew[SCREEN_WIDTH * j + i] = FG_color;
                 changeCount++;
             }            
         }
@@ -3658,7 +3675,7 @@ int main(void)
          */                
         else if (displayedMenu == 2)
         {
-		    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or antPosY + antNumPixels > 191)
+		    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or antPosY + antNumPixels > SCREEN_HEIGHT - 1)
     	    {
     	        antStop = true;
     	    }
@@ -3740,7 +3757,7 @@ int main(void)
          */                
         else if (displayedMenu == 3)
         {
-		    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or antPosY + antNumPixels > 191)
+		    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or antPosY + antNumPixels > SCREEN_HEIGHT - 1)
     	    {
     	        antStop = true;
     	    }
