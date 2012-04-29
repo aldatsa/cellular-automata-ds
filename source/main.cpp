@@ -24,6 +24,9 @@
 
 #include "flash.h"  // Include for the header of the flash image (grit outputs a nice header to reference data)
 
+#include "general.h"
+#include "color.h"
+#include "hexgrid.h"
 #include "i18n.h"
 
 using namespace std;
@@ -72,30 +75,6 @@ using namespace std;
 #define SELECT_LANGUAGE 9
 
 /*
- * Variables for the colors of the background
- */
-unsigned short BG_R = 31;
-unsigned short BG_G = 31;
-unsigned short BG_B = 31;
-unsigned short BG_color = RGB15(BG_R, BG_G, BG_B);      // Color used on the BackGround (Default: White)
-
-/*
- * Variables for the colors of the elements on the foreground
- */
-unsigned short FG_R = 0;
-unsigned short FG_G = 0;
-unsigned short FG_B = 0; 
-unsigned short FG_color = RGB15(FG_R, FG_G, FG_B);         // Color used on the ForeGround (Default: Black)
-
-/*
- * Variables for the color of the lines (different grids, squares for the rules, ...)
- */
-unsigned short line_R = 15;
-unsigned short line_G = 15;
-unsigned short line_B = 15; 
-unsigned short line_color = RGB15(line_R, line_G, line_B);    // Color used to draw the lines (Default: Grey)
-
-/*
  * The rules for the Elementary Cellular Automata
  *  xxx xxo xox xoo oxx oxo oox ooo
  *   o   x   o   x   x   o   x   o  -> Rule 90: 0*128 + 1*64 + 0*32 + 1*16 + 1*8 + 0*4 + 1*2 + 0*1
@@ -112,16 +91,6 @@ unsigned short ruleRight[8] = {FG_color,BG_color,FG_color,BG_color,FG_color,BG_c
 
 // The rule that will be displayed on start on the Elementary Cellular Automata
 unsigned short ruleDown[8] = {BG_color,FG_color,BG_color,FG_color,FG_color,BG_color,FG_color,BG_color}; //Rule 90 (Default)
-
-/*
- * Pointer to the start of VRAM_A, the memory that we'll use as the main framebuffer
- */ 
-unsigned short* fb = VRAM_A;
-
-/*
- * Pointer to the start of VRAM_B, the memory that we'll use as the secondary framebuffer
- */ 
-unsigned short* fb2 = VRAM_B;
 
 /*
  * A variable for the position of the touch
@@ -205,18 +174,6 @@ int intBooleanRulesValuesTriM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5,
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
 
 /*
- * Draws a horizontal line of the specified color
- */
-int drawHLine(int column, int row, int lenght, unsigned short color, unsigned short* framebuffer)
-{
-	for(int i = column; i < column + lenght; i++)
-	{
-		framebuffer[row * SCREEN_WIDTH + i] = color;
-	}
-	return 0;
-}
-
-/*
  * Draws a vertical line of the specified color
  */ 
 int drawVLine(int column, int row, int lenght, unsigned short color)
@@ -226,23 +183,6 @@ int drawVLine(int column, int row, int lenght, unsigned short color)
         fb[i * SCREEN_WIDTH + column] = color;
     }
     return 0;
-}
-
-/*
- * Fills the selected framebuffer with the background color
- */
-int cleanFB(unsigned short* framebuffer)
-{
-	int row, column;
-
-	for(row = 0; row < SCREEN_HEIGHT; row++)
-	{
-	    for(column = 0; column < SCREEN_WIDTH; column++)
-	    {
-		    framebuffer[row * SCREEN_WIDTH + column] = BG_color;
-		}
-    }
-	return 0;
 }
 
 /*
@@ -949,94 +889,6 @@ int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned
 }
 
 /*********************************** END LANGTON'S ANT FUNCTIONS ***********************************************************/
-
-/*********************************** START HEXAGONAL GRID FUNCTIONS ********************************************************/
- 
-/*
- * 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
- *             x  x  x                 x  x  x   
- */
-int hexGridLineOne(int y)
-{
-	for(int i = 0; i < 32; i++)
-	{
-		for(int j=0; j<3; j++)
-		{
-			fb[SCREEN_WIDTH * y + (4 + j + 8 * i)] = line_color;
-		}
-	}
-	return 0;
-}
-
-/*
- * 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
- *          x           x           x           x
- */
-int hexGridLineTwo(int y)
-{
-	for(int i = 0; i < 64; i++)
-	{
-		fb[SCREEN_WIDTH * y + (3 + 4 * i)] = line_color;
-	}
-	return 0;
-}
-
-/*
- * 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
- * x  x  x                 x  x  x
- */
-int hexGridLineThree(int y)
-{
-	for(int i = 0; i < 32; i++)
-	{
-		for(int j = 0; j < 3; j++)
-		{
-			fb[SCREEN_WIDTH * y + (j + 8 * i)] = line_color;
-		}
-	}
-	return 0;
-}
-
-/*
- *   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
- * 0             x  x  x                 x  x  x     hexGridLineOne
- * 1          x           x           x           x  hexGridLineTwo
- * 2 x  x  x                 x  x  x                 hexGridLineThree
- * 3          x           x           x           x  hexGridLineTwo
- * 4             x  x  x                 x  x  x     hexGridLineOne 
- * 5          x           x           x           x  hexGridLineTwo
- * 6 x  x  x                 x  x  x                 hexGridLineThree
- * 7          x           x           x           x  hexGridLineTwo
- * 8             x  x  x                 x  x  x     hexGridLineOne 
- */
-int drawHexGrid()
-{
-    cleanFB(fb);
-    
-	for (int i = 0; i < 48; i++)
-	{
-		hexGridLineOne(4 * i);
-		hexGridLineTwo(4 * i + 1);
-		hexGridLineThree(4 * i + 2);
-		hexGridLineTwo(4 * i + 3);
-	}
-    return 0;
-}
-
-/*
- * Draws the hexagonal cell in the coordinates (intPosX, intPosY) of the specified framebuffer with the specified color
- */
-int paintHexCell(int intPosX, int intPosY, unsigned short color, unsigned short* framebuffer)
-{
-
-	drawHLine(intPosX, intPosY, 3, color, framebuffer);
-	drawHLine(intPosX - 1, intPosY + 1, 5, color, framebuffer);
-	drawHLine(intPosX, intPosY + 2, 3, color, framebuffer);
-	
-	return 0;
-}
-
-/************************************* END HEXAGONAL GRID FUNCTIONS ********************************************************/
 
 /************************************* START TRIANGULAR GRID FUNCTIONS *****************************************************/
 
