@@ -29,6 +29,20 @@ int cleanFB(unsigned short* framebuffer)
 }
 
 /*
+ *
+ */
+int showFB()
+{
+	// Configuration of the main screen
+	REG_DISPCNT = MODE_FB0;		//Framebuffer
+	
+	// Configure the VRAM A block
+	VRAM_A_CR = VRAM_ENABLE | VRAM_A_LCD;
+	
+	return 0;
+}
+
+/*
  * Draws a horizontal line of the specified color
  */
 int drawHLine(int column, int row, int lenght, unsigned short color, unsigned short* framebuffer)

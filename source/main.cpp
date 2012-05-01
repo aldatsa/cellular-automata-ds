@@ -30,6 +30,8 @@
 #include "triangulargrid.h"
 #include "i18n.h"
 
+#include "cellularautomata.h"
+
 using namespace std;
 
 /*
@@ -76,6 +78,11 @@ using namespace std;
 #define SELECT_LANGUAGE 9
 
 /*
+ * This variable sets the type of automata that is going to execute (See above)
+ */
+int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
+
+/*
  * The rules for the Elementary Cellular Automata
  *  xxx xxo xox xoo oxx oxo oox ooo
  *   o   x   o   x   x   o   x   o  -> Rule 90: 0*128 + 1*64 + 0*32 + 1*16 + 1*8 + 0*4 + 1*2 + 0*1
@@ -97,20 +104,6 @@ unsigned short ruleDown[8] = {BG_color,FG_color,BG_color,FG_color,FG_color,BG_co
  * A variable for the position of the touch
  */
 touchPosition touch;
-
-/* This variable sets the type of automata that is going to execute
- * 0: Elementary Cellular Automata
- * 1: Langton's ant
- * 2: Langton's hexagonal ant
- * 3: Boolean Square automata
- * 4: Boolean Hexagonal automata
- * 5: Boolean Triangular Automata
- * 6: Conway's game of life
- * 7: Munching Squares
- * 8: Select colors
- * 9: Select language
- */
-int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
 
 /* This variable sets the menu that is going to be displayed
  * 0: Select automata menu
@@ -184,20 +177,6 @@ int drawVLine(int column, int row, int lenght, unsigned short color)
         fb[i * SCREEN_WIDTH + column] = color;
     }
     return 0;
-}
-
-/*
- *
- */
-int showFB()
-{
-	// Configuration of the main screen
-	REG_DISPCNT = MODE_FB0;		//Framebuffer
-	
-	// Configure the VRAM A block
-	VRAM_A_CR = VRAM_ENABLE | VRAM_A_LCD;
-	
-	return 0;
 }
 
 /*
@@ -890,134 +869,6 @@ int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned
 }
 
 /*********************************** END LANGTON'S ANT FUNCTIONS ***********************************************************/
-
-/****************************** START HEXAGONAL LANGTON'S ANT FUNCTIONS ****************************************************/
-
-/*
- *
- */
-int rotateHexAnt(unsigned char rotateTo)
-{
-	if (rotateTo == 'R') // right 60
-	{
-		if (antAngle < 300)
-		{
-			antAngle = antAngle + 60;
-		}
-		else
-		{
-			antAngle = 0;
-		}
-	}
-	else if (rotateTo == 'L') // left 60
-	{
-		if (antAngle != 0)
-		{	
-			antAngle = antAngle - 60;	
-		}	
-		else
-		{
-			antAngle = 300;
-		}
-	}
-	return 0;
-}
-
-/*
- *
- */
-int paintHexAnt()
-{
-
-	unsigned short tempColor;
-	
-	if (fb[antPosY * SCREEN_WIDTH + antPosX] == FG_color)
-	{
-		tempColor = BG_color;
-	}
-	else
-	{
-		tempColor = FG_color;
-	}
-
-	paintHexCell(antPosX, antPosY, tempColor, fb);
-	
-	return 0;
-}
-
-/*
- *
- */
-int forwardHexAnt()
-{
-	switch(antAngle)
-	{
-		case 0:
-		 	antPosY = antPosY - 4;
-			break;
-		case 60:
-			antPosX = antPosX + 4;
-			antPosY = antPosY - 2;
-			break;
-		case 120:
-			antPosX = antPosX + 4;
-			antPosY = antPosY + 2;
-			break;
-
-		case 180:
-			antPosY = antPosY + 4;
-			break;
-		case 240:
-			antPosX = antPosX - 4;
-			antPosY = antPosY + 2;
-			break;
-		case 300:
-			antPosX = antPosX - 4;
-			antPosY = antPosY - 2;
-			break;
-	}
-	return 0;
-}
-
-/*
- *
- */
-int stepHexAnt()
-{
-	if (fb[antPosY * SCREEN_WIDTH + antPosX] == BG_color)
-	{
-		rotateHexAnt('R');
-	}
-	else
-	{
-		rotateHexAnt('L');
-	}
-
-	paintHexAnt();
-	forwardHexAnt();
-	
-	return 0;
-}
-
-/*
- *
- */
-int initializeHexAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned short intAntAngle)
-{   
-    cleanFB(fb);
-    
-    drawHexGrid();
-            
-    antPosX = intAntPosX;
-    antPosY = intAntPosY;
-    antAngle = intAntAngle;
-    antNumSteps = 0;
-    antStop = false;
-    
-    return 0;
-}
-
-/******************************* END HEXAGONAL LANGTON'S ANT FUNCTIONS *****************************************************/
 
 /************************************* START BOOLEAN AUTOMATA FUNCTIONS ****************************************************/
 
@@ -2723,32 +2574,32 @@ int printAutomataType(int automataType)
 /*
  * Prints the number of steps
  */
-int printNumSteps(int automataType)
+int printNumSteps(int automataType, int steps)
 {
     if (automataType == LANGTON_ANT)
     {
         iprintf("\x1b[9;0H%s:     ", stringSteps.c_str());                                                    
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), antNumSteps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
     }
     else if (automataType == LANGTON_HEXAGONAL_ANT)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), antNumSteps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
     }
     else if (automataType == BOOLEAN_AUTOMATA)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), automataSteps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
     }
     else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), automataSteps);    
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);    
     }
     else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), automataSteps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
     }
     else if (automataType == CONWAYS_GAME_OF_LIFE)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), automataSteps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
     }    
     return 0;
 }
@@ -2771,11 +2622,6 @@ int runAutomata()
     {
         showFB();
         initializeAnt(127, 95, 90, antNumPixels);        
-    }
-    else if (automataType == LANGTON_HEXAGONAL_ANT)
-    {
-        showFB();
-        initializeHexAnt(92, 93, 0);
     }
     else if (automataType == BOOLEAN_AUTOMATA)
     {
@@ -2861,6 +2707,8 @@ int runAutomata()
  */
 int main(void)
 {
+    CellularAutomata ca;
+    
     changeTextLanguage(displayedLanguage);
             
 	consoleDemoInit();
@@ -2972,6 +2820,8 @@ int main(void)
                 }
                 else if (automataType == LANGTON_HEXAGONAL_ANT)
                 {
+                    ca.setType("LHA");
+
                     consoleClear();
                     printCredits();
                     
@@ -2984,7 +2834,7 @@ int main(void)
                     
                     printMenuArrow(displayedMenu, intArrow, false);
                                         
-                    runAutomata();
+                    ca.initializeAnt(92, 93, 0);
                 }
                 else if (automataType == BOOLEAN_AUTOMATA)
                 {
@@ -3251,7 +3101,7 @@ int main(void)
     	    {
     	        stepAnt();
     	        antNumSteps++;
-                printNumSteps(LANGTON_ANT);
+                printNumSteps(LANGTON_ANT, antNumSteps);
     	        swiWaitForVBlank();
     	    }
     	    
@@ -3304,7 +3154,7 @@ int main(void)
                         antNumPixels = antNumPixels - 1;
                         iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), antNumPixels);                        
                         runAutomata();
-                        printNumSteps(LANGTON_ANT);
+                        printNumSteps(LANGTON_ANT, antNumSteps);
                     }                        
                 }		        
 		    }
@@ -3315,7 +3165,7 @@ int main(void)
                     antNumPixels = antNumPixels + 1;
                     iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), antNumPixels);
                     runAutomata();                
-                    printNumSteps(LANGTON_ANT);                    
+                    printNumSteps(LANGTON_ANT, antNumSteps);                    
                 }		    
 		    }
         }
@@ -3324,16 +3174,10 @@ int main(void)
          */                
         else if (displayedMenu == 3)
         {
-		    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or antPosY + antNumPixels > SCREEN_HEIGHT - 1)
+    	    if (ca.hasFinished() == false) // If the ant hasn't finished continue with the next step
     	    {
-    	        antStop = true;
-    	    }
-    	    
-    	    if (antStop == false)
-    	    {
-    	        stepHexAnt();
-    	        antNumSteps++;
-                printNumSteps(LANGTON_HEXAGONAL_ANT);
+    	        ca.nextStep();
+                printNumSteps(LANGTON_HEXAGONAL_ANT, ca.getNumSteps());
     	        swiWaitForVBlank();
     	    }
     	    
@@ -3352,7 +3196,7 @@ int main(void)
         else if (displayedMenu == 4)
         {
             automataSteps++;
-            printNumSteps(BOOLEAN_AUTOMATA);
+            printNumSteps(BOOLEAN_AUTOMATA, automataSteps);
 
             if (calculateNextStep(intTypeOfNeighborhood) == 0) // The automata has finished so we are going to reinitiate the cycle
             {
@@ -3519,7 +3363,7 @@ int main(void)
         else if (displayedMenu == 5)
         {
             automataSteps++;
-            printNumSteps(BOOLEAN_HEXAGONAL_AUTOMATA);
+            printNumSteps(BOOLEAN_HEXAGONAL_AUTOMATA, automataSteps);
 
             if (calculateNextStepHex() == 0) // The automata has finished so we are going to reinitiate the cycle
             {
@@ -3635,7 +3479,7 @@ int main(void)
         else if (displayedMenu == 6)
         {
             automataSteps++;
-            printNumSteps(BOOLEAN_TRIANGULAR_AUTOMATA);
+            printNumSteps(BOOLEAN_TRIANGULAR_AUTOMATA, automataSteps);
             
             if (calculateNextStepTriangular(intTypeOfNeighborhood) == 0) // The automata has finished so we are going to reinitiate the cycle
             {
@@ -3810,7 +3654,7 @@ int main(void)
         else if (displayedMenu == 7)
         {    	    
             automataSteps++;
-            printNumSteps(CONWAYS_GAME_OF_LIFE);
+            printNumSteps(CONWAYS_GAME_OF_LIFE, automataSteps);
             
             calculateNextStepConwaysGameOfLife();
             
