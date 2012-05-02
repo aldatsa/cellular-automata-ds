@@ -165,6 +165,8 @@ int intBooleanRulesValuesHex [6] = {1, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6}; Fo
 int intBooleanRulesValuesTriVN [3] = {1, 0, 0}; // {1, 2, 3}; For the Boolean Triangular Automata with Modified Von Neumann neighborhood
 int intBooleanRulesValuesTriM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8}; For the Boolean Triangular Automata with Modified Moore neighborhood
 
+CellularAutomata ca;
+
 /*********************************** START GENERAL FUNCTIONS *************************************************************************/
 
 /*
@@ -739,136 +741,6 @@ int drawNextStepMunchingSquares()
 }
 
 /*********************************** END MUNCHING SQUARES FUNCTIONS ********************************************************/
-
-/*********************************** START LANGTON'S ANT FUNCTIONS *********************************************************/
-
-/*
- * References: 
- * http://en.wikipedia.org/wiki/Langton%27s_ant
- * http://mathworld.wolfram.com/LangtonsAnt.html
- */
- 
-/*
- * Calculates the new angle of the ant
- */
-int rotateAnt(unsigned char rotateTo)
-{
-	if (rotateTo == 'R') //right 90
-	{
-		if (antAngle < 270)
-		{
-			antAngle = antAngle + 90;
-		}
-		else
-		{
-			antAngle = 0;
-		}
-	}
-	else if (rotateTo == 'L') //left 90
-	{
-		if (antAngle != 0)
-		{
-			antAngle = antAngle - 90;
-		}
-		else
-		{
-			antAngle = 270;
-		}
-	}
-	return 0;
-}
-
-/*
- * Paints the cell where the ant is.
- * The cell is painted black if it was white
- * and white if it was black.
- */
-int paintAnt()
-{
-	unsigned short tempColor;
-	
-	if (fb[antPosY * SCREEN_WIDTH + antPosX] == FG_color)
-	{
-		tempColor = BG_color;
-	}
-	else
-	{
-		tempColor = FG_color;
-	}
-
-	for(int i = 0; i < antNumPixels; i++)
-	{
-		for(int j = 0; j < antNumPixels; j++)
-		{		
-			fb[(antPosY + j) * SCREEN_WIDTH + (antPosX + i)] = tempColor;
-		}
-	}
-	return 0;
-}
-
-/*
- * Moves the ant forward to the next cell
- */
-int forwardAnt()
-{
-	switch (antAngle)
-	{
-		case 0:
-			antPosX = antPosX + antNumPixels;
-			break;
-		case 90:
-			antPosY = antPosY - antNumPixels;
-			break;
-		case 180:
-			antPosX = antPosX - antNumPixels;
-			break;
-		case 270:
-			antPosY = antPosY + antNumPixels;
-			break;
-	}
-	return 0;
-}
-
-/*
- * This function combines the previous 3 functions:
- * First, depending on the color of the cell, rotates the ant to one side or the other.
- * Next, paints the cell.
- * Finally, moves the ant to the next cell.
- */
-void stepAnt()
-{
-	if (fb[antPosY * SCREEN_WIDTH + antPosX] == BG_color)
-	{
-		rotateAnt('R');
-	}
-	else
-	{
-		rotateAnt('L');
-	}
-
-	paintAnt();
-	forwardAnt();
-	
-}
-
-/*
- * Initializes the Langton's ant
- */
-int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned short intAntAngle, unsigned short intAntNumPixels)
-{
-    cleanFB(fb);
-    
-    antPosX = intAntPosX;
-    antPosY = intAntPosY;
-    antAngle = intAntAngle;
-    antNumSteps = 0;
-    antNumPixels = intAntNumPixels;
-    antStop = false;
-    
-    return 0;
-}
-
-/*********************************** END LANGTON'S ANT FUNCTIONS ***********************************************************/
 
 /************************************* START BOOLEAN AUTOMATA FUNCTIONS ****************************************************/
 
@@ -1698,7 +1570,7 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == 2) // The menu of the Langton's ant
     {
-        iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), antNumPixels);
+        iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), ca.getAntNumPixels());
         iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 3) // The menu of the Langton's hexagonal ant
@@ -2579,11 +2451,11 @@ int printNumSteps(int automataType, int steps)
     if (automataType == LANGTON_ANT)
     {
         iprintf("\x1b[9;0H%s:     ", stringSteps.c_str());                                                    
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
     }
     else if (automataType == LANGTON_HEXAGONAL_ANT)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
     }
     else if (automataType == BOOLEAN_AUTOMATA)
     {
@@ -2617,11 +2489,6 @@ int runAutomata()
         updateColors();
         printRuleNumber(calculateRuleNumber());
   	    drawElementaryCellularAutomata();	        
-    }
-    else if (automataType == LANGTON_ANT)
-    {
-        showFB();
-        initializeAnt(127, 95, 90, antNumPixels);        
     }
     else if (automataType == BOOLEAN_AUTOMATA)
     {
@@ -2706,9 +2573,7 @@ int runAutomata()
  *
  */
 int main(void)
-{
-    CellularAutomata ca;
-    
+{   
     changeTextLanguage(displayedLanguage);
             
 	consoleDemoInit();
@@ -2804,6 +2669,10 @@ int main(void)
                 }
                 else if (automataType == LANGTON_ANT)
                 {
+                    ca.setType("LA");
+                    
+                    ca.setAntNumPixels(4);
+                                        
                     consoleClear();
                     printCredits();
                     
@@ -2815,8 +2684,8 @@ int main(void)
                     printMenu(displayedMenu);
                     
                     printMenuArrow(displayedMenu, intArrow, false);
-                       
-                    runAutomata();
+                    
+                    ca.initializeAnt(127, 95, 90);
                 }
                 else if (automataType == LANGTON_HEXAGONAL_ANT)
                 {
@@ -3092,16 +2961,10 @@ int main(void)
          */                
         else if (displayedMenu == 2)
         {
-		    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or antPosY + antNumPixels > SCREEN_HEIGHT - 1)
+    	    if (ca.hasFinished() == false)
     	    {
-    	        antStop = true;
-    	    }
-    	    
-    	    if (antStop == false)
-    	    {
-    	        stepAnt();
-    	        antNumSteps++;
-                printNumSteps(LANGTON_ANT, antNumSteps);
+    	        ca.nextStep();
+                printNumSteps(LANGTON_ANT, ca.getNumSteps());
     	        swiWaitForVBlank();
     	    }
     	    
@@ -3149,12 +3012,12 @@ int main(void)
 		    {
                 if (intArrow == 0)
                 {
-                    if (antNumPixels > 0)
+                    if (ca.getAntNumPixels() > 0)
                     {
-                        antNumPixels = antNumPixels - 1;
-                        iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), antNumPixels);                        
-                        runAutomata();
-                        printNumSteps(LANGTON_ANT, antNumSteps);
+                        ca.setAntNumPixels(ca.getAntNumPixels() - 1);
+                        iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), ca.getAntNumPixels());
+                        ca.initializeAnt(127, 95, 90);
+                        printNumSteps(LANGTON_ANT, ca.getNumSteps());
                     }                        
                 }		        
 		    }
@@ -3162,10 +3025,10 @@ int main(void)
 		    {
                 if (intArrow == 0)
                 {
-                    antNumPixels = antNumPixels + 1;
-                    iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), antNumPixels);
-                    runAutomata();                
-                    printNumSteps(LANGTON_ANT, antNumSteps);                    
+                    ca.setAntNumPixels(ca.getAntNumPixels() + 1);
+                    iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), ca.getAntNumPixels());
+                    ca.initializeAnt(127, 95, 90);
+                    printNumSteps(LANGTON_ANT, ca.getNumSteps());                    
                 }		    
 		    }
         }

@@ -28,6 +28,10 @@ class CellularAutomata
         const char* getType();
         
         int getNumSteps();
+        
+        int setAntNumPixels(int numPixels);
+        int getAntNumPixels();
+        
         bool hasFinished();
         int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned short intAntAngle);
         int nextStep();
