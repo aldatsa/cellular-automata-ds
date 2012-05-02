@@ -6,6 +6,9 @@ extern unsigned short* fb2;
 
 int cleanFB(unsigned short* framebuffer);
 int showFB();
-int drawHLine(int column, int row, int lenght, unsigned short color, unsigned short* framebuffer);
+int showFB2();
+int showFlash();
 
+int drawHLine(int column, int row, int lenght, unsigned short color, unsigned short* framebuffer);
+int drawVLine(int column, int row, int lenght, unsigned short color);
 #endif

@@ -22,8 +22,6 @@
 #include <stdlib.h>
 #include <string>
 
-#include "flash.h"  // Include for the header of the flash image (grit outputs a nice header to reference data)
-
 #include "general.h"
 #include "color.h"
 #include "hexgrid.h"
@@ -145,16 +143,6 @@ int munchingSquaresOptionOp = 0; // 0 XOR; 1 AND;
 bool munchingSquaresCondition = false; // if true draw square else don't
 
 /*
- * Variables used for the Langton's ant (normal and hexagonal)
- */
-unsigned short antPosX;
-unsigned short antPosY;
-unsigned short antAngle;
-unsigned int antNumSteps;
-unsigned short antNumPixels = 4; // Only used by the normal ant not by the hexagonal one
-bool antStop = false;
-
-/*
  * Variables used for the boolean automaton
  */
 int automataSteps = 0; // It's equivalent to antNumSteps, I should use only one of them (Used in Boolean Square Automata, Boolean Hexagonal Automata and Boolean Triangular Automata)
@@ -166,58 +154,6 @@ int intBooleanRulesValuesTriVN [3] = {1, 0, 0}; // {1, 2, 3}; For the Boolean Tr
 int intBooleanRulesValuesTriM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8}; For the Boolean Triangular Automata with Modified Moore neighborhood
 
 CellularAutomata ca;
-
-/*********************************** START GENERAL FUNCTIONS *************************************************************************/
-
-/*
- * Draws a vertical line of the specified color
- */ 
-int drawVLine(int column, int row, int lenght, unsigned short color)
-{
-    for(int i = row; i < row + lenght; i++)
-    {
-        fb[i * SCREEN_WIDTH + column] = color;
-    }
-    return 0;
-}
-
-/*
- *
- */
-int showFB2()
-{
-    // Configuration of the main screen
-	REG_DISPCNT = MODE_FB1;		// Use MODE_FB1 for VRAM_B
-	
-	// Configure the VRAM B block
-	VRAM_B_CR = VRAM_ENABLE | VRAM_B_LCD;
-	
-	return 0;
-}
-
-/*
- * Show the flash screen on the main screen
- */
-int showFlash()
-{   
-    // set the mode for 2 text layers and two extended background layers
-	videoSetMode(MODE_5_2D);
-
-	// set the sub background up for text display (we could just print to one
-	// of the main display text backgrounds just as easily
-	//videoSetModeSub(MODE_0_2D); //sub bg 0 will be used to print text
-
-	vramSetBankA(VRAM_A_MAIN_BG);
-
-	// set up our bitmap background
-	bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0,0);
-	
-	decompress(flashBitmap, BG_GFX,  LZ77Vram);
-
-    return 0;
-}
-
-/*********************************** END GENERAL FUNCTIONS *************************************************************************/
 
 /*********************************** START ELEMENTARY CELLULAR AUTOMATA FUNCTIONS **************************************************/
 
