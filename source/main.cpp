@@ -2948,7 +2948,7 @@ int main(void)
 		    {
                 if (intArrow == 0)
                 {
-                    if (ca.getAntNumPixels() > 0)
+                    if (ca.getAntNumPixels() > 1)
                     {
                         ca.setAntNumPixels(ca.getAntNumPixels() - 1);
                         iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), ca.getAntNumPixels());
