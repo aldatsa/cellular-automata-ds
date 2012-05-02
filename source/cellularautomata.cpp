@@ -17,56 +17,53 @@
  */
 int CellularAutomata::rotateAnt(unsigned char rotateTo)
 {
-    if (type == "LHA")
+    int limitAngle;
+    int stepAngle;
+    
+    /*
+     * Langton's hexagonal ant
+     * Right ('R'): 0 -> 60 -> 120 -> 180 -> 240 -> 300 (limitAngle) -> 0 -> 60 -> ...
+     * Left ('L'): 0 -> 300 (limitAngle) -> 240 -> 180 -> 120 -> 60 -> 0 -> 300 -> ...
+     */
+    if (type == "LHA") 
     {
-	    if (rotateTo == 'R') // right 60
-	    {
-		    if (antAngle < 300)
-		    {
-			    antAngle = antAngle + 60;
-		    }
-		    else
-		    {
-			    antAngle = 0;
-		    }
-	    }
-	    else if (rotateTo == 'L') // left 60
-	    {
-		    if (antAngle != 0)
-		    {	
-			    antAngle = antAngle - 60;	
-		    }	
-		    else
-		    {
-			    antAngle = 300;
-		    }
-	    }
+        limitAngle = 300;
+        stepAngle = 60;
     }
+    /*
+     * Langton's ant
+     * Right ('R'): 0 -> 90 -> 180 -> 270 (limitAngle) -> 0 -> 90 -> ...
+     * Left ('L'): 0 -> 270 (limitAngle) -> 180 -> 90 -> 0 -> 270 -> ...
+     */
     else if (type == "LA")
     {
-	    if (rotateTo == 'R') //right 90
-	    {
-		    if (antAngle < 270)
-		    {
-			    antAngle = antAngle + 90;
-		    }
-		    else
-		    {
-			    antAngle = 0;
-		    }
-	    }
-	    else if (rotateTo == 'L') //left 90
-	    {
-		    if (antAngle != 0)
-		    {
-			    antAngle = antAngle - 90;
-		    }
-		    else
-		    {
-			    antAngle = 270;
-		    }
-    	}
+        limitAngle = 270;
+        stepAngle = 90;
     }
+    
+    if (rotateTo == 'R')
+    {
+	    if (antAngle < limitAngle)
+	    {
+		    antAngle = antAngle + stepAngle;
+	    }
+	    else
+	    {
+		    antAngle = 0;
+	    }
+    }
+    else if (rotateTo == 'L')
+    {
+	    if (antAngle != 0)
+	    {
+		    antAngle = antAngle - stepAngle;
+	    }
+	    else
+	    {
+		    antAngle = limitAngle;
+	    }
+    }
+    
 	return 0;
 }
 
@@ -203,8 +200,6 @@ int CellularAutomata::initializeAnt(unsigned short intAntPosX, unsigned short in
     { 
         drawHexGrid();
     }
-    
-    //antNumPixels = 4; // Only used by the normal ant not by the hexagonal one
     
     antPosX = intAntPosX;
     antPosY = intAntPosY;
