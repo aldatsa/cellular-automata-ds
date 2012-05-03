@@ -140,7 +140,7 @@ int automataSteps = 0; // It's equivalent to antNumSteps, I should use only one 
 int intTypeOfNeighborhood = 0; // 0: Von Neumann - 1: Moore (Used in Boolean Square Automata and Boolean Triangular Automata)
 int intBooleanRulesValuesSqVN [4] = {1, 0, 0, 0};    // {1, 2, 3, 4} For the Boolean Square Automata with Von Neumann neighborhood
 int intBooleanRulesValuesSqM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8} For the Boolean Square Automata with Moore neighborhood
-int intBooleanRulesValuesHex [6] = {1, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6}; For the Boolean Hexagonal Automata
+//int intBooleanRulesValuesHex [6] = {1, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6}; For the Boolean Hexagonal Automata
 int intBooleanRulesValuesTriVN [3] = {1, 0, 0}; // {1, 2, 3}; For the Boolean Triangular Automata with Modified Von Neumann neighborhood
 int intBooleanRulesValuesTriM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8}; For the Boolean Triangular Automata with Modified Moore neighborhood
 
@@ -579,23 +579,6 @@ bool booleanRule(int count)
 /*
  *
  */
-bool booleanHexagonalRule(int count)
-{
-    for (int i = 0; i < 6; i++)
-    {
-        //if (count == values[i])
-        if (count == intBooleanRulesValuesHex[i])
-        {
-            return true;
-        }            
-    }
-    
-    return false;
-}
-
-/*
- *
- */
 bool booleanTriangularRule(int count)
 {
     int upperLimit;
@@ -762,153 +745,6 @@ int calculateNextStep(int typeOfNeighborhood)
 }
 
 /*
- * Calculates and draws the next step of the boolean hexagonal automata.
- * The return value indicates if the automata has finished (return 0)
- * or not (return != 0)
- */
-int calculateNextStepHex()
-{          
-    unsigned short* fbRef;
-    unsigned short* fbNew;
-
-    /*
-     * changeCount is used to know if the next step is different from the current step.
-     * If changeCount == 0 then there're no changes and the automata has finished,
-     * so we can start again from step 0.
-     * If changeCount != 0 then the automata has not finished yet.
-     */ 
-    int changeCount = 0; 
-        
-    int countFG = 0;
-    
-    if (automataSteps % 2 == 0 and automataSteps != 1)
-    {
-        fbRef = fb2;
-        fbNew = fb;
-    }
-    else 
-    {
-        fbRef = fb;
-        fbNew = fb2;
-    }
-    
-    dmaCopy(fbRef, fbNew, 128*1024);
-    
-    for (int i = 8; i < 254; i = i + 8)
-    {   
-        for (int j = 3; j < SCREEN_HEIGHT - 1; j = j + 4)
-        {
-            countFG = 0;        
-
-            // top left
-            if (fbRef[SCREEN_WIDTH * j + i - 2] == FG_color)
-            {
-                countFG++;
-            }
-
-            // top 
-            if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
-            {
-                countFG++;
-            }
-            
-            
-            // top right
-            if (fbRef[SCREEN_WIDTH * j + i + 4] == FG_color)
-            {
-                countFG++;
-            }
-            
-            // bottom left    
-            if (fbRef[SCREEN_WIDTH * (j + 2) + i - 2] == FG_color)
-            {
-                countFG++;
-            }
-            
-            // bottom                            
-            if (fbRef[SCREEN_WIDTH * (j + 4) + i] == FG_color)
-            {
-                countFG++;
-            }
-
-            // bottom right                         
-            if (fbRef[SCREEN_WIDTH * (j + 2) + i + 4] == FG_color)
-            {
-                countFG++;
-            }
-                        
-            if (countFG != 0 and booleanHexagonalRule(countFG))
-            {
-                // If the current cell's color is not already changed, change it to FG_color.
-                // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
-                if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
-                {
-                    paintHexCell(i, j, FG_color, fbNew);
-                    ++changeCount;
-                }
-            }
-        }
-    }
-    for (int i = 4; i < 252; i = i + 8)
-    {   
-        for (int j = 5; j < 189; j = j + 4)
-        {
-            countFG = 0;        
-
-            // top left
-            if (fbRef[SCREEN_WIDTH * j + i - 2] == FG_color)
-            {
-                countFG++;
-            }
-
-            // top 
-            if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
-            {
-                countFG++;
-            }
-            
-            
-            // top right
-            if (fbRef[SCREEN_WIDTH * j + i + 4] == FG_color)
-            {
-                countFG++;
-            }
-            
-            // bottom left    
-            if (fbRef[SCREEN_WIDTH * (j + 2) + i - 2] == FG_color)
-            {
-                countFG++;
-            }
-            
-            // bottom                            
-            if (fbRef[SCREEN_WIDTH * (j + 4) + i] == FG_color)
-            {
-                countFG++;
-            }
-
-            // bottom right                         
-            if (fbRef[SCREEN_WIDTH * (j + 2) + i + 4] == FG_color)
-            {
-                countFG++;
-            }
-                        
-            if (countFG != 0 and booleanHexagonalRule(countFG))
-            {
-                // If the current cell's color is not already changed, change it to FG_color.
-                // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
-                if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
-                {
-                    paintHexCell(i, j, FG_color, fbNew);
-                    ++changeCount;
-                }
-            }
-        }
-    }
-    
-    return changeCount;
-}
-
-/*
  * Calculates and draws the next step of the boolean triangular automata.
  * The return value indicates if the automata has finished (return 0)
  * or not (return != 0)
@@ -1059,20 +895,6 @@ int initializeBooleanAutomata(int intX, int intY)
     
     return 0;
 } 
-
-int initializeBooleanHexagonalAutomata(int intX, int intY)
-{
-    cleanFB(fb);
-    cleanFB(fb2);
-    
-    drawHexGrid();
-    
-    automataSteps = 0;
-        
-    paintHexCell(intX, intY, FG_color, fb);
-    
-    return 0;
-}
 
 int initializeBooleanTriangularAutomata(int intX, int intY)
 {
@@ -1599,7 +1421,7 @@ int printBAasterisks()
 int printBHAasterisks()
 {
     // {1, 2, 3, 4, 5, 6} For the boolean square automata with Moore neighborhood
-    if (intBooleanRulesValuesHex[0] == 1) 
+    if (ca.checkBooleanRuleValue(0, 1)) 
     {
         iprintf("\x1b[14;5H*");    
     }
@@ -1608,7 +1430,7 @@ int printBHAasterisks()
         iprintf("\x1b[14;5H ");    
     }
     
-    if (intBooleanRulesValuesHex[1] == 2) 
+    if (ca.checkBooleanRuleValue(1, 2)) 
     {
         iprintf("\x1b[14;10H*");    
     }
@@ -1617,7 +1439,7 @@ int printBHAasterisks()
         iprintf("\x1b[14;10H ");    
     }        
     
-    if (intBooleanRulesValuesHex[2] == 3) 
+    if (ca.checkBooleanRuleValue(2, 3)) 
     {
         iprintf("\x1b[14;15H*");    
     }
@@ -1626,7 +1448,7 @@ int printBHAasterisks()
         iprintf("\x1b[14;15H ");    
     }
         
-    if (intBooleanRulesValuesHex[3] == 4) 
+    if (ca.checkBooleanRuleValue(3, 4)) 
     {
         iprintf("\x1b[15;5H*");    
     }
@@ -1635,7 +1457,7 @@ int printBHAasterisks()
         iprintf("\x1b[15;5H ");    
     }
         
-    if (intBooleanRulesValuesHex[4] == 5) 
+    if (ca.checkBooleanRuleValue(4, 5)) 
     {
         iprintf("\x1b[15;10H*");    
     }
@@ -1644,7 +1466,7 @@ int printBHAasterisks()
         iprintf("\x1b[15;10H ");    
     }
         
-    if (intBooleanRulesValuesHex[5] == 6) 
+    if (ca.checkBooleanRuleValue(5, 6)) 
     {
         iprintf("\x1b[15;15H*");    
     }
@@ -2199,7 +2021,7 @@ int printNumSteps(int automataType, int steps)
     }
     else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);    
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
     }
     else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
@@ -2233,14 +2055,6 @@ int runAutomata()
         showFB2();
         
         initializeBooleanAutomata(127, 91);
-    }
-    else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
-    {
-        showFB();
-        dmaCopy(fb, fb2, 128* 1024);
-        showFB2();
-
-        initializeBooleanHexagonalAutomata(124, 93);
     }
     else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
@@ -2455,6 +2269,8 @@ int main(void)
                 }
                 else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
                 {
+                    ca.setType("BHA");
+
                     consoleClear();
                     printCredits();
                     
@@ -2466,9 +2282,11 @@ int main(void)
                     printMenu(displayedMenu);
                     
                     printMenuArrow(displayedMenu, intArrow, false);
-                                        
-                    printBHAasterisks();                    
-                    runAutomata();
+
+                    ca.initializeBooleanRuleValues();                    
+                    ca.initialize();
+
+                    printBHAasterisks();
                 }
                 else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
@@ -2957,41 +2775,29 @@ int main(void)
          */                
         else if (displayedMenu == 5)
         {
-            automataSteps++;
-            printNumSteps(BOOLEAN_HEXAGONAL_AUTOMATA, automataSteps);
-
-            if (calculateNextStepHex() == 0) // The automata has finished so we are going to reinitiate the cycle
-            {
-                runAutomata(); 
-            }
-            else // the automata has not finished yet
-            {
-                if (automataSteps % 2 == 0 and automataSteps != 1)
-                {
-                    showFB();
-                }
-                else
-                {
-                    showFB2();
-                }
-                swiWaitForVBlank();
-            }
+            ca.nextStep();
             
+            printNumSteps(BOOLEAN_HEXAGONAL_AUTOMATA, ca.getNumSteps());
+
             if (keys_released & KEY_A)
 		    {
 		        if (intArrow == 0 || intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4 || intArrow == 5)
 		        {
-		            if (intBooleanRulesValuesHex[intArrow] == intArrow + 1)
+		            //if (intBooleanRulesValuesHex[intArrow] == intArrow + 1)
+		            if (ca.checkBooleanRuleValue(intArrow, intArrow + 1))
 		            {
-		                intBooleanRulesValuesHex[intArrow] = 0;
+		                //intBooleanRulesValuesHex[intArrow] = 0;
+		                ca.setBooleanRuleValue(intArrow, 0);
 		            }
 		            else
 		            {
-		                intBooleanRulesValuesHex[intArrow] = intArrow + 1;
+		                //intBooleanRulesValuesHex[intArrow] = intArrow + 1;
+		                ca.setBooleanRuleValue(intArrow, intArrow + 1);
 		            }
 		            
 		            printBHAasterisks();
-		            runAutomata();
+		            //runAutomata();
+		            ca.initialize();
 		        }                
                 else if (intArrow == 6)
 		        {
@@ -3066,7 +2872,7 @@ int main(void)
 		        }
 		        
 		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
-            }            
+            }
         }
         /*
          * Boolean triangular automata menu

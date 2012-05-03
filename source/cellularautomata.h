@@ -19,6 +19,8 @@ class CellularAutomata
         unsigned short antNumPixels; // Only used by the normal ant not by the hexagonal one
         bool antFinished;    
 
+        int booleanRuleValues [8]; // For the Boolean automatas
+
         int rotateAnt(unsigned char rotateTo);
         int paintAnt();
         int forwardAnt();
@@ -37,5 +39,11 @@ class CellularAutomata
         bool hasFinished();
         int initialize();
         int nextStep();
+
+        int initializeBooleanRuleValues();
+        int setBooleanRuleValue(int ruleIndex, int value);        
+        bool checkBooleanRuleValue(int ruleIndex, int value);
+        bool isValueInRule(int count);
+
 };
 #endif

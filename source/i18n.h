@@ -8,7 +8,7 @@ using namespace std;
 /*
  * Constant for the version number of the application
  */
-const string strVersionNumber = "0.3.0";
+const string strVersionNumber = "0.3.1.1";
 
 /* This variable sets the language used in the menus
  * "en": english
@@ -85,12 +85,6 @@ int changeTextLanguage(string languageCode)
         stringMooreNeighborhood = "Moore neighborhood";
         stringNeighborhood = "Neighborhood";
         
-        stringTypeOfComparation = "Type of comparation";
-        stringSmallerThan = "Smaller than";
-        stringEqualTo = "Equal to";
-        stringTypeOfBooleanOperator = "Type of boolean operator";
-        stringThreshold = "Threshold";
-        
         stringBackgroundColor = "Background color";
         stringForegroundColor = "Foreground color";
         stringLineColor = "Line color";
@@ -129,13 +123,7 @@ int changeTextLanguage(string languageCode)
         stringVonNeumannNeighborhood = "Vecindad de Von Neumann";
         stringMooreNeighborhood = "Vecindad de Moore";
         stringNeighborhood = "Vecindad";
-        
-        stringTypeOfComparation = "Tipo de comparacion";
-        stringSmallerThan = "Menor que";
-        stringEqualTo = "Igual que";
-        stringTypeOfBooleanOperator = "Tipo de operador booleano";
-        stringThreshold = "Umbral";
-        
+                
         stringBackgroundColor = "Color de fondo";
         stringForegroundColor = "Color de primer plano";
         stringLineColor = "Color de lineas";
@@ -174,13 +162,7 @@ int changeTextLanguage(string languageCode)
         stringVonNeumannNeighborhood = "Von Neumann-en auzoa";
         stringMooreNeighborhood = "Moore-en auzoa";
         stringNeighborhood = "Auzoa";
-        
-        stringTypeOfComparation = "Konparaketa mota";
-        stringSmallerThan = "Txikiago";
-        stringEqualTo = "Berdin";
-        stringTypeOfBooleanOperator = "Boolear eragile mota";
-        stringThreshold = "Ataria";
-        
+                
         stringBackgroundColor = "Atzeko planoaren kolorea";
         stringForegroundColor = "Aurreko planoaren kolorea";
         stringLineColor = "Lerroen kolorea";

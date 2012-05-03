@@ -231,6 +231,33 @@ int CellularAutomata::getAntNumPixels()
     return antNumPixels;
 }
 
+int CellularAutomata::setBooleanRuleValue(int ruleIndex, int value)
+{
+    if (type == "BHA")
+    {
+        booleanRuleValues[ruleIndex] = value;
+    }
+    
+    return 0;
+}
+
+/*
+ * Set the initial values of the array intBooleanRuleValues
+ */
+int CellularAutomata::initializeBooleanRuleValues()
+{
+    booleanRuleValues [0] = 1;
+    booleanRuleValues [1] = 0;
+    booleanRuleValues [2] = 0;
+    booleanRuleValues [3] = 0;
+    booleanRuleValues [4] = 0;
+    booleanRuleValues [5] = 0;
+    booleanRuleValues [6] = 0;
+    booleanRuleValues [7] = 0;
+    
+    return 0;
+}
+
 /*
  * Cleans the main framebuffer 
  * and initiliazes the values of the variables used for the cellular automata.
@@ -250,15 +277,29 @@ int CellularAutomata::initialize()
         antAngle = 0;
         antFinished = false;
     }
-
-    if (type == "LA")
+    else if (type == "LA")
     {
         antPosX = 127;
         antPosY = 95;
         antAngle = 90;
         antFinished = false;
     }
+    else if (type == "BHA")
+    {        
+        showFB();
+        dmaCopy(fb, fb2, 128* 1024);
+        showFB2();
+        
+        cleanFB(fb);
+        cleanFB(fb2);
 
+        drawHexGrid();
+    
+        numSteps = 0;
+        
+        paintHexCell(124, 93, FG_color, fb);
+    }
+    
     return 0;
 }
 
@@ -334,6 +375,170 @@ int CellularAutomata::nextStep()
             initialize(); // Paint the framebuffer with the BG color to erase the last step of the munching squares and initialize the variables to start another cycle
         }            
     }
+    /*
+     * Else if the the type of automata is Boolean Hexagonal Automata
+     * calculates and draws the next step.
+     * The return value indicates if the automata has finished (return 0)
+     * or not (return != 0)
+     */
+    else if (type == "BHA")
+    {
+        unsigned short* fbRef;
+        unsigned short* fbNew;
+
+        /*
+         * changeCount is used to know if the next step is different from the current step.
+         * If changeCount == 0 then there're no changes and the automata has finished,
+         * so we can start again from step 0.
+         * If changeCount != 0 then the automata has not finished yet.
+         */ 
+        int changeCount = 0; 
+            
+        int countFG = 0;
+
+        ++numSteps;
+        
+        if (numSteps % 2 == 0 and numSteps != 1)
+        {
+            fbRef = fb2;
+            fbNew = fb;
+        }
+        else 
+        {
+            fbRef = fb;
+            fbNew = fb2;
+        }
+        
+        dmaCopy(fbRef, fbNew, 128*1024);
+        
+        for (int i = 8; i < 254; i = i + 8)
+        {   
+            for (int j = 3; j < SCREEN_HEIGHT - 1; j = j + 4)
+            {
+                countFG = 0;        
+
+                // top left
+                if (fbRef[SCREEN_WIDTH * j + i - 2] == FG_color)
+                {
+                    countFG++;
+                }
+
+                // top 
+                if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                
+                // top right
+                if (fbRef[SCREEN_WIDTH * j + i + 4] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                // bottom left    
+                if (fbRef[SCREEN_WIDTH * (j + 2) + i - 2] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                // bottom                            
+                if (fbRef[SCREEN_WIDTH * (j + 4) + i] == FG_color)
+                {
+                    countFG++;
+                }
+
+                // bottom right                         
+                if (fbRef[SCREEN_WIDTH * (j + 2) + i + 4] == FG_color)
+                {
+                    countFG++;
+                }
+                            
+                if (countFG != 0 and isValueInRule(countFG))
+                {
+                    // If the current cell's color is not already changed, change it to FG_color.
+                    // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                    if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
+                    {
+                        paintHexCell(i, j, FG_color, fbNew);
+                        ++changeCount;
+                    }
+                }
+            }
+        }
+        for (int i = 4; i < 252; i = i + 8)
+        {   
+            for (int j = 5; j < 189; j = j + 4)
+            {
+                countFG = 0;        
+
+                // top left
+                if (fbRef[SCREEN_WIDTH * j + i - 2] == FG_color)
+                {
+                    countFG++;
+                }
+
+                // top 
+                if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                
+                // top right
+                if (fbRef[SCREEN_WIDTH * j + i + 4] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                // bottom left    
+                if (fbRef[SCREEN_WIDTH * (j + 2) + i - 2] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                // bottom                            
+                if (fbRef[SCREEN_WIDTH * (j + 4) + i] == FG_color)
+                {
+                    countFG++;
+                }
+
+                // bottom right                         
+                if (fbRef[SCREEN_WIDTH * (j + 2) + i + 4] == FG_color)
+                {
+                    countFG++;
+                }
+                            
+                if (countFG != 0 and isValueInRule(countFG))
+                {
+                    // If the current cell's color is not already changed, change it to FG_color.
+                    // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                    if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
+                    {
+                        paintHexCell(i, j, FG_color, fbNew);
+                        ++changeCount;
+                    }
+                }
+            }
+        }
+
+        if (changeCount == 0) // The automata has finished so we are going to reinitiate the cycle
+        {
+            initialize();
+        }
+        else // the automata has not finished yet
+        {
+            if (numSteps % 2 == 0 and numSteps != 1)
+            {
+                showFB();
+            }
+            else
+            {
+                showFB2();
+            }
+            swiWaitForVBlank();
+        }
+    }
 
 	return 0;
 }
@@ -344,4 +549,38 @@ int CellularAutomata::nextStep()
 bool CellularAutomata::hasFinished()
 {
     return antFinished;
+}
+
+/*
+ *
+ */
+bool CellularAutomata::checkBooleanRuleValue(int ruleIndex, int value)
+{
+    if (type == "BHA")
+    {
+        if (booleanRuleValues[ruleIndex] == value)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+/*
+ *
+ */
+bool CellularAutomata::isValueInRule(int count)
+{
+    if (type == "BHA")
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (checkBooleanRuleValue(i, count))
+            {
+                return true;
+            }            
+        }
+    }
+    
+    return false;
 }
