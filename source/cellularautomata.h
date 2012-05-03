@@ -22,7 +22,9 @@ class CellularAutomata
         int rotateAnt(unsigned char rotateTo);
         int paintAnt();
         int forwardAnt();
-        
+
+        int drawMunchingSquare(int column, int row, int width, unsigned short color);
+
     public:
         int setType(string t);
         const char* getType();
@@ -33,7 +35,7 @@ class CellularAutomata
         int getAntNumPixels();
         
         bool hasFinished();
-        int initializeAnt(unsigned short intAntPosX, unsigned short intAntPosY, unsigned short intAntAngle);
+        int initialize();
         int nextStep();
 };
 #endif

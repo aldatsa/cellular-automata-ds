@@ -134,15 +134,6 @@ int displayedMenu = 0;
 int intArrow = 0;
 
 /*
- * Variables used for the munching squares
- */
-int munchingSquaresNumSteps = 0; // This variable is used to count the number of steps of the Munching Squares
-int munchingSquaresThreshold = 0;
-int munchingSquaresOptionComp = 0; // 0 smaller than; 1 equal to;
-int munchingSquaresOptionOp = 0; // 0 XOR; 1 AND;
-bool munchingSquaresCondition = false; // if true draw square else don't
-
-/*
  * Variables used for the boolean automaton
  */
 int automataSteps = 0; // It's equivalent to antNumSteps, I should use only one of them (Used in Boolean Square Automata, Boolean Hexagonal Automata and Boolean Triangular Automata)
@@ -546,137 +537,6 @@ int drawElementaryCellularAutomata()
 	return 0;
 }
 /*********************************** END ELEMENTARY CELLULAR AUTOMATA FUNCTIONS ********************************************/
-
-/*********************************** START MUNCHING SQUARES FUNCTIONS ******************************************************/
-
-/*
- * References: 
- * http://en.wikipedia.org/wiki/Munching_square
- * http://mathworld.wolfram.com/MunchingSquares.html
- * http://www.inwap.com/pdp10/hbaker/hakmem/hacks.html#item146
- */
-
-/*
- * Draw the square in the position (column, row) with the selected color
- * where column is a value in the range 0-63 and row is a value in the range 0-63.
- * To calculate the real x and y of the pixel in the upper left of the square:
- *      x = width * column + 32
- *      y = width * row
- * We add 32 to the x value to center horizontaly the image in the screen
- * (the width of the screen is 256 pixels so 256 - 32 * 2 = 192 pixels)
- * <---32---><---192---><---32--->
- *    0-31      32-191    192-255
- *
- * For example, if column = 0, row = 1 and width = 3:
- * The upper left pixel is:
- *      x = 3 * 0 + 32 = 32
- *      y = 3 * 1 = 3
- * We draw horizontal lines that are 3 pixels long starting from:
- *  k = 0: (32 + 3 * 0, 3 * 1 + 0) that's (32, 3)
- *  k = 1: (32 + 3 * 0, 3 * 1 + 1) that's (32, 4)
- *  k = 2: (32 + 3 * 0, 3 * 1 + 2) that's (32, 5) 
- *      31 32 33 34 35
- *    2  
- *    3     x  x  x
- *    4     x  x  x
- *    5     x  x  x
- *    6
- */
-int drawSquare(int column, int row, int width, unsigned short color)
-{
-    for (int k = 0; k < width; k++)
-    {
-        drawHLine(32 + width * column, width * row + k, width, color, fb);
-    }
-    
-    return 0;
-}
-
-/*
- * Cleans the main framebuffer 
- * and initiliazes the values of the variables used for the munching squares.
- */
-int initializeMunchingSquares()
-{
-    cleanFB(fb);
-    munchingSquaresNumSteps = 0;    // Reset the number of steps to 0.
-    munchingSquaresCondition = false;   // Reset the boolean value of the condition to false
-    
-    return 0;
-}
-
-/*
- * Draws the next step of the munching squares
- * We use a grid of 64 squares height x 64 squares width where each square is 3 pixels x 3 pixels
- * 64 * 3 = 192 pixels (the height of the screen)
- * See the comments of the function drawSquare above.
- * 
- * XOR is the logical operator "exclusive disjunction", also called "exclusive or".
- * http://en.wikipedia.org/wiki/XOR#Bitwise_operation
- * XOR is a type of logical disjunction on two operands that results in a value of true if exactly one of the operands has a value of true.
- * 1 xor 1 = 0
- * 1 xor 0 = 1
- * 0 xor 1 = 1
- * 0 xor 0 = 0
- * For example, 1110 xor 1001 = 0111
- *
- */
-int drawNextStepMunchingSquares()
-{
-    if (munchingSquaresNumSteps < 64)   
-    {
-        // For each combination of i and j where i = 0, 1, ... 63 and j = 0, 1, ... 63
-        // we check if the value of ...
-        //  * i xor j (if munchingSquaresOptionOp == 0)
-        //  * i and j (if munchingSquaresOptionOp == 1)
-        // is smaller than (if munchingSquaresOptionComp == 0) or equal to (if munchingSquaresOptionComp == 1)
-        // the sum of munchingSquaresNumSteps + munchingSquaresThreshold
-        // If the result of this comparation is true then we draw a square of 3 pixels x 3 pixels using FG color
-        // using the function drawSquare starting from the column i and the row j.
-        for (int i = 0; i < 64; i++)
-        {
-            for (int j = 0; j < 64; j++)
-            {
-				if (munchingSquaresOptionComp == 0) // Comparation type: smaller than
-				{
-					if (munchingSquaresOptionOp == 0) // Type of boolean operator: XOR
-					{
-						munchingSquaresCondition = ((i xor j) < (munchingSquaresNumSteps + munchingSquaresThreshold));
-					}
-					else if (munchingSquaresOptionOp == 1) // Type of boolean operator: AND
-					{
-						munchingSquaresCondition = ((i and j) < (munchingSquaresNumSteps + munchingSquaresThreshold));
-					}
-				}
-				else if (munchingSquaresOptionComp == 1) // Comparation type: equal to
-				{
-                     if (munchingSquaresOptionOp == 0) // Type of boolean operator: XOR
-                     {
-                     	munchingSquaresCondition = ((i xor j) == (munchingSquaresNumSteps + munchingSquaresThreshold));
-                     }
-                     else if (munchingSquaresOptionOp == 1) // Type of boolean operator: AND
-                     {
-                         munchingSquaresCondition = ((i and j) == (munchingSquaresNumSteps + munchingSquaresThreshold));
-                     }
-				}
-				if (munchingSquaresCondition == true)
-				{
-					drawSquare(i, j, 3, FG_color);
-				}
-            }
-        }
-		munchingSquaresNumSteps++;
-    }
-    else
-    {
-        cleanFB(fb); // Paint the framebuffer with the BG color to erase the last step of the munching squares
-        initializeMunchingSquares(); // Initialize the variables to start another cycle
-    }    
-    
-    return 0;
-}
-
-/*********************************** END MUNCHING SQUARES FUNCTIONS ********************************************************/
 
 /************************************* START BOOLEAN AUTOMATA FUNCTIONS ****************************************************/
 
@@ -1544,17 +1404,7 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == 8) // The menu of the munching squares
     {
-        iprintf("\x1b[11;2H%s:", stringTypeOfComparation.c_str());        
-        iprintf("\x1b[12;5H%s", stringSmallerThan.c_str());
-        iprintf("\x1b[13;5H%s", stringEqualTo.c_str());    
-        
-        iprintf("\x1b[14;2H%s:", stringTypeOfBooleanOperator.c_str());
-        iprintf("\x1b[15;5HXOR");
-        iprintf("\x1b[16;5HAND");    
-        
-        iprintf("\x1b[17;2H%s: < %d >", stringThreshold.c_str(), munchingSquaresThreshold);
-        
-        iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
+        iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == 9) // The menu of color selection
     {
@@ -1582,36 +1432,6 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[12;3H%s", stringEuskara.c_str());
         
         iprintf("\x1b[14;2H%s", stringBackToMainMenu.c_str());
-    }
-    
-    return 0;
-}
-
-/*
- * Prints the asterisk used to mark the options in the menu of the Munching Squares
- */
-int printMSasterisks()
-{
-    if (munchingSquaresOptionComp == 0)
-    {
-        iprintf("\x1b[12;3H*");
-        iprintf("\x1b[13;3H ");        
-    }
-    else
-    {
-        iprintf("\x1b[12;3H ");
-        iprintf("\x1b[13;3H*");        
-    }
-    
-    if (munchingSquaresOptionOp == 0)
-    {
-        iprintf("\x1b[15;3H*");
-        iprintf("\x1b[16;3H ");        
-    }
-    else
-    {
-        iprintf("\x1b[15;3H ");
-        iprintf("\x1b[16;3H*");        
     }
     
     return 0;
@@ -2219,35 +2039,15 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0)
         {
-            row = 13;
+            row = 13; // Back to main menu
         }
     }
     else if (intDisplayedMenu == 8) // Munching squares menu
     {
-        if (index == 0) // Comparation type: Smaller than
+        if (index == 0)
         {
-            row = 12;
+            row = 13; // Back to main menu
         }
-        else if (index == 1) // Comparation type: Equal to
-        {
-            row = 13;
-        }
-        else if (index == 2) // Boolean operator: XOR
-        {    
-            row = 15;
-        }
-        else if (index == 3) // Boolean operator: AND
-        {    
-            row = 16;
-        }
-        else if (index == 4) // Threshold
-        {
-            row = 17;
-        }
-        else if (index == 5) // Back to main menu
-        {    
-            row = 19;
-        }            
     }
     else if (intDisplayedMenu == 9) // Select colors
     {
@@ -2458,11 +2258,6 @@ int runAutomata()
         
         initializeConwaysGameOfLife();
     }
-    else if (automataType == MUNCHING_SQUARES)
-    {
-        showFB();
-        initializeMunchingSquares();
-    }
     else if(automataType == SELECT_COLORS)
     {
         showFB();
@@ -2621,7 +2416,7 @@ int main(void)
                     
                     printMenuArrow(displayedMenu, intArrow, false);
                     
-                    ca.initializeAnt(127, 95, 90);
+                    ca.initialize();
                 }
                 else if (automataType == LANGTON_HEXAGONAL_ANT)
                 {
@@ -2639,7 +2434,7 @@ int main(void)
                     
                     printMenuArrow(displayedMenu, intArrow, false);
                                         
-                    ca.initializeAnt(92, 93, 0);
+                    ca.initialize();
                 }
                 else if (automataType == BOOLEAN_AUTOMATA)
                 {
@@ -2711,6 +2506,8 @@ int main(void)
                 }
                 else if (automataType == MUNCHING_SQUARES)
                 {   
+                    ca.setType("MS");
+
                     consoleClear();
                     printCredits();
                     
@@ -2722,9 +2519,8 @@ int main(void)
                     printMenu(displayedMenu);
                     
                     printMenuArrow(displayedMenu, intArrow, false);
-                                        
-  		            printMSasterisks();                    
-                    runAutomata();
+
+                    ca.initialize();                                        
                 }
                 else if (automataType == SELECT_COLORS)
                 {
@@ -2952,7 +2748,7 @@ int main(void)
                     {
                         ca.setAntNumPixels(ca.getAntNumPixels() - 1);
                         iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), ca.getAntNumPixels());
-                        ca.initializeAnt(127, 95, 90);
+                        ca.initialize();
                         printNumSteps(LANGTON_ANT, ca.getNumSteps());
                     }                        
                 }		        
@@ -2963,7 +2759,7 @@ int main(void)
                 {
                     ca.setAntNumPixels(ca.getAntNumPixels() + 1);
                     iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), ca.getAntNumPixels());
-                    ca.initializeAnt(127, 95, 90);
+                    ca.initialize();
                     printNumSteps(LANGTON_ANT, ca.getNumSteps());                    
                 }		    
 		    }
@@ -3483,82 +3279,13 @@ int main(void)
         {
   		    if(keys_released & KEY_A)
   		    {
-  		        if (intArrow == 0) // Comparation type: Less than
-  		        {
-  		            munchingSquaresOptionComp = 0;
-  		            printMSasterisks();  		            
-  		            runAutomata();
-  		        }
-  		        else if (intArrow == 1) // Comparation type: Equal to
-  		        {
-  		            munchingSquaresOptionComp = 1;
-  		            printMSasterisks();
-  		            runAutomata();  		            
-  		        }
-  		        else if (intArrow == 2) // Boolean operator type: XOR
-  		        {
-  		            munchingSquaresOptionOp = 0;
-  		            printMSasterisks();  		            
-  		            runAutomata();
-  		        }
-  		        else if (intArrow == 3) // Boolean operator type: AND
-  		        {
-  		            munchingSquaresOptionOp = 1;
-  		            printMSasterisks();
-  		            runAutomata();  		            
-  		        }
-  		        else if (intArrow == 5) // Back to main menu
+                if (intArrow == 0) // Back to main menu
   		        {
   		            showAutomataTypeMenu();
   		        }
   		    }
-		    else if(keys_pressed & KEY_UP)
-		    {
-		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
-		        
-		        if (intArrow == 0)
-		        {
-		            intArrow = 5;
-		        }
-		        else
-		        {
-		            intArrow = intArrow - 1;
-		        }
-		        
-		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
-		    }
-		    else if(keys_pressed & KEY_DOWN)
-		    {
-		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow        
-		        
-		        if (intArrow == 5)
-		        {
-		            intArrow = 0;
-		        }
-		        else
-		        {
-		            intArrow = intArrow + 1;
-		        }
-		        
-		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
-		    }
-		    else if (intArrow == 4 && keys_pressed & KEY_LEFT)
-		    {
-		        if (munchingSquaresThreshold > 0)
-		        {
-		            --munchingSquaresThreshold;
-                    iprintf("\x1b[17;2H%s: < %d >", stringThreshold.c_str(), munchingSquaresThreshold);
-                    runAutomata();
-		        }
-		    }
-		    else if (intArrow == 4 && keys_pressed & KEY_RIGHT)
-            {
-                ++munchingSquaresThreshold;
-                iprintf("\x1b[17;2H%s: < %d >", stringThreshold.c_str(), munchingSquaresThreshold);
-                runAutomata();
-            }
             
-            drawNextStepMunchingSquares();
+            ca.nextStep();
         }
         /*
          * Color selection menu
