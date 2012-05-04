@@ -4,6 +4,7 @@
 #include "color.h"
 #include "hexgrid.h"
 #include "triangulargrid.h"
+#include "globals.h"
 
 /*
  * References:
@@ -33,7 +34,7 @@ int CellularAutomata::rotateAnt(unsigned char rotateTo)
      * Right ('R'): 0 -> 60 -> 120 -> 180 -> 240 -> 300 (limitAngle) -> 0 -> 60 -> ...
      * Left ('L'): 0 -> 300 (limitAngle) -> 240 -> 180 -> 120 -> 60 -> 0 -> 300 -> ...
      */
-    if (type == "LHA") 
+    if (type == LANGTON_HEXAGONAL_ANT) 
     {
         limitAngle = 300;
         stepAngle = 60;
@@ -43,7 +44,7 @@ int CellularAutomata::rotateAnt(unsigned char rotateTo)
      * Right ('R'): 0 -> 90 -> 180 -> 270 (limitAngle) -> 0 -> 90 -> ...
      * Left ('L'): 0 -> 270 (limitAngle) -> 180 -> 90 -> 0 -> 270 -> ...
      */
-    else if (type == "LA")
+    else if (type == LANGTON_ANT)
     {
         limitAngle = 270;
         stepAngle = 90;
@@ -93,11 +94,11 @@ int CellularAutomata::paintAnt()
 		tempColor = FG_color;
 	}
 
-    if (type == "LHA")
+    if (type == LANGTON_HEXAGONAL_ANT)
     {
 	    paintHexCell(antPosX, antPosY, tempColor, fb);
 	}
-	else if (type == "LA")
+	else if (type == LANGTON_ANT)
 	{
 	    for(int i = 0; i < antNumPixels; i++)
 	    {
@@ -115,7 +116,7 @@ int CellularAutomata::paintAnt()
  */
 int CellularAutomata::forwardAnt()
 {
-    if (type == "LHA")
+    if (type == LANGTON_HEXAGONAL_ANT)
     {
 	    switch(antAngle)
 	    {
@@ -144,7 +145,7 @@ int CellularAutomata::forwardAnt()
 			    break;
 	    }
     }
-    else if (type == "LA")
+    else if (type == LANGTON_ANT)
     {
     	switch (antAngle)
 	    {
@@ -203,16 +204,16 @@ int CellularAutomata::drawMunchingSquare(int column, int row, int width, unsigne
 
 //*************************************PUBLIC*******************************************
 
-int CellularAutomata::setType(string t)
+int CellularAutomata::setType(int t)
 {
     type = t;
     
     return 0;
 }
 
-const char* CellularAutomata::getType()
+int CellularAutomata::getType()
 {
-    return type.c_str();
+    return type;
 }
 
 int CellularAutomata::getNumSteps()
@@ -302,7 +303,7 @@ int CellularAutomata::initialize()
     
     numSteps = 0; // Reset the number of steps to 0
 
-    if (type == "LHA")
+    if (type == LANGTON_HEXAGONAL_ANT)
     { 
         drawHexGrid();
         antPosX = 92;
@@ -310,14 +311,14 @@ int CellularAutomata::initialize()
         antAngle = 0;
         antFinished = false;
     }
-    else if (type == "LA")
+    else if (type == LANGTON_ANT)
     {
         antPosX = 127;
         antPosY = 95;
         antAngle = 90;
         antFinished = false;
     }
-    else if (type == "BA")
+    else if (type == BOOLEAN_AUTOMATA)
     {
         showFB();
         dmaCopy(fb, fb2, 128* 1024);
@@ -330,7 +331,7 @@ int CellularAutomata::initialize()
 
         fb[91 * SCREEN_WIDTH + 127] = FG_color; // Paint the initial point
     }
-    else if (type == "BHA")
+    else if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
     {        
         showFB();
         dmaCopy(fb, fb2, 128* 1024);
@@ -346,7 +347,7 @@ int CellularAutomata::initialize()
         
         paintHexCell(124, 93, FG_color, fb);
     }
-    else if (type == "BTA")
+    else if (type == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
         showFB();
         dmaCopy(fb, fb2, 128* 1024);
@@ -376,7 +377,7 @@ int CellularAutomata::nextStep()
      * Next, paints the cell using paintAnt().
      * Finally, moves the ant to the next cell using forwardAnt().
      */
-    if (type == "LA" or type == "LHA")
+    if (type == LANGTON_ANT or type == LANGTON_HEXAGONAL_ANT)
     {
         if (fb[antPosY * SCREEN_WIDTH + antPosX] == BG_color)
         {
@@ -412,7 +413,7 @@ int CellularAutomata::nextStep()
      * For example, 1110 xor 1001 = 0111
      *
      */
-    else if (type == "MS")
+    else if (type == MUNCHING_SQUARES)
     {
         if (numSteps < 64)   
         {
@@ -442,7 +443,7 @@ int CellularAutomata::nextStep()
      * The return value indicates if the automata has finished (return 0)
      * or not (return != 0)
      */
-    else if (type == "BA")
+    else if (type == BOOLEAN_AUTOMATA)
     {
         /* typeOfNeighborhood = 0 Von Neumann neighborhood
          * 4 neighbors.
@@ -591,7 +592,7 @@ int CellularAutomata::nextStep()
      * The return value indicates if the automata has finished (return 0)
      * or not (return != 0)
      */
-    else if (type == "BHA")
+    else if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
     {
         unsigned short* fbRef;
         unsigned short* fbNew;
@@ -754,7 +755,7 @@ int CellularAutomata::nextStep()
      * The return value indicates if the automata has finished (return 0)
      * or not (return != 0)
      */
-    else if (type == "BTA")
+    else if (type == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
         /* typeOfNeighborhood = 0 Modified Von Neumann neighborhood
          * 3 neighbors.
@@ -944,7 +945,7 @@ bool CellularAutomata::checkBooleanRuleValue(int ruleIndex, int value)
  */
 bool CellularAutomata::isValueInRule(int count)
 {
-    if (type == "BHA")
+    if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
     {
         for (int i = 0; i < 6; i++)
         {
@@ -960,11 +961,11 @@ bool CellularAutomata::isValueInRule(int count)
     
         if (typeOfNeighborhood == 0) // Von Neumann neighborhood
         {
-            if (type == "BA")
+            if (type == BOOLEAN_AUTOMATA)
             {
                 upperLimit = 4;
             }
-            else // type == "BTA"
+            else // type == BOOLEAN_TRIANGULAR_AUTOMATA
             {
                 upperLimit = 3;
             }

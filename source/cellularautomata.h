@@ -1,14 +1,12 @@
 #ifndef CELLULARAUTOMATA_H
 #define CELLULARAUTOMATA_H
 
-#include <string>
-
 using namespace std;
 
 class CellularAutomata
 {
     private:
-        string type;
+        int type;
         
         unsigned int numSteps;
         
@@ -30,8 +28,8 @@ class CellularAutomata
         int drawMunchingSquare(int column, int row, int width, unsigned short color);
 
     public:
-        int setType(string t);
-        const char* getType();
+        int setType(int t);
+        int getType();
         
         int getNumSteps();
         

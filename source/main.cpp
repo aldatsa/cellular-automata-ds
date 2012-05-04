@@ -20,15 +20,12 @@
 #include <stdio.h>
 #include <cmath>    // To calculate powers of 2 in the calculateRuleNumber function. Is it possible to do it in a more simple way? Using binary operators?
 #include <stdlib.h>
-#include <string>
 
 #include "general.h"
 #include "color.h"
-#include "hexgrid.h"
-#include "triangulargrid.h"
 #include "i18n.h"
-
 #include "cellularautomata.h"
+#include "globals.h"
 
 using namespace std;
 
@@ -50,30 +47,6 @@ using namespace std;
  * Constant for the row where the rule of the Elementary Cellular Automaton is printed
  */
 #define ECA_RULE_NUMBER_ROW 9
-
-/*
- * Constants for the variable automataType:
- * 0: Elementary Cellular Automata
- * 1: Langton's ant
- * 2: Langton's hexagonal ant
- * 3: Boolean Square Automata
- * 4: Boolean Hexagonal Automata
- * 5: Boolean Triangular Automata
- * 6: Conway's game of life
- * 6: Munching Squares
- * 7: Select colors
- * 8: Select language
- */
-#define ELEMENTARY_CELLULAR_AUTOMATA 0
-#define LANGTON_ANT 1
-#define LANGTON_HEXAGONAL_ANT 2
-#define BOOLEAN_AUTOMATA 3
-#define BOOLEAN_HEXAGONAL_AUTOMATA 4
-#define BOOLEAN_TRIANGULAR_AUTOMATA 5
-#define CONWAYS_GAME_OF_LIFE 6
-#define MUNCHING_SQUARES 7
-#define SELECT_COLORS 8
-#define SELECT_LANGUAGE 9
 
 /*
  * This variable sets the type of automata that is going to execute (See above)
@@ -1821,7 +1794,7 @@ int main(void)
                 }
                 else if (automataType == LANGTON_ANT)
                 {
-                    ca.setType("LA");
+                    ca.setType(LANGTON_ANT);
                     
                     ca.setAntNumPixels(4);
                                         
@@ -1841,7 +1814,7 @@ int main(void)
                 }
                 else if (automataType == LANGTON_HEXAGONAL_ANT)
                 {
-                    ca.setType("LHA");
+                    ca.setType(LANGTON_HEXAGONAL_ANT);
 
                     consoleClear();
                     printCredits();
@@ -1859,7 +1832,7 @@ int main(void)
                 }
                 else if (automataType == BOOLEAN_AUTOMATA)
                 {
-                    ca.setType("BA");
+                    ca.setType(BOOLEAN_AUTOMATA);
                     ca.setTypeOfNeighborhood(0); // Von Neumann neighborhood (default)
 
                     consoleClear();
@@ -1882,7 +1855,7 @@ int main(void)
                 }
                 else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
                 {
-                    ca.setType("BHA");
+                    ca.setType(BOOLEAN_HEXAGONAL_AUTOMATA);
 
                     consoleClear();
                     printCredits();
@@ -1903,7 +1876,7 @@ int main(void)
                 }
                 else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
-                    ca.setType("BTA");
+                    ca.setType(BOOLEAN_TRIANGULAR_AUTOMATA);
                     ca.setTypeOfNeighborhood(0); // Von Neumann neighborhood (default)
 
                     consoleClear();
@@ -1942,7 +1915,7 @@ int main(void)
                 }
                 else if (automataType == MUNCHING_SQUARES)
                 {   
-                    ca.setType("MS");
+                    ca.setType(MUNCHING_SQUARES);
 
                     consoleClear();
                     printCredits();
