@@ -137,9 +137,9 @@ int intArrow = 0;
  * Variables used for the boolean automaton
  */
 int automataSteps = 0; // It's equivalent to antNumSteps, I should use only one of them (Used in Boolean Square Automata, Boolean Hexagonal Automata and Boolean Triangular Automata)
-int intTypeOfNeighborhood = 0; // 0: Von Neumann - 1: Moore (Used in Boolean Square Automata and Boolean Triangular Automata)
-int intBooleanRulesValuesTriVN [3] = {1, 0, 0}; // {1, 2, 3}; For the Boolean Triangular Automata with Modified Von Neumann neighborhood
-int intBooleanRulesValuesTriM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8}; For the Boolean Triangular Automata with Modified Moore neighborhood
+//int intTypeOfNeighborhood = 0; // 0: Von Neumann - 1: Moore (Used in Boolean Square Automata and Boolean Triangular Automata)
+//int intBooleanRulesValuesTriVN [3] = {1, 0, 0}; // {1, 2, 3}; For the Boolean Triangular Automata with Modified Von Neumann neighborhood
+//int intBooleanRulesValuesTriM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8}; For the Boolean Triangular Automata with Modified Moore neighborhood
 
 CellularAutomata ca;
 
@@ -534,197 +534,6 @@ int drawElementaryCellularAutomata()
 	return 0;
 }
 /*********************************** END ELEMENTARY CELLULAR AUTOMATA FUNCTIONS ********************************************/
-
-/************************************* START BOOLEAN AUTOMATA FUNCTIONS ****************************************************/
-
-/*
- *
- */
-bool booleanTriangularRule(int count)
-{
-    int upperLimit;
-    
-    if (intTypeOfNeighborhood == 0) // Von Neumann neighborhood
-    {
-        upperLimit = 3;
-    }
-    else // Moore neighborhood
-    {
-        upperLimit = 8;
-    }
-    
-    for (int i = 0; i < upperLimit; i++)
-    {
-        if (intTypeOfNeighborhood == 0) // Von Neumann neighborhood    
-        {
-            if (count == intBooleanRulesValuesTriVN[i])
-            {
-                return true;
-            }
-        }
-        else // Moore neighborhood
-        {
-            if (count == intBooleanRulesValuesTriM[i])
-            {
-                return true;
-            }            
-        }
-    }
-    return false;
-}
-
-/*
- * Calculates and draws the next step of the boolean triangular automata.
- * The return value indicates if the automata has finished (return 0)
- * or not (return != 0)
- */
-int calculateNextStepTriangular(int typeOfNeighborhood)
-{          
-    /* typeOfNeighborhood = 0 Modified Von Neumann neighborhood
-     * 3 neighbors.
-     *
-     *      x
-     *    x o x
-     *  
-     *  or
-     *
-     *    x o x
-     *      x 
-     *
-     * http://en.wikipedia.org/wiki/Von_Neumann_neighborhood
-     *
-     * typeOfNeighborhood = 1 -> Modified Moore neighborhood
-     * 8 neighbors.
-     *
-     *    x x x
-     *    x o x
-     *    x x x
-     *
-     * http://en.wikipedia.org/wiki/Moore_neighborhood
-     */
-    unsigned short* fbRef;
-    unsigned short* fbNew;
-
-    /*
-     * changeCount is used to know if the next step is different from the current step.
-     * If changeCount == 0 then there're no changes and the automata has finished,
-     * so we can start again from step 0.
-     * If changeCount != 0 then the automata has not finished yet.
-     */ 
-    int changeCount = 0; 
-        
-    int countFG = 0;
-    
-    if (automataSteps % 2 == 0 and automataSteps != 1)
-    {
-        fbRef = fb2;
-        fbNew = fb;
-    }
-    else 
-    {
-        fbRef = fb;
-        fbNew = fb2;
-    }
-    
-    dmaCopy(fbRef, fbNew, 128*1024);
-    
-    for (int i = 4; i < 253; i = i + 3)
-    {   
-        for (int j = 4; j < 187; j = j + 3)
-        {
-            countFG = 0;        
-
-            // xxx
-            //  x
-            if (typeOfNeighborhood == 1 or ((i % 2 == 0 and j % 2 == 0) or (i % 2 != 0 and j % 2 != 0)))
-            {    
-                // top 
-                if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
-                {
-                    countFG++;
-                }
-            }
-            //  x
-            // xxx
-            if (typeOfNeighborhood ==  1 or ((i % 2 != 0 and j % 2 == 0) or (i % 2 == 0 and j % 2 != 0)))
-        	{
-        	    //bottom
-                if (fbRef[SCREEN_WIDTH * (j + 3) + i] == FG_color)
-                {
-                    countFG++;
-                }        	    
-        	}
-            
-            // left
-            if (fbRef[SCREEN_WIDTH * j + i - 3] == FG_color)
-            {
-                countFG++;
-            }
-
-            // right
-            if (fbRef[SCREEN_WIDTH * j + i + 3] == FG_color)
-            {
-                countFG++;
-            }
-                        
-            if (typeOfNeighborhood == 1)            
-            {                        
-                // top left
-                if (fbRef[SCREEN_WIDTH * (j - 2) + i - 3] == FG_color)
-                {
-                    countFG++;
-                }
-                
-                // top right
-                if (fbRef[SCREEN_WIDTH * (j - 2) + i + 3] == FG_color)
-                {
-                    countFG++;
-                }
-                
-                // bottom left    
-                if (fbRef[SCREEN_WIDTH * (j + 3) + i - 3] == FG_color)
-                {
-                    countFG++;
-                }
-
-                // bottom right                         
-                if (fbRef[SCREEN_WIDTH * (j + 3) + i + 3] == FG_color)
-                {
-                    countFG++;
-                }
-            }
-            
-            if (countFG != 0 and booleanTriangularRule(countFG))
-            {
-                // If the current cell's color is not already changed, change it to FG_color.
-                // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
-                if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
-                {
-                    paintTriangularCell(i, j, FG_color, fbNew);
-                    changeCount++;
-                }
-            }
-        }
-    }
-    
-    return changeCount;
-}
-
-int initializeBooleanTriangularAutomata(int intX, int intY)
-{
-    cleanFB(fb);
-    cleanFB(fb2);
-    
-    drawTriangularGrid();
-    
-    automataSteps = 0;
-        
-    paintTriangularCell(intX, intY, FG_color, fb);
-    
-    return 0;
-}
-
-/*************************************** END BOOLEAN AUTOMATA FUNCTIONS ****************************************************/
 
 /**************************************** START CONWAY'S GAME OF LIFE FUNCTIONS ********************************************/
 
@@ -1235,7 +1044,7 @@ int printBAasterisks()
 int printBHAasterisks()
 {
     // {1, 2, 3, 4, 5, 6} For the boolean hexagonal automata with Moore neighborhood
-    if (ca.getBooleanRuleValue(1, 0) == 1) 
+    if (ca.getBooleanRuleValue(1, 0) == 1)
     {
         iprintf("\x1b[14;5H*");    
     }
@@ -1280,7 +1089,7 @@ int printBHAasterisks()
         iprintf("\x1b[15;10H ");
     }
 
-    if (ca.getBooleanRuleValue(1, 5) == 6) 
+    if (ca.getBooleanRuleValue(1, 5) == 6)
     {
         iprintf("\x1b[15;15H*");    
     }
@@ -1297,7 +1106,7 @@ int printBHAasterisks()
  */
 int printBTAasterisks()
 {
-    if (intTypeOfNeighborhood == 0)
+    if (ca.getTypeOfNeighborhood() == 0)
     {
         iprintf("\x1b[13;2H*");
         iprintf("\x1b[15;2H ");        
@@ -1309,7 +1118,7 @@ int printBTAasterisks()
     }
     
     // {1, 2, 3} For the boolean triangular automata with Von Neumann neighborhood
-    if (intBooleanRulesValuesTriVN[0] == 1)
+    if (ca.getBooleanRuleValue(0, 0) == 1)
     {
         iprintf("\x1b[14;5H*");    
     }
@@ -1318,7 +1127,7 @@ int printBTAasterisks()
         iprintf("\x1b[14;5H ");    
     }
     
-    if (intBooleanRulesValuesTriVN[1] == 2) 
+    if (ca.getBooleanRuleValue(0, 1) == 2) 
     {
         iprintf("\x1b[14;10H*");    
     }
@@ -1327,7 +1136,7 @@ int printBTAasterisks()
         iprintf("\x1b[14;10H ");    
     }
             
-    if (intBooleanRulesValuesTriVN[2] == 3) 
+    if (ca.getBooleanRuleValue(0, 2) == 3)
     {
         iprintf("\x1b[14;15H*");    
     }
@@ -1337,7 +1146,7 @@ int printBTAasterisks()
     }
             
     // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
-    if (intBooleanRulesValuesTriM[0] == 1) 
+    if (ca.getBooleanRuleValue(1, 0) == 1)
     {
         iprintf("\x1b[16;5H*");    
     }
@@ -1346,7 +1155,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;5H ");    
     }
     
-    if (intBooleanRulesValuesTriM[1] == 2) 
+    if (ca.getBooleanRuleValue(1, 1) == 2) 
     {
         iprintf("\x1b[16;10H*");    
     }
@@ -1355,7 +1164,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;10H ");    
     }        
     
-    if (intBooleanRulesValuesTriM[2] == 3) 
+    if (ca.getBooleanRuleValue(1, 2) == 3)
     {
         iprintf("\x1b[16;15H*");    
     }
@@ -1364,7 +1173,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;15H ");    
     }
         
-    if (intBooleanRulesValuesTriM[3] == 4) 
+    if (ca.getBooleanRuleValue(1, 3) == 4)
     {
         iprintf("\x1b[16;20H*");    
     }
@@ -1373,7 +1182,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;20H ");    
     }
         
-    if (intBooleanRulesValuesTriM[4] == 5) 
+    if (ca.getBooleanRuleValue(1, 4) == 5)
     {
         iprintf("\x1b[17;5H*");    
     }
@@ -1382,7 +1191,7 @@ int printBTAasterisks()
         iprintf("\x1b[17;5H ");    
     }
         
-    if (intBooleanRulesValuesTriM[5] == 6) 
+    if (ca.getBooleanRuleValue(1, 5) == 6)
     {
         iprintf("\x1b[17;10H*");    
     }
@@ -1391,7 +1200,7 @@ int printBTAasterisks()
         iprintf("\x1b[17;10H ");    
     }
             
-    if (intBooleanRulesValuesTriM[6] == 7) 
+    if (ca.getBooleanRuleValue(1, 6) == 7)
     {
         iprintf("\x1b[17;15H*");    
     }
@@ -1400,7 +1209,7 @@ int printBTAasterisks()
         iprintf("\x1b[17;15H ");    
     }
         
-    if (intBooleanRulesValuesTriM[7] == 8)     
+    if (ca.getBooleanRuleValue(1, 7) == 8)
     {
         iprintf("\x1b[17;20H*");    
     }
@@ -1862,14 +1671,6 @@ int runAutomata()
         printRuleNumber(calculateRuleNumber());
   	    drawElementaryCellularAutomata();	        
     }
-    else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
-    {
-        showFB();
-        dmaCopy(fb, fb2, 128*1024);
-        showFB2();
-        
-        initializeBooleanTriangularAutomata(127, 91);
-    }
     else if (automataType == CONWAYS_GAME_OF_LIFE)
     {
         showFB();
@@ -2102,6 +1903,9 @@ int main(void)
                 }
                 else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
+                    ca.setType("BTA");
+                    ca.setTypeOfNeighborhood(0); // Von Neumann neighborhood (default)
+
                     consoleClear();
                     printCredits();
                     
@@ -2113,9 +1917,11 @@ int main(void)
                     printMenu(displayedMenu);
                     
                     printMenuArrow(displayedMenu, intArrow, false);
+
+                    ca.initializeBooleanRuleValues();
+                    ca.initialize();
                                         
                     printBTAasterisks();
-                    runAutomata();
                 }
                 else if (automataType == CONWAYS_GAME_OF_LIFE)
                 {
@@ -2673,67 +2479,51 @@ int main(void)
          */                
         else if (displayedMenu == 6)
         {
-            automataSteps++;
-            printNumSteps(BOOLEAN_TRIANGULAR_AUTOMATA, automataSteps);
-            
-            if (calculateNextStepTriangular(intTypeOfNeighborhood) == 0) // The automata has finished so we are going to reinitiate the cycle
-            {
-                runAutomata(); 
-            }
-            else // the automata has not finished yet
-            {
-                if (automataSteps % 2 == 0 and automataSteps != 1)
-                {
-                    showFB();
-                }
-                else
-                {
-                    showFB2();
-                }
-                swiWaitForVBlank();
-            }
+            ca.nextStep();
+
+            printNumSteps(BOOLEAN_TRIANGULAR_AUTOMATA, ca.getNumSteps());
 
        	    if(keys_released & KEY_A)
 		    {
 		        if (intArrow == 0) // Von Neumann neighborhood
 		        {
-		            intTypeOfNeighborhood = 0;
+		            ca.setTypeOfNeighborhood(0);
 		            printBTAasterisks();
-		            runAutomata();
+		            ca.initialize();
 		        }
 		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3) // Von Neumann neighborhood 1, 2, 3
 		        {
-		            if (intBooleanRulesValuesTriVN[intArrow - 1] == intArrow)
+                    if (ca.checkBooleanRuleValue(intArrow - 1, intArrow))
 		            {
-		                intBooleanRulesValuesTriVN[intArrow - 1] = 0;
+		                ca.setBooleanRuleValue(intArrow - 1, 0);
 		            }
 		            else
 		            {
-		                intBooleanRulesValuesTriVN[intArrow - 1] = intArrow;
+		                ca.setBooleanRuleValue(intArrow - 1, intArrow);
 		            }
 		            
 		            printBTAasterisks();
-		            runAutomata();
+		            ca.initialize();
 		        }
 		        else if (intArrow == 4) // Moore neighborhood
 		        {
-		            intTypeOfNeighborhood = 1;
+		            ca.setTypeOfNeighborhood(1);
 		            printBTAasterisks();
-		            runAutomata();
+		            ca.initialize();
 		        }
 		        else if (intArrow == 5 || intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12) // Moore neighborhood 1, 2, 3, 4, 5, 6, 7, 8
 		        {
-		            if (intBooleanRulesValuesTriM[intArrow - 5] == intArrow - 4)
+                    if (ca.checkBooleanRuleValue(intArrow - 5, intArrow - 4))
 		            {
-		                intBooleanRulesValuesTriM[intArrow - 5] = 0;
+		                ca.setBooleanRuleValue(intArrow - 5, 0);
 		            }
 		            else
 		            {
-		                intBooleanRulesValuesTriM[intArrow - 5] = intArrow - 4;
-		            }		      
-		            
+		                ca.setBooleanRuleValue(intArrow - 5, intArrow - 4);
+		            }
+		            		            
 		            printBTAasterisks();
-		            runAutomata();  
+		            ca.initialize();
 		        }
 		        else if (intArrow == 13)
 		        {

@@ -3,6 +3,7 @@
 #include "general.h"
 #include "color.h"
 #include "hexgrid.h"
+#include "triangulargrid.h"
 
 /*
  * References:
@@ -344,6 +345,21 @@ int CellularAutomata::initialize()
         typeOfNeighborhood = 1; // Moore neighborhood (In this case it's a hexagonal neighborhood but as the Moore neighborhood is a array of 8 ints there is enough space for 6 ints)
         
         paintHexCell(124, 93, FG_color, fb);
+    }
+    else if (type == "BTA")
+    {
+        showFB();
+        dmaCopy(fb, fb2, 128* 1024);
+        showFB2();
+        
+        cleanFB(fb);
+        cleanFB(fb2);
+
+        drawTriangularGrid();
+    
+        numSteps = 0;
+        
+        paintTriangularCell(127, 91, FG_color, fb);
     }
     
     return 0;
@@ -733,6 +749,161 @@ int CellularAutomata::nextStep()
             swiWaitForVBlank();
         }
     }
+    /*
+     * Calculates and draws the next step of the boolean triangular automata.
+     * The return value indicates if the automata has finished (return 0)
+     * or not (return != 0)
+     */
+    else if (type == "BTA")
+    {
+        /* typeOfNeighborhood = 0 Modified Von Neumann neighborhood
+         * 3 neighbors.
+         *
+         *      x
+         *    x o x
+         *  
+         *  or
+         *
+         *    x o x
+         *      x 
+         *
+         * http://en.wikipedia.org/wiki/Von_Neumann_neighborhood
+         *
+         * typeOfNeighborhood = 1 -> Modified Moore neighborhood
+         * 8 neighbors.
+         *
+         *    x x x
+         *    x o x
+         *    x x x
+         *
+         * http://en.wikipedia.org/wiki/Moore_neighborhood
+         */
+        unsigned short* fbRef;
+        unsigned short* fbNew;
+
+        /*
+         * changeCount is used to know if the next step is different from the current step.
+         * If changeCount == 0 then there're no changes and the automata has finished,
+         * so we can start again from step 0.
+         * If changeCount != 0 then the automata has not finished yet.
+         */ 
+        int changeCount = 0; 
+            
+        int countFG = 0;
+
+        ++numSteps;
+
+        if (numSteps % 2 == 0 and numSteps != 1)
+        {
+            fbRef = fb2;
+            fbNew = fb;
+        }
+        else 
+        {
+            fbRef = fb;
+            fbNew = fb2;
+        }
+        
+        dmaCopy(fbRef, fbNew, 128*1024);
+        
+        for (int i = 4; i < 253; i = i + 3)
+        {   
+            for (int j = 4; j < 187; j = j + 3)
+            {
+                countFG = 0;        
+
+                // xxx
+                //  x
+                if (typeOfNeighborhood == 1 or ((i % 2 == 0 and j % 2 == 0) or (i % 2 != 0 and j % 2 != 0)))
+                {    
+                    // top 
+                    if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
+                    {
+                        countFG++;
+                    }
+                }
+                //  x
+                // xxx
+                if (typeOfNeighborhood ==  1 or ((i % 2 != 0 and j % 2 == 0) or (i % 2 == 0 and j % 2 != 0)))
+            	{
+            	    //bottom
+                    if (fbRef[SCREEN_WIDTH * (j + 3) + i] == FG_color)
+                    {
+                        countFG++;
+                    }        	    
+            	}
+                
+                // left
+                if (fbRef[SCREEN_WIDTH * j + i - 3] == FG_color)
+                {
+                    countFG++;
+                }
+
+                // right
+                if (fbRef[SCREEN_WIDTH * j + i + 3] == FG_color)
+                {
+                    countFG++;
+                }
+                            
+                if (typeOfNeighborhood == 1)            
+                {                        
+                    // top left
+                    if (fbRef[SCREEN_WIDTH * (j - 2) + i - 3] == FG_color)
+                    {
+                        countFG++;
+                    }
+                    
+                    // top right
+                    if (fbRef[SCREEN_WIDTH * (j - 2) + i + 3] == FG_color)
+                    {
+                        countFG++;
+                    }
+                    
+                    // bottom left    
+                    if (fbRef[SCREEN_WIDTH * (j + 3) + i - 3] == FG_color)
+                    {
+                        countFG++;
+                    }
+
+                    // bottom right                         
+                    if (fbRef[SCREEN_WIDTH * (j + 3) + i + 3] == FG_color)
+                    {
+                        countFG++;
+                    }
+                }
+                
+                if (countFG != 0 and isValueInRule(countFG))
+                {
+                    // If the current cell's color is not already changed, change it to FG_color.
+                    // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                    if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
+                    {
+                        paintTriangularCell(i, j, FG_color, fbNew);
+                        changeCount++;
+                    }
+                }
+            }
+        }
+
+        //return changeCount;
+
+        if (changeCount == 0) // The automata has finished so we are going to reinitiate the cycle
+        {
+            initialize();
+        }
+        else // the automata has not finished yet
+        {
+            if (numSteps % 2 == 0 and numSteps != 1)
+            {
+                showFB();
+            }
+            else
+            {
+                showFB2();
+            }
+            swiWaitForVBlank();
+        }
+    }
 
 	return 0;
 }
@@ -783,17 +954,24 @@ bool CellularAutomata::isValueInRule(int count)
             }            
         }
     }
-    else if (type == "BA")
+    else
     {
         int upperLimit;
     
         if (typeOfNeighborhood == 0) // Von Neumann neighborhood
         {
-            upperLimit = 4;
+            if (type == "BA")
+            {
+                upperLimit = 4;
+            }
+            else // type == "BTA"
+            {
+                upperLimit = 3;
+            }
         }
         else // Moore neighborhood
         {
-            upperLimit = 8;
+            upperLimit = 8; // For both Boolean Square and Triangular Automata
         }
         
         for (int i = 0; i < upperLimit; i++)
