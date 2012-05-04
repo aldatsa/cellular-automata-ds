@@ -233,28 +233,60 @@ int CellularAutomata::getAntNumPixels()
 
 int CellularAutomata::setBooleanRuleValue(int ruleIndex, int value)
 {
-    if (type == "BHA")
+    if (typeOfNeighborhood == 0) // Von Neumann neighborhood
     {
-        booleanRuleValues[ruleIndex] = value;
+        booleanRuleValuesVN[ruleIndex] = value;
     }
+    else
+    {
+        booleanRuleValuesM[ruleIndex] = value;
+    }
+    return 0;
+}
+
+int CellularAutomata::getBooleanRuleValue(int neighborhoodType, int ruleIndex)
+{
+    if (neighborhoodType == 0) // Von Neumann neighborhood
+    {
+        return booleanRuleValuesVN[ruleIndex];
+    }
+    else // Moore neighborhood
+    {
+        return booleanRuleValuesM[ruleIndex];
+    }
+}
+        
+int CellularAutomata::setTypeOfNeighborhood(int value)
+{
+    typeOfNeighborhood = value;
     
     return 0;
+}
+
+int CellularAutomata::getTypeOfNeighborhood()
+{
+    return typeOfNeighborhood;
 }
 
 /*
  * Set the initial values of the array intBooleanRuleValues
  */
 int CellularAutomata::initializeBooleanRuleValues()
-{
-    booleanRuleValues [0] = 1;
-    booleanRuleValues [1] = 0;
-    booleanRuleValues [2] = 0;
-    booleanRuleValues [3] = 0;
-    booleanRuleValues [4] = 0;
-    booleanRuleValues [5] = 0;
-    booleanRuleValues [6] = 0;
-    booleanRuleValues [7] = 0;
-    
+{   
+    booleanRuleValuesVN[0] = 1;
+
+    for (int i = 1; i < 4; ++i)
+    {
+        booleanRuleValuesVN[i] = 0;
+    }
+
+    booleanRuleValuesM[0] = 1;
+
+    for (int i = 1; i < 8; ++i)
+    {
+        booleanRuleValuesM[i] = 0;
+    }
+
     return 0;
 }
 
@@ -284,6 +316,19 @@ int CellularAutomata::initialize()
         antAngle = 90;
         antFinished = false;
     }
+    else if (type == "BA")
+    {
+        showFB();
+        dmaCopy(fb, fb2, 128* 1024);
+        showFB2();
+        
+        cleanFB(fb);
+        cleanFB(fb2);
+
+        numSteps = 0;
+
+        fb[91 * SCREEN_WIDTH + 127] = FG_color; // Paint the initial point
+    }
     else if (type == "BHA")
     {        
         showFB();
@@ -296,6 +341,7 @@ int CellularAutomata::initialize()
         drawHexGrid();
     
         numSteps = 0;
+        typeOfNeighborhood = 1; // Moore neighborhood (In this case it's a hexagonal neighborhood but as the Moore neighborhood is a array of 8 ints there is enough space for 6 ints)
         
         paintHexCell(124, 93, FG_color, fb);
     }
@@ -374,6 +420,154 @@ int CellularAutomata::nextStep()
         {
             initialize(); // Paint the framebuffer with the BG color to erase the last step of the munching squares and initialize the variables to start another cycle
         }            
+    }
+    /*
+     * Calculates and draws the next step of the boolean square automata.
+     * The return value indicates if the automata has finished (return 0)
+     * or not (return != 0)
+     */
+    else if (type == "BA")
+    {
+        /* typeOfNeighborhood = 0 Von Neumann neighborhood
+         * 4 neighbors.
+         *      x
+         *    x o x
+         *      x
+         * http://en.wikipedia.org/wiki/Von_Neumann_neighborhood
+         *
+         * typeOfNeighborhood = 1 -> Moore neighborhood
+         * 8 neighbors.
+         *    x x x
+         *    x o x
+         *    x x x
+         * http://en.wikipedia.org/wiki/Moore_neighborhood
+         */
+              
+        unsigned short* fbRef;
+        unsigned short* fbNew;
+        
+        /*
+         * changeCount is used to know if the next step is different from the current step.
+         * If changeCount == 0 then there're no changes and the automata has finished,
+         * so we can start again from step 0.
+         * If changeCount != 0 then the automata has not finished yet.
+         */ 
+        int changeCount = 0; 
+
+        /* This two lines were used to debug the implementation of changeCount (changeCount wasn't 0 when the automata finishes)
+        iprintf("\x1b[20;3HChange count:        ");    
+        iprintf("\x1b[20;3HChange count: %d", changeCount);
+        */
+        
+        int countFG = 0;
+
+        ++numSteps;
+        
+        if (numSteps % 2 == 0 and numSteps != 1)
+        {
+            fbRef = fb2;
+            fbNew = fb;
+        }
+        else 
+        {
+            fbRef = fb;
+            fbNew = fb2;
+        }
+        
+        dmaCopy(fbRef, fbNew, 128*1024);
+        
+        for (int i = 1; i < 254; i++)
+        {   
+            for (int j = 1; j < SCREEN_HEIGHT - 1; j++)
+            {
+                countFG = 0;        
+                
+
+                // top 
+                if (fbRef[SCREEN_WIDTH * (j - 1) + i] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                // left
+                if (fbRef[SCREEN_WIDTH * j + i - 1] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                // right    
+                if (fbRef[SCREEN_WIDTH * j + i + 1] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                // bottom                            
+                if (fbRef[SCREEN_WIDTH * (j + 1) + i] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                if (typeOfNeighborhood == 1)
+                {
+                    // Top left
+                    if (fbRef[SCREEN_WIDTH * (j - 1) + i - 1] == FG_color)
+                    {
+                        countFG++;
+                    }
+                    
+                    // top right                
+                    if (fbRef[SCREEN_WIDTH * (j - 1) + i + 1] == FG_color)
+                    {
+                        countFG++;
+                    }
+                                    
+                    // Bottom left
+                    if (fbRef[SCREEN_WIDTH * (j + 1) + i - 1] == FG_color)
+                    {
+                        countFG++;
+                    }
+                    
+                    // bottom right
+                    if (fbRef[SCREEN_WIDTH * (j + 1) + i + 1] == FG_color)
+                    {
+                        countFG++;
+                    }            
+                }
+                            
+                if (countFG != 0 and isValueInRule(countFG))
+                {
+                    // If the current cell's color is not already changed, change it to FG_color.
+                    // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                    if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
+                    {
+                        fbNew[SCREEN_WIDTH * j + i] = FG_color;
+                        ++changeCount;
+                    }
+                }
+            }
+        }
+        
+        /* This two lines were used to debug the implementation of changeCount (changeCount wasn't 0 when the automata finishes)
+        iprintf("\x1b[21;3HChange count end:        ");    
+        iprintf("\x1b[21;3HChange count end: %d", changeCount);
+        */
+        
+        if (changeCount == 0)
+        {
+            initialize();
+        }
+        else // the automata has not finished yet
+        {
+            if (numSteps % 2 == 0 and numSteps != 1)
+            {
+                showFB();
+            }
+            else
+            {
+                showFB2();
+            }
+            swiWaitForVBlank();
+        }
     }
     /*
      * Else if the the type of automata is Boolean Hexagonal Automata
@@ -556,13 +750,21 @@ bool CellularAutomata::hasFinished()
  */
 bool CellularAutomata::checkBooleanRuleValue(int ruleIndex, int value)
 {
-    if (type == "BHA")
+    if (typeOfNeighborhood == 0) // Von Neumann neighborhood
     {
-        if (booleanRuleValues[ruleIndex] == value)
+        if (booleanRuleValuesVN[ruleIndex] == value)
         {
             return true;
         }
     }
+    else // Moore neighborhood
+    {
+    if (booleanRuleValuesM[ruleIndex] == value)
+        {
+            return true;
+        }
+    }
+    
     return false;
 }
 
@@ -581,6 +783,26 @@ bool CellularAutomata::isValueInRule(int count)
             }            
         }
     }
+    else if (type == "BA")
+    {
+        int upperLimit;
     
+        if (typeOfNeighborhood == 0) // Von Neumann neighborhood
+        {
+            upperLimit = 4;
+        }
+        else // Moore neighborhood
+        {
+            upperLimit = 8;
+        }
+        
+        for (int i = 0; i < upperLimit; i++)
+        {
+            if (checkBooleanRuleValue(i, count))
+            {
+                return true;
+            }
+        }
+    }
     return false;
 }
