@@ -5,6 +5,7 @@
 #include "hexgrid.h"
 #include "triangulargrid.h"
 #include "globals.h"
+#include "initialConditions.h"
 
 /*
  * References:
@@ -17,6 +18,9 @@
  * http://en.wikipedia.org/wiki/Munching_square
  * http://mathworld.wolfram.com/MunchingSquares.html
  * http://www.inwap.com/pdp10/hbaker/hakmem/hacks.html#item146
+ *
+ * CONWAY'S GAME OF LIFE:
+ * http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
  */
 
 //*************************************PRIVATE*******************************************
@@ -362,7 +366,22 @@ int CellularAutomata::initialize()
         
         paintTriangularCell(127, 91, FG_color, fb);
     }
-    
+    else if (type == CONWAYS_GAME_OF_LIFE)
+    {
+        showFB();
+        dmaCopy(fb, fb2, 128* 1024);
+        showFB2();
+        
+        cleanFB(fb);
+        cleanFB(fb2);
+        
+        numSteps = 0;
+        
+        //fillScreenWithPulsars();
+        //drawFpentomino(120, 90);
+        drawAcorn(120, 90);
+    }
+
     return 0;
 }
 
@@ -905,7 +924,131 @@ int CellularAutomata::nextStep()
             swiWaitForVBlank();
         }
     }
+    else if(type == CONWAYS_GAME_OF_LIFE)
+    {
+    
+        unsigned short* fbRef;
+        unsigned short* fbNew;
 
+        /*
+         * changeCount is used to know if the next step is different from the current step.
+         * If changeCount == 0 then there're no changes and the automata has finished,
+         * so we can start again from step 0.
+         * If changeCount != 0 then the automata has not finished yet.
+         */ 
+        int changeCount = 0; 
+
+        int countFG = 0;
+ 
+        ++numSteps;
+
+        if (numSteps % 2 == 0 and numSteps != 1)
+        {
+            fbRef = fb2;
+            fbNew = fb;
+        }
+        else
+        {
+            fbRef = fb;
+            fbNew = fb2;
+        }
+
+        dmaCopy(fbRef, fbNew, 128*1024);
+
+        for (int i = 1; i < 254; ++i)
+        {
+            for (int j = 1; j < SCREEN_HEIGHT - 1; ++j)
+            {
+                countFG = 0;        
+
+                // top 
+                if (fbRef[SCREEN_WIDTH * (j - 1) + i] == FG_color)
+                {
+                    countFG++;
+                }
+
+          	    //bottom
+                if (fbRef[SCREEN_WIDTH * (j + 1) + i] == FG_color)
+                {
+                    countFG++;
+                }        	    
+                
+                // left
+                if (fbRef[SCREEN_WIDTH * j + i - 1] == FG_color)
+                {
+                    countFG++;
+                }
+
+                // right
+                if (fbRef[SCREEN_WIDTH * j + i + 1] == FG_color)
+                {
+                    countFG++;
+                }
+                            
+                // top left
+                if (fbRef[SCREEN_WIDTH * (j - 1) + i - 1] == FG_color)
+                {
+                   countFG++;
+                }
+                    
+                // top right
+                if (fbRef[SCREEN_WIDTH * (j - 1) + i + 1] == FG_color)
+                {
+                   countFG++;
+                }
+                    
+                // bottom left    
+                if (fbRef[SCREEN_WIDTH * (j + 1) + i - 1] == FG_color)
+                {
+                    countFG++;
+                }
+
+                // bottom right                         
+                if (fbRef[SCREEN_WIDTH * (j + 1) + i + 1] == FG_color)
+                {
+                    countFG++;
+                }
+                
+                if (countFG < 2 && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+                {
+                    fbNew[SCREEN_WIDTH * j + i] = BG_color;
+                    changeCount++;
+                }
+                if ((countFG == 2 || countFG == 3) && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with two or three live neighbours lives on to the next generation.
+                {
+                    fbNew[SCREEN_WIDTH * j + i] = FG_color;
+                    changeCount++;
+                }
+                if (countFG > 3 && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with more than three live neighbours dies, as if by overcrowding.
+                {
+                    fbNew[SCREEN_WIDTH * j + i] = BG_color;
+                    changeCount++;
+                }
+                if (countFG == 3 && fbRef[SCREEN_WIDTH * j + i] == BG_color) // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+                {
+                    fbNew[SCREEN_WIDTH * j + i] = FG_color;
+                    changeCount++;
+                }            
+            }
+        }
+        
+        if (changeCount == 0) // The automata has finished so we are going to reinitiate the cycle
+        {
+            initialize();
+        }
+        else // the automata has not finished yet
+        {
+            if (numSteps % 2 == 0 and numSteps != 1)
+            {
+                showFB();
+            }
+            else
+            {
+                showFB2();
+            }
+            swiWaitForVBlank();
+        }
+    }
 	return 0;
 }
 

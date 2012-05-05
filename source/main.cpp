@@ -129,8 +129,8 @@ CellularAutomata ca;
 
 /*
  * Updates the colors of the background, foreground and lines
- * It's used to update the colors when new colors are selected
- * in the color selection menu
+ * It's used to update the colors of the rules of the elementary cellular automata
+ * when new colors are selected in the color selection menu
  */
 int updateColors()
 {
@@ -507,220 +507,6 @@ int drawElementaryCellularAutomata()
 	return 0;
 }
 /*********************************** END ELEMENTARY CELLULAR AUTOMATA FUNCTIONS ********************************************/
-
-/**************************************** START CONWAY'S GAME OF LIFE FUNCTIONS ********************************************/
-
-/*
- * References:
- *  http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
- */
- 
-/*
- * Draws the initial state that develops into the period 3 oscillator called "pulsar".
- * The "pulsar" is the most common period 3 oscillator.
- *
- * The initial state is like that:
- *
- *          *****
- *                  (empty line)
- *           ***
- *                  (empty line)
- *          *****
- */
-int initializePulsar(int intX, int intY)
-{
-    drawHLine(intX, intY, 5, FG_color, fb);
-    drawHLine(intX + 1, intY + 2, 3, FG_color, fb);
-    drawHLine(intX, intY + 4, 5, FG_color, fb);
-    
-    return 0;
-}
-
-/*
- * Fills the screen with multiple rows and columns of "pulsars".
- */
-int fillScreenWithPulsars()
-{
-    for (int i = 12; i < 249; i = i + 16)
-    {
-        for (int j = 12; j < 185; j = j + 16)
-        { 
-            initializePulsar(i, j);
-        }
-    }
-    
-    return 0;
-}
-
-/*
- * Draws the F-pentomino.
- * During this early research, Conway discovered that the F-pentomino (which he called the "R-pentomino") failed to stabilize in a small number of generations.
- * In fact, it takes 1103 generations to stabilize, by which time it has a population of 116 and has fired six escaping gliders (these were the first gliders ever discovered). 
- * 
- * The initial state is like that:
- *
- *          **
- *         **
- *          * 
- */
-int initializeFpentomino(int intX, int intY)
-{
-    drawHLine(intX, intY, 2, FG_color, fb);
-    drawHLine(intX - 1, intY + 1, 2, FG_color, fb);
-    drawHLine(intX, intY + 2, 1, FG_color, fb);
-    
-    return 0;
-}
-
-/*
- * Draws the Acorn
- * It takes 5206 generations to generate 633 cells including 13 escaped gliders.
- * 
- * The initial state is like that:
- *
- *           *
- *             *
- *          **  ***
- */
-int initializeAcorn(int intX, int intY)
-{
-    drawHLine(intX, intY, 1, FG_color, fb);
-    drawHLine(intX + 2, intY + 1, 1, FG_color, fb);
-    drawHLine(intX - 1, intY + 2, 2, FG_color, fb);
-    drawHLine(intX + 3, intY + 2, 3, FG_color, fb);    
-    
-    return 0;
-}
-
-/*
- * 
- */
-int initializeConwaysGameOfLife()
-{
-    cleanFB(fb);
-    cleanFB(fb2);
-    
-    automataSteps = 0;
-    
-    //fillScreenWithPulsars();
-    //initializeFpentomino(120, 90);
-    initializeAcorn(120, 90);
-    
-    return 0;
-}
-
-/*
- * 
- */
-int calculateNextStepConwaysGameOfLife()
-{          
-    unsigned short* fbRef;
-    unsigned short* fbNew;
-
-    /*
-     * changeCount is used to know if the next step is different from the current step.
-     * If changeCount == 0 then there're no changes and the automata has finished,
-     * so we can start again from step 0.
-     * If changeCount != 0 then the automata has not finished yet.
-     */ 
-    int changeCount = 0; 
-
-    int countFG = 0;
-                
-    if (automataSteps % 2 == 0 and automataSteps != 1)
-    {
-        fbRef = fb2;
-        fbNew = fb;
-    }
-    else 
-    {
-        fbRef = fb;
-        fbNew = fb2;
-    }
-    
-    dmaCopy(fbRef, fbNew, 128*1024);
-    
-    for (int i = 1; i < 254; ++i)
-    {   
-        for (int j = 1; j < SCREEN_HEIGHT - 1; ++j)
-        {
-            countFG = 0;        
-
-            // top 
-            if (fbRef[SCREEN_WIDTH * (j - 1) + i] == FG_color)
-            {
-                countFG++;
-            }
-
-      	    //bottom
-            if (fbRef[SCREEN_WIDTH * (j + 1) + i] == FG_color)
-            {
-                countFG++;
-            }        	    
-            
-            // left
-            if (fbRef[SCREEN_WIDTH * j + i - 1] == FG_color)
-            {
-                countFG++;
-            }
-
-            // right
-            if (fbRef[SCREEN_WIDTH * j + i + 1] == FG_color)
-            {
-                countFG++;
-            }
-                        
-            // top left
-            if (fbRef[SCREEN_WIDTH * (j - 1) + i - 1] == FG_color)
-            {
-               countFG++;
-            }
-                
-            // top right
-            if (fbRef[SCREEN_WIDTH * (j - 1) + i + 1] == FG_color)
-            {
-               countFG++;
-            }
-                
-            // bottom left    
-            if (fbRef[SCREEN_WIDTH * (j + 1) + i - 1] == FG_color)
-            {
-                countFG++;
-            }
-
-            // bottom right                         
-            if (fbRef[SCREEN_WIDTH * (j + 1) + i + 1] == FG_color)
-            {
-                countFG++;
-            }
-            
-            if (countFG < 2 && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with fewer than two live neighbours dies, as if caused by under-population.
-            {
-                fbNew[SCREEN_WIDTH * j + i] = BG_color;
-                changeCount++;
-            }
-            if ((countFG == 2 || countFG == 3) && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with two or three live neighbours lives on to the next generation.
-            {
-                fbNew[SCREEN_WIDTH * j + i] = FG_color;
-                changeCount++;
-            }
-            if (countFG > 3 && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with more than three live neighbours dies, as if by overcrowding.
-            {
-                fbNew[SCREEN_WIDTH * j + i] = BG_color;
-                changeCount++;
-            }
-            if (countFG == 3 && fbRef[SCREEN_WIDTH * j + i] == BG_color) // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-            {
-                fbNew[SCREEN_WIDTH * j + i] = FG_color;
-                changeCount++;
-            }            
-        }
-    }
-    
-    return changeCount;
-}
-
-/**************************************** END CONWAY'S GAME OF LIFE FUNCTIONS ********************************************/
 
 /******************************************* START MENU FUNCTIONS **********************************************************/
 
@@ -1613,7 +1399,7 @@ int printNumSteps(int automataType, int steps)
     }
     else if (automataType == BOOLEAN_AUTOMATA)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
     }
     else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
     {
@@ -1621,11 +1407,11 @@ int printNumSteps(int automataType, int steps)
     }
     else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
     }
     else if (automataType == CONWAYS_GAME_OF_LIFE)
     {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), steps);
+        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
     }    
     return 0;
 }
@@ -1643,14 +1429,6 @@ int runAutomata()
         updateColors();
         printRuleNumber(calculateRuleNumber());
   	    drawElementaryCellularAutomata();	        
-    }
-    else if (automataType == CONWAYS_GAME_OF_LIFE)
-    {
-        showFB();
-        dmaCopy(fb, fb2, 128*1024);
-        showFB2();
-        
-        initializeConwaysGameOfLife();
     }
     else if(automataType == SELECT_COLORS)
     {
@@ -1898,6 +1676,8 @@ int main(void)
                 }
                 else if (automataType == CONWAYS_GAME_OF_LIFE)
                 {
+                    ca.setType(CONWAYS_GAME_OF_LIFE);
+
                     consoleClear();
                     printCredits();
                     
@@ -1911,7 +1691,8 @@ int main(void)
                     printMenuArrow(displayedMenu, intArrow, false);
                                         
                     //printCGLasterisks();
-                    runAutomata();
+                    //runAutomata();
+                    ca.initialize();
                 }
                 else if (automataType == MUNCHING_SQUARES)
                 {   
@@ -2611,20 +2392,9 @@ int main(void)
          */                
         else if (displayedMenu == 7)
         {    	    
-            automataSteps++;
-            printNumSteps(CONWAYS_GAME_OF_LIFE, automataSteps);
+            ca.nextStep();
             
-            calculateNextStepConwaysGameOfLife();
-            
-            if (automataSteps % 2 == 0 and automataSteps != 1)
-            {
-                showFB();
-            }
-            else
-            {
-                showFB2();
-            }
-            swiWaitForVBlank(); 
+            printNumSteps(CONWAYS_GAME_OF_LIFE, ca.getNumSteps());
 
     	    if(keys_released & KEY_A)
 		    {
