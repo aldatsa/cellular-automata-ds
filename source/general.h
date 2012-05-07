@@ -11,4 +11,5 @@ int showFlash();
 
 int drawHLine(int column, int row, int lenght, unsigned short color, unsigned short* framebuffer);
 int drawVLine(int column, int row, int lenght, unsigned short color);
+int drawRectangle(bool fill, int intRowStart, int intColumnStart, int length, int width);
 #endif

@@ -1,5 +1,7 @@
-#include "cellularautomata.h"
+#include <cmath>    // To calculate powers of 2 in the getRuleNumber function. Is it possible to do it in a more simple way? Using binary operators?
 #include <nds.h>
+
+#include "cellularautomata.h"
 #include "general.h"
 #include "color.h"
 #include "hexgrid.h"
@@ -10,6 +12,12 @@
 /*
  * References:
  *
+ * ELEMENTARY CELLULAR AUTOMATA:
+ * http://mathworld.wolfram.com/ElementaryCellularAutomaton.html
+ * http://atlas.wolfram.com/01/01/
+ * http://en.wikipedia.org/wiki/Cellular_automaton#Elementary_cellular_automata
+ * http://en.wikipedia.org/wiki/Elementary_cellular_automaton
+ 
  * LANGTON'S ANT:
  * http://en.wikipedia.org/wiki/Langton%27s_ant
  * http://mathworld.wolfram.com/LangtonsAnt.html
@@ -206,6 +214,269 @@ int CellularAutomata::drawMunchingSquare(int column, int row, int width, unsigne
     return 0;
 }
 
+/*
+ * Updates the variables used for the colors of the background, foreground and lines.
+ * It's used to update the colors of the rules of the elementary cellular automata
+ * when new colors are selected in the color selection menu and to initiliaze the
+ * values when the automata is executed for the first time.
+ *
+ *  xxx xxo xox xoo oxx oxo oox ooo
+ *   o   x   o   x   x   o   x   o  -> Rule 90: 0*128 + 1*64 + 0*32 + 1*16 + 1*8 + 0*4 + 1*2 + 0*1
+ *
+ * where x == Foreground color with value 1
+ *       o == Background color with value 0
+ *
+ *       ruleLeft  ruleCenter  ruleRight
+ *                  ruleDown
+ *
+ */
+int CellularAutomata::updateECAruleColors()
+{
+    ruleLeft[0] = FG_color;
+    ruleLeft[1] = FG_color;
+    ruleLeft[2] = FG_color;
+    ruleLeft[3] = FG_color;
+    ruleLeft[4] = BG_color;
+    ruleLeft[5] = BG_color;
+    ruleLeft[6] = BG_color;
+    ruleLeft[7] = BG_color;
+
+    ruleCenter[0] = FG_color;
+    ruleCenter[1] = FG_color;
+    ruleCenter[2] = BG_color;
+    ruleCenter[3] = BG_color;
+    ruleCenter[4] = FG_color;
+    ruleCenter[5] = FG_color;
+    ruleCenter[6] = BG_color;
+    ruleCenter[7] = BG_color;
+
+    ruleRight[0] = FG_color;
+    ruleRight[1] = BG_color;
+    ruleRight[2] = FG_color;
+    ruleRight[3] = BG_color;
+    ruleRight[4] = FG_color;
+    ruleRight[5] = BG_color;
+    ruleRight[6] = FG_color;
+    ruleRight[7] = BG_color;
+
+    // The rule that will be displayed on start on the Elementary Cellular Automata: Rule 90 (Default)
+    ruleDown[0] = BG_color;
+    ruleDown[1] = FG_color;
+    ruleDown[2] = BG_color;
+    ruleDown[3] = FG_color;
+    ruleDown[4] = FG_color;
+    ruleDown[5] = BG_color;
+    ruleDown[6] = FG_color;
+    ruleDown[7] = BG_color;
+
+    return 0;
+}
+
+/*
+ * Paints the initial cell in the center of the first row
+ */
+int CellularAutomata::paintInitialCell()
+{
+    fb[128] = FG_color;
+    
+    return 0;
+}
+
+/*
+ * Calculates the rule number for the current rule of the Elementary Cellular Automata
+ */ 
+int CellularAutomata::getRuleNumber()
+{
+    int ruleNumber = 0;
+    
+    for (int i = 0; i < 8; i++)
+    {
+        if (ruleDown[i] == FG_color)
+        {
+            ruleNumber = ruleNumber + pow(2, 7 - i);
+        }
+    }
+    
+    return ruleNumber;
+}
+
+/*
+ *
+ */
+unsigned short CellularAutomata::getRuleDown(int index)
+{
+    return ruleDown[index];
+}
+
+/*
+ *
+ */
+int CellularAutomata::setRuleDown(int index, unsigned short color)
+{
+    ruleDown[index] = color;
+
+    return 0;
+}
+
+/*
+ * Draws an arrow in the top screen (0-7) of the Elementary Cellular Automata
+ */
+int CellularAutomata::drawArrow(char nth, unsigned short color)
+{	
+
+    const int intTopRow = 149;
+    const int intBottomRow = 181;
+
+    const int intColumn1 = 38;
+    const int intColumn2 = 94;
+    const int intColumn3 = 150;
+    const int intColumn4 = 206;
+    
+	int intRow = 0;
+	int intColumn = 0;
+     
+	switch (nth)
+	{
+		case 0 :
+			intRow = intTopRow;
+			intColumn = intColumn1;
+		 	break;
+		case 1 :
+			intRow = intTopRow;
+			intColumn = intColumn2;
+		 	break;		
+		case 2 :
+			intRow = intTopRow;
+			intColumn = intColumn3;
+		 	break;	
+		case 3 :
+			intRow = intTopRow;
+			intColumn = intColumn4;
+		 	break;	
+		case 4 :
+			intRow = intBottomRow;
+			intColumn = intColumn1;
+		 	break;
+		case 5 :
+			intRow = intBottomRow;
+			intColumn = intColumn2;
+		 	break;		
+		case 6 :
+			intRow = intBottomRow;
+			intColumn = intColumn3;
+		 	break;	
+		case 7 :
+			intRow = intBottomRow;
+			intColumn = intColumn4;
+		 	break;	
+	}
+	
+	drawHLine(intColumn - 3, intRow - 3, 1, color, fb);
+	drawHLine(intColumn - 3, intRow - 2, 2, color, fb);
+	drawHLine(intColumn - 6, intRow - 1,  6, color, fb);
+	drawHLine(intColumn - 6, intRow, 7, color, fb);
+	drawHLine(intColumn - 6, intRow + 1, 6, color, fb);
+	drawHLine(intColumn - 3, intRow + 2, 2, color, fb);
+	drawHLine(intColumn - 3, intRow + 3, 1, color, fb);
+
+	return 0;
+}
+
+/*
+ * Draws the current rule of the Elementary Cellular Automata
+ */
+int CellularAutomata::drawRule(int nth)
+{
+
+    const int intTopRow = 136;
+    const int intBottomRow = 168;
+
+    const int intColumn1 = 32;
+    const int intColumn2 = 88;
+    const int intColumn3 = 144;
+    const int intColumn4 = 200;
+
+	const int intLength = 9;
+	const int intWidth = 9;
+    
+	bool fill = false;
+	int intRowStart = 0;
+	int intColumnStart = 0;
+	
+	switch (nth)
+	{
+		case 0 :
+			intRowStart = intTopRow;
+			intColumnStart = intColumn1;
+		 	break;
+		case 1 :
+			intRowStart = intTopRow;
+			intColumnStart = intColumn2;
+		 	break;		
+		case 2 :
+			intRowStart = intTopRow;
+			intColumnStart = intColumn3;
+		 	break;	
+		case 3 :
+			intRowStart = intTopRow;
+			intColumnStart = intColumn4;
+		 	break;	
+
+		case 4 :
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn1;
+		 	break;
+		case 5 :
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn2;
+		 	break;		
+		case 6 :
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn3;
+		 	break;	
+		case 7 :
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn4;
+		 	break;	
+	}
+
+	if(ruleLeft[nth] == FG_color)
+	{
+		fill = true;	
+	}
+	
+	drawRectangle(fill, intRowStart, intColumnStart, intLength, intWidth);
+
+	fill = false;
+
+	if(ruleCenter[nth] == FG_color)
+	{
+		fill = true;
+	}
+		
+	drawRectangle(fill, intRowStart, intColumnStart + intWidth - 1, intLength, intWidth);
+
+	fill = false;
+
+	if(ruleRight[nth] == FG_color)
+	{
+        fill = true;
+	}
+
+	drawRectangle(fill, intRowStart, intColumnStart + (intWidth - 1) * 2, intLength, intWidth);
+
+    fill = false;
+
+	if(ruleDown[nth] == FG_color)
+	{
+		fill = true;
+	}
+
+	drawRectangle(fill, intRowStart + intLength - 1, intColumnStart + intWidth -1, intLength, intWidth);
+	
+	return 0;
+}
+
 //*************************************PUBLIC*******************************************
 
 int CellularAutomata::setType(int t)
@@ -307,7 +578,12 @@ int CellularAutomata::initialize()
     
     numSteps = 0; // Reset the number of steps to 0
 
-    if (type == LANGTON_HEXAGONAL_ANT)
+    if (type == ELEMENTARY_CELLULAR_AUTOMATA)
+    {
+        updateECAruleColors();
+  	    drawElementaryCellularAutomata();	 
+    }
+    else if (type == LANGTON_HEXAGONAL_ANT)
     { 
         drawHexGrid();
         antPosX = 92;
@@ -1127,4 +1403,66 @@ bool CellularAutomata::isValueInRule(int count)
         }
     }
     return false;
+}
+
+/*
+ * Draws the Elementary Cellular Automata that corresponds to the current rules
+ */
+int CellularAutomata::drawElementaryCellularAutomata()
+{
+	int row, column;
+	unsigned char i;
+	
+	cleanFB(fb);
+
+    paintInitialCell(); // Paints the initial cell in the center of the first row (fb[128] = FG_color)
+
+	for(row = 0; row < 130; row++)
+	{
+		for(column = 0; column < SCREEN_WIDTH; column++)
+		{
+			if(row != 0 && row < 128)
+			{
+				for(i=0; i <= 7; i++)
+				{
+					if(column != 0 && column != SCREEN_WIDTH - 1)
+					{ 
+						if (fb[(row - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(row - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(row - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
+							fb[row * SCREEN_WIDTH + column] = ruleDown[i];
+					}
+					else if(column == 0)
+					{
+						// The left cell is out of the screen, instead we'll use the center cell (column 0) to compare to ruleLeft
+						if(fb[(row - 1) * SCREEN_WIDTH + column] == ruleLeft[i]  && fb[(row - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(row - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
+						{
+							fb[row * SCREEN_WIDTH + column] = ruleDown[i];								
+						}
+					}	
+					else if(column == SCREEN_WIDTH - 1)
+					{
+                        // The right cell is out of the screen, instead we'll use the center cell (column 255) to compare to ruleRight
+						if(fb[(row - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(row - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(row - 1) * SCREEN_WIDTH + column] == ruleRight[i])
+                        {
+							fb[row * SCREEN_WIDTH + column] = ruleDown[i];								
+                        }
+					}
+				}
+			}
+			else if(row == 129)
+			{
+				fb[row * SCREEN_WIDTH + column] = FG_color;
+			}
+		}
+	}
+	
+	// Draw the rules (0-7)
+	for (int i = 0; i < 8; i++)
+	{
+	    drawRule(i);
+	}
+
+    // Draw the arrow 
+	drawArrow(intArrow, line_color);
+	
+	return 0;
 }

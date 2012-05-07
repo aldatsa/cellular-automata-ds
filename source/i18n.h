@@ -8,7 +8,7 @@ using namespace std;
 /*
  * Constant for the version number of the application
  */
-const string strVersionNumber = "0.3.1.5";
+const string strVersionNumber = "0.3.1.6";
 
 /* This variable sets the language used in the menus
  * "en": english

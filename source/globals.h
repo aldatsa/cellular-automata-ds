@@ -1,3 +1,6 @@
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
 /*
  * Constants to define the type of automata:
  * 0: Elementary Cellular Automata
@@ -21,3 +24,20 @@
 #define MUNCHING_SQUARES 7
 #define SELECT_COLORS 8
 #define SELECT_LANGUAGE 9
+
+/* The position of the arrow
+ * Select automata menu: ????
+ * Elementary Cellular Automata: in the top screen (0-7) and in the bottom screen (8)
+ * Langton's ant: ????
+ * Langton's hexagonal ant: ????
+ * Boolean automata menu: ?????
+ * Boolean Hexagonal Automata menu: ????
+ * Boolean Triangular Automata menu: ????
+ * Conway's game of life: ????
+ * Munching Squares: in the bottom screen (0-2)
+ * Select colors: ????
+ * Select language: ????
+ */
+extern int intArrow;
+
+#endif

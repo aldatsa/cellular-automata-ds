@@ -10,6 +10,15 @@ class CellularAutomata
         
         unsigned int numSteps;
         
+        // For the Elementary Cellular Automata
+        unsigned short ruleLeft[8];
+        unsigned short ruleCenter[8];
+        unsigned short ruleRight[8];
+        unsigned short ruleDown[8];
+        int updateECAruleColors();
+        int paintInitialCell();
+        int drawRule(int nth);
+
         // For the Langton's ants (normal and hexagonal)
         unsigned short antPosX;
         unsigned short antPosY;
@@ -33,6 +42,12 @@ class CellularAutomata
         
         int getNumSteps();
         
+        int drawElementaryCellularAutomata();
+        int getRuleNumber();
+        int drawArrow(char nth, unsigned short color);
+        unsigned short getRuleDown(int index);
+        int setRuleDown(int index, unsigned short color);
+
         int setAntNumPixels(int numPixels);
         int getAntNumPixels();
         
