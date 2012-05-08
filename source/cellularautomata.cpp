@@ -510,13 +510,16 @@ int CellularAutomata::getAntNumPixels()
 
 int CellularAutomata::setBooleanRuleValue(int ruleIndex, int value)
 {
-    if (typeOfNeighborhood == 0) // Von Neumann neighborhood
+    if (ruleIndex != 0) // To avoid the possibility of the value of the first boolean rule being zero
     {
-        booleanRuleValuesVN[ruleIndex] = value;
-    }
-    else
-    {
-        booleanRuleValuesM[ruleIndex] = value;
+        if (typeOfNeighborhood == 0) // Von Neumann neighborhood
+        {
+            booleanRuleValuesVN[ruleIndex] = value;
+        }
+        else
+        {
+            booleanRuleValuesM[ruleIndex] = value;
+        }
     }
     return 0;
 }
