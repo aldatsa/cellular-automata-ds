@@ -1,5 +1,5 @@
-#ifndef GENERAL_H
-#define GENERAL_H
+#ifndef FRAMEBUFFER_H
+#define FRAMEBUFFER_H
 
 extern unsigned short* fb;
 extern unsigned short* fb2;

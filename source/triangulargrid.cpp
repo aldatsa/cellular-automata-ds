@@ -1,5 +1,5 @@
 #include <nds.h>
-#include "general.h"
+#include "framebuffer.h"
 #include "color.h"
 
 /*

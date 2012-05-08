@@ -2,7 +2,7 @@
 #include <nds.h>
 
 #include "cellularautomata.h"
-#include "general.h"
+#include "framebuffer.h"
 #include "color.h"
 #include "hexgrid.h"
 #include "triangulargrid.h"

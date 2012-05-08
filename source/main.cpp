@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "general.h"
+#include "framebuffer.h"
 #include "color.h"
 #include "i18n.h"
 #include "cellularautomata.h"
