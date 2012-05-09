@@ -508,34 +508,35 @@ int CellularAutomata::getAntNumPixels()
     return antNumPixels;
 }
 
-int CellularAutomata::setBooleanRuleValue(int ruleIndex, int value)
+/*
+ * I don't like that. I'm sure that there's some other way to initialize class member variables. 
+ */
+int CellularAutomata::initializeBooleanRuleValues()
 {
-    if (ruleIndex != 0) // To avoid the possibility of the value of the first boolean rule being zero
-    {
-        if (typeOfNeighborhood == 0) // Von Neumann neighborhood
-        {
-            booleanRuleValuesVN[ruleIndex] = value;
-        }
-        else
-        {
-            booleanRuleValuesM[ruleIndex] = value;
-        }
-    }
+    booleanRuleValues[0] = 1;
+    booleanRuleValues[1] = 1;
+
     return 0;
 }
 
-int CellularAutomata::getBooleanRuleValue(int neighborhoodType, int ruleIndex)
+/*
+ *
+ */
+bool CellularAutomata::checkBooleanRuleValue(int neighborhoodType, int ruleIndex)
 {
-    if (neighborhoodType == 0) // Von Neumann neighborhood
-    {
-        return booleanRuleValuesVN[ruleIndex];
-    }
-    else // Moore neighborhood
-    {
-        return booleanRuleValuesM[ruleIndex];
-    }
+    return ((booleanRuleValues[neighborhoodType] & (1 << ruleIndex)) == (1 << ruleIndex));
 }
-        
+
+/*
+ *
+ */
+int CellularAutomata::toggleBooleanRuleValue(int neighborhoodType, int ruleIndex)
+{
+    booleanRuleValues[neighborhoodType] ^= 1 << ruleIndex; // Toggle the bit
+
+    return 0;
+}
+
 int CellularAutomata::setTypeOfNeighborhood(int value)
 {
     typeOfNeighborhood = value;
@@ -546,28 +547,6 @@ int CellularAutomata::setTypeOfNeighborhood(int value)
 int CellularAutomata::getTypeOfNeighborhood()
 {
     return typeOfNeighborhood;
-}
-
-/*
- * Set the initial values of the array intBooleanRuleValues
- */
-int CellularAutomata::initializeBooleanRuleValues()
-{   
-    booleanRuleValuesVN[0] = 1;
-
-    for (int i = 1; i < 4; ++i)
-    {
-        booleanRuleValuesVN[i] = 0;
-    }
-
-    booleanRuleValuesM[0] = 1;
-
-    for (int i = 1; i < 8; ++i)
-    {
-        booleanRuleValuesM[i] = 0;
-    }
-
-    return 0;
 }
 
 /*
@@ -611,7 +590,7 @@ int CellularAutomata::initialize()
         cleanFB(fb2);
 
         numSteps = 0;
-
+    
         fb[91 * SCREEN_WIDTH + 127] = FG_color; // Paint the initial point
     }
     else if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
@@ -626,6 +605,7 @@ int CellularAutomata::initialize()
         drawHexGrid();
     
         numSteps = 0;
+
         typeOfNeighborhood = 1; // Moore neighborhood (In this case it's a hexagonal neighborhood but as the Moore neighborhood is a array of 8 ints there is enough space for 6 ints)
         
         paintHexCell(124, 93, FG_color, fb);
@@ -849,7 +829,7 @@ int CellularAutomata::nextStep()
                     }            
                 }
                             
-                if (countFG != 0 and isValueInRule(countFG))
+                if (countFG != 0 and checkBooleanRuleValue(typeOfNeighborhood, countFG - 1)) // if the count of surrounding cells with FG_color is n we'll check if the index n-1 of the boolean rule is checked(value=1)
                 {
                     // If the current cell's color is not already changed, change it to FG_color.
                     // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
@@ -963,7 +943,7 @@ int CellularAutomata::nextStep()
                     countFG++;
                 }
                             
-                if (countFG != 0 and isValueInRule(countFG))
+                if (countFG != 0 and checkBooleanRuleValue(typeOfNeighborhood, countFG - 1)) // if the count of surrounding cells with FG_color is n we'll check if the index n-1 of the boolean rule is checked(value=1)
                 {
                     // If the current cell's color is not already changed, change it to FG_color.
                     // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
@@ -1018,7 +998,7 @@ int CellularAutomata::nextStep()
                     countFG++;
                 }
                             
-                if (countFG != 0 and isValueInRule(countFG))
+                if (countFG != 0 and checkBooleanRuleValue(typeOfNeighborhood, countFG - 1)) // if the count of surrounding cells with FG_color is n we'll check if the index n-1 of the boolean rule is checked(value=1)
                 {
                     // If the current cell's color is not already changed, change it to FG_color.
                     // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
@@ -1171,7 +1151,7 @@ int CellularAutomata::nextStep()
                     }
                 }
                 
-                if (countFG != 0 and isValueInRule(countFG))
+                if (countFG != 0 and checkBooleanRuleValue(typeOfNeighborhood, countFG - 1)) // if the count of surrounding cells with FG_color is n we'll check if the index n-1 of the boolean rule is checked(value=1)
                 {
                     // If the current cell's color is not already changed, change it to FG_color.
                     // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
@@ -1337,75 +1317,6 @@ int CellularAutomata::nextStep()
 bool CellularAutomata::hasFinished()
 {
     return antFinished;
-}
-
-/*
- *
- */
-bool CellularAutomata::checkBooleanRuleValue(int ruleIndex, int value)
-{
-    if (typeOfNeighborhood == 0) // Von Neumann neighborhood
-    {
-        if (booleanRuleValuesVN[ruleIndex] == value)
-        {
-            return true;
-        }
-    }
-    else // Moore neighborhood
-    {
-    if (booleanRuleValuesM[ruleIndex] == value)
-        {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-/*
- *
- */
-bool CellularAutomata::isValueInRule(int count)
-{
-    if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
-    {
-        for (int i = 0; i < 6; i++)
-        {
-            if (checkBooleanRuleValue(i, count))
-            {
-                return true;
-            }            
-        }
-    }
-    else
-    {
-        int upperLimit;
-    
-        if (typeOfNeighborhood == 0) // Von Neumann neighborhood
-        {
-            if (type == BOOLEAN_AUTOMATA)
-            {
-                upperLimit = 4;
-            }
-            else // type == BOOLEAN_TRIANGULAR_AUTOMATA
-            {
-                upperLimit = 3;
-            }
-        }
-        else // Moore neighborhood
-        {
-            upperLimit = 8; // For both Boolean Square and Triangular Automata
-        }
-        
-        for (int i = 0; i < upperLimit; i++)
-        {
-            if (checkBooleanRuleValue(i, count))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 /*

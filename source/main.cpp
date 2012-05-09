@@ -278,7 +278,7 @@ int printBAasterisks()
     }
     
     // {1, 2, 3, 4} For the boolean square automata with Von Neumann neighborhood
-    if (ca.getBooleanRuleValue(0, 0) == 1)
+    if (ca.checkBooleanRuleValue(0, 0))
     {
         iprintf("\x1b[14;5H*");    
     }
@@ -287,7 +287,7 @@ int printBAasterisks()
         iprintf("\x1b[14;5H ");    
     }
 
-    if (ca.getBooleanRuleValue(0, 1) == 2)
+    if (ca.checkBooleanRuleValue(0, 1))
     {
         iprintf("\x1b[14;10H*"); 
     }
@@ -296,7 +296,7 @@ int printBAasterisks()
         iprintf("\x1b[14;10H ");
     }
 
-    if (ca.getBooleanRuleValue(0, 2) == 3)
+    if (ca.checkBooleanRuleValue(0, 2))
     {
         iprintf("\x1b[14;15H*");    
     }
@@ -305,7 +305,7 @@ int printBAasterisks()
         iprintf("\x1b[14;15H ");    
     }
             
-    if (ca.getBooleanRuleValue(0, 3) == 4) 
+    if (ca.checkBooleanRuleValue(0, 3)) 
     {
         iprintf("\x1b[14;20H*");    
     }
@@ -315,7 +315,7 @@ int printBAasterisks()
     }
             
     // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
-    if (ca.getBooleanRuleValue(1, 0) == 1)
+    if (ca.checkBooleanRuleValue(1, 0))
     {
         iprintf("\x1b[16;5H*");    
     }
@@ -324,7 +324,7 @@ int printBAasterisks()
         iprintf("\x1b[16;5H ");    
     }
     
-    if (ca.getBooleanRuleValue(1, 1) == 2)
+    if (ca.checkBooleanRuleValue(1, 1))
     {
         iprintf("\x1b[16;10H*");    
     }
@@ -333,16 +333,16 @@ int printBAasterisks()
         iprintf("\x1b[16;10H ");    
     }        
     
-    if (ca.getBooleanRuleValue(1, 2) == 3)
+    if (ca.checkBooleanRuleValue(1, 2))
     {
-        iprintf("\x1b[16;15H*");    
+        iprintf("\x1b[16;15H*");
     }
     else
     {
-        iprintf("\x1b[16;15H ");    
+        iprintf("\x1b[16;15H ");
     }
         
-    if (ca.getBooleanRuleValue(1, 3) == 4)
+    if (ca.checkBooleanRuleValue(1, 3))
     {
         iprintf("\x1b[16;20H*");    
     }
@@ -351,7 +351,7 @@ int printBAasterisks()
         iprintf("\x1b[16;20H ");    
     }
         
-    if (ca.getBooleanRuleValue(1, 4) == 5)
+    if (ca.checkBooleanRuleValue(1, 4))
     {
         iprintf("\x1b[17;5H*");    
     }
@@ -360,7 +360,7 @@ int printBAasterisks()
         iprintf("\x1b[17;5H ");    
     }
 
-    if (ca.getBooleanRuleValue(1, 5) == 6)
+    if (ca.checkBooleanRuleValue(1, 5))
     {
         iprintf("\x1b[17;10H*");
     }
@@ -369,7 +369,7 @@ int printBAasterisks()
         iprintf("\x1b[17;10H ");
     }
 
-    if (ca.getBooleanRuleValue(1, 6) == 7)
+    if (ca.checkBooleanRuleValue(1, 6))
     {
         iprintf("\x1b[17;15H*");
     }
@@ -378,7 +378,7 @@ int printBAasterisks()
         iprintf("\x1b[17;15H "); 
     }
         
-    if (ca.getBooleanRuleValue(1, 7) == 8)
+    if (ca.checkBooleanRuleValue(1, 7))
     {
         iprintf("\x1b[17;20H*");    
     }
@@ -396,7 +396,7 @@ int printBAasterisks()
 int printBHAasterisks()
 {
     // {1, 2, 3, 4, 5, 6} For the boolean hexagonal automata with Moore neighborhood
-    if (ca.getBooleanRuleValue(1, 0) == 1)
+    if (ca.checkBooleanRuleValue(1, 0))
     {
         iprintf("\x1b[14;5H*");    
     }
@@ -405,7 +405,7 @@ int printBHAasterisks()
         iprintf("\x1b[14;5H ");    
     }
     
-    if (ca.getBooleanRuleValue(1, 1) == 2)
+    if (ca.checkBooleanRuleValue(1, 1))
     {
         iprintf("\x1b[14;10H*");    
     }
@@ -414,7 +414,7 @@ int printBHAasterisks()
         iprintf("\x1b[14;10H ");    
     }        
     
-    if (ca.getBooleanRuleValue(1, 2) == 3) 
+    if (ca.checkBooleanRuleValue(1, 2))
     {
         iprintf("\x1b[14;15H*");    
     }
@@ -423,7 +423,7 @@ int printBHAasterisks()
         iprintf("\x1b[14;15H ");    
     }
         
-    if (ca.getBooleanRuleValue(1, 3) == 4) 
+    if (ca.checkBooleanRuleValue(1, 3))
     {
         iprintf("\x1b[15;5H*");    
     }
@@ -432,7 +432,7 @@ int printBHAasterisks()
         iprintf("\x1b[15;5H ");    
     }
         
-    if (ca.getBooleanRuleValue(1, 4) == 5)
+    if (ca.checkBooleanRuleValue(1, 4))
     {
         iprintf("\x1b[15;10H*"); 
     }
@@ -441,7 +441,7 @@ int printBHAasterisks()
         iprintf("\x1b[15;10H ");
     }
 
-    if (ca.getBooleanRuleValue(1, 5) == 6)
+    if (ca.checkBooleanRuleValue(1, 5))
     {
         iprintf("\x1b[15;15H*");    
     }
@@ -470,7 +470,7 @@ int printBTAasterisks()
     }
     
     // {1, 2, 3} For the boolean triangular automata with Von Neumann neighborhood
-    if (ca.getBooleanRuleValue(0, 0) == 1)
+    if (ca.checkBooleanRuleValue(0, 0))
     {
         iprintf("\x1b[14;5H*");    
     }
@@ -479,7 +479,7 @@ int printBTAasterisks()
         iprintf("\x1b[14;5H ");    
     }
     
-    if (ca.getBooleanRuleValue(0, 1) == 2) 
+    if (ca.checkBooleanRuleValue(0, 1))
     {
         iprintf("\x1b[14;10H*");    
     }
@@ -488,7 +488,7 @@ int printBTAasterisks()
         iprintf("\x1b[14;10H ");    
     }
             
-    if (ca.getBooleanRuleValue(0, 2) == 3)
+    if (ca.checkBooleanRuleValue(0, 2))
     {
         iprintf("\x1b[14;15H*");    
     }
@@ -498,7 +498,7 @@ int printBTAasterisks()
     }
             
     // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
-    if (ca.getBooleanRuleValue(1, 0) == 1)
+    if (ca.checkBooleanRuleValue(1, 0))
     {
         iprintf("\x1b[16;5H*");    
     }
@@ -507,7 +507,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;5H ");    
     }
     
-    if (ca.getBooleanRuleValue(1, 1) == 2) 
+    if (ca.checkBooleanRuleValue(1, 1))
     {
         iprintf("\x1b[16;10H*");    
     }
@@ -516,7 +516,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;10H ");    
     }        
     
-    if (ca.getBooleanRuleValue(1, 2) == 3)
+    if (ca.checkBooleanRuleValue(1, 2))
     {
         iprintf("\x1b[16;15H*");    
     }
@@ -525,7 +525,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;15H ");    
     }
         
-    if (ca.getBooleanRuleValue(1, 3) == 4)
+    if (ca.checkBooleanRuleValue(1, 3))
     {
         iprintf("\x1b[16;20H*");    
     }
@@ -534,7 +534,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;20H ");    
     }
         
-    if (ca.getBooleanRuleValue(1, 4) == 5)
+    if (ca.checkBooleanRuleValue(1, 4))
     {
         iprintf("\x1b[17;5H*");    
     }
@@ -543,7 +543,7 @@ int printBTAasterisks()
         iprintf("\x1b[17;5H ");    
     }
         
-    if (ca.getBooleanRuleValue(1, 5) == 6)
+    if (ca.checkBooleanRuleValue(1, 5))
     {
         iprintf("\x1b[17;10H*");    
     }
@@ -552,16 +552,16 @@ int printBTAasterisks()
         iprintf("\x1b[17;10H ");    
     }
             
-    if (ca.getBooleanRuleValue(1, 6) == 7)
+    if (ca.checkBooleanRuleValue(1, 6))
     {
-        iprintf("\x1b[17;15H*");    
+        iprintf("\x1b[17;15H*");
     }
     else
     {
-        iprintf("\x1b[17;15H ");    
+        iprintf("\x1b[17;15H ");
     }
         
-    if (ca.getBooleanRuleValue(1, 7) == 8)
+    if (ca.checkBooleanRuleValue(1, 7))
     {
         iprintf("\x1b[17;20H*");    
     }
@@ -1216,7 +1216,6 @@ int main(void)
                     printMenuArrow(displayedMenu, intArrow, false);                    
 
                     ca.initializeBooleanRuleValues();
-
                     ca.initialize();
 
                     printBAasterisks();
@@ -1237,7 +1236,7 @@ int main(void)
                     
                     printMenuArrow(displayedMenu, intArrow, false);
 
-                    ca.initializeBooleanRuleValues();               
+                    ca.initializeBooleanRuleValues();
                     ca.initialize();
 
                     printBHAasterisks();
@@ -1582,15 +1581,8 @@ int main(void)
 		        }
 		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4)
 		        {
-		            if (ca.checkBooleanRuleValue(intArrow - 1, intArrow))
-		            {
-		                ca.setBooleanRuleValue(intArrow - 1, 0);
-		            }
-		            else
-		            {
-		                ca.setBooleanRuleValue(intArrow - 1, intArrow);
-		            }
-		            
+    		        ca.toggleBooleanRuleValue(0, intArrow - 1);
+
 		            printBAasterisks();
 
 		            ca.initialize();
@@ -1603,14 +1595,7 @@ int main(void)
 		        }
 		        else if (intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12 || intArrow == 13)
 		        {
-		            if (ca.checkBooleanRuleValue(intArrow - 6, intArrow - 5))
-		            {
-		                ca.setBooleanRuleValue(intArrow - 6, 0);
-		            }
-		            else
-		            {
-		                ca.setBooleanRuleValue(intArrow - 6, intArrow - 5);
-		            }
+                    ca.toggleBooleanRuleValue(1, intArrow - 6);
 
 		            printBAasterisks();
 
@@ -1729,15 +1714,8 @@ int main(void)
 		    {
 		        if (intArrow == 0 || intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4 || intArrow == 5)
 		        {
-		            if (ca.checkBooleanRuleValue(intArrow, intArrow + 1))
-		            {
-		                ca.setBooleanRuleValue(intArrow, 0);
-		            }
-		            else
-		            {
-		                ca.setBooleanRuleValue(intArrow, intArrow + 1);
-		            }
-		            
+                    ca.toggleBooleanRuleValue(1, intArrow);
+
 		            printBHAasterisks();
 
 		            ca.initialize();
@@ -1836,16 +1814,10 @@ int main(void)
 		        }
 		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3) // Von Neumann neighborhood 1, 2, 3
 		        {
-                    if (ca.checkBooleanRuleValue(intArrow - 1, intArrow))
-		            {
-		                ca.setBooleanRuleValue(intArrow - 1, 0);
-		            }
-		            else
-		            {
-		                ca.setBooleanRuleValue(intArrow - 1, intArrow);
-		            }
-		            
+                    ca.toggleBooleanRuleValue(0, intArrow - 1);
+
 		            printBTAasterisks();
+
 		            ca.initialize();
 		        }
 		        else if (intArrow == 4) // Moore neighborhood
@@ -1856,16 +1828,10 @@ int main(void)
 		        }
 		        else if (intArrow == 5 || intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12) // Moore neighborhood 1, 2, 3, 4, 5, 6, 7, 8
 		        {
-                    if (ca.checkBooleanRuleValue(intArrow - 5, intArrow - 4))
-		            {
-		                ca.setBooleanRuleValue(intArrow - 5, 0);
-		            }
-		            else
-		            {
-		                ca.setBooleanRuleValue(intArrow - 5, intArrow - 4);
-		            }
-		            		            
+                    ca.toggleBooleanRuleValue(1, intArrow - 5);
+
 		            printBTAasterisks();
+
 		            ca.initialize();
 		        }
 		        else if (intArrow == 13)

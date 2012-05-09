@@ -26,8 +26,7 @@ class CellularAutomata
         unsigned short antNumPixels; // Only used by the normal ant not by the hexagonal one
         bool antFinished;    
 
-        int booleanRuleValuesVN [4]; // Von Neumann neighborhood {1, 2, 3, 4}
-        int booleanRuleValuesM [8]; // Moore neighborhood {1, 2, 3, 4, 5, 6, 7, 8}
+        int booleanRuleValues[2]; // 0: Von Neumann neighborhood, 1: Moore neighborhood
         int typeOfNeighborhood;
 
         int rotateAnt(unsigned char rotateTo);
@@ -54,12 +53,10 @@ class CellularAutomata
         bool hasFinished();
         int initialize();
         int nextStep();
-
+        
         int initializeBooleanRuleValues();
-        int setBooleanRuleValue(int ruleIndex, int value);
-        int getBooleanRuleValue(int typeOfNeighborhood, int ruleIndex);
-        bool checkBooleanRuleValue(int ruleIndex, int value);
-        bool isValueInRule(int count);
+        bool checkBooleanRuleValue(int neighborhoodType, int ruleIndex);
+        int toggleBooleanRuleValue(int neighborhoodType, int ruleIndex);
         int setTypeOfNeighborhood(int value);
         int getTypeOfNeighborhood();
 
