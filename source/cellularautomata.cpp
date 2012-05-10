@@ -532,7 +532,10 @@ bool CellularAutomata::checkBooleanRuleValue(int neighborhoodType, int ruleIndex
  */
 int CellularAutomata::toggleBooleanRuleValue(int neighborhoodType, int ruleIndex)
 {
-    booleanRuleValues[neighborhoodType] ^= 1 << ruleIndex; // Toggle the bit
+    if (ruleIndex != 0) // As we start with only one square, if the first value is not checked the automata enters a loop of start, nothing changes, restart and the screen flashes.
+    {
+        booleanRuleValues[neighborhoodType] ^= 1 << ruleIndex; // Toggle the bit
+    }
 
     return 0;
 }
