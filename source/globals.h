@@ -25,6 +25,12 @@
 #define SELECT_COLORS 8
 #define SELECT_LANGUAGE 9
 
+/*
+ * Constants to define the type of neighborhood
+ */
+#define VON_NEUMANN_NEIGHBORHOOD 0
+#define MOORE_NEIGHBORHOOD 1
+
 /* The position of the arrow
  * Select automata menu: ????
  * Elementary Cellular Automata: in the top screen (0-7) and in the bottom screen (8)

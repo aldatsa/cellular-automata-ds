@@ -278,7 +278,7 @@ int printBAasterisks()
     }
     
     // {1, 2, 3, 4} For the boolean square automata with Von Neumann neighborhood
-    if (ca.checkBooleanRuleValue(0, 0))
+    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
     {
         iprintf("\x1b[14;5H*");    
     }
@@ -287,7 +287,7 @@ int printBAasterisks()
         iprintf("\x1b[14;5H ");    
     }
 
-    if (ca.checkBooleanRuleValue(0, 1))
+    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
     {
         iprintf("\x1b[14;10H*"); 
     }
@@ -296,7 +296,7 @@ int printBAasterisks()
         iprintf("\x1b[14;10H ");
     }
 
-    if (ca.checkBooleanRuleValue(0, 2))
+    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
     {
         iprintf("\x1b[14;15H*");    
     }
@@ -305,7 +305,7 @@ int printBAasterisks()
         iprintf("\x1b[14;15H ");    
     }
             
-    if (ca.checkBooleanRuleValue(0, 3)) 
+    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 3)) 
     {
         iprintf("\x1b[14;20H*");    
     }
@@ -315,7 +315,7 @@ int printBAasterisks()
     }
             
     // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
-    if (ca.checkBooleanRuleValue(1, 0))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
     {
         iprintf("\x1b[16;5H*");    
     }
@@ -324,7 +324,7 @@ int printBAasterisks()
         iprintf("\x1b[16;5H ");    
     }
     
-    if (ca.checkBooleanRuleValue(1, 1))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
     {
         iprintf("\x1b[16;10H*");    
     }
@@ -333,7 +333,7 @@ int printBAasterisks()
         iprintf("\x1b[16;10H ");    
     }        
     
-    if (ca.checkBooleanRuleValue(1, 2))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
     {
         iprintf("\x1b[16;15H*");
     }
@@ -342,7 +342,7 @@ int printBAasterisks()
         iprintf("\x1b[16;15H ");
     }
         
-    if (ca.checkBooleanRuleValue(1, 3))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
     {
         iprintf("\x1b[16;20H*");    
     }
@@ -351,7 +351,7 @@ int printBAasterisks()
         iprintf("\x1b[16;20H ");    
     }
         
-    if (ca.checkBooleanRuleValue(1, 4))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
     {
         iprintf("\x1b[17;5H*");    
     }
@@ -360,7 +360,7 @@ int printBAasterisks()
         iprintf("\x1b[17;5H ");    
     }
 
-    if (ca.checkBooleanRuleValue(1, 5))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
     {
         iprintf("\x1b[17;10H*");
     }
@@ -369,7 +369,7 @@ int printBAasterisks()
         iprintf("\x1b[17;10H ");
     }
 
-    if (ca.checkBooleanRuleValue(1, 6))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
     {
         iprintf("\x1b[17;15H*");
     }
@@ -378,7 +378,7 @@ int printBAasterisks()
         iprintf("\x1b[17;15H "); 
     }
         
-    if (ca.checkBooleanRuleValue(1, 7))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
     {
         iprintf("\x1b[17;20H*");    
     }
@@ -396,7 +396,7 @@ int printBAasterisks()
 int printBHAasterisks()
 {
     // {1, 2, 3, 4, 5, 6} For the boolean hexagonal automata with Moore neighborhood
-    if (ca.checkBooleanRuleValue(1, 0))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
     {
         iprintf("\x1b[14;5H*");    
     }
@@ -405,7 +405,7 @@ int printBHAasterisks()
         iprintf("\x1b[14;5H ");    
     }
     
-    if (ca.checkBooleanRuleValue(1, 1))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
     {
         iprintf("\x1b[14;10H*");    
     }
@@ -414,7 +414,7 @@ int printBHAasterisks()
         iprintf("\x1b[14;10H ");    
     }        
     
-    if (ca.checkBooleanRuleValue(1, 2))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
     {
         iprintf("\x1b[14;15H*");    
     }
@@ -423,7 +423,7 @@ int printBHAasterisks()
         iprintf("\x1b[14;15H ");    
     }
         
-    if (ca.checkBooleanRuleValue(1, 3))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
     {
         iprintf("\x1b[15;5H*");    
     }
@@ -432,7 +432,7 @@ int printBHAasterisks()
         iprintf("\x1b[15;5H ");    
     }
         
-    if (ca.checkBooleanRuleValue(1, 4))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
     {
         iprintf("\x1b[15;10H*"); 
     }
@@ -441,7 +441,7 @@ int printBHAasterisks()
         iprintf("\x1b[15;10H ");
     }
 
-    if (ca.checkBooleanRuleValue(1, 5))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
     {
         iprintf("\x1b[15;15H*");    
     }
@@ -470,7 +470,7 @@ int printBTAasterisks()
     }
     
     // {1, 2, 3} For the boolean triangular automata with Von Neumann neighborhood
-    if (ca.checkBooleanRuleValue(0, 0))
+    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
     {
         iprintf("\x1b[14;5H*");    
     }
@@ -479,7 +479,7 @@ int printBTAasterisks()
         iprintf("\x1b[14;5H ");    
     }
     
-    if (ca.checkBooleanRuleValue(0, 1))
+    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
     {
         iprintf("\x1b[14;10H*");    
     }
@@ -488,7 +488,7 @@ int printBTAasterisks()
         iprintf("\x1b[14;10H ");    
     }
             
-    if (ca.checkBooleanRuleValue(0, 2))
+    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
     {
         iprintf("\x1b[14;15H*");    
     }
@@ -498,7 +498,7 @@ int printBTAasterisks()
     }
             
     // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
-    if (ca.checkBooleanRuleValue(1, 0))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
     {
         iprintf("\x1b[16;5H*");    
     }
@@ -507,7 +507,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;5H ");    
     }
     
-    if (ca.checkBooleanRuleValue(1, 1))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
     {
         iprintf("\x1b[16;10H*");    
     }
@@ -516,7 +516,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;10H ");    
     }        
     
-    if (ca.checkBooleanRuleValue(1, 2))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
     {
         iprintf("\x1b[16;15H*");    
     }
@@ -525,7 +525,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;15H ");    
     }
         
-    if (ca.checkBooleanRuleValue(1, 3))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
     {
         iprintf("\x1b[16;20H*");    
     }
@@ -534,7 +534,7 @@ int printBTAasterisks()
         iprintf("\x1b[16;20H ");    
     }
         
-    if (ca.checkBooleanRuleValue(1, 4))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
     {
         iprintf("\x1b[17;5H*");    
     }
@@ -543,7 +543,7 @@ int printBTAasterisks()
         iprintf("\x1b[17;5H ");    
     }
         
-    if (ca.checkBooleanRuleValue(1, 5))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
     {
         iprintf("\x1b[17;10H*");    
     }
@@ -552,7 +552,7 @@ int printBTAasterisks()
         iprintf("\x1b[17;10H ");    
     }
             
-    if (ca.checkBooleanRuleValue(1, 6))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
     {
         iprintf("\x1b[17;15H*");
     }
@@ -561,7 +561,7 @@ int printBTAasterisks()
         iprintf("\x1b[17;15H ");
     }
         
-    if (ca.checkBooleanRuleValue(1, 7))
+    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
     {
         iprintf("\x1b[17;20H*");    
     }
@@ -1201,7 +1201,7 @@ int main(void)
                 else if (automataType == BOOLEAN_AUTOMATA)
                 {
                     ca.setType(BOOLEAN_AUTOMATA);
-                    ca.setTypeOfNeighborhood(0); // Von Neumann neighborhood (default)
+                    ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD); // Von Neumann neighborhood (default)
 
                     consoleClear();
                     printCredits();
@@ -1244,7 +1244,7 @@ int main(void)
                 else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
                     ca.setType(BOOLEAN_TRIANGULAR_AUTOMATA);
-                    ca.setTypeOfNeighborhood(0); // Von Neumann neighborhood (default)
+                    ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD); // Von Neumann neighborhood (default)
 
                     consoleClear();
                     printCredits();
@@ -1575,13 +1575,13 @@ int main(void)
 		    {
 		        if (intArrow == 0)
 		        {
-		            ca.setTypeOfNeighborhood(0);
+		            ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
 		            printBAasterisks();
 		            ca.initialize();
 		        }
 		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4)
 		        {
-    		        ca.toggleBooleanRuleValue(0, intArrow - 1);
+    		        ca.toggleBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, intArrow - 1);
 
 		            printBAasterisks();
 
@@ -1589,13 +1589,13 @@ int main(void)
 		        }
 		        else if (intArrow == 5)
 		        {
-		            ca.setTypeOfNeighborhood(1);
+		            ca.setTypeOfNeighborhood(MOORE_NEIGHBORHOOD);
 		            printBAasterisks();
 		            ca.initialize();
 		        }
 		        else if (intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12 || intArrow == 13)
 		        {
-                    ca.toggleBooleanRuleValue(1, intArrow - 6);
+                    ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow - 6);
 
 		            printBAasterisks();
 
@@ -1714,7 +1714,7 @@ int main(void)
 		    {
 		        if (intArrow == 0 || intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4 || intArrow == 5)
 		        {
-                    ca.toggleBooleanRuleValue(1, intArrow);
+                    ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow);
 
 		            printBHAasterisks();
 
@@ -1808,13 +1808,13 @@ int main(void)
 		    {
 		        if (intArrow == 0) // Von Neumann neighborhood
 		        {
-		            ca.setTypeOfNeighborhood(0);
+		            ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
 		            printBTAasterisks();
 		            ca.initialize();
 		        }
 		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3) // Von Neumann neighborhood 1, 2, 3
 		        {
-                    ca.toggleBooleanRuleValue(0, intArrow - 1);
+                    ca.toggleBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, intArrow - 1);
 
 		            printBTAasterisks();
 
@@ -1822,13 +1822,13 @@ int main(void)
 		        }
 		        else if (intArrow == 4) // Moore neighborhood
 		        {
-		            ca.setTypeOfNeighborhood(1);
+		            ca.setTypeOfNeighborhood(MOORE_NEIGHBORHOOD);
 		            printBTAasterisks();
 		            ca.initialize();
 		        }
 		        else if (intArrow == 5 || intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12) // Moore neighborhood 1, 2, 3, 4, 5, 6, 7, 8
 		        {
-                    ca.toggleBooleanRuleValue(1, intArrow - 5);
+                    ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow - 5);
 
 		            printBTAasterisks();
 

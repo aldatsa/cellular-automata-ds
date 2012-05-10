@@ -513,8 +513,8 @@ int CellularAutomata::getAntNumPixels()
  */
 int CellularAutomata::initializeBooleanRuleValues()
 {
-    booleanRuleValues[0] = 1;
-    booleanRuleValues[1] = 1;
+    booleanRuleValues[VON_NEUMANN_NEIGHBORHOOD] = 1;
+    booleanRuleValues[MOORE_NEIGHBORHOOD] = 1;
 
     return 0;
 }
