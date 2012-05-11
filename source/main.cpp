@@ -999,33 +999,11 @@ int printAutomataType(int automataType)
 /*
  * Prints the number of steps
  */
-int printNumSteps(int automataType, int steps)
+int printNumSteps()
 {
-    if (automataType == LANGTON_ANT)
-    {
-        iprintf("\x1b[9;0H%s:     ", stringSteps.c_str());                                                    
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
-    }
-    else if (automataType == LANGTON_HEXAGONAL_ANT)
-    {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
-    }
-    else if (automataType == BOOLEAN_AUTOMATA)
-    {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
-    }
-    else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
-    {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
-    }
-    else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
-    {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
-    }
-    else if (automataType == CONWAYS_GAME_OF_LIFE)
-    {
-        iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
-    }    
+    iprintf("\x1b[9;0H%s:     ", stringSteps.c_str());                                                    
+    iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
+
     return 0;
 }
 
@@ -1494,7 +1472,7 @@ int main(void)
     	    if (ca.hasFinished() == false)
     	    {
     	        ca.nextStep();
-                printNumSteps(LANGTON_ANT, ca.getNumSteps());
+                printNumSteps();
     	        swiWaitForVBlank();
     	    }
     	    
@@ -1547,7 +1525,7 @@ int main(void)
                         ca.setAntNumPixels(ca.getAntNumPixels() - 1);
                         iprintf("\x1b[11;2H%s: < %d > ", stringAntsPixels.c_str(), ca.getAntNumPixels());
                         ca.initialize();
-                        printNumSteps(LANGTON_ANT, ca.getNumSteps());
+                        printNumSteps();
                     }                        
                 }		        
 		    }
@@ -1558,7 +1536,7 @@ int main(void)
                     ca.setAntNumPixels(ca.getAntNumPixels() + 1);
                     iprintf("\x1b[11;2H%s: < %d > ", stringAntsPixels.c_str(), ca.getAntNumPixels());
                     ca.initialize();
-                    printNumSteps(LANGTON_ANT, ca.getNumSteps());                    
+                    printNumSteps();
                 }		    
 		    }
         }
@@ -1570,7 +1548,7 @@ int main(void)
     	    if (ca.hasFinished() == false) // If the ant hasn't finished continue with the next step
     	    {
     	        ca.nextStep();
-                printNumSteps(LANGTON_HEXAGONAL_ANT, ca.getNumSteps());
+                printNumSteps();
     	        swiWaitForVBlank();
     	    }
     	    
@@ -1589,7 +1567,7 @@ int main(void)
         else if (displayedMenu == 4)
         {
             ca.nextStep();
-            printNumSteps(BOOLEAN_AUTOMATA, ca.getNumSteps());
+            printNumSteps();
             
        	    if(keys_released & KEY_A)
 		    {
@@ -1728,7 +1706,7 @@ int main(void)
         {
             ca.nextStep();
             
-            printNumSteps(BOOLEAN_HEXAGONAL_AUTOMATA, ca.getNumSteps());
+            printNumSteps();
 
             if (keys_released & KEY_A)
 		    {
@@ -1822,7 +1800,7 @@ int main(void)
         {
             ca.nextStep();
 
-            printNumSteps(BOOLEAN_TRIANGULAR_AUTOMATA, ca.getNumSteps());
+            printNumSteps();
 
        	    if(keys_released & KEY_A)
 		    {
@@ -1969,7 +1947,7 @@ int main(void)
         {    	    
             ca.nextStep();
             
-            printNumSteps(CONWAYS_GAME_OF_LIFE, ca.getNumSteps());
+            printNumSteps();
 
     	    if(keys_released & KEY_A)
 		    {
