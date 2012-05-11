@@ -139,6 +139,26 @@ int deleteArrow(int row, int column)
 }
 
 /*
+ * Prints an asterisk ("*") used to highlight the currently selected menu option 
+ */
+int printAsterisk(int row, int column)
+{
+    iprintf("\x1b[%d;%dH*", row, column);
+    
+    return 0;
+}
+
+/*
+ * Deletes an asterisk (" ") used to highlight the currently selected menu option 
+ */
+int deleteAsterisk(int row, int column)
+{
+    iprintf("\x1b[%d;%dH ", row, column);
+    
+    return 0;
+}
+
+/*
  * Prints the menu items but without the arrow.
  * Use printMenuArrow() to print the arrow
  */
@@ -235,219 +255,219 @@ int printMenu(int intDisplayedMenu)
 }
 
 /*
- * Prints the asterisk used to mark the current language in the language selection menu
+ * Prints the asterisks used to mark the current language in the language selection menu
  */
 int printLanguageAsterisks()
 {
     if (displayedLanguage == "en")
     {
-        iprintf("\x1b[10;2H*");
-        iprintf("\x1b[11;2H ");
-        iprintf("\x1b[12;2H ");
+        printAsterisk(10, 2);
+        deleteAsterisk(11, 2);
+        deleteAsterisk(12, 2);
     }
     else if (displayedLanguage == "es")
     {
-        iprintf("\x1b[10;2H ");
-        iprintf("\x1b[11;2H*");
-        iprintf("\x1b[12;2H ");
+        deleteAsterisk(10, 2);
+        printAsterisk(11, 2);
+        deleteAsterisk(12, 2);
     }
     else if (displayedLanguage == "eu")
     {
-        iprintf("\x1b[10;2H ");
-        iprintf("\x1b[11;2H ");
-        iprintf("\x1b[12;2H*");
+        deleteAsterisk(10, 2);
+        deleteAsterisk(11, 2);
+        printAsterisk(12, 2);
     }
     
     return 0;
 }
 
 /*
- * Prints the asterisk used to mark the options in the menu of the Boolean automata
+ * Prints the asterisks used to mark the options in the menu of the Boolean automata
  */
 int printBAasterisks()
 {
     if (ca.getTypeOfNeighborhood() == 0)
     {
-        iprintf("\x1b[13;2H*");
-        iprintf("\x1b[15;2H ");        
+        printAsterisk(13, 2);
+        deleteAsterisk(15, 2);
     }
     else
     {
-        iprintf("\x1b[13;2H ");
-        iprintf("\x1b[15;2H*");        
+        deleteAsterisk(13, 2);
+        printAsterisk(15, 2);
     }
     
     // {1, 2, 3, 4} For the boolean square automata with Von Neumann neighborhood
     if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
     {
-        iprintf("\x1b[14;5H*");    
+        printAsterisk(14, 5);
     }
     else
     {
-        iprintf("\x1b[14;5H ");    
+        deleteAsterisk(14, 5);
     }
 
     if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
     {
-        iprintf("\x1b[14;10H*"); 
+        printAsterisk(14, 10);
     }
     else
     {
-        iprintf("\x1b[14;10H ");
+        deleteAsterisk(14, 10);
     }
 
     if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
     {
-        iprintf("\x1b[14;15H*");    
+        printAsterisk(14, 15);
     }
     else
     {
-        iprintf("\x1b[14;15H ");    
+        deleteAsterisk(14, 15);
     }
             
     if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 3)) 
     {
-        iprintf("\x1b[14;20H*");    
+        printAsterisk(14, 20);
     }
     else
     {
-        iprintf("\x1b[14;20H ");    
+        deleteAsterisk(14, 20);
     }
             
     // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
     {
-        iprintf("\x1b[16;5H*");    
+        printAsterisk(16, 5);
     }
     else
     {
-        iprintf("\x1b[16;5H ");    
+        deleteAsterisk(16, 5);
     }
     
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
     {
-        iprintf("\x1b[16;10H*");    
+        printAsterisk(16, 10);
     }
     else
     {
-        iprintf("\x1b[16;10H ");    
+        deleteAsterisk(16, 10);
     }        
     
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
     {
-        iprintf("\x1b[16;15H*");
+        printAsterisk(16, 15);
     }
     else
     {
-        iprintf("\x1b[16;15H ");
+        deleteAsterisk(16, 15);
     }
         
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
     {
-        iprintf("\x1b[16;20H*");    
+        printAsterisk(16, 20);
     }
     else
     {
-        iprintf("\x1b[16;20H ");    
+        deleteAsterisk(16, 20);
     }
         
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
     {
-        iprintf("\x1b[17;5H*");    
+        printAsterisk(17, 5);
     }
     else
     {
-        iprintf("\x1b[17;5H ");    
+        deleteAsterisk(17, 5);
     }
 
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
     {
-        iprintf("\x1b[17;10H*");
+        printAsterisk(17, 10);
     }
     else
     {
-        iprintf("\x1b[17;10H ");
+        deleteAsterisk(17, 10);
     }
 
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
     {
-        iprintf("\x1b[17;15H*");
+        printAsterisk(17, 15);
     }
     else
     {
-        iprintf("\x1b[17;15H "); 
+        deleteAsterisk(17, 15);
     }
         
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
     {
-        iprintf("\x1b[17;20H*");    
+        printAsterisk(17, 20);
     }
     else
     {
-        iprintf("\x1b[17;20H ");    
+        deleteAsterisk(17, 20);
     }
     
     return 0;
 }
 
 /*
- * Prints the asterisk used to mark the options in the menu of the Boolean hexagonal automata
+ * Prints the asterisks used to mark the options in the menu of the Boolean hexagonal automata
  */
 int printBHAasterisks()
 {
     // {1, 2, 3, 4, 5, 6} For the boolean hexagonal automata with Moore neighborhood
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
     {
-        iprintf("\x1b[14;5H*");    
+        printAsterisk(14, 5);
     }
     else
     {
-        iprintf("\x1b[14;5H ");    
+        deleteAsterisk(14, 5);
     }
     
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
     {
-        iprintf("\x1b[14;10H*");    
+        printAsterisk(14, 10);
     }
     else
     {
-        iprintf("\x1b[14;10H ");    
+        deleteAsterisk(14, 10);
     }        
     
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
     {
-        iprintf("\x1b[14;15H*");    
+        printAsterisk(14, 15);
     }
     else
     {
-        iprintf("\x1b[14;15H ");    
+        deleteAsterisk(14, 15);
     }
         
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
     {
-        iprintf("\x1b[15;5H*");    
+        printAsterisk(15, 5);
     }
     else
     {
-        iprintf("\x1b[15;5H ");    
+        deleteAsterisk(15, 5);
     }
         
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
     {
-        iprintf("\x1b[15;10H*"); 
+        printAsterisk(15, 10);
     }
     else
     {
-        iprintf("\x1b[15;10H ");
+        deleteAsterisk(15, 10);
     }
 
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
     {
-        iprintf("\x1b[15;15H*");    
+        printAsterisk(15, 15);
     }
     else
     {
-        iprintf("\x1b[15;15H ");    
+        deleteAsterisk(15, 15);
     }
 
     return 0;
@@ -460,114 +480,114 @@ int printBTAasterisks()
 {
     if (ca.getTypeOfNeighborhood() == 0)
     {
-        iprintf("\x1b[13;2H*");
-        iprintf("\x1b[15;2H ");        
+        printAsterisk(13, 2);
+        deleteAsterisk(15, 2);
     }
     else
     {
-        iprintf("\x1b[13;2H ");
-        iprintf("\x1b[15;2H*");        
+        deleteAsterisk(13, 2);
+        printAsterisk(15, 2);        
     }
     
     // {1, 2, 3} For the boolean triangular automata with Von Neumann neighborhood
     if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
     {
-        iprintf("\x1b[14;5H*");    
+        printAsterisk(14, 5);
     }
     else
     {
-        iprintf("\x1b[14;5H ");    
+        deleteAsterisk(14, 5);
     }
     
     if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
     {
-        iprintf("\x1b[14;10H*");    
+        printAsterisk(14, 10);
     }
     else
     {
-        iprintf("\x1b[14;10H ");    
+        deleteAsterisk(14, 10);
     }
             
     if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
     {
-        iprintf("\x1b[14;15H*");    
+        printAsterisk(14, 15);
     }
     else
     {
-        iprintf("\x1b[14;15H ");    
+        deleteAsterisk(14, 15);
     }
-            
+
     // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
     {
-        iprintf("\x1b[16;5H*");    
+        printAsterisk(16, 5);
     }
     else
     {
-        iprintf("\x1b[16;5H ");    
+        deleteAsterisk(16, 5);
     }
     
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
     {
-        iprintf("\x1b[16;10H*");    
+        printAsterisk(16, 10);
     }
     else
     {
-        iprintf("\x1b[16;10H ");    
+        deleteAsterisk(16, 10);
     }        
     
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
     {
-        iprintf("\x1b[16;15H*");    
+        printAsterisk(16, 15);
     }
     else
     {
-        iprintf("\x1b[16;15H ");    
+        deleteAsterisk(16, 15);
     }
         
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
     {
-        iprintf("\x1b[16;20H*");    
+        printAsterisk(16, 20);
     }
     else
     {
-        iprintf("\x1b[16;20H ");    
+        deleteAsterisk(16, 20);
     }
         
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
     {
-        iprintf("\x1b[17;5H*");    
+        printAsterisk(17, 5);
     }
     else
     {
-        iprintf("\x1b[17;5H ");    
+        deleteAsterisk(17, 5);
     }
         
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
     {
-        iprintf("\x1b[17;10H*");    
+        printAsterisk(17, 10);
     }
     else
     {
-        iprintf("\x1b[17;10H ");    
+        deleteAsterisk(17, 10);
     }
             
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
     {
-        iprintf("\x1b[17;15H*");
+        printAsterisk(17, 15);
     }
     else
     {
-        iprintf("\x1b[17;15H ");
+        deleteAsterisk(17, 15);
     }
         
     if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
     {
-        iprintf("\x1b[17;20H*");    
+        printAsterisk(17, 20);
     }
     else
     {
-        iprintf("\x1b[17;20H ");    
+        deleteAsterisk(17, 20);
     }
     
     return 0;
