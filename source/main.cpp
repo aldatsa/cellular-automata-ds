@@ -48,37 +48,9 @@ using namespace std;
 #define ECA_RULE_NUMBER_ROW 9
 
 /*
- * This variable sets the type of automata that is going to execute (See above)
- */
-int automataType = ELEMENTARY_CELLULAR_AUTOMATA;
-
-/*
  * A variable for the position of the touch
  */
 touchPosition touch;
-
-/* This variable sets the menu that is going to be displayed
- * 0: Select automata menu
- * 1: Elementary cellular automata menu
- * 2: Langton's ant menu
- * 3: Langton's hexagonal ant menu
- * 4: Boolean automata menu
- * 5: Boolean Hexagonal Automata menu
- * 6: Boolean Triangular Automata menu
- * 7: Conway's game of life
- * 8: Munching squares menu
- * 9: Select colors
- * 10: Select language
- */
-int displayedMenu = 0;
-
-/*
- * Variables used for the boolean automaton
- */
-int automataSteps = 0; // It's equivalent to antNumSteps, I should use only one of them (Used in Boolean Square Automata, Boolean Hexagonal Automata and Boolean Triangular Automata)
-//int intTypeOfNeighborhood = 0; // 0: Von Neumann - 1: Moore (Used in Boolean Square Automata and Boolean Triangular Automata)
-//int intBooleanRulesValuesTriVN [3] = {1, 0, 0}; // {1, 2, 3}; For the Boolean Triangular Automata with Modified Von Neumann neighborhood
-//int intBooleanRulesValuesTriM [8] = {1, 0, 0, 0, 0, 0, 0, 0}; // {1, 2, 3, 4, 5, 6, 7, 8}; For the Boolean Triangular Automata with Modified Moore neighborhood
 
 CellularAutomata ca;
 
@@ -164,7 +136,7 @@ int deleteAsterisk(int row, int column)
  */
 int printMenu(int intDisplayedMenu)
 {
-    if (displayedMenu == 0) //The menu to select the type of automata
+    if (displayedMenu == MAIN_MENU) //The menu to select the type of automata
     {
         iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_ECA, stringElementaryCellularAutomata.c_str());
         iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_LA, stringLangtonsAnt.c_str());
@@ -177,20 +149,20 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[%d;2H%s", MENU_SELECT_COLORS, stringSelectColors.c_str());
         iprintf("\x1b[%d;2H%s", MENU_SELECT_LANGUAGE, stringSelectLanguage.c_str());
     }
-    else if (displayedMenu == 1) // The menu of the Elementary Cellular Automaton
+    else if (displayedMenu == ELEMENTARY_CELLULAR_AUTOMATA) // The menu of the Elementary Cellular Automaton
     {
         iprintf("\x1b[11;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 2) // The menu of the Langton's ant
+    else if (displayedMenu == LANGTON_ANT) // The menu of the Langton's ant
     {
         iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), ca.getAntNumPixels());
         iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 3) // The menu of the Langton's hexagonal ant
+    else if (displayedMenu == LANGTON_HEXAGONAL_ANT) // The menu of the Langton's hexagonal ant
     {
         iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 4) // The menu of the boolean automaton
+    else if (displayedMenu == BOOLEAN_AUTOMATA) // The menu of the boolean automaton
     {
         iprintf("\x1b[13;2H %s", stringVonNeumannNeighborhood.c_str());
         iprintf("\x1b[14;5H 1    2    3    4");
@@ -199,14 +171,14 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[17;5H 5    6    7    8");        
         iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 5) // The menu of the Boolean Hexagonal Automaton
+    else if (displayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA) // The menu of the Boolean Hexagonal Automaton
     {
         iprintf("\x1b[13;2H%s:", stringNeighborhood.c_str());
         iprintf("\x1b[14;5H 1    2    3");
         iprintf("\x1b[15;5H 4    5    6");
         iprintf("\x1b[17;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 6) // The menu of the Boolean Triangular Automaton
+    else if (displayedMenu == BOOLEAN_TRIANGULAR_AUTOMATA) // The menu of the Boolean Triangular Automaton
     {
         iprintf("\x1b[13;2H %s", stringVonNeumannNeighborhood.c_str());
         iprintf("\x1b[14;5H 1    2    3");
@@ -215,15 +187,15 @@ int printMenu(int intDisplayedMenu)
         iprintf("\x1b[17;5H 5    6    7    8");        
         iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 7) // The menu of the Langton's hexagonal ant
+    else if (displayedMenu == CONWAYS_GAME_OF_LIFE) // The menu of the Conway's game of life
     {
         iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 8) // The menu of the munching squares
+    else if (displayedMenu == MUNCHING_SQUARES) // The menu of the munching squares
     {
         iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 9) // The menu of color selection
+    else if (displayedMenu == SELECT_COLORS) // The menu of color selection
     {
         iprintf("\x1b[8;2H%s:", stringBackgroundColor.c_str());
         iprintf("\x1b[9;5H%s < %i > ", stringRed.c_str(), BG_R);
@@ -242,7 +214,7 @@ int printMenu(int intDisplayedMenu)
                 
         iprintf("\x1b[21;2H%s", stringBackToMainMenu.c_str());
     }
-    else if (displayedMenu == 10) // The menu of language selection
+    else if (displayedMenu == SELECT_LANGUAGE) // The menu of language selection
     {
         iprintf("\x1b[10;3H%s", stringEnglish.c_str());
         iprintf("\x1b[11;3H%s", stringEspanol.c_str());
@@ -601,58 +573,58 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     int row;
     int column = 0;
     
-    if (intDisplayedMenu == 0) // Main menu
+    if (intDisplayedMenu == MAIN_MENU) // Main menu
     {
-        if (index == 0) // Elementary Cellular Automata
+        if (index == ELEMENTARY_CELLULAR_AUTOMATA) // Elementary Cellular Automata
         {
             row = MENU_AUTOMATA_TYPE_ROW_ECA;
         }
-        else if (index == 1) // Langton's ant
+        else if (index == LANGTON_ANT) // Langton's ant
         {
             row = MENU_AUTOMATA_TYPE_ROW_LA;
         }
-        else if (index == 2) // Langton's hexagonal ant
+        else if (index == LANGTON_HEXAGONAL_ANT) // Langton's hexagonal ant
         {
             row = MENU_AUTOMATA_TYPE_ROW_LHA;
         }        
-        else if (index == 3) // Boolean automata
+        else if (index == BOOLEAN_AUTOMATA) // Boolean automata
         {    
             row = MENU_AUTOMATA_TYPE_ROW_BA;
         }
-        else if (index == 4) // Boolean Hexagonal Automata
+        else if (index == BOOLEAN_HEXAGONAL_AUTOMATA) // Boolean Hexagonal Automata
         {
             row = MENU_AUTOMATA_TYPE_ROW_BHA;
         }
-        else if (index == 5) // Boolean Triangular Automata
+        else if (index == BOOLEAN_TRIANGULAR_AUTOMATA) // Boolean Triangular Automata
         {
             row = MENU_AUTOMATA_TYPE_ROW_BTA;
         }
-        else if (index == 6) // Boolean Triangular Automata
+        else if (index == CONWAYS_GAME_OF_LIFE) // Conway's game of life
         {
             row = MENU_AUTOMATA_TYPE_ROW_CGL;
         }        
-        else if (index == 7) // Munching squares
+        else if (index == MUNCHING_SQUARES) // Munching squares
         {    
             row = MENU_AUTOMATA_TYPE_ROW_MS;
         }        
-        else if (index == 8) // Select colors
+        else if (index == SELECT_COLORS) // Select colors
         {
             row = MENU_SELECT_COLORS;
         }
-        else if (index == 9) // Select language
+        else if (index == SELECT_LANGUAGE) // Select language
         {
             row = MENU_SELECT_LANGUAGE;
         }
     }
     
-    else if (intDisplayedMenu == 1) // Elementary Cellular Automaton menu
+    else if (intDisplayedMenu == ELEMENTARY_CELLULAR_AUTOMATA) // Elementary Cellular Automaton menu
     {
         if (index == 8) // The first element of the bottom screen
         {
             row = 11;
         }
     }
-    else if (intDisplayedMenu == 2) // Langton's ant menu
+    else if (intDisplayedMenu == LANGTON_ANT) // Langton's ant menu
     {
         if (index == 0) // Print the arrow in the option to choose the size of the ant
         {
@@ -663,14 +635,14 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 13;
         }
     }
-    else if (intDisplayedMenu == 3) // Langton's hexagonal ant menu
+    else if (intDisplayedMenu == LANGTON_HEXAGONAL_ANT) // Langton's hexagonal ant menu
     {
         if (index == 0)
         {
             row = 13;
         }
     }
-    else if (intDisplayedMenu == 4) // Boolean automata
+    else if (intDisplayedMenu == BOOLEAN_AUTOMATA) // Boolean automata
     {
         if (index == 0) // Von Neumann neighborhood
         {
@@ -745,7 +717,7 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 19;
         }
     }
-    else if (intDisplayedMenu == 5) // Boolean Hexagonal Automata
+    else if (intDisplayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA) // Boolean Hexagonal Automata
     {
         if (index == 0)
         {
@@ -782,7 +754,7 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 17;
         }
     }
-    else if (intDisplayedMenu == 6) // Boolean Triagonal Automata
+    else if (intDisplayedMenu == BOOLEAN_TRIANGULAR_AUTOMATA) // Boolean Triangular Automata
     {
         if (index == 0) // Von Neumann neighborhood
         {
@@ -852,21 +824,21 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 19;
         }
     }
-    else if (intDisplayedMenu == 7) // Conway's game of life menu
+    else if (intDisplayedMenu == CONWAYS_GAME_OF_LIFE) // Conway's game of life menu
     {
         if (index == 0)
         {
             row = 13; // Back to main menu
         }
     }
-    else if (intDisplayedMenu == 8) // Munching squares menu
+    else if (intDisplayedMenu == MUNCHING_SQUARES) // Munching squares menu
     {
         if (index == 0)
         {
             row = 13; // Back to main menu
         }
     }
-    else if (intDisplayedMenu == 9) // Select colors
+    else if (intDisplayedMenu == SELECT_COLORS) // Select colors
     {
         if (index == 0) // BG red
         {
@@ -909,7 +881,7 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = 21;
         }
     }
-    else if (intDisplayedMenu == 10) // Select language    
+    else if (intDisplayedMenu == SELECT_LANGUAGE) // Select language    
     {
         if (index == 0) // English
         {
@@ -945,7 +917,7 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
  */
 int showAutomataTypeMenu()
 {
-    displayedMenu = 0;
+    displayedMenu = MAIN_MENU;
     automataType = ELEMENTARY_CELLULAR_AUTOMATA;
     showFlash();
     consoleClear();
@@ -1139,7 +1111,7 @@ int main(void)
         /*
          * The main menu to select the type of automata
          */        
-        if (displayedMenu == 0)
+        if (displayedMenu == MAIN_MENU)
         {
             if (keys_released & KEY_UP)
             {
@@ -1151,7 +1123,7 @@ int main(void)
                 }
                 else
                 {
-                    automataType = 9;
+                    automataType = SELECT_LANGUAGE;
                 }
 
                 printMenuArrow(displayedMenu, automataType, false); // Print new arrow   
@@ -1160,7 +1132,7 @@ int main(void)
             {
                 printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                 
-                if (automataType != 9)
+                if (automataType != SELECT_LANGUAGE)
                 {
                     automataType = automataType + 1;
                 }
@@ -1182,60 +1154,32 @@ int main(void)
                 printAutomataType(automataType);
 
                 intArrow = 0;     
-           
+                
+                displayedMenu = automataType;
+                
                 if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
-                {
-                    displayedMenu = 1;
-                                        
+                {                       
                     printRuleNumber(ca.getRuleNumber());
                 }
                 else if (automataType == LANGTON_ANT)
                 {
                     ca.setAntNumPixels(4);
-
-                    displayedMenu = 2;
-                }
-                else if (automataType == LANGTON_HEXAGONAL_ANT)
-                {
-                    displayedMenu = 3;
                 }
                 else if (automataType == BOOLEAN_AUTOMATA)
                 {
                     ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD); // Von Neumann neighborhood (default)
 
-                    displayedMenu = 4;
-
                     ca.initializeBooleanRuleValues();
                 }
                 else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
-                {
-                    displayedMenu = 5;
-                    
+                {   
                     ca.initializeBooleanRuleValues();
                 }
                 else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
                     ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD); // Von Neumann neighborhood (default)
 
-                    displayedMenu = 6;
-
                     ca.initializeBooleanRuleValues();
-                }
-                else if (automataType == CONWAYS_GAME_OF_LIFE)
-                {
-                    displayedMenu = 7;
-                }
-                else if (automataType == MUNCHING_SQUARES)
-                {                       
-                    displayedMenu = 8;                                        
-                }
-                else if (automataType == SELECT_COLORS)
-                {
-                    displayedMenu = 9;                    
-                }
-                else if (automataType == SELECT_LANGUAGE)
-                {
-                    displayedMenu = 10;
                 }
                 
                 if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
@@ -1275,7 +1219,7 @@ int main(void)
         /*
          * The Elementary Cellular Automata menu
          */                
-        else if (displayedMenu == 1)
+        else if (displayedMenu == ELEMENTARY_CELLULAR_AUTOMATA)
         {
 		    if(keys_released & KEY_A)
 		    {
@@ -1405,7 +1349,7 @@ int main(void)
         /*
          * Langton's ant menu
          */                
-        else if (displayedMenu == 2)
+        else if (displayedMenu == LANGTON_ANT)
         {
     	    if (ca.hasFinished() == false)
     	    {
@@ -1481,7 +1425,7 @@ int main(void)
         /*
          * Langton's hexagonal ant menu
          */                
-        else if (displayedMenu == 3)
+        else if (displayedMenu == LANGTON_HEXAGONAL_ANT)
         {
     	    if (ca.hasFinished() == false) // If the ant hasn't finished continue with the next step
     	    {
@@ -1502,7 +1446,7 @@ int main(void)
         /*
          * Boolean square automata
          */
-        else if (displayedMenu == 4)
+        else if (displayedMenu == BOOLEAN_AUTOMATA)
         {
             ca.nextStep();
             printNumSteps();
@@ -1633,7 +1577,7 @@ int main(void)
         /*
          * Boolean hexagonal automata menu
          */                
-        else if (displayedMenu == 5)
+        else if (displayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA)
         {
             ca.nextStep();
             
@@ -1727,7 +1671,7 @@ int main(void)
         /*
          * Boolean triangular automata menu
          */                
-        else if (displayedMenu == 6)
+        else if (displayedMenu == BOOLEAN_TRIANGULAR_AUTOMATA)
         {
             ca.nextStep();
 
@@ -1867,7 +1811,7 @@ int main(void)
         /*
          * Conway's game of life
          */                
-        else if (displayedMenu == 7)
+        else if (displayedMenu == CONWAYS_GAME_OF_LIFE)
         {    	    
             ca.nextStep();
             
@@ -1885,7 +1829,7 @@ int main(void)
         /*
          * Munching squares menu
          */
-        else if (displayedMenu == 8)
+        else if (displayedMenu == MUNCHING_SQUARES)
         {
   		    if(keys_released & KEY_A)
   		    {
@@ -1900,7 +1844,7 @@ int main(void)
         /*
          * Color selection menu
          */
-        else if (displayedMenu == 9)
+        else if (displayedMenu == SELECT_COLORS)
         {
   		    if(keys_released & KEY_A)
   		    {
@@ -2095,7 +2039,7 @@ int main(void)
         /*
          * Language selection menu
          */
-        else if (displayedMenu == 10)
+        else if (displayedMenu == SELECT_LANGUAGE)
         {
   		    if(keys_released & KEY_A)
   		    {

@@ -1,29 +1,37 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+
+/*****************
+ *   CONSTANTS   *
+ *****************/
+
 /*
- * Constants to define the type of automata:
- * 0: Elementary Cellular Automata
- * 1: Langton's ant
- * 2: Langton's hexagonal ant
- * 3: Boolean Square Automata
- * 4: Boolean Hexagonal Automata
- * 5: Boolean Triangular Automata
- * 6: Conway's game of life
- * 6: Munching Squares
- * 7: Select colors
- * 8: Select language
+ * Constants to define the type of automata and the corresponding menu:
+ * Used in the variables: automataType and displayedMenu
+ * 0: Main menu
+ * 1: Elementary Cellular Automata
+ * 2: Langton's ant
+ * 3: Langton's hexagonal ant
+ * 4: Boolean Square Automata
+ * 5: Boolean Hexagonal Automata
+ * 6: Boolean Triangular Automata
+ * 7: Conway's game of life
+ * 8: Munching Squares
+ * 9: Select colors
+ * 10: Select language
  */
-#define ELEMENTARY_CELLULAR_AUTOMATA 0
-#define LANGTON_ANT 1
-#define LANGTON_HEXAGONAL_ANT 2
-#define BOOLEAN_AUTOMATA 3
-#define BOOLEAN_HEXAGONAL_AUTOMATA 4
-#define BOOLEAN_TRIANGULAR_AUTOMATA 5
-#define CONWAYS_GAME_OF_LIFE 6
-#define MUNCHING_SQUARES 7
-#define SELECT_COLORS 8
-#define SELECT_LANGUAGE 9
+#define MAIN_MENU 0
+#define ELEMENTARY_CELLULAR_AUTOMATA 1
+#define LANGTON_ANT 2
+#define LANGTON_HEXAGONAL_ANT 3
+#define BOOLEAN_AUTOMATA 4
+#define BOOLEAN_HEXAGONAL_AUTOMATA 5
+#define BOOLEAN_TRIANGULAR_AUTOMATA 6
+#define CONWAYS_GAME_OF_LIFE 7
+#define MUNCHING_SQUARES 8
+#define SELECT_COLORS 9
+#define SELECT_LANGUAGE 10
 
 /*
  * Constants to define the type of neighborhood
@@ -37,6 +45,21 @@
 #define EN 0
 #define ES 1
 #define EU 2
+
+
+/************************
+ *   GLOBAL VARIABLES   *
+ ************************/
+ 
+/*
+ * This variable sets the type of automata that is going to be executed (Uses the constants defined above)
+ */
+extern int automataType;
+
+/*
+ * This variable sets the menu that is going to be displayed (Uses the constants defined above)
+ */
+extern int displayedMenu;
 
 /* The position of the arrow
  * Select automata menu: ????

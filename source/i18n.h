@@ -9,7 +9,7 @@ using namespace std;
 /*
  * Constant for the version number of the application
  */
-const string strVersionNumber = "0.3.2.8";
+const string strVersionNumber = "0.3.2.9";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
