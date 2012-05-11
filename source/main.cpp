@@ -958,7 +958,18 @@ int showAutomataTypeMenu()
 
 int printAutomataType(int automataType)
 {
-    printf("%s:\n", stringAutomataType.c_str()); 
+    if (automataType == SELECT_COLORS)
+    {
+        printf("%s:", stringSelectColors.c_str());
+    }
+    else if (automataType == SELECT_LANGUAGE)
+    {
+        printf("%s:", stringSelectLanguage.c_str());
+    }
+    else
+    {
+        printf("%s:\n", stringAutomataType.c_str());
+    } 
     
     if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
     {
@@ -1162,198 +1173,103 @@ int main(void)
             }
             else if (keys_released & KEY_A)
             {
+                ca.setType(automataType);
+                
+                consoleClear();
+
+                printCredits();
+                
+                printAutomataType(automataType);
+
+                intArrow = 0;     
+           
                 if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
                 {
-                    ca.setType(ELEMENTARY_CELLULAR_AUTOMATA);
-                    
-                    consoleClear();
-                    printCredits();
-                    
-                    printAutomataType(ELEMENTARY_CELLULAR_AUTOMATA);
-                    
-                    intArrow = 0;                    
                     displayedMenu = 1;
-                    
-                    printMenu(displayedMenu);
-                    
+                                        
                     printRuleNumber(ca.getRuleNumber());
-                    
-                    ca.initialize();
                 }
                 else if (automataType == LANGTON_ANT)
                 {
-                    ca.setType(LANGTON_ANT);
-                    
                     ca.setAntNumPixels(4);
-                                        
-                    consoleClear();
-                    printCredits();
-                    
-                    printAutomataType(LANGTON_ANT);
-                              
-                    intArrow = 0;
+
                     displayedMenu = 2;
-                    
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
-                    
-                    ca.initialize();
                 }
                 else if (automataType == LANGTON_HEXAGONAL_ANT)
                 {
-                    ca.setType(LANGTON_HEXAGONAL_ANT);
-
-                    consoleClear();
-                    printCredits();
-                    
-                    printAutomataType(LANGTON_HEXAGONAL_ANT);
-                    
-                    intArrow = 0;
                     displayedMenu = 3;
-                    
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
-                                        
-                    ca.initialize();
                 }
                 else if (automataType == BOOLEAN_AUTOMATA)
                 {
-                    ca.setType(BOOLEAN_AUTOMATA);
                     ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD); // Von Neumann neighborhood (default)
 
-                    consoleClear();
-                    printCredits();
-
-                    printAutomataType(BOOLEAN_AUTOMATA);
-
-                    intArrow = 0;
                     displayedMenu = 4;
 
-                    printMenu(displayedMenu);
+                    ca.initializeBooleanRuleValues();
+                }
+                else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
+                {
+                    displayedMenu = 5;
+                    
+                    ca.initializeBooleanRuleValues();
+                }
+                else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
+                {
+                    ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD); // Von Neumann neighborhood (default)
 
-                    printMenuArrow(displayedMenu, intArrow, false);                    
+                    displayedMenu = 6;
 
                     ca.initializeBooleanRuleValues();
+                }
+                else if (automataType == CONWAYS_GAME_OF_LIFE)
+                {
+                    displayedMenu = 7;
+                }
+                else if (automataType == MUNCHING_SQUARES)
+                {                       
+                    displayedMenu = 8;                                        
+                }
+                else if (automataType == SELECT_COLORS)
+                {
+                    displayedMenu = 9;                    
+                }
+                else if (automataType == SELECT_LANGUAGE)
+                {
+                    displayedMenu = 10;
+                }
+                
+                if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
+                {
+                    printMenuArrow(displayedMenu, intArrow, false);
+                }
+                
+                printMenu(displayedMenu);
+                
+                if ((automataType != SELECT_COLORS) && (automataType != SELECT_LANGUAGE))
+                {
                     ca.initialize();
-
+                }
+                else
+                {
+                    runAutomata();
+                }
+                
+                if (automataType == BOOLEAN_AUTOMATA)
+                {
                     printBAasterisks();
                 }
                 else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
                 {
-                    ca.setType(BOOLEAN_HEXAGONAL_AUTOMATA);
-
-                    consoleClear();
-                    printCredits();
-                    
-                    printAutomataType(BOOLEAN_HEXAGONAL_AUTOMATA);
-                    
-                    intArrow = 0;
-                    displayedMenu = 5;
-                    
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
-
-                    ca.initializeBooleanRuleValues();
-                    ca.initialize();
-
                     printBHAasterisks();
                 }
                 else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
-                    ca.setType(BOOLEAN_TRIANGULAR_AUTOMATA);
-                    ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD); // Von Neumann neighborhood (default)
-
-                    consoleClear();
-                    printCredits();
-                    
-                    printAutomataType(BOOLEAN_TRIANGULAR_AUTOMATA);
-                    
-                    intArrow = 0;
-                    displayedMenu = 6;
-                    
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
-
-                    ca.initializeBooleanRuleValues();
-                    ca.initialize();
-                                        
                     printBTAasterisks();
-                }
-                else if (automataType == CONWAYS_GAME_OF_LIFE)
-                {
-                    ca.setType(CONWAYS_GAME_OF_LIFE);
-
-                    consoleClear();
-                    printCredits();
-                    
-                    printAutomataType(CONWAYS_GAME_OF_LIFE);
-                    
-                    intArrow = 0;
-                    displayedMenu = 7;
-                    
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
-                                        
-                    //printCGLasterisks();
-
-                    ca.initialize();
-                }
-                else if (automataType == MUNCHING_SQUARES)
-                {   
-                    ca.setType(MUNCHING_SQUARES);
-
-                    consoleClear();
-                    printCredits();
-                    
-                    printAutomataType(MUNCHING_SQUARES);
-                    
-                    intArrow = 0;                    
-                    displayedMenu = 8;
-                    
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
-
-                    ca.initialize();                                        
-                }
-                else if (automataType == SELECT_COLORS)
-                {
-                    consoleClear();
-                    printCredits();
-                    
-                    printf("%s:", stringSelectColors.c_str());
-                    
-                    intArrow = 0;
-                    displayedMenu = 9;
-                    
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
-                                        
-                    runAutomata();
                 }
                 else if (automataType == SELECT_LANGUAGE)
                 {
-                    consoleClear();
-                    printCredits();
-                    
-                    printf("%s:", stringSelectLanguage.c_str());
-                    
-                    intArrow = 0;
-                    displayedMenu = 10;
-                    
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
                     printLanguageAsterisks();
-                    
-                    runAutomata();   
-                }                
+                }
             }
         }
         /*
