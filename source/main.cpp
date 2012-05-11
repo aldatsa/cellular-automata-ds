@@ -259,19 +259,19 @@ int printMenu(int intDisplayedMenu)
  */
 int printLanguageAsterisks()
 {
-    if (displayedLanguage == "en")
+    if (displayedLanguage == EN)
     {
         printAsterisk(10, 2);
         deleteAsterisk(11, 2);
         deleteAsterisk(12, 2);
     }
-    else if (displayedLanguage == "es")
+    else if (displayedLanguage == ES)
     {
         deleteAsterisk(10, 2);
         printAsterisk(11, 2);
         deleteAsterisk(12, 2);
     }
-    else if (displayedLanguage == "eu")
+    else if (displayedLanguage == EU)
     {
         deleteAsterisk(10, 2);
         deleteAsterisk(11, 2);
@@ -1004,6 +1004,28 @@ int printNumSteps()
     iprintf("\x1b[9;0H%s:     ", stringSteps.c_str());                                                    
     iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
 
+    return 0;
+}
+
+/*
+ *
+ */
+int setLanguage(int language)
+{
+    displayedLanguage = language;
+    
+    changeTextLanguage(language);
+
+    consoleClear();
+    printCredits();
+                    
+    printf("%s:", stringSelectLanguage.c_str());
+  		            
+    printMenu(displayedMenu);
+                    
+    printMenuArrow(displayedMenu, intArrow, false);
+    printLanguageAsterisks();
+    
     return 0;
 }
 
@@ -2177,48 +2199,15 @@ int main(void)
   		    {
   		        if (intArrow == 0) // Change language to english
   		        {
-  		            displayedLanguage = "en";
-  		            changeTextLanguage(displayedLanguage);
-
-                    consoleClear();
-                    printCredits();
-                    
-                    printf("%s:", stringSelectLanguage.c_str());
-  		            
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
-                    printLanguageAsterisks();
+  		            setLanguage(EN);
   		        }
   		        else if (intArrow == 1) // Change language to spanish
   		        {
-  		            displayedLanguage = "es";
-  		            changeTextLanguage(displayedLanguage);
-
-                    consoleClear();
-                    printCredits();
-                    
-                    printf("%s:", stringSelectLanguage.c_str());
-
-                    printMenu(displayedMenu);
-
-                    printMenuArrow(displayedMenu, intArrow, false);
-                    printLanguageAsterisks();
+  		            setLanguage(ES);
   		        }
   		        else if (intArrow == 2) // Change language to basque
   		        {
-  		            displayedLanguage = "eu";
-  		            changeTextLanguage(displayedLanguage);
-
-                    consoleClear();
-                    printCredits();
-                    
-                    printf("%s:", stringSelectLanguage.c_str());
-
-                    printMenu(displayedMenu);
-                    
-                    printMenuArrow(displayedMenu, intArrow, false);
-                    printLanguageAsterisks();
+  		            setLanguage(EU);
   		        }
   		        else if (intArrow == 3) // Back to main menu
   		        {

@@ -2,20 +2,22 @@
 #define I18N_H
 
 #include <string>
+#include "globals.h"
 
 using namespace std;
 
 /*
  * Constant for the version number of the application
  */
-const string strVersionNumber = "0.3.2.3";
+const string strVersionNumber = "0.3.2.5";
 
 /* This variable sets the language used in the menus
- * "en": english
- * "es": espanol (spanish)
- * "eu": euskara (basque)
+ * using constants defined in globals.h
+ * EN: English
+ * ES: Spanish
+ * EU: Basque
  */
-string displayedLanguage = "en";
+int displayedLanguage = EN;
 
 /*
  * The strings of text used in the app in the default language (english).
@@ -62,9 +64,9 @@ string stringEuskara = "Euskara";
  * es : spanish
  * eu : basque
  */
-int changeTextLanguage(string languageCode)
+int changeTextLanguage(int language)
 {
-    if (languageCode == "en") // English
+    if (language == EN) // English
     {
         stringRuleNumber = "Rule number";
         
@@ -99,11 +101,8 @@ int changeTextLanguage(string languageCode)
         stringVersion = "version " + strVersionNumber;
         
         stringSelectLanguage = "Select language";
-        stringEnglish = "English";
-        stringEspanol = "Espanol";
-        stringEuskara = "Euskara";
     }
-    else if (languageCode == "es") // Spanish
+    else if (language == ES) // Spanish
     {
         stringRuleNumber = "Regla numero"; // It doesn't print 'ú'. Why?
         
@@ -138,11 +137,8 @@ int changeTextLanguage(string languageCode)
         stringVersion = "version " + strVersionNumber;
         
         stringSelectLanguage = "Seleccionar lenguaje";
-        stringEnglish = "English";
-        stringEspanol = "Espanol";
-        stringEuskara = "Euskara";
     }
-    else if (languageCode == "eu") // Basque
+    else if (language == EU) // Basque
     {
         stringRuleNumber = "Arau zenbakia";
         
@@ -177,9 +173,6 @@ int changeTextLanguage(string languageCode)
         stringVersion = strVersionNumber + " bertsioa";
         
         stringSelectLanguage = "Hautatu hizkuntza";
-        stringEnglish = "English";
-        stringEspanol = "Espanol";
-        stringEuskara = "Euskara";
     }
     
     return 0;

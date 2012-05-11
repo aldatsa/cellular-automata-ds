@@ -31,6 +31,13 @@
 #define VON_NEUMANN_NEIGHBORHOOD 0
 #define MOORE_NEIGHBORHOOD 1
 
+/*
+ * Constants to define the language of the text of the user interfaze
+ */
+#define EN 0
+#define ES 1
+#define EU 2
+
 /* The position of the arrow
  * Select automata menu: ????
  * Elementary Cellular Automata: in the top screen (0-7) and in the bottom screen (8)
