@@ -1592,39 +1592,32 @@ int main(void)
             printNumSteps();
             
        	    if(keys_released & KEY_A)
-		    {
-		        if (intArrow == 0)
-		        {
-		            ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
-		            printBAasterisks();
-		            ca.initialize();
-		        }
-		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4)
-		        {
-    		        ca.toggleBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, intArrow - 1);
-
-		            printBAasterisks();
-
-		            ca.initialize();
-		        }
-		        else if (intArrow == 5)
-		        {
-		            ca.setTypeOfNeighborhood(MOORE_NEIGHBORHOOD);
-		            printBAasterisks();
-		            ca.initialize();
-		        }
-		        else if (intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12 || intArrow == 13)
-		        {
-                    ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow - 6);
-
-		            printBAasterisks();
-
-		            ca.initialize();
-		        }
-		        else if (intArrow == 14)
+		    {   
+		        if (intArrow == 14)
 		        {
 		            // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
+                }
+                else
+                {
+		            if (intArrow == 0)
+		            {
+		                ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
+		            }
+		            else if (intArrow == 1 || intArrow == 2 || intArrow == 3 || intArrow == 4)
+		            {
+        		        ca.toggleBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, intArrow - 1);
+		            }
+		            else if (intArrow == 5)
+		            {
+		                ca.setTypeOfNeighborhood(MOORE_NEIGHBORHOOD);
+		            }
+		            else if (intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12 || intArrow == 13)
+		            {
+                        ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow - 6);
+		            }
+                    printBAasterisks();
+                    ca.initialize();
                 }
             }
             else if(keys_released & KEY_UP)
@@ -1826,39 +1819,32 @@ int main(void)
 
        	    if(keys_released & KEY_A)
 		    {
-		        if (intArrow == 0) // Von Neumann neighborhood
-		        {
-		            ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
-		            printBTAasterisks();
-		            ca.initialize();
-		        }
-		        else if (intArrow == 1 || intArrow == 2 || intArrow == 3) // Von Neumann neighborhood 1, 2, 3
-		        {
-                    ca.toggleBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, intArrow - 1);
-
-		            printBTAasterisks();
-
-		            ca.initialize();
-		        }
-		        else if (intArrow == 4) // Moore neighborhood
-		        {
-		            ca.setTypeOfNeighborhood(MOORE_NEIGHBORHOOD);
-		            printBTAasterisks();
-		            ca.initialize();
-		        }
-		        else if (intArrow == 5 || intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12) // Moore neighborhood 1, 2, 3, 4, 5, 6, 7, 8
-		        {
-                    ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow - 5);
-
-		            printBTAasterisks();
-
-		            ca.initialize();
-		        }
-		        else if (intArrow == 13)
+    		    if (intArrow == 13)
 		        {
 		            // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
                 }
+                else
+                {
+		            if (intArrow == 0) // Von Neumann neighborhood
+		            {
+		                ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
+		            }
+		            else if (intArrow == 1 || intArrow == 2 || intArrow == 3) // Von Neumann neighborhood 1, 2, 3
+		            {
+                        ca.toggleBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, intArrow - 1);
+		            }
+		            else if (intArrow == 4) // Moore neighborhood
+		            {
+		                ca.setTypeOfNeighborhood(MOORE_NEIGHBORHOOD);
+		            }
+		            else if (intArrow == 5 || intArrow == 6 || intArrow == 7 || intArrow == 8 || intArrow == 9 || intArrow == 10 || intArrow == 11 || intArrow == 12) // Moore neighborhood 1, 2, 3, 4, 5, 6, 7, 8
+		            {
+                        ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow - 5);
+		            }
+		            printBTAasterisks();
+		            ca.initialize();
+		        }
             }
             else if(keys_released & KEY_UP)
 		    {
