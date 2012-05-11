@@ -1132,33 +1132,33 @@ int main(void)
         {
             if (keys_released & KEY_UP)
             {
+                printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
+
                 if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
                 {
-                    printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType - 1;
-                    printMenuArrow(displayedMenu, automataType, false); // Print new arrow
                 }
                 else
                 {
-                    printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = 9;
-                    printMenuArrow(displayedMenu, automataType, false); // Print new arrow
-                }   
+                }
+
+                printMenuArrow(displayedMenu, automataType, false); // Print new arrow   
             }
             else if (keys_released & KEY_DOWN)
             {
+                printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
+                
                 if (automataType != 9)
                 {
-                    printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = automataType + 1;
-                    printMenuArrow(displayedMenu, automataType, false); // Print new arrow                   
                 }
                 else
                 {
-                    printMenuArrow(displayedMenu, automataType, true); // Delete previous arrow
                     automataType = ELEMENTARY_CELLULAR_AUTOMATA;
-                    printMenuArrow(displayedMenu, automataType, false); // Print new arrow                    
-                }   
+                }
+                
+                printMenuArrow(displayedMenu, automataType, false); // Print new arrow
             }
             else if (keys_released & KEY_A)
             {
