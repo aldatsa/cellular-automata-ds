@@ -382,101 +382,6 @@ int CellularAutomata::drawArrow(char nth, unsigned short color)
 	return 0;
 }
 
-/*
- * Draws the current rule of the Elementary Cellular Automata
- */
-int CellularAutomata::drawRule(int nth)
-{
-
-    const int intTopRow = 136;
-    const int intBottomRow = 168;
-
-    const int intColumn1 = 32;
-    const int intColumn2 = 88;
-    const int intColumn3 = 144;
-    const int intColumn4 = 200;
-
-	const int intLength = 9;
-	const int intWidth = 9;
-    
-	bool fill = false;
-	int intRowStart = 0;
-	int intColumnStart = 0;
-	
-	switch (nth)
-	{
-		case 0 :
-			intRowStart = intTopRow;
-			intColumnStart = intColumn1;
-		 	break;
-		case 1 :
-			intRowStart = intTopRow;
-			intColumnStart = intColumn2;
-		 	break;		
-		case 2 :
-			intRowStart = intTopRow;
-			intColumnStart = intColumn3;
-		 	break;	
-		case 3 :
-			intRowStart = intTopRow;
-			intColumnStart = intColumn4;
-		 	break;	
-
-		case 4 :
-			intRowStart = intBottomRow;
-			intColumnStart = intColumn1;
-		 	break;
-		case 5 :
-			intRowStart = intBottomRow;
-			intColumnStart = intColumn2;
-		 	break;		
-		case 6 :
-			intRowStart = intBottomRow;
-			intColumnStart = intColumn3;
-		 	break;	
-		case 7 :
-			intRowStart = intBottomRow;
-			intColumnStart = intColumn4;
-		 	break;	
-	}
-
-	if(ruleLeft[nth] == FG_color)
-	{
-		fill = true;	
-	}
-	
-	drawRectangle(fill, intRowStart, intColumnStart, intLength, intWidth);
-
-	fill = false;
-
-	if(ruleCenter[nth] == FG_color)
-	{
-		fill = true;
-	}
-		
-	drawRectangle(fill, intRowStart, intColumnStart + intWidth - 1, intLength, intWidth);
-
-	fill = false;
-
-	if(ruleRight[nth] == FG_color)
-	{
-        fill = true;
-	}
-
-	drawRectangle(fill, intRowStart, intColumnStart + (intWidth - 1) * 2, intLength, intWidth);
-
-    fill = false;
-
-	if(ruleDown[nth] == FG_color)
-	{
-		fill = true;
-	}
-
-	drawRectangle(fill, intRowStart + intLength - 1, intColumnStart + intWidth -1, intLength, intWidth);
-	
-	return 0;
-}
-
 //*************************************PUBLIC*******************************************
 
 int CellularAutomata::setType(int t)
@@ -1324,6 +1229,114 @@ bool CellularAutomata::hasFinished()
 }
 
 /*
+ * Draws the current rule of the Elementary Cellular Automata
+ */
+int CellularAutomata::drawRule(int nth)
+{
+
+    const int intTopRow = 136;
+    const int intBottomRow = 168;
+
+    const int intColumn1 = 32;
+    const int intColumn2 = 88;
+    const int intColumn3 = 144;
+    const int intColumn4 = 200;
+
+	const int intLength = 9;
+	const int intWidth = 9;
+    
+	bool fill = false;
+	int intRowStart = 0;
+	int intColumnStart = 0;
+	
+	switch (nth)
+	{
+		case 0 :
+			intRowStart = intTopRow;
+			intColumnStart = intColumn1;
+		 	break;
+		case 1 :
+			intRowStart = intTopRow;
+			intColumnStart = intColumn2;
+		 	break;		
+		case 2 :
+			intRowStart = intTopRow;
+			intColumnStart = intColumn3;
+		 	break;	
+		case 3 :
+			intRowStart = intTopRow;
+			intColumnStart = intColumn4;
+		 	break;	
+
+		case 4 :
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn1;
+		 	break;
+		case 5 :
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn2;
+		 	break;		
+		case 6 :
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn3;
+		 	break;	
+		case 7 :
+			intRowStart = intBottomRow;
+			intColumnStart = intColumn4;
+		 	break;	
+	}
+
+	if(ruleLeft[nth] == FG_color)
+	{
+		fill = true;	
+	}
+	
+	drawRectangle(fill, intRowStart, intColumnStart, intLength, intWidth);
+
+	fill = false;
+
+	if(ruleCenter[nth] == FG_color)
+	{
+		fill = true;
+	}
+		
+	drawRectangle(fill, intRowStart, intColumnStart + intWidth - 1, intLength, intWidth);
+
+	fill = false;
+
+	if(ruleRight[nth] == FG_color)
+	{
+        fill = true;
+	}
+
+	drawRectangle(fill, intRowStart, intColumnStart + (intWidth - 1) * 2, intLength, intWidth);
+
+    fill = false;
+
+	if(ruleDown[nth] == FG_color)
+	{
+		fill = true;
+	}
+
+	drawRectangle(fill, intRowStart + intLength - 1, intColumnStart + intWidth -1, intLength, intWidth);
+	
+	return 0;
+}
+
+/*
+ * Draws all the rules (0-7) of the Elementary Cellular Automata
+ */
+int CellularAutomata::drawAllRules()
+{
+	for (int i = 0; i < 8; i++)
+	{
+	    drawRule(i);
+	}
+	
+	return 0;
+}
+
+/*
  * Draws the Elementary Cellular Automata that corresponds to the current rules
  */
 int CellularAutomata::drawElementaryCellularAutomata()
@@ -1368,15 +1381,6 @@ int CellularAutomata::drawElementaryCellularAutomata()
 			}
 		}
 	}
-	
-	// Draw the rules (0-7)
-	for (int i = 0; i < 8; i++)
-	{
-	    drawRule(i);
-	}
-
-    // Draw the arrow 
-	drawArrow(intArrow, line_color);
 	
 	return 0;
 }

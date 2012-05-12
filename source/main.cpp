@@ -81,6 +81,8 @@ int printRuleNumber(int intRuleNumber)
 int printAntNumPixels()
 {
     iprintf("\x1b[11;2H%s: < %d > ", stringAntsPixels.c_str(), ca.getAntNumPixels());
+    
+    return 0;
 }
 
 /*
@@ -1205,7 +1207,9 @@ int main(void)
                 if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
                 {
                     printRuleNumber(ca.getRuleNumber()); // The rule number must be printed after the initialization of the automata
-                    ca.drawElementaryCellularAutomata();
+                    ca.drawElementaryCellularAutomata(); // Draw the ECA that corresponds to the default rule (set in ca.initialize())
+                    ca.drawAllRules();                   // Draw the rules that correspond to the default rule (set in ca.initialize())
+                    ca.drawArrow(intArrow, line_color);  // Draw the arrow in the default position (intArrow = 0, top left rule (2^7), set in ca.initialize())
                 }                
                 else if (automataType == BOOLEAN_AUTOMATA)
                 {
@@ -1245,6 +1249,8 @@ int main(void)
 			
                     printRuleNumber(ca.getRuleNumber());
                     
+                    ca.drawRule(intArrow);  // Draw the rule that has changed
+
 			        ca.drawElementaryCellularAutomata();
                 }
                 else // Go back to the selection of the type of automata
