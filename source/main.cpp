@@ -1157,11 +1157,7 @@ int main(void)
                 
                 displayedMenu = automataType;
                 
-                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
-                {                       
-                    printRuleNumber(ca.getRuleNumber());
-                }
-                else if (automataType == LANGTON_ANT)
+                if (automataType == LANGTON_ANT)
                 {
                     ca.setAntNumPixels(4);
                 }
@@ -1197,8 +1193,13 @@ int main(void)
                 {
                     runAutomata();
                 }
-                
-                if (automataType == BOOLEAN_AUTOMATA)
+
+                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
+                {
+                    printRuleNumber(ca.getRuleNumber()); // The rule number must be printed after the initialization of the automata
+                    ca.drawElementaryCellularAutomata();
+                }                
+                else if (automataType == BOOLEAN_AUTOMATA)
                 {
                     printBAasterisks();
                 }

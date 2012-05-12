@@ -566,7 +566,8 @@ int CellularAutomata::initialize()
     if (type == ELEMENTARY_CELLULAR_AUTOMATA)
     {
         updateECAruleColors();
-  	    drawElementaryCellularAutomata();	 
+        
+        paintInitialCell(); // Paints the initial cell in the center of the first row (fb[128] = FG_color)
     }
     else if (type == LANGTON_HEXAGONAL_ANT)
     { 
@@ -1329,10 +1330,6 @@ int CellularAutomata::drawElementaryCellularAutomata()
 {
 	int row, column;
 	unsigned char i;
-	
-	cleanFB(fb);
-
-    paintInitialCell(); // Paints the initial cell in the center of the first row (fb[128] = FG_color)
 
 	for(row = 0; row < 130; row++)
 	{
