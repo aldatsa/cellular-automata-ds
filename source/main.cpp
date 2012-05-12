@@ -76,6 +76,14 @@ int printRuleNumber(int intRuleNumber)
 }
 
 /*
+ * Prints the number of pixels of the Langton's ant
+ */
+int printAntNumPixels()
+{
+    iprintf("\x1b[11;2H%s: < %d > ", stringAntsPixels.c_str(), ca.getAntNumPixels());
+}
+
+/*
  * Prints app's credits
  */
 int printCredits()
@@ -155,7 +163,7 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == LANGTON_ANT) // The menu of the Langton's ant
     {
-        iprintf("\x1b[11;2H%s: < %d >", stringAntsPixels.c_str(), ca.getAntNumPixels());
+        printAntNumPixels();
         iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
     }
     else if (displayedMenu == LANGTON_HEXAGONAL_ANT) // The menu of the Langton's hexagonal ant
@@ -1406,7 +1414,7 @@ int main(void)
                     if (ca.getAntNumPixels() > 1)
                     {
                         ca.setAntNumPixels(ca.getAntNumPixels() - 1);
-                        iprintf("\x1b[11;2H%s: < %d > ", stringAntsPixels.c_str(), ca.getAntNumPixels());
+                        printAntNumPixels();
                         ca.initialize();
                         printNumSteps();
                     }                        
@@ -1417,7 +1425,7 @@ int main(void)
                 if (intArrow == 0)
                 {
                     ca.setAntNumPixels(ca.getAntNumPixels() + 1);
-                    iprintf("\x1b[11;2H%s: < %d > ", stringAntsPixels.c_str(), ca.getAntNumPixels());
+                    printAntNumPixels();
                     ca.initialize();
                     printNumSteps();
                 }		    
