@@ -458,6 +458,29 @@ int CellularAutomata::getTypeOfNeighborhood()
 }
 
 /*
+ * Cleans the current drawing of the Elementary Cellular Automata,
+ * sets numSteps (in this case equivalent to row) to zero,
+ * and paints the initial cell distribution (row zero).
+ * It's used to reset the ECA when the user changes the rules.
+ */
+int CellularAutomata::resetECA()
+{
+    for (int row = 0; row < 130; ++row)
+    {
+        for (int column = 0; column < SCREEN_WIDTH; ++column)
+        {
+            fb[row * SCREEN_WIDTH + column] = BG_color;
+        }
+    }
+    
+    numSteps = 0;
+
+    paintInitialCell();
+    
+    return 0;
+}
+
+/*
  * Cleans the main framebuffer 
  * and initiliazes the values of the variables used for the cellular automata.
  */
@@ -473,6 +496,7 @@ int CellularAutomata::initialize()
         updateECAruleColors();
         
         paintInitialCell(); // Paints the initial cell in the center of the first row (fb[128] = FG_color)
+        drawAllRules(); // Draw the rules that correspond to the default rule (Rule 90, set in updateECAruleColors())
     }
     else if (type == LANGTON_HEXAGONAL_ANT)
     { 
@@ -583,6 +607,51 @@ int CellularAutomata::nextStep()
 	    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or antPosY + antNumPixels > SCREEN_HEIGHT - 1)
 	    {
 	        antFinished = true;
+	    }
+    }
+    else if (type == ELEMENTARY_CELLULAR_AUTOMATA)
+    {
+        int column;
+	    unsigned char i;
+
+        ++numSteps; // In this case numSteps is equivalent to the actual row
+        
+	    if (numSteps < 130)
+	    {
+		    for(column = 0; column < SCREEN_WIDTH; column++)
+		    {
+			    if(numSteps < 128)
+			    {
+				    for(i = 0; i <= 7; i++)
+				    {
+					    if(column != 0 && column != SCREEN_WIDTH - 1)
+					    { 
+						    if (fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(numSteps - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
+							    fb[numSteps * SCREEN_WIDTH + column] = ruleDown[i];
+					    }
+					    else if(column == 0)
+					    {
+						    // The left cell is out of the screen, instead we'll use the center cell (column 0) to compare to ruleLeft
+						    if(fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleLeft[i]  && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(numSteps - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
+						    {
+							    fb[numSteps * SCREEN_WIDTH + column] = ruleDown[i];								
+						    }
+					    }	
+					    else if(column == SCREEN_WIDTH - 1)
+					    {
+                            // The right cell is out of the screen, instead we'll use the center cell (column 255) to compare to ruleRight
+						    if(fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleRight[i])
+                            {
+							    fb[numSteps * SCREEN_WIDTH + column] = ruleDown[i];								
+                            }
+					    }
+				    }
+			    }
+			    else if(numSteps == 129)
+			    {
+				    fb[numSteps * SCREEN_WIDTH + column] = FG_color;
+			    }
+		    }
 	    }
     }
     /* Else if the type of the automata is Munching squares , it draws the next step of the munching squares.
@@ -1331,55 +1400,6 @@ int CellularAutomata::drawAllRules()
 	for (int i = 0; i < 8; i++)
 	{
 	    drawRule(i);
-	}
-	
-	return 0;
-}
-
-/*
- * Draws the Elementary Cellular Automata that corresponds to the current rules
- */
-int CellularAutomata::drawElementaryCellularAutomata()
-{
-	int row, column;
-	unsigned char i;
-
-	for(row = 0; row < 130; row++)
-	{
-		for(column = 0; column < SCREEN_WIDTH; column++)
-		{
-			if(row != 0 && row < 128)
-			{
-				for(i=0; i <= 7; i++)
-				{
-					if(column != 0 && column != SCREEN_WIDTH - 1)
-					{ 
-						if (fb[(row - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(row - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(row - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
-							fb[row * SCREEN_WIDTH + column] = ruleDown[i];
-					}
-					else if(column == 0)
-					{
-						// The left cell is out of the screen, instead we'll use the center cell (column 0) to compare to ruleLeft
-						if(fb[(row - 1) * SCREEN_WIDTH + column] == ruleLeft[i]  && fb[(row - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(row - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
-						{
-							fb[row * SCREEN_WIDTH + column] = ruleDown[i];								
-						}
-					}	
-					else if(column == SCREEN_WIDTH - 1)
-					{
-                        // The right cell is out of the screen, instead we'll use the center cell (column 255) to compare to ruleRight
-						if(fb[(row - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(row - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(row - 1) * SCREEN_WIDTH + column] == ruleRight[i])
-                        {
-							fb[row * SCREEN_WIDTH + column] = ruleDown[i];								
-                        }
-					}
-				}
-			}
-			else if(row == 129)
-			{
-				fb[row * SCREEN_WIDTH + column] = FG_color;
-			}
-		}
 	}
 	
 	return 0;

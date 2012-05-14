@@ -17,6 +17,7 @@ class CellularAutomata
         unsigned short ruleDown[8];
         int updateECAruleColors();
         int paintInitialCell();
+        int drawAllRules();
 
         // For the Langton's ants (normal and hexagonal)
         unsigned short antPosX;
@@ -43,10 +44,10 @@ class CellularAutomata
         int drawElementaryCellularAutomata();
         int getRuleNumber();
         int drawRule(int nth);
-        int drawAllRules();
         int drawArrow(char nth, unsigned short color);
         unsigned short getRuleDown(int index);
         int setRuleDown(int index, unsigned short color);
+        int resetECA();
 
         int setAntNumPixels(int numPixels);
         int getAntNumPixels();
