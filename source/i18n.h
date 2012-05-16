@@ -4,12 +4,10 @@
 #include <string>
 #include "globals.h"
 
-using namespace std;
-
 /*
  * Constant for the version number of the application
  */
-const string strVersionNumber = "0.3.3.3";
+const std::string strVersionNumber = "0.3.3.4";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -23,39 +21,39 @@ int displayedLanguage = EN;
  * The strings of text used in the app in the default language (english).
  *
  */
-string stringRuleNumber = "Rule number";
-string stringElementaryCellularAutomata = "Elementary cellular automata"; // max 30 characters
-string stringLangtonsAnt = "Langton's ant"; // max 30 characters
-string stringLangtonsHexagonalAnt = "Langton's hexagonal ant";
-string stringBooleanAutomata = "Boolean automata";
-string stringBooleanHexagonalAutomata = "Boolean hexagonal automata";
-string stringBooleanTriangularAutomata = "Boolean triangular automata";
-string stringConwaysGameOfLife = "Conway's game of life";
-string stringMunchingSquares = "Munching Squares";
-string stringSelectColors = "Select colors";
-string stringBackToMainMenu = "Back to main menu";
-string stringAntsPixels = "Ant's size (pixels)";
-string stringVonNeumannNeighborhood = "Von Neumann neighborhood";
-string stringMooreNeighborhood = "Moore neighborhood";
-string stringNeighborhood = "Neighborhood";
-string stringTypeOfComparation = "Type of comparation";
-string stringSmallerThan = "Smaller than";
-string stringEqualTo = "Equal to";
-string stringTypeOfBooleanOperator = "Type of boolean operator";
-string stringThreshold = "Threshold";
-string stringBackgroundColor = "Background color";
-string stringForegroundColor = "Foreground color";
-string stringLineColor = "Line color";
-string stringRed = "Red";
-string stringGreen = "Green";
-string stringBlue = "Blue";
-string stringSteps = "Steps";
-string stringAutomataType = "Automata type";
-string stringVersion = "version " + strVersionNumber;
-string stringSelectLanguage = "Select language";
-string stringEnglish = "English";
-string stringEspanol = "Espanol";
-string stringEuskara = "Euskara";
+std::string stringRuleNumber = "Rule number";
+std::string stringElementaryCellularAutomata = "Elementary cellular automata"; // max 30 characters
+std::string stringLangtonsAnt = "Langton's ant"; // max 30 characters
+std::string stringLangtonsHexagonalAnt = "Langton's hexagonal ant";
+std::string stringBooleanAutomata = "Boolean automata";
+std::string stringBooleanHexagonalAutomata = "Boolean hexagonal automata";
+std::string stringBooleanTriangularAutomata = "Boolean triangular automata";
+std::string stringConwaysGameOfLife = "Conway's game of life";
+std::string stringMunchingSquares = "Munching Squares";
+std::string stringSelectColors = "Select colors";
+std::string stringBackToMainMenu = "Back to main menu";
+std::string stringAntsPixels = "Ant's size (pixels)";
+std::string stringVonNeumannNeighborhood = "Von Neumann neighborhood";
+std::string stringMooreNeighborhood = "Moore neighborhood";
+std::string stringNeighborhood = "Neighborhood";
+std::string stringTypeOfComparation = "Type of comparation";
+std::string stringSmallerThan = "Smaller than";
+std::string stringEqualTo = "Equal to";
+std::string stringTypeOfBooleanOperator = "Type of boolean operator";
+std::string stringThreshold = "Threshold";
+std::string stringBackgroundColor = "Background color";
+std::string stringForegroundColor = "Foreground color";
+std::string stringLineColor = "Line color";
+std::string stringRed = "Red";
+std::string stringGreen = "Green";
+std::string stringBlue = "Blue";
+std::string stringSteps = "Steps";
+std::string stringAutomataType = "Automata type";
+std::string stringVersion = "version " + strVersionNumber;
+std::string stringSelectLanguage = "Select language";
+std::string stringEnglish = "English";
+std::string stringEspanol = "Espanol";
+std::string stringEuskara = "Euskara";
 
 /*
  * Changes the language of the strings of text to the selected language

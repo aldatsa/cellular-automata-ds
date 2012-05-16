@@ -1,8 +1,6 @@
 #ifndef CELLULARAUTOMATA_H
 #define CELLULARAUTOMATA_H
 
-using namespace std;
-
 class CellularAutomata
 {
     private:
