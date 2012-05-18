@@ -26,8 +26,6 @@
 #include "cellularautomata.h"
 #include "globals.h"
 
-using namespace std;
-
 /*
  * Constants for the rows where the menu items of the automata type selection menu are printed
  */
