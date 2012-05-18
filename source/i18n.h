@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.3.3.5";
+const std::string strVersionNumber = "0.3.3.6";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -35,15 +35,15 @@ std::string stringBackToMainMenu = "Back to main menu";
 std::string stringAntsPixels = "Ant's size (pixels)";
 std::string stringVonNeumannNeighborhood = "Von Neumann neighborhood";
 std::string stringMooreNeighborhood = "Moore neighborhood";
-std::string stringNeighborhood = "Neighborhood";
+std::string stringNeighborhood = "Neighborhood:";
 std::string stringTypeOfComparation = "Type of comparation";
 std::string stringSmallerThan = "Smaller than";
 std::string stringEqualTo = "Equal to";
 std::string stringTypeOfBooleanOperator = "Type of boolean operator";
 std::string stringThreshold = "Threshold";
-std::string stringBackgroundColor = "Background color";
-std::string stringForegroundColor = "Foreground color";
-std::string stringLineColor = "Line color";
+std::string stringBackgroundColor = "Background color:";
+std::string stringForegroundColor = "Foreground color:";
+std::string stringLineColor = "Line color:";
 std::string stringRed = "Red";
 std::string stringGreen = "Green";
 std::string stringBlue = "Blue";
@@ -83,11 +83,11 @@ int changeTextLanguage(int language)
         
         stringVonNeumannNeighborhood = "Von Neumann neighborhood";
         stringMooreNeighborhood = "Moore neighborhood";
-        stringNeighborhood = "Neighborhood";
+        stringNeighborhood = "Neighborhood:";
         
-        stringBackgroundColor = "Background color";
-        stringForegroundColor = "Foreground color";
-        stringLineColor = "Line color";
+        stringBackgroundColor = "Background color:";
+        stringForegroundColor = "Foreground color:";
+        stringLineColor = "Line color:";
         stringRed = "Red";
         stringGreen = "Green";
         stringBlue = "Blue";
@@ -119,11 +119,11 @@ int changeTextLanguage(int language)
         
         stringVonNeumannNeighborhood = "Vecindad de Von Neumann";
         stringMooreNeighborhood = "Vecindad de Moore";
-        stringNeighborhood = "Vecindad";
+        stringNeighborhood = "Vecindad:";
                 
-        stringBackgroundColor = "Color de fondo";
-        stringForegroundColor = "Color de primer plano";
-        stringLineColor = "Color de lineas";
+        stringBackgroundColor = "Color de fondo:";
+        stringForegroundColor = "Color de primer plano:";
+        stringLineColor = "Color de linea:";
         stringRed = "Rojo";
         stringGreen = "Verde";
         stringBlue = "Azul";
@@ -155,11 +155,11 @@ int changeTextLanguage(int language)
         
         stringVonNeumannNeighborhood = "Von Neumann-en auzoa";
         stringMooreNeighborhood = "Moore-en auzoa";
-        stringNeighborhood = "Auzoa";
+        stringNeighborhood = "Auzoa:";
                 
-        stringBackgroundColor = "Atzeko planoaren kolorea";
-        stringForegroundColor = "Aurreko planoaren kolorea";
-        stringLineColor = "Lerroen kolorea";
+        stringBackgroundColor = "Atzeko planoaren kolorea:";
+        stringForegroundColor = "Aurreko planoaren kolorea:";
+        stringLineColor = "Lerroen kolorea:";
         stringRed = "Gorria";
         stringGreen = "Berdea";
         stringBlue = "Urdina";

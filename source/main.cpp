@@ -19,6 +19,7 @@
 #include <nds.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
 #include "framebuffer.h"
 #include "color.h"
@@ -53,6 +54,16 @@ touchPosition touch;
 CellularAutomata ca;
 
 /******************************************* START MENU FUNCTIONS **********************************************************/
+
+/*
+ * Prints the text in the specified position using iprintf
+ */
+int printString(int row, int column, std::string text)
+{
+    iprintf("\x1b[%d;%dH%s", row, column, text.c_str());
+
+    return 0;
+}
 
 /*
  *  Converts to char array and prints the given intRuleNumber of the Elementary Cellular Automata
@@ -146,89 +157,89 @@ int printMenu(int intDisplayedMenu)
 {
     if (displayedMenu == MAIN_MENU) //The menu to select the type of automata
     {
-        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_ECA, stringElementaryCellularAutomata.c_str());
-        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_LA, stringLangtonsAnt.c_str());
-        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_LHA, stringLangtonsHexagonalAnt.c_str());
-        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_BA, stringBooleanAutomata.c_str());
-        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_BHA, stringBooleanHexagonalAutomata.c_str());
-        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_BTA, stringBooleanTriangularAutomata.c_str());
-        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_CGL, stringConwaysGameOfLife.c_str());
-        iprintf("\x1b[%d;2H%s", MENU_AUTOMATA_TYPE_ROW_MS, stringMunchingSquares.c_str());
-        iprintf("\x1b[%d;2H%s", MENU_SELECT_COLORS, stringSelectColors.c_str());
-        iprintf("\x1b[%d;2H%s", MENU_SELECT_LANGUAGE, stringSelectLanguage.c_str());
+        printString(MENU_AUTOMATA_TYPE_ROW_ECA, 2, stringElementaryCellularAutomata);
+        printString(MENU_AUTOMATA_TYPE_ROW_LA, 2, stringLangtonsAnt);
+        printString(MENU_AUTOMATA_TYPE_ROW_LHA, 2, stringLangtonsHexagonalAnt);
+        printString(MENU_AUTOMATA_TYPE_ROW_BA, 2, stringBooleanAutomata);
+        printString(MENU_AUTOMATA_TYPE_ROW_BHA, 2, stringBooleanHexagonalAutomata);
+        printString(MENU_AUTOMATA_TYPE_ROW_BTA, 2, stringBooleanTriangularAutomata);
+        printString(MENU_AUTOMATA_TYPE_ROW_CGL, 2, stringConwaysGameOfLife);
+        printString(MENU_AUTOMATA_TYPE_ROW_MS, 2, stringMunchingSquares);
+        printString(MENU_SELECT_COLORS, 2, stringSelectColors);
+        printString(MENU_SELECT_LANGUAGE, 2, stringSelectLanguage);
     }
     else if (displayedMenu == ELEMENTARY_CELLULAR_AUTOMATA) // The menu of the Elementary Cellular Automaton
     {
-        iprintf("\x1b[11;2H%s", stringBackToMainMenu.c_str());
+        printString(11, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == LANGTON_ANT) // The menu of the Langton's ant
     {
         printAntNumPixels();
-        iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
+        printString(13, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == LANGTON_HEXAGONAL_ANT) // The menu of the Langton's hexagonal ant
     {
-        iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
+        printString(13, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == BOOLEAN_AUTOMATA) // The menu of the boolean automaton
     {
-        iprintf("\x1b[13;2H %s", stringVonNeumannNeighborhood.c_str());
-        iprintf("\x1b[14;5H 1    2    3    4");
-        iprintf("\x1b[15;2H %s", stringMooreNeighborhood.c_str());
-        iprintf("\x1b[16;5H 1    2    3    4");
-        iprintf("\x1b[17;5H 5    6    7    8");        
-        iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
+        printString(13, 3, stringVonNeumannNeighborhood);
+        printString(14, 6, "1    2    3    4");
+        printString(15, 3, stringMooreNeighborhood);
+        printString(16, 6, "1    2    3    4");
+        printString(17, 6, "5    6    7    8");        
+        printString(19, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA) // The menu of the Boolean Hexagonal Automaton
     {
-        iprintf("\x1b[13;2H%s:", stringNeighborhood.c_str());
-        iprintf("\x1b[14;5H 1    2    3");
-        iprintf("\x1b[15;5H 4    5    6");
-        iprintf("\x1b[17;2H%s", stringBackToMainMenu.c_str());
+        printString(13, 2, stringNeighborhood);
+        printString(14, 6, "1    2    3");
+        printString(15, 6, "4    5    6");
+        printString(17, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == BOOLEAN_TRIANGULAR_AUTOMATA) // The menu of the Boolean Triangular Automaton
     {
-        iprintf("\x1b[13;2H %s", stringVonNeumannNeighborhood.c_str());
-        iprintf("\x1b[14;5H 1    2    3");
-        iprintf("\x1b[15;2H %s", stringMooreNeighborhood.c_str());
-        iprintf("\x1b[16;5H 1    2    3    4");
-        iprintf("\x1b[17;5H 5    6    7    8");        
-        iprintf("\x1b[19;2H%s", stringBackToMainMenu.c_str());
+        printString(13, 3, stringVonNeumannNeighborhood);
+        printString(14, 6, "1    2    3");
+        printString(15, 3, stringMooreNeighborhood);
+        printString(16, 6, "1    2    3    4");
+        printString(17, 6, "5    6    7    8");        
+        printString(19, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == CONWAYS_GAME_OF_LIFE) // The menu of the Conway's game of life
     {
-        iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
+        printString(13, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == MUNCHING_SQUARES) // The menu of the munching squares
     {
-        iprintf("\x1b[13;2H%s", stringBackToMainMenu.c_str());
+        printString(13, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == SELECT_COLORS) // The menu of color selection
     {
-        iprintf("\x1b[8;2H%s:", stringBackgroundColor.c_str());
+        printString(8, 2, stringBackgroundColor);
         iprintf("\x1b[9;5H%s < %i > ", stringRed.c_str(), BG_R);
         iprintf("\x1b[10;5H%s < %i > ", stringGreen.c_str(), BG_G);
         iprintf("\x1b[11;5H%s < %i > ", stringBlue.c_str(), BG_B);
         
-        iprintf("\x1b[12;2H%s:", stringForegroundColor.c_str());
+        printString(12, 2, stringForegroundColor);
         iprintf("\x1b[13;5H%s < %i > ", stringRed.c_str(), FG_R);
         iprintf("\x1b[14;5H%s < %i > ", stringGreen.c_str(), FG_G);
         iprintf("\x1b[15;5H%s < %i > ", stringBlue.c_str(), FG_B);
                 
-        iprintf("\x1b[16;2H%s:", stringLineColor.c_str());
+        printString(16, 2, stringLineColor);
         iprintf("\x1b[17;5H%s < %i > ", stringRed.c_str(), line_R);
         iprintf("\x1b[18;5H%s < %i > ", stringGreen.c_str(), line_G);
         iprintf("\x1b[19;5H%s < %i > ", stringBlue.c_str(), line_B);
                 
-        iprintf("\x1b[21;2H%s", stringBackToMainMenu.c_str());
+        printString(21, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == SELECT_LANGUAGE) // The menu of language selection
     {
-        iprintf("\x1b[10;3H%s", stringEnglish.c_str());
-        iprintf("\x1b[11;3H%s", stringEspanol.c_str());
-        iprintf("\x1b[12;3H%s", stringEuskara.c_str());
+        printString(10, 3, stringEnglish);
+        printString(11, 3, stringEspanol);
+        printString(12, 3, stringEuskara);
         
-        iprintf("\x1b[14;2H%s", stringBackToMainMenu.c_str());
+        printString(14, 2, stringBackToMainMenu);
     }
     
     return 0;
