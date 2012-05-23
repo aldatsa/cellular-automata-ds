@@ -46,6 +46,12 @@
 #define ES 1
 #define EU 2
 
+/*
+ * Constants to define the different initial states of the Conway's game of life
+ */
+#define ACORN 0
+#define FPENTOMINO 1
+#define FILL_SCREEN_WITH_PULSARS 2
 
 /************************
  *   GLOBAL VARIABLES   *

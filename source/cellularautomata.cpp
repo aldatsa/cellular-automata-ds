@@ -382,6 +382,27 @@ int CellularAutomata::drawArrow(char nth, unsigned short color)
 	return 0;
 }
 
+/*
+ * Draws the initial state of the Conway's game of life
+ */
+int CellularAutomata::drawInitialState()
+{   
+    if (initialState == ACORN)
+    {
+        drawAcorn(120, 90);   
+    }
+    else if (initialState == FPENTOMINO)
+    {
+        drawFpentomino(120, 90);
+    }
+    else if (initialState == FILL_SCREEN_WITH_PULSARS)
+    {
+        fillScreenWithPulsars();
+    }
+    
+    return 0;
+}
+
 //*************************************PUBLIC*******************************************
 
 int CellularAutomata::setType(int t)
@@ -455,6 +476,23 @@ int CellularAutomata::setTypeOfNeighborhood(int value)
 int CellularAutomata::getTypeOfNeighborhood()
 {
     return typeOfNeighborhood;
+}
+
+/*
+ * Returns the type of initial state of the Conway's game of life
+ */
+int CellularAutomata::getInitialState()
+{
+    return initialState;
+}
+
+/*
+ * Sets the type of initial state of the Conway's game of life
+ */
+int CellularAutomata::setInitialState(int state)
+{
+    initialState = state;
+    return 0;
 }
 
 /*
@@ -569,9 +607,7 @@ int CellularAutomata::initialize()
         
         numSteps = 0;
         
-        //fillScreenWithPulsars();
-        //drawFpentomino(120, 90);
-        drawAcorn(120, 90);
+        drawInitialState();
     }
 
     return 0;

@@ -31,6 +31,9 @@ class CellularAutomata
         int paintAnt();
         int forwardAnt();
 
+        int initialState;
+        int drawInitialState();
+
         int drawMunchingSquare(int column, int row, int width, unsigned short color);
 
     public:
@@ -60,5 +63,7 @@ class CellularAutomata
         int setTypeOfNeighborhood(int value);
         int getTypeOfNeighborhood();
 
+        int getInitialState();
+        int setInitialState(int state);
 };
 #endif

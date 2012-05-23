@@ -208,7 +208,11 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == CONWAYS_GAME_OF_LIFE) // The menu of the Conway's game of life
     {
-        printString(13, 2, stringBackToMainMenu);
+        printString(13, 2, stringInitialState);
+        printString(14, 3, stringAcorn);
+        printString(15, 3, stringFPentomino);
+        printString(16, 3, stringFillScreenWithPulsars);
+        printString(18, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == MUNCHING_SQUARES) // The menu of the munching squares
     {
@@ -585,6 +589,32 @@ int printBTAasterisks()
 }
 
 /*
+ *
+ */
+int printConwaysAsterisks()
+{
+    if (ca.getInitialState() == ACORN)
+    {
+        printAsterisk(14, 2);
+        deleteAsterisk(15, 2);
+        deleteAsterisk(16, 2);
+    }
+    else if (ca.getInitialState() == FPENTOMINO)
+    {
+        deleteAsterisk(14, 2);
+        printAsterisk(15, 2);
+        deleteAsterisk(16, 2);
+    }
+    else if (ca.getInitialState() == FILL_SCREEN_WITH_PULSARS)
+    {
+        deleteAsterisk(14, 2);
+        deleteAsterisk(15, 2);
+        printAsterisk(16, 2);
+    }
+    return 0;
+}
+
+/*
  * Prints the arrow used to highlight the currently selected menu item
  */
 int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
@@ -847,7 +877,19 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0)
         {
-            row = 13; // Back to main menu
+            row = 14; // Accorn
+        }
+        else if (index == 1)
+        {
+            row = 15; // F-Pentomino
+        }
+        else if (index == 2)
+        {
+            row = 16; // Fill screen with pulsars
+        }
+        else if (index == 3)
+        {
+            row = 18; // Back to main menu
         }
     }
     else if (intDisplayedMenu == MUNCHING_SQUARES) // Munching squares menu
@@ -1196,6 +1238,10 @@ int main(void)
 
                     ca.initializeBooleanRuleValues();
                 }
+                else if (automataType == CONWAYS_GAME_OF_LIFE)
+                {
+                    ca.setInitialState(ACORN);
+                }
                 
                 if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
                 {
@@ -1229,6 +1275,10 @@ int main(void)
                 else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
                     printBTAasterisks();
+                }
+                else if (automataType == CONWAYS_GAME_OF_LIFE)
+                {
+                    printConwaysAsterisks();
                 }
                 else if (automataType == SELECT_LANGUAGE)
                 {
@@ -1843,11 +1893,60 @@ int main(void)
 
     	    if(keys_released & KEY_A)
 		    {
-		        if (intArrow == 0)
+    		    if (intArrow == 3)
 		        {
 		            // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
-                }                    
+                }
+                else
+                {
+		            if (intArrow == 0)
+		            {
+		                ca.setInitialState(ACORN);
+		                ca.initialize();
+		            }
+		            else if (intArrow == 1)
+		            {
+		                ca.setInitialState(FPENTOMINO);
+		                ca.initialize();
+		            }
+		            else if (intArrow == 2)
+		            {
+		                ca.setInitialState(FILL_SCREEN_WITH_PULSARS);
+		                ca.initialize();
+		            }
+		            printConwaysAsterisks();
+                }
+		    }
+		    else if(keys_pressed & KEY_UP)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow
+		        
+		        if (intArrow == 0)
+		        {
+		            intArrow = 3;
+		        }
+		        else
+		        {
+		            intArrow = intArrow - 1;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
+		    }
+		    else if(keys_pressed & KEY_DOWN)
+		    {
+		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow        
+		        
+		        if (intArrow == 3)
+		        {
+		            intArrow = 0;
+		        }
+		        else
+		        {
+		            intArrow = intArrow + 1;
+		        }
+		        
+		        printMenuArrow(displayedMenu, intArrow, false); // Print the new arrow
 		    }
         }
         /*

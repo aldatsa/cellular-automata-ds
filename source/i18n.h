@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.3.3.6";
+const std::string strVersionNumber = "0.3.3.7";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -36,6 +36,10 @@ std::string stringAntsPixels = "Ant's size (pixels)";
 std::string stringVonNeumannNeighborhood = "Von Neumann neighborhood";
 std::string stringMooreNeighborhood = "Moore neighborhood";
 std::string stringNeighborhood = "Neighborhood:";
+std::string stringInitialState ="Initial state:";
+std::string stringAcorn = "Acorn";
+std::string stringFPentomino = "F-Pentomino";
+std::string stringFillScreenWithPulsars = "Fill screen with pulsars";
 std::string stringTypeOfComparation = "Type of comparation";
 std::string stringSmallerThan = "Smaller than";
 std::string stringEqualTo = "Equal to";
@@ -84,7 +88,12 @@ int changeTextLanguage(int language)
         stringVonNeumannNeighborhood = "Von Neumann neighborhood";
         stringMooreNeighborhood = "Moore neighborhood";
         stringNeighborhood = "Neighborhood:";
-        
+
+        stringInitialState ="Initial state:";
+        stringAcorn = "Acorn";
+        stringFPentomino = "F-Pentomino";
+        stringFillScreenWithPulsars = "Fill screen with pulsars";
+
         stringBackgroundColor = "Background color:";
         stringForegroundColor = "Foreground color:";
         stringLineColor = "Line color:";
@@ -120,7 +129,12 @@ int changeTextLanguage(int language)
         stringVonNeumannNeighborhood = "Vecindad de Von Neumann";
         stringMooreNeighborhood = "Vecindad de Moore";
         stringNeighborhood = "Vecindad:";
-                
+
+        stringInitialState ="Estado inicial:";
+        stringAcorn = "Acorn";
+        stringFPentomino = "F-Pentomino";
+        stringFillScreenWithPulsars = "Llenar pantalla de pulsares";
+
         stringBackgroundColor = "Color de fondo:";
         stringForegroundColor = "Color de primer plano:";
         stringLineColor = "Color de linea:";
@@ -156,7 +170,12 @@ int changeTextLanguage(int language)
         stringVonNeumannNeighborhood = "Von Neumann-en auzoa";
         stringMooreNeighborhood = "Moore-en auzoa";
         stringNeighborhood = "Auzoa:";
-                
+
+        stringInitialState ="Hasierako egoera:";
+        stringAcorn = "Acorn";
+        stringFPentomino = "F-Pentomino";
+        stringFillScreenWithPulsars = "Pantaila pulsarekin bete";
+
         stringBackgroundColor = "Atzeko planoaren kolorea:";
         stringForegroundColor = "Aurreko planoaren kolorea:";
         stringLineColor = "Lerroen kolorea:";
