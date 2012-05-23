@@ -250,367 +250,348 @@ int printMenu(int intDisplayedMenu)
 }
 
 /*
- * Prints the asterisks used to mark the current language in the language selection menu
+ * Prints the asterisks used to mark the option in the menus
  */
-int printLanguageAsterisks()
+int printMenuAsterisks(int intDisplayedMenu)
 {
-    if (displayedLanguage == EN)
-    {
-        printAsterisk(10, 2);
-        deleteAsterisk(11, 2);
-        deleteAsterisk(12, 2);
-    }
-    else if (displayedLanguage == ES)
-    {
-        deleteAsterisk(10, 2);
-        printAsterisk(11, 2);
-        deleteAsterisk(12, 2);
-    }
-    else if (displayedLanguage == EU)
-    {
-        deleteAsterisk(10, 2);
-        deleteAsterisk(11, 2);
-        printAsterisk(12, 2);
-    }
     
-    return 0;
-}
+    if (intDisplayedMenu == BOOLEAN_AUTOMATA)
+    {
+        if (ca.getTypeOfNeighborhood() == 0)
+        {
+            printAsterisk(13, 2);
+            deleteAsterisk(15, 2);
+        }
+        else
+        {
+            deleteAsterisk(13, 2);
+            printAsterisk(15, 2);
+        }
+        
+        // {1, 2, 3, 4} For the boolean square automata with Von Neumann neighborhood
+        if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
+        {
+            printAsterisk(14, 5);
+        }
+        else
+        {
+            deleteAsterisk(14, 5);
+        }
 
-/*
- * Prints the asterisks used to mark the options in the menu of the Boolean automata
- */
-int printBAasterisks()
-{
-    if (ca.getTypeOfNeighborhood() == 0)
-    {
-        printAsterisk(13, 2);
-        deleteAsterisk(15, 2);
-    }
-    else
-    {
-        deleteAsterisk(13, 2);
-        printAsterisk(15, 2);
-    }
-    
-    // {1, 2, 3, 4} For the boolean square automata with Von Neumann neighborhood
-    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
-    {
-        printAsterisk(14, 5);
-    }
-    else
-    {
-        deleteAsterisk(14, 5);
-    }
+        if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
+        {
+            printAsterisk(14, 10);
+        }
+        else
+        {
+            deleteAsterisk(14, 10);
+        }
 
-    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
-    {
-        printAsterisk(14, 10);
-    }
-    else
-    {
-        deleteAsterisk(14, 10);
-    }
-
-    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
-    {
-        printAsterisk(14, 15);
-    }
-    else
-    {
-        deleteAsterisk(14, 15);
-    }
+        if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
+        {
+            printAsterisk(14, 15);
+        }
+        else
+        {
+            deleteAsterisk(14, 15);
+        }
+                
+        if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 3)) 
+        {
+            printAsterisk(14, 20);
+        }
+        else
+        {
+            deleteAsterisk(14, 20);
+        }
+                
+        // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
+        {
+            printAsterisk(16, 5);
+        }
+        else
+        {
+            deleteAsterisk(16, 5);
+        }
+        
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
+        {
+            printAsterisk(16, 10);
+        }
+        else
+        {
+            deleteAsterisk(16, 10);
+        }        
+        
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
+        {
+            printAsterisk(16, 15);
+        }
+        else
+        {
+            deleteAsterisk(16, 15);
+        }
             
-    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 3)) 
-    {
-        printAsterisk(14, 20);
-    }
-    else
-    {
-        deleteAsterisk(14, 20);
-    }
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
+        {
+            printAsterisk(16, 20);
+        }
+        else
+        {
+            deleteAsterisk(16, 20);
+        }
             
-    // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
-    {
-        printAsterisk(16, 5);
-    }
-    else
-    {
-        deleteAsterisk(16, 5);
-    }
-    
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
-    {
-        printAsterisk(16, 10);
-    }
-    else
-    {
-        deleteAsterisk(16, 10);
-    }        
-    
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
-    {
-        printAsterisk(16, 15);
-    }
-    else
-    {
-        deleteAsterisk(16, 15);
-    }
-        
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
-    {
-        printAsterisk(16, 20);
-    }
-    else
-    {
-        deleteAsterisk(16, 20);
-    }
-        
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
-    {
-        printAsterisk(17, 5);
-    }
-    else
-    {
-        deleteAsterisk(17, 5);
-    }
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
+        {
+            printAsterisk(17, 5);
+        }
+        else
+        {
+            deleteAsterisk(17, 5);
+        }
 
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
-    {
-        printAsterisk(17, 10);
-    }
-    else
-    {
-        deleteAsterisk(17, 10);
-    }
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
+        {
+            printAsterisk(17, 10);
+        }
+        else
+        {
+            deleteAsterisk(17, 10);
+        }
 
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
-    {
-        printAsterisk(17, 15);
-    }
-    else
-    {
-        deleteAsterisk(17, 15);
-    }
-        
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
-    {
-        printAsterisk(17, 20);
-    }
-    else
-    {
-        deleteAsterisk(17, 20);
-    }
-    
-    return 0;
-}
-
-/*
- * Prints the asterisks used to mark the options in the menu of the Boolean hexagonal automata
- */
-int printBHAasterisks()
-{
-    // {1, 2, 3, 4, 5, 6} For the boolean hexagonal automata with Moore neighborhood
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
-    {
-        printAsterisk(14, 5);
-    }
-    else
-    {
-        deleteAsterisk(14, 5);
-    }
-    
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
-    {
-        printAsterisk(14, 10);
-    }
-    else
-    {
-        deleteAsterisk(14, 10);
-    }        
-    
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
-    {
-        printAsterisk(14, 15);
-    }
-    else
-    {
-        deleteAsterisk(14, 15);
-    }
-        
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
-    {
-        printAsterisk(15, 5);
-    }
-    else
-    {
-        deleteAsterisk(15, 5);
-    }
-        
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
-    {
-        printAsterisk(15, 10);
-    }
-    else
-    {
-        deleteAsterisk(15, 10);
-    }
-
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
-    {
-        printAsterisk(15, 15);
-    }
-    else
-    {
-        deleteAsterisk(15, 15);
-    }
-
-    return 0;
-}
-
-/*
- * Prints the asterisks used to mark the options in the menu of the Boolean Triangular automata
- */
-int printBTAasterisks()
-{
-    if (ca.getTypeOfNeighborhood() == 0)
-    {
-        printAsterisk(13, 2);
-        deleteAsterisk(15, 2);
-    }
-    else
-    {
-        deleteAsterisk(13, 2);
-        printAsterisk(15, 2);        
-    }
-    
-    // {1, 2, 3} For the boolean triangular automata with Von Neumann neighborhood
-    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
-    {
-        printAsterisk(14, 5);
-    }
-    else
-    {
-        deleteAsterisk(14, 5);
-    }
-    
-    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
-    {
-        printAsterisk(14, 10);
-    }
-    else
-    {
-        deleteAsterisk(14, 10);
-    }
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
+        {
+            printAsterisk(17, 15);
+        }
+        else
+        {
+            deleteAsterisk(17, 15);
+        }
             
-    if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
-    {
-        printAsterisk(14, 15);
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
+        {
+            printAsterisk(17, 20);
+        }
+        else
+        {
+            deleteAsterisk(17, 20);
+        }
     }
-    else
+    else if (displayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA)
     {
-        deleteAsterisk(14, 15);
-    }
-
-    // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
-    {
-        printAsterisk(16, 5);
-    }
-    else
-    {
-        deleteAsterisk(16, 5);
-    }
-    
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
-    {
-        printAsterisk(16, 10);
-    }
-    else
-    {
-        deleteAsterisk(16, 10);
-    }        
-    
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
-    {
-        printAsterisk(16, 15);
-    }
-    else
-    {
-        deleteAsterisk(16, 15);
-    }
+        // {1, 2, 3, 4, 5, 6} For the boolean hexagonal automata with Moore neighborhood
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
+        {
+            printAsterisk(14, 5);
+        }
+        else
+        {
+            deleteAsterisk(14, 5);
+        }
         
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
-    {
-        printAsterisk(16, 20);
-    }
-    else
-    {
-        deleteAsterisk(16, 20);
-    }
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
+        {
+            printAsterisk(14, 10);
+        }
+        else
+        {
+            deleteAsterisk(14, 10);
+        }        
         
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
-    {
-        printAsterisk(17, 5);
-    }
-    else
-    {
-        deleteAsterisk(17, 5);
-    }
-        
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
-    {
-        printAsterisk(17, 10);
-    }
-    else
-    {
-        deleteAsterisk(17, 10);
-    }
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
+        {
+            printAsterisk(14, 15);
+        }
+        else
+        {
+            deleteAsterisk(14, 15);
+        }
             
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
-    {
-        printAsterisk(17, 15);
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
+        {
+            printAsterisk(15, 5);
+        }
+        else
+        {
+            deleteAsterisk(15, 5);
+        }
+            
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
+        {
+            printAsterisk(15, 10);
+        }
+        else
+        {
+            deleteAsterisk(15, 10);
+        }
+
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
+        {
+            printAsterisk(15, 15);
+        }
+        else
+        {
+            deleteAsterisk(15, 15);
+        }
     }
-    else
+    else if (displayedMenu == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
-        deleteAsterisk(17, 15);
-    }
+        if (ca.getTypeOfNeighborhood() == 0)
+        {
+            printAsterisk(13, 2);
+            deleteAsterisk(15, 2);
+        }
+        else
+        {
+            deleteAsterisk(13, 2);
+            printAsterisk(15, 2);        
+        }
         
-    if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
-    {
-        printAsterisk(17, 20);
+        // {1, 2, 3} For the boolean triangular automata with Von Neumann neighborhood
+        if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
+        {
+            printAsterisk(14, 5);
+        }
+        else
+        {
+            deleteAsterisk(14, 5);
+        }
+        
+        if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
+        {
+            printAsterisk(14, 10);
+        }
+        else
+        {
+            deleteAsterisk(14, 10);
+        }
+                
+        if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
+        {
+            printAsterisk(14, 15);
+        }
+        else
+        {
+            deleteAsterisk(14, 15);
+        }
+
+        // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
+        {
+            printAsterisk(16, 5);
+        }
+        else
+        {
+            deleteAsterisk(16, 5);
+        }
+        
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
+        {
+            printAsterisk(16, 10);
+        }
+        else
+        {
+            deleteAsterisk(16, 10);
+        }        
+        
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
+        {
+            printAsterisk(16, 15);
+        }
+        else
+        {
+            deleteAsterisk(16, 15);
+        }
+            
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
+        {
+            printAsterisk(16, 20);
+        }
+        else
+        {
+            deleteAsterisk(16, 20);
+        }
+            
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
+        {
+            printAsterisk(17, 5);
+        }
+        else
+        {
+            deleteAsterisk(17, 5);
+        }
+            
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
+        {
+            printAsterisk(17, 10);
+        }
+        else
+        {
+            deleteAsterisk(17, 10);
+        }
+                
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
+        {
+            printAsterisk(17, 15);
+        }
+        else
+        {
+            deleteAsterisk(17, 15);
+        }
+            
+        if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
+        {
+            printAsterisk(17, 20);
+        }
+        else
+        {
+            deleteAsterisk(17, 20);
+        }
     }
-    else
+    else if (displayedMenu == CONWAYS_GAME_OF_LIFE)
     {
-        deleteAsterisk(17, 20);
+        if (ca.getInitialState() == ACORN)
+        {
+            printAsterisk(14, 2);
+            deleteAsterisk(15, 2);
+            deleteAsterisk(16, 2);
+        }
+        else if (ca.getInitialState() == FPENTOMINO)
+        {
+            deleteAsterisk(14, 2);
+            printAsterisk(15, 2);
+            deleteAsterisk(16, 2);
+        }
+        else if (ca.getInitialState() == FILL_SCREEN_WITH_PULSARS)
+        {
+            deleteAsterisk(14, 2);
+            deleteAsterisk(15, 2);
+            printAsterisk(16, 2);
+        }
+    }
+    else if (displayedMenu == SELECT_LANGUAGE)
+    {
+        if (displayedLanguage == EN)
+        {
+            printAsterisk(10, 2);
+            deleteAsterisk(11, 2);
+            deleteAsterisk(12, 2);
+        }
+        else if (displayedLanguage == ES)
+        {
+            deleteAsterisk(10, 2);
+            printAsterisk(11, 2);
+            deleteAsterisk(12, 2);
+        }
+        else if (displayedLanguage == EU)
+        {
+            deleteAsterisk(10, 2);
+            deleteAsterisk(11, 2);
+            printAsterisk(12, 2);
+        }
     }
     
-    return 0;
-}
-
-/*
- *
- */
-int printConwaysAsterisks()
-{
-    if (ca.getInitialState() == ACORN)
-    {
-        printAsterisk(14, 2);
-        deleteAsterisk(15, 2);
-        deleteAsterisk(16, 2);
-    }
-    else if (ca.getInitialState() == FPENTOMINO)
-    {
-        deleteAsterisk(14, 2);
-        printAsterisk(15, 2);
-        deleteAsterisk(16, 2);
-    }
-    else if (ca.getInitialState() == FILL_SCREEN_WITH_PULSARS)
-    {
-        deleteAsterisk(14, 2);
-        deleteAsterisk(15, 2);
-        printAsterisk(16, 2);
-    }
     return 0;
 }
 
@@ -1068,7 +1049,7 @@ int setLanguage(int language)
     printMenu(displayedMenu);
                     
     printMenuArrow(displayedMenu, intArrow, false);
-    printLanguageAsterisks();
+    printMenuAsterisks(SELECT_LANGUAGE);
     
     return 0;
 }
@@ -1264,25 +1245,10 @@ int main(void)
                     printRuleNumber(ca.getRuleNumber()); // The rule number must be printed after the initialization of the automata
                     ca.drawArrow(intArrow, line_color);  // Draw the arrow in the default position (intArrow = 0, top left rule (2^7), set in ca.initialize())
                 }                
-                else if (automataType == BOOLEAN_AUTOMATA)
+                
+                if ((automataType == BOOLEAN_AUTOMATA) || (automataType == BOOLEAN_HEXAGONAL_AUTOMATA) || (automataType == BOOLEAN_TRIANGULAR_AUTOMATA) || (automataType == CONWAYS_GAME_OF_LIFE) ||  (automataType == SELECT_LANGUAGE))
                 {
-                    printBAasterisks();
-                }
-                else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
-                {
-                    printBHAasterisks();
-                }
-                else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
-                {
-                    printBTAasterisks();
-                }
-                else if (automataType == CONWAYS_GAME_OF_LIFE)
-                {
-                    printConwaysAsterisks();
-                }
-                else if (automataType == SELECT_LANGUAGE)
-                {
-                    printLanguageAsterisks();
+                    printMenuAsterisks(automataType);
                 }
             }
         }
@@ -1550,7 +1516,7 @@ int main(void)
 		            {
                         ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow - 6);
 		            }
-                    printBAasterisks();
+                    printMenuAsterisks(BOOLEAN_AUTOMATA);
                     ca.initialize();
                 }
             }
@@ -1663,7 +1629,7 @@ int main(void)
 		        {
                     ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow);
 
-		            printBHAasterisks();
+		            printMenuAsterisks(BOOLEAN_HEXAGONAL_AUTOMATA);
 
 		            ca.initialize();
 		        }                
@@ -1776,7 +1742,7 @@ int main(void)
 		            {
                         ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow - 5);
 		            }
-		            printBTAasterisks();
+		            printMenuAsterisks(BOOLEAN_TRIANGULAR_AUTOMATA);
 		            ca.initialize();
 		        }
             }
@@ -1915,7 +1881,7 @@ int main(void)
 		                ca.setInitialState(FILL_SCREEN_WITH_PULSARS);
 		                ca.initialize();
 		            }
-		            printConwaysAsterisks();
+		            printMenuAsterisks(CONWAYS_GAME_OF_LIFE);
                 }
 		    }
 		    else if(keys_pressed & KEY_UP)
