@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.3.3.7";
+const std::string strVersionNumber = "0.3.3.8";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -40,11 +40,6 @@ std::string stringInitialState ="Initial state:";
 std::string stringAcorn = "Acorn";
 std::string stringFPentomino = "F-Pentomino";
 std::string stringFillScreenWithPulsars = "Fill screen with pulsars";
-std::string stringTypeOfComparation = "Type of comparation";
-std::string stringSmallerThan = "Smaller than";
-std::string stringEqualTo = "Equal to";
-std::string stringTypeOfBooleanOperator = "Type of boolean operator";
-std::string stringThreshold = "Threshold";
 std::string stringBackgroundColor = "Background color:";
 std::string stringForegroundColor = "Foreground color:";
 std::string stringLineColor = "Line color:";
