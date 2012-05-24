@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.3.3.9";
+const std::string strVersionNumber = "0.3.4.0";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -40,6 +40,7 @@ std::string stringInitialState ="Initial state:";
 std::string stringAcorn = "Acorn";
 std::string stringFPentomino = "F-Pentomino";
 std::string stringFillScreenWithPulsars = "Fill screen with pulsars";
+std::string stringFillScreenWithPentadecathlons = "Fill with pentadecathlons";
 std::string stringBackgroundColor = "Background color:";
 std::string stringForegroundColor = "Foreground color:";
 std::string stringLineColor = "Line color:";
@@ -88,6 +89,7 @@ int changeTextLanguage(int language)
         stringAcorn = "Acorn";
         stringFPentomino = "F-Pentomino";
         stringFillScreenWithPulsars = "Fill screen with pulsars";
+        stringFillScreenWithPentadecathlons = "Fill with pentadecathlons";
 
         stringBackgroundColor = "Background color:";
         stringForegroundColor = "Foreground color:";
@@ -129,6 +131,7 @@ int changeTextLanguage(int language)
         stringAcorn = "Acorn";
         stringFPentomino = "F-Pentomino";
         stringFillScreenWithPulsars = "Llenar pantalla de pulsares";
+        stringFillScreenWithPentadecathlons = "Llenar de pentadecatlones";
 
         stringBackgroundColor = "Color de fondo:";
         stringForegroundColor = "Color de primer plano:";
@@ -170,6 +173,7 @@ int changeTextLanguage(int language)
         stringAcorn = "Acorn";
         stringFPentomino = "F-Pentomino";
         stringFillScreenWithPulsars = "Pantaila pulsarekin bete";
+        stringFillScreenWithPentadecathlons = "Pentadekatlonekin bete";
 
         stringBackgroundColor = "Atzeko planoaren kolorea:";
         stringForegroundColor = "Aurreko planoaren kolorea:";

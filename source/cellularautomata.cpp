@@ -29,6 +29,10 @@
  *
  * CONWAY'S GAME OF LIFE:
  * http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+ * http://www.conwaylife.com/wiki/Main_Page
+ * http://www.argentum.freeserve.co.uk/lex_home.htm (Stephen Silver's Life Lexicon)
+ * http://www.ericweisstein.com/encyclopedias/life/ (Eric Weisstein's Treasure Trove of the Life Cellular Automaton)
+ * 
  */
 
 //*************************************PRIVATE*******************************************
@@ -399,7 +403,10 @@ int CellularAutomata::drawInitialState()
     {
         fillScreenWithPulsars();
     }
-    
+    else if (initialState == FILL_SCREEN_WITH_PENTADECATHLONS)
+    {
+        fillScreenWithPentadecathlons();
+    }
     return 0;
 }
 

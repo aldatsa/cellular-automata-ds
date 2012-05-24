@@ -212,7 +212,8 @@ int printMenu(int intDisplayedMenu)
         printString(14, 3, stringAcorn);
         printString(15, 3, stringFPentomino);
         printString(16, 3, stringFillScreenWithPulsars);
-        printString(18, 2, stringBackToMainMenu);
+        printString(17, 3, stringFillScreenWithPentadecathlons);
+        printString(19, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == MUNCHING_SQUARES) // The menu of the munching squares
     {
@@ -556,18 +557,28 @@ int printMenuAsterisks(int intDisplayedMenu)
             printAsterisk(14, 2);
             deleteAsterisk(15, 2);
             deleteAsterisk(16, 2);
+            deleteAsterisk(17, 2);
         }
         else if (ca.getInitialState() == FPENTOMINO)
         {
             deleteAsterisk(14, 2);
             printAsterisk(15, 2);
             deleteAsterisk(16, 2);
+            deleteAsterisk(17, 2);
         }
         else if (ca.getInitialState() == FILL_SCREEN_WITH_PULSARS)
         {
             deleteAsterisk(14, 2);
             deleteAsterisk(15, 2);
             printAsterisk(16, 2);
+            deleteAsterisk(17, 2);
+        }
+        else if (ca.getInitialState() == FILL_SCREEN_WITH_PENTADECATHLONS)
+        {
+            deleteAsterisk(14, 2);
+            deleteAsterisk(15, 2);
+            deleteAsterisk(16, 2);
+            printAsterisk(17, 2);
         }
     }
     else if (displayedMenu == SELECT_LANGUAGE)
@@ -870,7 +881,11 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         }
         else if (index == 3)
         {
-            row = 18; // Back to main menu
+            row = 17; // Fill screen with pentadecathlons
+        }
+        else if (index == 4)
+        {
+            row = 19; // Back to main menu
         }
     }
     else if (intDisplayedMenu == MUNCHING_SQUARES) // Munching squares menu
@@ -1859,7 +1874,7 @@ int main(void)
 
     	    if(keys_released & KEY_A)
 		    {
-    		    if (intArrow == 3)
+    		    if (intArrow == 4)
 		        {
 		            // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
@@ -1881,6 +1896,11 @@ int main(void)
 		                ca.setInitialState(FILL_SCREEN_WITH_PULSARS);
 		                ca.initialize();
 		            }
+		            else if (intArrow == 3)
+		            {
+		                ca.setInitialState(FILL_SCREEN_WITH_PENTADECATHLONS);
+		                ca.initialize();
+		            }
 		            printMenuAsterisks(CONWAYS_GAME_OF_LIFE);
                 }
 		    }
@@ -1890,7 +1910,7 @@ int main(void)
 		        
 		        if (intArrow == 0)
 		        {
-		            intArrow = 3;
+		            intArrow = 4;
 		        }
 		        else
 		        {
@@ -1903,7 +1923,7 @@ int main(void)
 		    {
 		        printMenuArrow(displayedMenu, intArrow, true); // Delete the previous arrow        
 		        
-		        if (intArrow == 3)
+		        if (intArrow == 4)
 		        {
 		            intArrow = 0;
 		        }

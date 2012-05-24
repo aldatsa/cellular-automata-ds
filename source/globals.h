@@ -52,6 +52,7 @@
 #define ACORN 0
 #define FPENTOMINO 1
 #define FILL_SCREEN_WITH_PULSARS 2
+#define FILL_SCREEN_WITH_PENTADECATHLONS 3
 
 /************************
  *   GLOBAL VARIABLES   *
