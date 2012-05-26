@@ -219,6 +219,22 @@ int CellularAutomata::drawMunchingSquare(int column, int row, int width, unsigne
 }
 
 /*
+ * Paints the Elementary Cellular Automata's cell with the corresponding color
+ * and if the color matches FG_color, increments the population of alive cells
+ */
+int CellularAutomata::paintECAcell(int row, int col, unsigned short color)
+{
+    fb[row * SCREEN_WIDTH + col] = color;
+
+    if (color == FG_color)
+    {
+        ++population;
+    }
+
+    return 0;
+}
+  
+/*
  * Updates the variables used for the colors of the background, foreground and lines.
  * It's used to update the colors of the rules of the elementary cellular automata
  * when new colors are selected in the color selection menu and to initiliaze the
@@ -424,9 +440,14 @@ int CellularAutomata::getType()
     return type;
 }
 
-int CellularAutomata::getNumSteps()
+unsigned int CellularAutomata::getNumSteps()
 {
     return numSteps;
+}
+
+unsigned int CellularAutomata::getPopulation()
+{
+    return population;
 }
 
 int CellularAutomata::setAntNumPixels(int numPixels)
@@ -518,7 +539,8 @@ int CellularAutomata::resetECA()
         }
     }
     
-    numSteps = 0;
+    numSteps = 0;   // Reset the number of steps to 0
+    population = 0; // Reset the population of "alive" cells to 0
 
     paintInitialCell();
     
@@ -534,7 +556,8 @@ int CellularAutomata::initialize()
     showFB();
     cleanFB(fb);
     
-    numSteps = 0; // Reset the number of steps to 0
+    numSteps = 0;   // Reset the number of steps to 0
+    population = 0; // Reset the population of "alive" cells to 0
 
     if (type == ELEMENTARY_CELLULAR_AUTOMATA)
     {
@@ -566,8 +589,6 @@ int CellularAutomata::initialize()
         
         cleanFB(fb);
         cleanFB(fb2);
-
-        numSteps = 0;
     
         fb[91 * SCREEN_WIDTH + 127] = FG_color; // Paint the initial point
     }
@@ -581,8 +602,6 @@ int CellularAutomata::initialize()
         cleanFB(fb2);
 
         drawHexGrid();
-    
-        numSteps = 0;
 
         typeOfNeighborhood = 1; // Moore neighborhood (In this case it's a hexagonal neighborhood but as the Moore neighborhood is a array of 8 ints there is enough space for 6 ints)
         
@@ -598,8 +617,6 @@ int CellularAutomata::initialize()
         cleanFB(fb2);
 
         drawTriangularGrid();
-    
-        numSteps = 0;
         
         paintTriangularCell(127, 91, FG_color, fb);
     }
@@ -611,9 +628,7 @@ int CellularAutomata::initialize()
         
         cleanFB(fb);
         cleanFB(fb2);
-        
-        numSteps = 0;
-        
+
         drawInitialState();
     }
 
@@ -670,23 +685,28 @@ int CellularAutomata::nextStep()
 					    if(column != 0 && column != SCREEN_WIDTH - 1)
 					    { 
 						    if (fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(numSteps - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
-							    fb[numSteps * SCREEN_WIDTH + column] = ruleDown[i];
+						    {
+						        paintECAcell(numSteps, column, ruleDown[i]); // Paint the Elementary Cellular Automata's cell with ruleDown[i] color
+						                                                     // and if the color matches FG_color increment the population of alive cells
+							}
 					    }
 					    else if(column == 0)
 					    {
 						    // The left cell is out of the screen, instead we'll use the center cell (column 0) to compare to ruleLeft
 						    if(fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleLeft[i]  && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(numSteps - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
 						    {
-							    fb[numSteps * SCREEN_WIDTH + column] = ruleDown[i];								
-						    }
+						        paintECAcell(numSteps, column, ruleDown[i]); // Paint the Elementary Cellular Automata's cell with ruleDown[i] color
+						                                                     // and if the color matches FG_color increment the population of alive cells
+            			    }
 					    }	
 					    else if(column == SCREEN_WIDTH - 1)
 					    {
                             // The right cell is out of the screen, instead we'll use the center cell (column 255) to compare to ruleRight
 						    if(fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleRight[i])
                             {
-							    fb[numSteps * SCREEN_WIDTH + column] = ruleDown[i];								
-                            }
+						        paintECAcell(numSteps, column, ruleDown[i]); // Paint the Elementary Cellular Automata's cell with ruleDown[i] color
+						                                                     // and if the color matches FG_color increment the population of alive cells
+						    }
 					    }
 				    }
 			    }

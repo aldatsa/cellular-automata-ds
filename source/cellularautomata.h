@@ -7,6 +7,9 @@ class CellularAutomata
         int type;
         
         unsigned int numSteps;
+        unsigned int population;
+
+        int paintECAcell(int row, int col, unsigned short color);
         
         // For the Elementary Cellular Automata
         unsigned short ruleLeft[8];
@@ -40,7 +43,9 @@ class CellularAutomata
         int setType(int t);
         int getType();
         
-        int getNumSteps();
+        unsigned int getNumSteps();
+
+        unsigned int getPopulation();
         
         int drawElementaryCellularAutomata();
         int getRuleNumber();

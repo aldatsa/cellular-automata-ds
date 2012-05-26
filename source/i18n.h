@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.3.4.0";
+const std::string strVersionNumber = "0.3.4.1";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -32,6 +32,7 @@ std::string stringConwaysGameOfLife = "Conway's game of life";
 std::string stringMunchingSquares = "Munching Squares";
 std::string stringSelectColors = "Select colors";
 std::string stringBackToMainMenu = "Back to main menu";
+std::string stringPopulation = "Population:";
 std::string stringAntsPixels = "Ant's size (pixels)";
 std::string stringVonNeumannNeighborhood = "Von Neumann neighborhood";
 std::string stringMooreNeighborhood = "Moore neighborhood";
@@ -78,7 +79,8 @@ int changeTextLanguage(int language)
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringSelectColors = "Select colors"; // max 30 characters
         stringBackToMainMenu = "Back to main menu"; // max 30 characters
-        
+        stringPopulation = "Population:";
+
         stringAntsPixels = "Ant's size (pixels)"; // Max 22 characters
         
         stringVonNeumannNeighborhood = "Von Neumann neighborhood";
@@ -120,6 +122,7 @@ int changeTextLanguage(int language)
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringSelectColors = "Seleccionar colores"; // max 30 characters        
         stringBackToMainMenu = "Volver al menu principal"; // max 30 characters
+        stringPopulation = "Populacion:";
 
         stringAntsPixels = "Tamano (pixeles)"; // It doesn't print 'ñ'. Why? And "Tamano de la hormiga (pixeles)" is too long. Max 22 characters
         
@@ -162,7 +165,8 @@ int changeTextLanguage(int language)
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringSelectColors = "Hautatu koloreak"; // max 30 characters
         stringBackToMainMenu = "Itzuli menu nagusira"; // max 30 characters
-        
+        stringPopulation = "Populazioa:";
+
         stringAntsPixels = "Tamaina (pixelak)"; // Max 23 characters
         
         stringVonNeumannNeighborhood = "Von Neumann-en auzoa";

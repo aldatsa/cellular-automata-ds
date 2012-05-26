@@ -85,6 +85,16 @@ int printRuleNumber(int intRuleNumber)
 }
 
 /*
+ * Prints the current population of "alive" cells
+ */
+int printPopulation()
+{
+    iprintf("\x1b[%d;2H%s%d    ", ECA_MENU_POPULATION_ROW, stringPopulation.c_str(), ca.getPopulation());
+
+    return 0;
+}
+
+/*
  * Prints the number of pixels of the Langton's ant
  */
 int printAntNumPixels()
@@ -170,7 +180,8 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == ELEMENTARY_CELLULAR_AUTOMATA) // The menu of the Elementary Cellular Automaton
     {
-        printString(11, 2, stringBackToMainMenu);
+        printPopulation();
+        printString(ECA_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == LANGTON_ANT) // The menu of the Langton's ant
     {
@@ -660,9 +671,9 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     
     else if (intDisplayedMenu == ELEMENTARY_CELLULAR_AUTOMATA) // Elementary Cellular Automaton menu
     {
-        if (index == 8) // The first element of the bottom screen
+        if (index == 8)
         {
-            row = 11;
+            row = ECA_MENU_BACK_TO_MAIN_ROW;
         }
     }
     else if (intDisplayedMenu == LANGTON_ANT) // Langton's ant menu
@@ -1261,6 +1272,11 @@ int main(void)
                     ca.drawArrow(intArrow, line_color);  // Draw the arrow in the default position (intArrow = 0, top left rule (2^7), set in ca.initialize())
                 }                
                 
+                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA) // Include the other types of automata when the population count for them is implemented
+                {
+                    printPopulation();
+                }
+
                 if ((automataType == BOOLEAN_AUTOMATA) || (automataType == BOOLEAN_HEXAGONAL_AUTOMATA) || (automataType == BOOLEAN_TRIANGULAR_AUTOMATA) || (automataType == CONWAYS_GAME_OF_LIFE) ||  (automataType == SELECT_LANGUAGE))
                 {
                     printMenuAsterisks(automataType);
@@ -1273,10 +1289,11 @@ int main(void)
         else if (displayedMenu == ELEMENTARY_CELLULAR_AUTOMATA)
         {
             ca.nextStep();
+            printPopulation();
 
 		    if(keys_released & KEY_A)
 		    {
-		        if (intArrow != 8)
+		        if (intArrow < 8)
 		        {
 			        if(ca.getRuleDown(intArrow) == FG_color)
 			        {
@@ -1292,8 +1309,10 @@ int main(void)
                     ca.drawRule(intArrow);  // Draw the rule that has changed
 
 			        ca.resetECA();
+
+                    printPopulation();
                 }
-                else // Go back to the selection of the type of automata
+                else if (intArrow == 8) // Go back to the selection of the type of automata
                 {
                     showAutomataTypeMenu();
                 }
@@ -1301,7 +1320,7 @@ int main(void)
 		
 		    if(keys_pressed & KEY_RIGHT)
 		    {
-		        if (intArrow != 8)
+		        if (intArrow < 8)
 			    {
 			        ca.drawArrow(intArrow, BG_color);
 			
@@ -1319,7 +1338,7 @@ int main(void)
 		    }
 		    else if(keys_pressed & KEY_LEFT)
 		    {
-                if (intArrow != 8)
+                if (intArrow < 8)
 			    {		    
 			        ca.drawArrow(intArrow, BG_color);
 			
@@ -1336,7 +1355,7 @@ int main(void)
 		    }
 		    else if(keys_pressed & KEY_UP)
 		    {
-		        if (intArrow != 8)
+		        if (intArrow < 8)
 		        {
 			        ca.drawArrow(intArrow, BG_color);
 			    }
@@ -1358,7 +1377,7 @@ int main(void)
 				    intArrow = intArrow - 4;
 			    }
 
-			    if (intArrow != 8)
+			    if (intArrow < 8)
 			    {
 			        ca.drawArrow(intArrow, line_color);
 			    }
@@ -1369,7 +1388,7 @@ int main(void)
 		    }
 		    else if(keys_pressed & KEY_DOWN)
 		    {
-		        if (intArrow != 8)
+		        if (intArrow < 8)
 		        {
 			        ca.drawArrow(intArrow, BG_color);
 			    }
@@ -1391,7 +1410,7 @@ int main(void)
 				    intArrow = 8;
 			    }
 			    
-			    if (intArrow != 8)
+			    if (intArrow < 8)
 		        {
 			        ca.drawArrow(intArrow, line_color);
 			    }

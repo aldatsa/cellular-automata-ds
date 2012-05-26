@@ -54,6 +54,12 @@
 #define FILL_SCREEN_WITH_PULSARS 2
 #define FILL_SCREEN_WITH_PENTADECATHLONS 3
 
+/*
+ * Constants to define the row where each thing is printed
+ */
+#define ECA_MENU_POPULATION_ROW 10
+#define ECA_MENU_BACK_TO_MAIN_ROW 12
+
 /************************
  *   GLOBAL VARIABLES   *
  ************************/
