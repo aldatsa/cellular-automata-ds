@@ -103,11 +103,13 @@ int CellularAutomata::paintAnt()
 	
 	if (fb[antPosY * SCREEN_WIDTH + antPosX] == FG_color)
 	{
-		tempColor = BG_color;
+		tempColor = BG_color;   // If the cell has FG_color paint it with BG_color
+		--population;           // The population of alive cells decreases
 	}
 	else
 	{
-		tempColor = FG_color;
+		tempColor = FG_color;   // If the cell has BG_color paint it with FG_color
+		++population;           // The population of alive cells increases
 	}
 
     if (type == LANGTON_HEXAGONAL_ANT)
@@ -123,7 +125,8 @@ int CellularAutomata::paintAnt()
 			    fb[(antPosY + j) * SCREEN_WIDTH + (antPosX + i)] = tempColor;
 		    }
 	    }
-    }	
+    }
+
 	return 0;
 }
 

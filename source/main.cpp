@@ -89,7 +89,7 @@ int printRuleNumber(int intRuleNumber)
  */
 int printPopulation()
 {
-    iprintf("\x1b[%d;2H%s%d    ", ECA_MENU_POPULATION_ROW, stringPopulation.c_str(), ca.getPopulation());
+    iprintf("\x1b[%d;2H%s%d    ", POPULATION_ROW, stringPopulation.c_str(), ca.getPopulation());
 
     return 0;
 }
@@ -190,7 +190,8 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == LANGTON_HEXAGONAL_ANT) // The menu of the Langton's hexagonal ant
     {
-        printString(13, 2, stringBackToMainMenu);
+        printPopulation();
+        printString(LHA_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == BOOLEAN_AUTOMATA) // The menu of the boolean automaton
     {
@@ -691,7 +692,7 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0)
         {
-            row = 13;
+            row = LHA_MENU_BACK_TO_MAIN_ROW;
         }
     }
     else if (intDisplayedMenu == BOOLEAN_AUTOMATA) // Boolean automata
@@ -1272,7 +1273,7 @@ int main(void)
                     ca.drawArrow(intArrow, line_color);  // Draw the arrow in the default position (intArrow = 0, top left rule (2^7), set in ca.initialize())
                 }                
                 
-                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA) // Include the other types of automata when the population count for them is implemented
+                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA || automataType == LANGTON_HEXAGONAL_ANT) // Include the other types of automata when the population count for them is implemented
                 {
                     printPopulation();
                 }
@@ -1505,6 +1506,7 @@ int main(void)
     	    {
     	        ca.nextStep();
                 printNumSteps();
+                printPopulation();
     	        swiWaitForVBlank();
     	    }
     	    

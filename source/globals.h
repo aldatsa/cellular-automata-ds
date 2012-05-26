@@ -57,8 +57,9 @@
 /*
  * Constants to define the row where each thing is printed
  */
-#define ECA_MENU_POPULATION_ROW 10
+#define POPULATION_ROW 10
 #define ECA_MENU_BACK_TO_MAIN_ROW 12
+#define LHA_MENU_BACK_TO_MAIN_ROW 14
 
 /************************
  *   GLOBAL VARIABLES   *
