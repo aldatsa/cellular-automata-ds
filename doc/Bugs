@@ -1,0 +1,12 @@
+FIXED ????-??-?? * Avoid the possibility of the pixel size of the Langton's ant being zero.
+FIXED ????-??-?? * Due to the new implementation (I use only one array for all the boolean rules) the rules for the Von Neumann neighborhood change
+                   when I change the rules for the Moore neighborhood (and the other way around).
+FIXED 2012-05-?? * ECA shows incorrect rule number in the first run after selecting it from the automata selection menu. In next runs works correctly. 
+                   In the first run after switching on the ROM shows 255, in next runs show the last value. Probably is initialized but not shown.
+FIXED 2012-05-08 * Avoid the possibility of the value of the first boolean rule being zero.
+FIXED 2012-05-10 * Avoid the possibility of the value of the first boolean rule being zero. (New implementation)
+FIXED 2012-05-11 * Fix Langton's ant pixel size selection in the Langton's ant menu. When the size changes from 10 to 9 there's an extra '>': < 9 >>
+FIXED 2012-05-26 * In the Elementary Cellular Automata the count of alive cells in the previous step is printed instead of the count in the current one. Why?
+FIXED 2012-05-27 * The alive cells from the top row (row #0) are not included in the population of alive cells in the ECA
+
+* Changing the rules of the neighborhood that is not currently selected should not initialize the automata in the Boolean Square and Triangular Automata.
