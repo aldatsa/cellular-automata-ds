@@ -296,12 +296,14 @@ int CellularAutomata::updateECAruleColors()
 }
 
 /*
- * Paints the initial cell in the center of the first row
+ * Paints the initial cell in the center of the first row for the Elementary Cellular Automata
  */
 int CellularAutomata::paintInitialCell()
 {
     fb[128] = FG_color;
     
+    ++population; // The population of alive cells increases
+
     return 0;
 }
 
