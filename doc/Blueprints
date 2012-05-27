@@ -1,0 +1,40 @@
+DONE ????-??-?? * Create a function to print the number of steps instead of using various iprint-s
+
+DONE 2012-05-07 * Move drawRectangle from the CellularAutomata class to general.cpp
+
+DONE 2012-05-08 * Rename general.cpp to framebuffer.cpp
+
+DONE 2012-05-10 * Use the constants VON_NEUMANN_NEIGHBORHOOD and MOORE_NEIGHBORHOOD instead of the magic numbers 0 and 1.
+
+DONE 2012-05-10 * Use an array of 2 integers and bitwise operators instead of 2 arrays of 4 and 8 integers to represent the boolean rule values.
+
+DONE 2012-05-11 * Create functions to print and delete asterisks to avoid the use of iprint-s and modify the code to use these functions
+
+DONE 2012-05-24 * Remove unused strings (munching squares)
+
+DONE 2012-05-24 * Unify the different print???Asterisks functions
+
+DONE 2012-05-27 * Write rules for version numbering
+
+
+* Must be refactored:
+    * CellularAutomata::rotateAnt
+    * CellularAutomata::paintAnt
+    
+* The Langton's ant automata should start again or not? Now it doesn't but the hexagonal one restarts.
+
+* intArrow vs automataType vs displayedMenu ????
+
+* Substitute drawMunchingSquare with a more general function like drawSquare ??? (There is a function called drawRectangle() in general.cpp)
+
+* How to initialize the class to avoid warnings like: 'stepAngle' may be used uninitialized in this function [-Wuninitialized]
+
+* Improve the way the internationalization of strings works:
+    * Use gettext??? (Is it possible?)
+    * Create .pot/.po?
+
+* Create a function to print ??? instead of using various iprint-s
+
+* Add population count to the automata:
+    * DONE 2012-05-26 Rev.72 Elementary Cellular Automata
+    * DONE 2012-05-26 Rev.73 Langton's Hexagonal Ant
