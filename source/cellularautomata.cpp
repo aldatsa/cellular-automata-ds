@@ -883,6 +883,7 @@ int CellularAutomata::nextStep()
                     {
                         fbNew[SCREEN_WIDTH * j + i] = FG_color;
                         ++changeCount;
+                        ++population; // The population of alive cells increases
                     }
                 }
             }

@@ -196,6 +196,7 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == BOOLEAN_AUTOMATA) // The menu of the boolean automaton
     {
+        printPopulation();
         printString(13, 3, stringVonNeumannNeighborhood);
         printString(14, 6, "1    2    3    4");
         printString(15, 3, stringMooreNeighborhood);
@@ -1275,7 +1276,7 @@ int main(void)
                 }                
                 
                 // Include the other types of automata when the population count for them is implemented
-                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA || automataType == LANGTON_ANT || automataType == LANGTON_HEXAGONAL_ANT)
+                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA || automataType == LANGTON_ANT || automataType == LANGTON_HEXAGONAL_ANT || automataType == BOOLEAN_AUTOMATA)
                 {
                     printPopulation();
                 }
@@ -1531,6 +1532,7 @@ int main(void)
         {
             ca.nextStep();
             printNumSteps();
+            printPopulation();
             
        	    if(keys_released & KEY_A)
 		    {   
