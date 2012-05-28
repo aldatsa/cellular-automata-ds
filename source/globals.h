@@ -58,10 +58,17 @@
  * Constants to define the row where each thing is printed
  */
 #define POPULATION_ROW 10 // Used in the following menus: Elementary Cellular Automata, Langton's ant, Langton's hexagonal ant
+#define NUM_STEPS_ROW 9
 #define ECA_MENU_BACK_TO_MAIN_ROW 12
 #define LA_MENU_ANT_SIZE_ROW 12
 #define LA_MENU_BACK_TO_MAIN_ROW 14
 #define LHA_MENU_BACK_TO_MAIN_ROW 14
+#define BA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW 13
+#define BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW 14
+#define BA_MENU_MOORE_NEIGHBORHOOD_ROW 15
+#define BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW 16
+#define BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW 17
+#define BA_MENU_BACK_TO_MAIN_ROW 19
 
 /************************
  *   GLOBAL VARIABLES   *

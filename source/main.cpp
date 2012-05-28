@@ -197,12 +197,12 @@ int printMenu(int intDisplayedMenu)
     else if (displayedMenu == BOOLEAN_AUTOMATA) // The menu of the boolean automaton
     {
         printPopulation();
-        printString(13, 3, stringVonNeumannNeighborhood);
-        printString(14, 6, "1    2    3    4");
-        printString(15, 3, stringMooreNeighborhood);
-        printString(16, 6, "1    2    3    4");
-        printString(17, 6, "5    6    7    8");        
-        printString(19, 2, stringBackToMainMenu);
+        printString(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW, 3, stringVonNeumannNeighborhood);
+        printString(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 6, "1    2    3    4");
+        printString(BA_MENU_MOORE_NEIGHBORHOOD_ROW, 3, stringMooreNeighborhood);
+        printString(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 6, "1    2    3    4");
+        printString(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 6, "5    6    7    8");        
+        printString(BA_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA) // The menu of the Boolean Hexagonal Automaton
     {
@@ -274,123 +274,123 @@ int printMenuAsterisks(int intDisplayedMenu)
     {
         if (ca.getTypeOfNeighborhood() == 0)
         {
-            printAsterisk(13, 2);
-            deleteAsterisk(15, 2);
+            printAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW, 2);
+            deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_ROW, 2);
         }
         else
         {
-            deleteAsterisk(13, 2);
-            printAsterisk(15, 2);
+            deleteAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW, 2);
+            printAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_ROW, 2);
         }
         
         // {1, 2, 3, 4} For the boolean square automata with Von Neumann neighborhood
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
         {
-            printAsterisk(14, 5);
+            printAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 5);
         }
         else
         {
-            deleteAsterisk(14, 5);
+            deleteAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 5);
         }
 
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
         {
-            printAsterisk(14, 10);
+            printAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 10);
         }
         else
         {
-            deleteAsterisk(14, 10);
+            deleteAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 10);
         }
 
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
         {
-            printAsterisk(14, 15);
+            printAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 15);
         }
         else
         {
-            deleteAsterisk(14, 15);
+            deleteAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 15);
         }
                 
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 3)) 
         {
-            printAsterisk(14, 20);
+            printAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 20);
         }
         else
         {
-            deleteAsterisk(14, 20);
+            deleteAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 20);
         }
                 
         // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
         {
-            printAsterisk(16, 5);
+            printAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 5);
         }
         else
         {
-            deleteAsterisk(16, 5);
+            deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 5);
         }
         
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
         {
-            printAsterisk(16, 10);
+            printAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 10);
         }
         else
         {
-            deleteAsterisk(16, 10);
+            deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 10);
         }        
         
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
         {
-            printAsterisk(16, 15);
+            printAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 15);
         }
         else
         {
-            deleteAsterisk(16, 15);
+            deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 15);
         }
             
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
         {
-            printAsterisk(16, 20);
+            printAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 20);
         }
         else
         {
-            deleteAsterisk(16, 20);
+            deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 20);
         }
             
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
         {
-            printAsterisk(17, 5);
+            printAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 5);
         }
         else
         {
-            deleteAsterisk(17, 5);
+            deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 5);
         }
 
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
         {
-            printAsterisk(17, 10);
+            printAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 10);
         }
         else
         {
-            deleteAsterisk(17, 10);
+            deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 10);
         }
 
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
         {
-            printAsterisk(17, 15);
+            printAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 15);
         }
         else
         {
-            deleteAsterisk(17, 15);
+            deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 15);
         }
             
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
         {
-            printAsterisk(17, 20);
+            printAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 20);
         }
         else
         {
-            deleteAsterisk(17, 20);
+            deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 20);
         }
     }
     else if (displayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA)
@@ -701,75 +701,75 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0) // Von Neumann neighborhood
         {
-            row = 13;
+            row = BA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW;
         }
         else if (index == 1) // 1
         {
-            row = 14;
+            row = BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
             column = 3;
         }
         else if (index == 2) // 2
         {
-            row = 14;
+            row = BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
             column = 8;
         }
         else if (index == 3) // 3
         {
-            row = 14;
+            row = BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
             column = 13;
         }
         else if (index == 4) // 4
         {
-            row = 14;
+            row = BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
             column = 18;
         }
         else if (index == 5) // Moore neighborhood
         {
-            row = 15;
+            row = BA_MENU_MOORE_NEIGHBORHOOD_ROW;
         }
         else if (index == 6) // 1
         {
-            row = 16;
+            row = BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW;
             column = 3;
         }
         else if (index == 7) // 2
         {
-            row = 16;
+            row = BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW;
             column = 8;
         }
         else if (index == 8) // 3
         {
-            row = 16;
+            row = BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW;
             column = 13;
         }
         else if (index == 9) // 4
         {
-            row = 16;
+            row = BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW;
             column = 18;
         }
         else if (index == 10) // 5
         {
-            row = 17;
+            row = BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW;
             column = 3;
         }
         else if (index == 11) // 6
         {
-            row = 17;
+            row = BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW;
             column = 8;
         }
         else if (index == 12) // 7
         {
-            row = 17;
+            row = BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW;
             column = 13;
         }
         else if (index == 13) // 8
         {
-            row = 17;
+            row = BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW;
             column = 18;
         }
         else if (index == 14) // Back to main menu
         {
-            row = 19;
+            row = BA_MENU_BACK_TO_MAIN_ROW;
         }
     }
     else if (intDisplayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA) // Boolean Hexagonal Automata
@@ -1055,8 +1055,8 @@ int printAutomataType(int automataType)
  */
 int printNumSteps()
 {
-    iprintf("\x1b[9;0H%s:     ", stringSteps.c_str());                                                    
-    iprintf("\x1b[9;0H%s: %d", stringSteps.c_str(), ca.getNumSteps());
+    iprintf("\x1b[%d;0H%s:     ", NUM_STEPS_ROW, stringSteps.c_str());                                                    
+    iprintf("\x1b[%d;0H%s: %d", NUM_STEPS_ROW, stringSteps.c_str(), ca.getNumSteps());
 
     return 0;
 }
