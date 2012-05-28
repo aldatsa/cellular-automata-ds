@@ -57,8 +57,10 @@
 /*
  * Constants to define the row where each thing is printed
  */
-#define POPULATION_ROW 10
+#define POPULATION_ROW 10 // Used in the following menus: Elementary Cellular Automata, Langton's ant, Langton's hexagonal ant
 #define ECA_MENU_BACK_TO_MAIN_ROW 12
+#define LA_MENU_ANT_SIZE_ROW 12
+#define LA_MENU_BACK_TO_MAIN_ROW 14
 #define LHA_MENU_BACK_TO_MAIN_ROW 14
 
 /************************

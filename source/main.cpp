@@ -99,7 +99,7 @@ int printPopulation()
  */
 int printAntNumPixels()
 {
-    iprintf("\x1b[11;2H%s: < %d > ", stringAntsPixels.c_str(), ca.getAntNumPixels());
+    iprintf("\x1b[%d;2H%s: < %d > ", LA_MENU_ANT_SIZE_ROW, stringAntsPixels.c_str(), ca.getAntNumPixels());
     
     return 0;
 }
@@ -185,8 +185,9 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == LANGTON_ANT) // The menu of the Langton's ant
     {
+        printPopulation();
         printAntNumPixels();
-        printString(13, 2, stringBackToMainMenu);
+        printString(LA_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == LANGTON_HEXAGONAL_ANT) // The menu of the Langton's hexagonal ant
     {
@@ -681,11 +682,11 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0) // Print the arrow in the option to choose the size of the ant
         {
-            row = 11;
+            row = LA_MENU_ANT_SIZE_ROW;
         }
         else if (index == 1) // Print the arrow in the option to go back to main menu
         {
-            row = 13;
+            row = LA_MENU_BACK_TO_MAIN_ROW;
         }
     }
     else if (intDisplayedMenu == LANGTON_HEXAGONAL_ANT) // Langton's hexagonal ant menu
@@ -1273,7 +1274,8 @@ int main(void)
                     ca.drawArrow(intArrow, line_color);  // Draw the arrow in the default position (intArrow = 0, top left rule (2^7), set in ca.initialize())
                 }                
                 
-                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA || automataType == LANGTON_HEXAGONAL_ANT) // Include the other types of automata when the population count for them is implemented
+                // Include the other types of automata when the population count for them is implemented
+                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA || automataType == LANGTON_ANT || automataType == LANGTON_HEXAGONAL_ANT)
                 {
                     printPopulation();
                 }
@@ -1430,6 +1432,7 @@ int main(void)
     	    {
     	        ca.nextStep();
                 printNumSteps();
+                printPopulation();
     	        swiWaitForVBlank();
     	    }
     	    
@@ -1482,6 +1485,7 @@ int main(void)
                         ca.setAntNumPixels(ca.getAntNumPixels() - 1);
                         printAntNumPixels();
                         ca.initialize();
+                        printPopulation();
                         printNumSteps();
                     }                        
                 }		        
@@ -1493,6 +1497,7 @@ int main(void)
                     ca.setAntNumPixels(ca.getAntNumPixels() + 1);
                     printAntNumPixels();
                     ca.initialize();
+                    printPopulation();
                     printNumSteps();
                 }		    
 		    }
