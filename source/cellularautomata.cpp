@@ -998,6 +998,7 @@ int CellularAutomata::nextStep()
                     {
                         paintHexCell(i, j, FG_color, fbNew);
                         ++changeCount;
+                        ++population; // The population of alive cells increases
                     }
                 }
             }
