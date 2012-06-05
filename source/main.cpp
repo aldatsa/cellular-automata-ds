@@ -206,6 +206,7 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA) // The menu of the Boolean Hexagonal Automaton
     {
+        printPopulation();
         printString(BHA_MENU_NEIGHBORHOOD_ROW, 2, stringNeighborhood);
         printString(BHA_MENU_NEIGHBORHOOD_123_ROW, 6, "1    2    3");
         printString(BHA_MENU_NEIGHBORHOOD_456_ROW, 6, "4    5    6");
@@ -213,12 +214,13 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == BOOLEAN_TRIANGULAR_AUTOMATA) // The menu of the Boolean Triangular Automaton
     {
-        printString(13, 3, stringVonNeumannNeighborhood);
-        printString(14, 6, "1    2    3");
-        printString(15, 3, stringMooreNeighborhood);
-        printString(16, 6, "1    2    3    4");
-        printString(17, 6, "5    6    7    8");        
-        printString(19, 2, stringBackToMainMenu);
+        printPopulation();
+        printString(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW, 3, stringVonNeumannNeighborhood);
+        printString(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 6, "1    2    3");
+        printString(BTA_MENU_MOORE_NEIGHBORHOOD_ROW, 3, stringMooreNeighborhood);
+        printString(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 6, "1    2    3    4");
+        printString(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 6, "5    6    7    8");        
+        printString(BTA_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == CONWAYS_GAME_OF_LIFE) // The menu of the Conway's game of life
     {
@@ -454,114 +456,114 @@ int printMenuAsterisks(int intDisplayedMenu)
     {
         if (ca.getTypeOfNeighborhood() == 0)
         {
-            printAsterisk(13, 2);
-            deleteAsterisk(15, 2);
+            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW, 2);
+            deleteAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_ROW, 2);
         }
         else
         {
-            deleteAsterisk(13, 2);
-            printAsterisk(15, 2);        
+            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW, 2);
+            printAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_ROW, 2);        
         }
         
         // {1, 2, 3} For the boolean triangular automata with Von Neumann neighborhood
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
         {
-            printAsterisk(14, 5);
+            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 5);
         }
         else
         {
-            deleteAsterisk(14, 5);
+            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 5);
         }
         
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
         {
-            printAsterisk(14, 10);
+            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 10);
         }
         else
         {
-            deleteAsterisk(14, 10);
+            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 10);
         }
                 
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
         {
-            printAsterisk(14, 15);
+            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 15);
         }
         else
         {
-            deleteAsterisk(14, 15);
+            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 15);
         }
 
-        // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean square automata with Moore neighborhood
+        // {1, 2, 3, 4, 5, 6, 7, 8} For the boolean triangular automata with Moore neighborhood
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 0))
         {
-            printAsterisk(16, 5);
+            printAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 5);
         }
         else
         {
-            deleteAsterisk(16, 5);
+            deleteAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 5);
         }
         
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 1))
         {
-            printAsterisk(16, 10);
+            printAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 10);
         }
         else
         {
-            deleteAsterisk(16, 10);
+            deleteAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 10);
         }        
         
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 2))
         {
-            printAsterisk(16, 15);
+            printAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 15);
         }
         else
         {
-            deleteAsterisk(16, 15);
+            deleteAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 15);
         }
             
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 3))
         {
-            printAsterisk(16, 20);
+            printAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 20);
         }
         else
         {
-            deleteAsterisk(16, 20);
+            deleteAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 20);
         }
             
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 4))
         {
-            printAsterisk(17, 5);
+            printAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 5);
         }
         else
         {
-            deleteAsterisk(17, 5);
+            deleteAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 5);
         }
             
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 5))
         {
-            printAsterisk(17, 10);
+            printAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 10);
         }
         else
         {
-            deleteAsterisk(17, 10);
+            deleteAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 10);
         }
                 
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 6))
         {
-            printAsterisk(17, 15);
+            printAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 15);
         }
         else
         {
-            deleteAsterisk(17, 15);
+            deleteAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 15);
         }
             
         if (ca.checkBooleanRuleValue(MOORE_NEIGHBORHOOD, 7))
         {
-            printAsterisk(17, 20);
+            printAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 20);
         }
         else
         {
-            deleteAsterisk(17, 20);
+            deleteAsterisk(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 20);
         }
     }
     else if (displayedMenu == CONWAYS_GAME_OF_LIFE)
@@ -813,70 +815,70 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0) // Von Neumann neighborhood
         {
-            row = 13;
+            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW;
         }
         else if (index == 1) // 1
         {
-            row = 14;
+            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
             column = 3;
         }
         else if (index == 2) // 2
         {
-            row = 14;
+            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
             column = 8;
         }
         else if (index == 3) // 3
         {
-            row = 14;
+            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
             column = 13;
         }
         else if (index == 4) // Moore neighborhood
         {
-            row = 15;
+            row = BTA_MENU_MOORE_NEIGHBORHOOD_ROW;
         }
         else if (index == 5) // 1
         {
-            row = 16;
+            row = BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW;
             column = 3;
         }
         else if (index == 6) // 2
         {
-            row = 16;
+            row = BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW;
             column = 8;
         }
         else if (index == 7) // 3
         {
-            row = 16;
+            row = BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW;
             column = 13;
         }
         else if (index == 8) // 4
         {
-            row = 16;
+            row = BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW;
             column = 18;
         }
         else if (index == 9) // 5
         {
-            row = 17;
+            row = BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW;
             column = 3;
         }
         else if (index == 10) // 6
         {
-            row = 17;
+            row = BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW;
             column = 8;
         }
         else if (index == 11) // 7
         {
-            row = 17;
+            row = BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW;
             column = 13;
         }
         else if (index == 12) // 8
         {
-            row = 17;
+            row = BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW;
             column = 18;
         }
         else if (index == 13) // Back to main menu
         {
-            row = 19;
+            row = BTA_MENU_BACK_TO_MAIN_ROW;
         }
     }
     else if (intDisplayedMenu == CONWAYS_GAME_OF_LIFE) // Conway's game of life menu
@@ -1276,7 +1278,7 @@ int main(void)
                 }                
                 
                 // Include the other types of automata when the population count for them is implemented
-                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA || automataType == LANGTON_ANT || automataType == LANGTON_HEXAGONAL_ANT || automataType == BOOLEAN_AUTOMATA || automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
+                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA || automataType == LANGTON_ANT || automataType == LANGTON_HEXAGONAL_ANT || automataType == BOOLEAN_AUTOMATA || automataType == BOOLEAN_HEXAGONAL_AUTOMATA ||  automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
                     printPopulation();
                 }
@@ -1760,6 +1762,7 @@ int main(void)
             ca.nextStep();
 
             printNumSteps();
+            printPopulation();
 
        	    if(keys_released & KEY_A)
 		    {
