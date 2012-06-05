@@ -224,12 +224,13 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == CONWAYS_GAME_OF_LIFE) // The menu of the Conway's game of life
     {
-        printString(13, 2, stringInitialState);
-        printString(14, 3, stringAcorn);
-        printString(15, 3, stringFPentomino);
-        printString(16, 3, stringFillScreenWithPulsars);
-        printString(17, 3, stringFillScreenWithPentadecathlons);
-        printString(19, 2, stringBackToMainMenu);
+        printPopulation();
+        printString(CGL_MENU_INITIAL_STATE_ROW, 2, stringInitialState);
+        printString(CGL_MENU_ACORN_ROW, 3, stringAcorn);
+        printString(CGL_MENU_FPENTOMINO_ROW, 3, stringFPentomino);
+        printString(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 3, stringFillScreenWithPulsars);
+        printString(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 3, stringFillScreenWithPentadecathlons);
+        printString(CGL_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == MUNCHING_SQUARES) // The menu of the munching squares
     {
@@ -570,31 +571,31 @@ int printMenuAsterisks(int intDisplayedMenu)
     {
         if (ca.getInitialState() == ACORN)
         {
-            printAsterisk(14, 2);
-            deleteAsterisk(15, 2);
-            deleteAsterisk(16, 2);
-            deleteAsterisk(17, 2);
+            printAsterisk(CGL_MENU_ACORN_ROW, 2);
+            deleteAsterisk(CGL_MENU_FPENTOMINO_ROW, 2);
+            deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 2);
+            deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 2);
         }
         else if (ca.getInitialState() == FPENTOMINO)
         {
-            deleteAsterisk(14, 2);
-            printAsterisk(15, 2);
-            deleteAsterisk(16, 2);
-            deleteAsterisk(17, 2);
+            deleteAsterisk(CGL_MENU_ACORN_ROW, 2);
+            printAsterisk(CGL_MENU_FPENTOMINO_ROW, 2);
+            deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 2);
+            deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 2);
         }
         else if (ca.getInitialState() == FILL_SCREEN_WITH_PULSARS)
         {
-            deleteAsterisk(14, 2);
-            deleteAsterisk(15, 2);
-            printAsterisk(16, 2);
-            deleteAsterisk(17, 2);
+            deleteAsterisk(CGL_MENU_ACORN_ROW, 2);
+            deleteAsterisk(CGL_MENU_FPENTOMINO_ROW, 2);
+            printAsterisk(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 2);
+            deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 2);
         }
         else if (ca.getInitialState() == FILL_SCREEN_WITH_PENTADECATHLONS)
         {
-            deleteAsterisk(14, 2);
-            deleteAsterisk(15, 2);
-            deleteAsterisk(16, 2);
-            printAsterisk(17, 2);
+            deleteAsterisk(CGL_MENU_ACORN_ROW, 2);
+            deleteAsterisk(CGL_MENU_FPENTOMINO_ROW, 2);
+            deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 2);
+            printAsterisk(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 2);
         }
     }
     else if (displayedMenu == SELECT_LANGUAGE)
@@ -885,23 +886,23 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0)
         {
-            row = 14; // Accorn
+            row = CGL_MENU_ACORN_ROW; // Accorn
         }
         else if (index == 1)
         {
-            row = 15; // F-Pentomino
+            row = CGL_MENU_FPENTOMINO_ROW; // F-Pentomino
         }
         else if (index == 2)
         {
-            row = 16; // Fill screen with pulsars
+            row = CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW; // Fill screen with pulsars
         }
         else if (index == 3)
         {
-            row = 17; // Fill screen with pentadecathlons
+            row = CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW; // Fill screen with pentadecathlons
         }
         else if (index == 4)
         {
-            row = 19; // Back to main menu
+            row = CGL_MENU_BACK_TO_MAIN_ROW; // Back to main menu
         }
     }
     else if (intDisplayedMenu == MUNCHING_SQUARES) // Munching squares menu
@@ -1278,7 +1279,7 @@ int main(void)
                 }                
                 
                 // Include the other types of automata when the population count for them is implemented
-                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA || automataType == LANGTON_ANT || automataType == LANGTON_HEXAGONAL_ANT || automataType == BOOLEAN_AUTOMATA || automataType == BOOLEAN_HEXAGONAL_AUTOMATA ||  automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
+                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA || automataType == LANGTON_ANT || automataType == LANGTON_HEXAGONAL_ANT || automataType == BOOLEAN_AUTOMATA || automataType == BOOLEAN_HEXAGONAL_AUTOMATA ||  automataType == BOOLEAN_TRIANGULAR_AUTOMATA || automataType == CONWAYS_GAME_OF_LIFE)
                 {
                     printPopulation();
                 }
@@ -1903,6 +1904,7 @@ int main(void)
             ca.nextStep();
             
             printNumSteps();
+            printPopulation();
 
     	    if(keys_released & KEY_A)
 		    {

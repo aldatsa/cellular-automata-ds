@@ -57,7 +57,7 @@
 /*
  * Constants to define the row where each thing is printed
  */
-#define POPULATION_ROW 10 // Used in the following menus: Elementary Cellular Automata, Langton's ant, Langton's hexagonal ant
+#define POPULATION_ROW 10 // Used in the following menus: Elementary Cellular Automata, Langton's ant, Langton's hexagonal ant, Boolean automata, Boolean hexagonal automata, Boolean triangular automata
 #define NUM_STEPS_ROW 9
 #define ECA_MENU_BACK_TO_MAIN_ROW 12
 #define LA_MENU_ANT_SIZE_ROW 12
@@ -79,7 +79,12 @@
 #define BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW 16
 #define BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW 17
 #define BTA_MENU_BACK_TO_MAIN_ROW 19
-
+#define CGL_MENU_INITIAL_STATE_ROW 13
+#define CGL_MENU_ACORN_ROW 14
+#define CGL_MENU_FPENTOMINO_ROW 15
+#define CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW 16
+#define CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW 17
+#define CGL_MENU_BACK_TO_MAIN_ROW 19
 /************************
  *   GLOBAL VARIABLES   *
  ************************/

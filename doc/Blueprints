@@ -41,3 +41,5 @@ DONE 2012-05-27 * Write rules for version numbering
     * DONE 2012-05-28 Rev.78 Langton's Ant
     * DONE 2012-05-28 Rev.79 Boolean automata
     * DONE 2012-06-04 Rev.81 Boolean hexagonal automata
+    * DONE 2012-06-05 Rev.82 Boolean triangular automata
+    * DONE 2012-06-05 Rev.83 Conway's game of life

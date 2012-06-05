@@ -414,19 +414,23 @@ int CellularAutomata::drawInitialState()
 {   
     if (initialState == ACORN)
     {
-        drawAcorn(120, 90);   
+        drawAcorn(120, 90);
+        population = population + 7; // 7 initial cells
     }
     else if (initialState == FPENTOMINO)
     {
         drawFpentomino(120, 90);
+        population = population + 5; // 5 initial cells
     }
     else if (initialState == FILL_SCREEN_WITH_PULSARS)
     {
         fillScreenWithPulsars();
+        population = population + 13 * 165; //13 cells per pulsar multiplied by 165 pulsars (11 rows of 15 columns)
     }
     else if (initialState == FILL_SCREEN_WITH_PENTADECATHLONS)
     {
         fillScreenWithPentadecathlons();
+        population = population + 12 * 266; //12 cells per pentadecathlon multiplied by 266 pentadecathlons (19 rows of 14 columns)
     }
     return 0;
 }
@@ -596,6 +600,7 @@ int CellularAutomata::initialize()
         cleanFB(fb2);
     
         fb[91 * SCREEN_WIDTH + 127] = FG_color; // Paint the initial point
+        ++population;
     }
     else if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
     {        
@@ -611,6 +616,7 @@ int CellularAutomata::initialize()
         typeOfNeighborhood = 1; // Moore neighborhood (In this case it's a hexagonal neighborhood but as the Moore neighborhood is a array of 8 ints there is enough space for 6 ints)
         
         paintHexCell(124, 93, FG_color, fb);
+        ++population;
     }
     else if (type == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
@@ -624,6 +630,7 @@ int CellularAutomata::initialize()
         drawTriangularGrid();
         
         paintTriangularCell(127, 91, FG_color, fb);
+        ++population;
     }
     else if (type == CONWAYS_GAME_OF_LIFE)
     {
@@ -1321,21 +1328,25 @@ int CellularAutomata::nextStep()
                 {
                     fbNew[SCREEN_WIDTH * j + i] = BG_color;
                     changeCount++;
+                    --population;
                 }
                 if ((countFG == 2 || countFG == 3) && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with two or three live neighbours lives on to the next generation.
                 {
                     fbNew[SCREEN_WIDTH * j + i] = FG_color;
                     changeCount++;
+                    // the population doesn't change in this case
                 }
                 if (countFG > 3 && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with more than three live neighbours dies, as if by overcrowding.
                 {
                     fbNew[SCREEN_WIDTH * j + i] = BG_color;
                     changeCount++;
+                    --population;
                 }
                 if (countFG == 3 && fbRef[SCREEN_WIDTH * j + i] == BG_color) // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
                 {
                     fbNew[SCREEN_WIDTH * j + i] = FG_color;
                     changeCount++;
+                    ++population;
                 }            
             }
         }
