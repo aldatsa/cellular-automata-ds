@@ -89,7 +89,7 @@ int printRuleNumber(int intRuleNumber)
  */
 int printPopulation()
 {
-    iprintf("\x1b[%d;2H%s%d    ", POPULATION_ROW, stringPopulation.c_str(), ca.getPopulation());
+    iprintf("\x1b[%d;%dH%s%d    ", POPULATION_ROW, POPULATION_COLUMN, stringPopulation.c_str(), ca.getPopulation());
 
     return 0;
 }

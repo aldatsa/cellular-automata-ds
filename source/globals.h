@@ -55,6 +55,11 @@
 #define FILL_SCREEN_WITH_PENTADECATHLONS 3
 
 /*
+ * Constants to define the column where each thing is printed
+ */
+#define POPULATION_COLUMN 0
+
+/*
  * Constants to define the row where each thing is printed
  */
 #define POPULATION_ROW 10 // Used in the following menus: Elementary Cellular Automata, Langton's ant, Langton's hexagonal ant, Boolean automata, Boolean hexagonal automata, Boolean triangular automata
@@ -85,6 +90,8 @@
 #define CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW 16
 #define CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW 17
 #define CGL_MENU_BACK_TO_MAIN_ROW 19
+
+
 /************************
  *   GLOBAL VARIABLES   *
  ************************/
