@@ -59,12 +59,14 @@
  */
 #define POPULATION_COLUMN 0
 #define NUM_STEPS_COLUMN 0
+#define RULE_NUMBER_COLUMN 0
 
 /*
  * Constants to define the row where each thing is printed
  */
 #define POPULATION_ROW 10 // Used in the following menus: Elementary Cellular Automata, Langton's ant, Langton's hexagonal ant, Boolean automata, Boolean hexagonal automata, Boolean triangular automata
 #define NUM_STEPS_ROW 9
+#define RULE_NUMBER_ROW 9
 #define ECA_MENU_BACK_TO_MAIN_ROW 12
 #define LA_MENU_ANT_SIZE_ROW 12
 #define LA_MENU_BACK_TO_MAIN_ROW 14

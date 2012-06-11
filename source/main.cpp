@@ -42,11 +42,6 @@
 #define MENU_SELECT_LANGUAGE 17
 
 /*
- * Constant for the row where the rule of the Elementary Cellular Automaton is printed
- */
-#define ECA_RULE_NUMBER_ROW 9
-
-/*
  * A variable for the position of the touch
  */
 touchPosition touch;
@@ -76,10 +71,10 @@ int printRuleNumber(int intRuleNumber)
     sprintf(buffer, "%d", intRuleNumber);
     
     // Print 3 spaces to erase the previous rule
-    iprintf("\x1b[%d;2H%s:   ", ECA_RULE_NUMBER_ROW, stringRuleNumber.c_str());
+    iprintf("\x1b[%d;%dH%s:   ", RULE_NUMBER_ROW, RULE_NUMBER_COLUMN, stringRuleNumber.c_str());
     
     // Print it in the appropiate position
-    iprintf("\x1b[%d;2H%s:%s", ECA_RULE_NUMBER_ROW, stringRuleNumber.c_str(), buffer);
+    iprintf("\x1b[%d;%dH%s:%s", RULE_NUMBER_ROW, RULE_NUMBER_COLUMN, stringRuleNumber.c_str(), buffer);
     
     return 0;
 }
