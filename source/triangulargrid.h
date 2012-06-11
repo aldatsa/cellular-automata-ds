@@ -6,6 +6,7 @@ int triangularGridLineTwo(int y);
 int triangularGridLineThree(int y);
 
 int drawTriangularGrid();
-int paintTriangularCell(int intPosX, int intPosY, unsigned short color, unsigned short* framebuffer);
+int paintTriangularCell(int intPosX, int intPosY, unsigned short color,
+                        unsigned short* framebuffer);
 
 #endif

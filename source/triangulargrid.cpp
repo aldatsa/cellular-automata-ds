@@ -73,17 +73,20 @@ int drawTriangularGrid()
     return 0;
 }
 
-int paintTriangularCell(int intPosX, int intPosY, unsigned short color, unsigned short* framebuffer)
+int paintTriangularCell(int intPosX, int intPosY, unsigned short color,
+                        unsigned short* framebuffer)
 {
-	if ((intPosX % 2 == 0 and intPosY % 2 == 0) or (intPosX % 2 != 0 and intPosY % 2 != 0))
+	if ((intPosX % 2 == 0 and intPosY % 2 == 0) or 
+        (intPosX % 2 != 0 and intPosY % 2 != 0))
     {
-	    drawHLine(intPosX -1, intPosY, 3, color, framebuffer);  
-	    drawHLine(intPosX, intPosY + 1, 1, color, framebuffer); 
+	    drawHLine(intPosX -1, intPosY, 3, color, framebuffer);
+	    drawHLine(intPosX, intPosY + 1, 1, color, framebuffer);
     }
-    else if ((intPosX % 2 != 0 and intPosY % 2 == 0) or (intPosX % 2 == 0 and intPosY % 2 != 0))
+    else if ((intPosX % 2 != 0 and intPosY % 2 == 0) or
+             (intPosX % 2 == 0 and intPosY % 2 != 0))
 	{
-	    drawHLine(intPosX, intPosY, 1, color, framebuffer);     
-	    drawHLine(intPosX - 1, intPosY + 1, 3, color, framebuffer);	
+	    drawHLine(intPosX, intPosY, 1, color, framebuffer);
+	    drawHLine(intPosX - 1, intPosY + 1, 3, color, framebuffer);
 	}
 	return 0;
 }
