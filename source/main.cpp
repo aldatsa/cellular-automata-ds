@@ -1058,8 +1058,8 @@ int printAutomataType(int automataType)
  */
 int printNumSteps()
 {
-    iprintf("\x1b[%d;0H%s:     ", NUM_STEPS_ROW, stringSteps.c_str());                                                    
-    iprintf("\x1b[%d;0H%s: %d", NUM_STEPS_ROW, stringSteps.c_str(), ca.getNumSteps());
+    iprintf("\x1b[%d;%dH%s:     ", NUM_STEPS_ROW, NUM_STEPS_COLUMN, stringSteps.c_str());                                                    
+    iprintf("\x1b[%d;%dH%s: %d", NUM_STEPS_ROW, NUM_STEPS_COLUMN, stringSteps.c_str(), ca.getNumSteps());
 
     return 0;
 }

@@ -58,6 +58,7 @@
  * Constants to define the column where each thing is printed
  */
 #define POPULATION_COLUMN 0
+#define NUM_STEPS_COLUMN 0
 
 /*
  * Constants to define the row where each thing is printed
