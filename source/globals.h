@@ -57,9 +57,14 @@
 /*
  * Constants to define the column where each thing is printed
  */
+
+// General
 #define POPULATION_COLUMN 0
 #define NUM_STEPS_COLUMN 0
 #define RULE_NUMBER_COLUMN 0
+
+// Munching squares
+#define MS_MENU_BACK_TO_MAIN_COLUMN 2
 
 /*
  * Constants to define the row where each thing is printed
@@ -122,6 +127,8 @@
 #define CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW 17
 #define CGL_MENU_BACK_TO_MAIN_ROW 19
 
+// Munching squares
+#define MS_MENU_BACK_TO_MAIN_ROW 13 
 
 /************************
  *   GLOBAL VARIABLES   *

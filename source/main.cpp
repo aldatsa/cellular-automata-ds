@@ -213,9 +213,12 @@ int printMenu(int intDisplayedMenu)
         printString(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 3, stringFillScreenWithPentadecathlons);
         printString(CGL_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
     }
-    else if (displayedMenu == MUNCHING_SQUARES) // The menu of the munching squares
+    // The menu of the munching squares
+    else if (displayedMenu == MUNCHING_SQUARES)
     {
-        printString(13, 2, stringBackToMainMenu);
+        printString(MS_MENU_BACK_TO_MAIN_ROW, 
+                    MS_MENU_BACK_TO_MAIN_COLUMN,
+                    stringBackToMainMenu);
     }
     else if (displayedMenu == SELECT_COLORS) // The menu of color selection
     {
@@ -890,7 +893,7 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0)
         {
-            row = 13; // Back to main menu
+            row = MS_MENU_BACK_TO_MAIN_ROW; // Back to main menu
         }
     }
     else if (intDisplayedMenu == SELECT_COLORS) // Select colors
