@@ -7,7 +7,8 @@
 
 
 /*
- * Draws the initial state that develops into the period 3 oscillator called "pulsar".
+ * Draws the initial state that develops into the period 3 oscillator
+ * called "pulsar".
  * The "pulsar" is the most common period 3 oscillator.
  *
  * The initial state is like that:
@@ -47,8 +48,12 @@ int fillScreenWithPulsars()
 
 /*
  * Draws the F-pentomino (also known as R-pentomino).
- * During this early research, Conway discovered that the F-pentomino (which he called the "R-pentomino") failed to stabilize in a small number of generations.
- * In fact, it takes 1103 generations to stabilize, by which time it has a population of 116 and has fired six escaping gliders (these were the first gliders ever discovered). 
+ * During this early research, Conway discovered that the F-pentomino
+ * (which he called the "R-pentomino") failed to stabilize in a small
+ * number of generations.
+ * In fact, it takes 1103 generations to stabilize, by which time it has
+ * a population of 116 and has fired six escaping gliders
+ * (these were the first gliders ever discovered). 
  * 
  * The initial state is like that:
  *
@@ -69,7 +74,7 @@ int drawFpentomino(int intX, int intY)
 
 /*
  * Draws the Acorn
- * It takes 5206 generations to generate 633 cells including 13 escaped gliders.
+ * It takes 5206 generations to generate 633 cells including 13 escaped gliders
  * 
  * The initial state is like that:
  *
@@ -90,9 +95,12 @@ int drawAcorn(int intX, int intY)
 }
 
 /*
- * Draws the initial state that develops into the period 15 oscillator called "pentadecathlon".
- * The "pentadecathlon" is the most natural oscillator of period greater than 3.
- * It is the only known oscillator that is a polyomino in more than one phase (besides the blinker).
+ * Draws the initial state that develops into the period 15 oscillator
+ * called "pentadecathlon".
+ * The "pentadecathlon" is the most natural oscillator of period greater
+ * than 3.
+ * It is the only known oscillator that is a polyomino in more than one phase
+ * (besides the blinker).
  *
  * The initial state is like that:
  *
@@ -100,7 +108,8 @@ int drawAcorn(int intX, int intY)
  *        ** **** **
  *          *    *
  *
- * But I'm going to use 10 cells placed in a row because it's more simple to draw and evolves into the pentadecathlon.
+ * But I'm going to use 10 cells placed in a row because it's more simple to
+ * draw and evolves into the pentadecathlon.
  *
  *          **********
  *
