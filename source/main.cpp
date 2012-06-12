@@ -28,20 +28,6 @@
 #include "globals.h"
 
 /*
- * Constants for the rows where the menu items of the automata type selection menu are printed
- */
-#define MENU_AUTOMATA_TYPE_ROW_ECA 8
-#define MENU_AUTOMATA_TYPE_ROW_LA 9
-#define MENU_AUTOMATA_TYPE_ROW_LHA 10
-#define MENU_AUTOMATA_TYPE_ROW_BA 11
-#define MENU_AUTOMATA_TYPE_ROW_BHA 12
-#define MENU_AUTOMATA_TYPE_ROW_BTA 13
-#define MENU_AUTOMATA_TYPE_ROW_CGL 14
-#define MENU_AUTOMATA_TYPE_ROW_MS 15
-#define MENU_SELECT_COLORS 16
-#define MENU_SELECT_LANGUAGE 17
-
-/*
  * A variable for the position of the touch
  */
 touchPosition touch;
@@ -162,16 +148,16 @@ int printMenu(int intDisplayedMenu)
 {
     if (displayedMenu == MAIN_MENU) //The menu to select the type of automata
     {
-        printString(MENU_AUTOMATA_TYPE_ROW_ECA, 2, stringElementaryCellularAutomata);
-        printString(MENU_AUTOMATA_TYPE_ROW_LA, 2, stringLangtonsAnt);
-        printString(MENU_AUTOMATA_TYPE_ROW_LHA, 2, stringLangtonsHexagonalAnt);
-        printString(MENU_AUTOMATA_TYPE_ROW_BA, 2, stringBooleanAutomata);
-        printString(MENU_AUTOMATA_TYPE_ROW_BHA, 2, stringBooleanHexagonalAutomata);
-        printString(MENU_AUTOMATA_TYPE_ROW_BTA, 2, stringBooleanTriangularAutomata);
-        printString(MENU_AUTOMATA_TYPE_ROW_CGL, 2, stringConwaysGameOfLife);
-        printString(MENU_AUTOMATA_TYPE_ROW_MS, 2, stringMunchingSquares);
-        printString(MENU_SELECT_COLORS, 2, stringSelectColors);
-        printString(MENU_SELECT_LANGUAGE, 2, stringSelectLanguage);
+        printString(AUTOMATA_TYPE_MENU_ECA_ROW, 2, stringElementaryCellularAutomata);
+        printString(AUTOMATA_TYPE_MENU_LA_ROW, 2, stringLangtonsAnt);
+        printString(AUTOMATA_TYPE_MENU_LHA_ROW, 2, stringLangtonsHexagonalAnt);
+        printString(AUTOMATA_TYPE_MENU_BA_ROW, 2, stringBooleanAutomata);
+        printString(AUTOMATA_TYPE_MENU_BHA_ROW, 2, stringBooleanHexagonalAutomata);
+        printString(AUTOMATA_TYPE_MENU_BTA_ROW, 2, stringBooleanTriangularAutomata);
+        printString(AUTOMATA_TYPE_MENU_CGL_ROW, 2, stringConwaysGameOfLife);
+        printString(AUTOMATA_TYPE_MENU_MS_ROW, 2, stringMunchingSquares);
+        printString(AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW, 2, stringSelectColors);
+        printString(AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW, 2, stringSelectLanguage);
     }
     else if (displayedMenu == ELEMENTARY_CELLULAR_AUTOMATA) // The menu of the Elementary Cellular Automaton
     {
@@ -630,43 +616,43 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == ELEMENTARY_CELLULAR_AUTOMATA) // Elementary Cellular Automata
         {
-            row = MENU_AUTOMATA_TYPE_ROW_ECA;
+            row = AUTOMATA_TYPE_MENU_ECA_ROW;
         }
         else if (index == LANGTON_ANT) // Langton's ant
         {
-            row = MENU_AUTOMATA_TYPE_ROW_LA;
+            row = AUTOMATA_TYPE_MENU_LA_ROW;
         }
         else if (index == LANGTON_HEXAGONAL_ANT) // Langton's hexagonal ant
         {
-            row = MENU_AUTOMATA_TYPE_ROW_LHA;
+            row = AUTOMATA_TYPE_MENU_LHA_ROW;
         }        
         else if (index == BOOLEAN_AUTOMATA) // Boolean automata
         {    
-            row = MENU_AUTOMATA_TYPE_ROW_BA;
+            row = AUTOMATA_TYPE_MENU_BA_ROW;
         }
         else if (index == BOOLEAN_HEXAGONAL_AUTOMATA) // Boolean Hexagonal Automata
         {
-            row = MENU_AUTOMATA_TYPE_ROW_BHA;
+            row = AUTOMATA_TYPE_MENU_BHA_ROW;
         }
         else if (index == BOOLEAN_TRIANGULAR_AUTOMATA) // Boolean Triangular Automata
         {
-            row = MENU_AUTOMATA_TYPE_ROW_BTA;
+            row = AUTOMATA_TYPE_MENU_BTA_ROW;
         }
         else if (index == CONWAYS_GAME_OF_LIFE) // Conway's game of life
         {
-            row = MENU_AUTOMATA_TYPE_ROW_CGL;
+            row = AUTOMATA_TYPE_MENU_CGL_ROW;
         }        
         else if (index == MUNCHING_SQUARES) // Munching squares
         {    
-            row = MENU_AUTOMATA_TYPE_ROW_MS;
+            row = AUTOMATA_TYPE_MENU_MS_ROW;
         }        
         else if (index == SELECT_COLORS) // Select colors
         {
-            row = MENU_SELECT_COLORS;
+            row = AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW;
         }
         else if (index == SELECT_LANGUAGE) // Select language
         {
-            row = MENU_SELECT_LANGUAGE;
+            row = AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW;
         }
     }
     

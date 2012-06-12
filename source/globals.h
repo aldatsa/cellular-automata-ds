@@ -64,29 +64,57 @@
 /*
  * Constants to define the row where each thing is printed
  */
-#define POPULATION_ROW 10 // Used in the following menus: Elementary Cellular Automata, Langton's ant, Langton's hexagonal ant, Boolean automata, Boolean hexagonal automata, Boolean triangular automata
+
+// General
+#define POPULATION_ROW 10
 #define NUM_STEPS_ROW 9
 #define RULE_NUMBER_ROW 9
+
+// Automata selection menu
+#define AUTOMATA_TYPE_MENU_ECA_ROW 8
+#define AUTOMATA_TYPE_MENU_LA_ROW 9
+#define AUTOMATA_TYPE_MENU_LHA_ROW 10
+#define AUTOMATA_TYPE_MENU_BA_ROW 11
+#define AUTOMATA_TYPE_MENU_BHA_ROW 12
+#define AUTOMATA_TYPE_MENU_BTA_ROW 13
+#define AUTOMATA_TYPE_MENU_CGL_ROW 14
+#define AUTOMATA_TYPE_MENU_MS_ROW 15
+#define AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW 16
+#define AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW 17
+
+// Elementary Cellular Automata menu
 #define ECA_MENU_BACK_TO_MAIN_ROW 12
+
+// Langton's ant menu
 #define LA_MENU_ANT_SIZE_ROW 12
 #define LA_MENU_BACK_TO_MAIN_ROW 14
+
+// Langton's hexagonal ant menu
 #define LHA_MENU_BACK_TO_MAIN_ROW 14
+
+// Boolean automata menu
 #define BA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW 13
 #define BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW 14
 #define BA_MENU_MOORE_NEIGHBORHOOD_ROW 15
 #define BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW 16
 #define BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW 17
 #define BA_MENU_BACK_TO_MAIN_ROW 19
+
+// Boolean hexagonal automata menu
 #define BHA_MENU_NEIGHBORHOOD_ROW 13
 #define BHA_MENU_NEIGHBORHOOD_123_ROW 14
 #define BHA_MENU_NEIGHBORHOOD_456_ROW 15
 #define BHA_MENU_BACK_TO_MAIN_ROW 17
+
+// Boolean triangular automata menu
 #define BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW 13
 #define BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW 14
 #define BTA_MENU_MOORE_NEIGHBORHOOD_ROW 15
 #define BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW 16
 #define BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW 17
 #define BTA_MENU_BACK_TO_MAIN_ROW 19
+
+// Conway's game of life
 #define CGL_MENU_INITIAL_STATE_ROW 13
 #define CGL_MENU_ACORN_ROW 14
 #define CGL_MENU_FPENTOMINO_ROW 15
