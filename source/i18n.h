@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.3.4.20.92";
+const std::string strVersionNumber = "0.3.4.21.93";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -22,7 +22,8 @@ int displayedLanguage = EN;
  *
  */
 std::string stringRuleNumber = "Rule number";
-std::string stringElementaryCellularAutomata = "Elementary cellular automata"; // max 30 characters
+std::string stringElementaryCellularAutomata = "Elementary cellular automata";
+// max 30 characters
 std::string stringLangtonsAnt = "Langton's ant"; // max 30 characters
 std::string stringLangtonsHexagonalAnt = "Langton's hexagonal ant";
 std::string stringBooleanAutomata = "Boolean automata";
@@ -69,12 +70,16 @@ int changeTextLanguage(int language)
     {
         stringRuleNumber = "Rule number";
         
-        stringElementaryCellularAutomata = "Elementary cellular automata"; // max 30 characters
+        stringElementaryCellularAutomata = "Elementary cellular automata";
+        // max 30 characters
         stringLangtonsAnt = "Langton's ant"; // max 30 characters
-        stringLangtonsHexagonalAnt = "Langton's hexagonal ant"; // max 30 characters
+        stringLangtonsHexagonalAnt = "Langton's hexagonal ant";
+        // max 30 characters
         stringBooleanAutomata = "Boolean automata"; // max 30 characters
-        stringBooleanHexagonalAutomata = "Boolean hexagonal automata"; // max 30 characters
-        stringBooleanTriangularAutomata = "Boolean triangular automata"; // max 30 characters
+        stringBooleanHexagonalAutomata = "Boolean hexagonal automata";
+        // max 30 characters
+        stringBooleanTriangularAutomata = "Boolean triangular automata";
+        // max 30 characters
         stringConwaysGameOfLife = "Conway's game of life";
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringSelectColors = "Select colors"; // max 30 characters
@@ -112,19 +117,27 @@ int changeTextLanguage(int language)
     {
         stringRuleNumber = "Regla numero"; // It doesn't print 'ú'. Why?
         
-        stringElementaryCellularAutomata = "Automata celular elemental"; // max 30 characters
+        stringElementaryCellularAutomata = "Automata celular elemental";
+        // max 30 characters
         stringLangtonsAnt = "Hormiga de Langton"; // max 30 characters
-        stringLangtonsHexagonalAnt = "Hormiga de Langton hexagonal"; // max 30 characters
+        stringLangtonsHexagonalAnt = "Hormiga de Langton hexagonal";
+        // max 30 characters
         stringBooleanAutomata = "Automata booleano"; // max 30 characters
-        stringBooleanHexagonalAutomata = "Automata booleano hexagonal"; // max 30 characters
-        stringBooleanTriangularAutomata = "Automata booleano triangular"; // max 30 characters
+        stringBooleanHexagonalAutomata = "Automata booleano hexagonal";
+        // max 30 characters
+        stringBooleanTriangularAutomata = "Automata booleano triangular";
+        // max 30 characters
         stringConwaysGameOfLife = "Juego de la vida de Conway";
-        stringMunchingSquares = "Munching Squares"; // max 30 characters
-        stringSelectColors = "Seleccionar colores"; // max 30 characters        
+        stringMunchingSquares = "Munching Squares";
+        // max 30 characters
+        stringSelectColors = "Seleccionar colores";
+        // max 30 characters        
         stringBackToMainMenu = "Volver al menu principal"; // max 30 characters
         stringPopulation = "Populacion:";
 
-        stringAntsPixels = "Tamano (pixeles)"; // It doesn't print 'ñ'. Why? And "Tamano de la hormiga (pixeles)" is too long. Max 22 characters
+        stringAntsPixels = "Tamano (pixeles)";
+        // It doesn't print 'ñ'. Why?
+        // And "Tamano de la hormiga (pixeles)" is too long. Max 22 characters
         
         stringVonNeumannNeighborhood = "Vecindad de Von Neumann";
         stringMooreNeighborhood = "Vecindad de Moore";
@@ -155,12 +168,16 @@ int changeTextLanguage(int language)
     {
         stringRuleNumber = "Arau zenbakia";
         
-        stringElementaryCellularAutomata = "Oinarrizko automata zelularra"; // max 30 characters
+        stringElementaryCellularAutomata = "Oinarrizko automata zelularra";
+        // max 30 characters
         stringLangtonsAnt = "Langton-en inurria"; // max 30 characters
-        stringLangtonsHexagonalAnt = "Langton-en inurri hexagonala"; // max 30 characters
+        stringLangtonsHexagonalAnt = "Langton-en inurri hexagonala";
+        // max 30 characters
         stringBooleanAutomata = "Automata boolearra"; // max 30 characters
-        stringBooleanHexagonalAutomata = "Automata boolear hexagonala"; // max 30 characters
-        stringBooleanTriangularAutomata = "Automata boolear triangularra"; // max 30 characters
+        stringBooleanHexagonalAutomata = "Automata boolear hexagonala";
+        // max 30 characters
+        stringBooleanTriangularAutomata = "Automata boolear triangularra";
+        // max 30 characters
         stringConwaysGameOfLife = "Conway-ren biziaren jokoa";
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringSelectColors = "Hautatu koloreak"; // max 30 characters
