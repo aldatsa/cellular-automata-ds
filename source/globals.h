@@ -47,7 +47,8 @@
 #define EU 2
 
 /*
- * Constants to define the different initial states of the Conway's game of life
+ * Constants to define the different initial states of
+ * the Conway's game of life
  */
 #define ACORN 0
 #define FPENTOMINO 1
@@ -135,18 +136,21 @@
  ************************/
  
 /*
- * This variable sets the type of automata that is going to be executed (Uses the constants defined above)
+ * This variable sets the type of automata that is going to be executed
+ * (Uses the constants defined above)
  */
 extern int automataType;
 
 /*
- * This variable sets the menu that is going to be displayed (Uses the constants defined above)
+ * This variable sets the menu that is going to be displayed
+ * (Uses the constants defined above)
  */
 extern int displayedMenu;
 
 /* The position of the arrow
  * Select automata menu: ????
- * Elementary Cellular Automata: in the top screen (0-7) and in the bottom screen (8)
+ * Elementary Cellular Automata:
+ * in the top screen (0-7) and in the bottom screen (8)
  * Langton's ant: ????
  * Langton's hexagonal ant: ????
  * Boolean automata menu: ?????
