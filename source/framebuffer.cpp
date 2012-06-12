@@ -1,14 +1,17 @@
 #include <nds.h>
 #include "color.h"
-#include "flash.h"  // Include for the header of the flash image (grit outputs a nice header to reference data)
+#include "flash.h"  // Include for the header of the flash image
+                    // (grit outputs a nice header to reference data)
 
 /*
- * Pointer to the start of VRAM_A, the memory that we'll use as the main framebuffer
+ * Pointer to the start of VRAM_A, the memory that we'll use as
+ * the main framebuffer
  */ 
 unsigned short* fb = VRAM_A;
 
 /*
- * Pointer to the start of VRAM_B, the memory that we'll use as the secondary framebuffer
+ * Pointer to the start of VRAM_B, the memory that we'll use as
+ * the secondary framebuffer
  */ 
 unsigned short* fb2 = VRAM_B;
 
@@ -82,7 +85,11 @@ int showFlash()
 /*
  * Draws a horizontal line of the specified color
  */
-int drawHLine(int column, int row, int lenght, unsigned short color, unsigned short* framebuffer)
+int drawHLine(int column,
+              int row,
+              int lenght,
+              unsigned short color,
+              unsigned short* framebuffer)
 {
 	for(int i = column; i < column + lenght; i++)
 	{
@@ -105,10 +112,15 @@ int drawVLine(int column, int row, int lenght, unsigned short color)
 
 /*
  * Draws a rectangle, filled with FG_color or BG_color
- * This function is used by ca.drawRule() to draw the rectangles to visualize the current rule
+ * This function is used by ca.drawRule() to draw the rectangles
+ * to visualize the current rule
  * and in the color selection screen
  */
-int drawRectangle(bool fill, int intRowStart, int intColumnStart, int length, int width)
+int drawRectangle(bool fill,
+                  int intRowStart,
+                  int intColumnStart,
+                  int length,
+                  int width)
 {
 	// fill-> true, fill with FG_color		fill -> false, fill with BG_color
 
@@ -118,31 +130,38 @@ int drawRectangle(bool fill, int intRowStart, int intColumnStart, int length, in
 	
 	/*
 	 * It must be intRowStart + length - 1 and intColumnStart + width - 1
-	 * else we get this: (using intRowStart + length and intColumnStart + width)
+	 * else we get this:
+     * (using intRowStart + length and intColumnStart + width)
 	 * example: intRowStart = 0, intColumnStart = 0, length = 4, width = 4
 	 *    0 1 2 3 4 
-	 *  0 x x x x x    horizontal line from (0, 0) to (0, 3) and vertical line from (0, 0) to (3, 0)
+	 *  0 x x x x x    horizontal line from (0, 0) to (0, 3)
+     *                 and vertical line from (0, 0) to (3, 0)
 	 *  1 x o o o x    
 	 *  2 x o o o x 
 	 *  3 x o o o x  
-	 *  4 x x x x      horizontal line from (4, 0) to (4, 3) and vertical line from (4, 0) to (4, 3)
+	 *  4 x x x x      horizontal line from (4, 0) to (4, 3)
+     *                 and vertical line from (4, 0) to (4, 3)
 	 * 
 	 * The filling was like this:
-	 *	for(column = intColumnStart + 1; column < intColumnStart + width; column++)
+	 *	for(column = intColumnStart + 1;
+     *      column < intColumnStart + width; column++)
 	 *  {
 	 *	    for(row = intRowStart + 1; row < intRowStart + length; row++)
      *
 	 * But now it must be corrected to:
-	 *	for(column = intColumnStart + 1; column < intColumnStart + width - 1; column++)
+	 *	for(column = intColumnStart + 1;
+     *      column < intColumnStart + width - 1; column++)
 	 *  {
 	 *  	for(row = intRowStart + 1; row < intRowStart + length - 1; row++)
      *
      * This way we get the correct drawing:
 	 *    0 1 2 3 
-	 *  0 x x x x    horizontal line from (0, 0) to (0, 3) and vertical line from (0, 0) to (3, 0)
+	 *  0 x x x x    horizontal line from (0, 0) to (0, 3) 
+     *               and vertical line from (0, 0) to (3, 0)
 	 *  1 x o o x    
 	 *  2 x o o x 
-	 *  3 x x x x    horizontal line from (3, 0) to (3, 3) and vertical line from (3, 0) to (3, 3)     
+	 *  3 x x x x    horizontal line from (3, 0) to (3, 3)
+     *               and vertical line from (3, 0) to (3, 3)     
 	 */ 
 	drawHLine(intColumnStart, intRowStart, width, line_color, fb);
 	drawHLine(intColumnStart, intRowStart + length - 1, width, line_color, fb);
@@ -158,7 +177,8 @@ int drawRectangle(bool fill, int intRowStart, int intColumnStart, int length, in
 		color = BG_color;
 	}
 	
-	for(column = intColumnStart + 1; column < intColumnStart + width - 1; column++)
+	for(column = intColumnStart + 1;
+        column < intColumnStart + width - 1; column++)
 	{
 		for(row = intRowStart + 1; row < intRowStart + length - 1; row++)
 		{
