@@ -7,6 +7,9 @@ int hexGridLineThree(int y);
 
 int drawHexGrid();
 
-int paintHexCell(int intPosX, int intPosY, unsigned short color, unsigned short* framebuffer);
+int paintHexCell(int intPosX,
+                 int intPosY,
+                 unsigned short color,
+                 unsigned short* framebuffer);
 
 #endif

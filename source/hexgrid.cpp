@@ -74,9 +74,13 @@ int drawHexGrid()
 }
 
 /*
- * Draws the hexagonal cell in the coordinates (intPosX, intPosY) of the specified framebuffer with the specified color
+ * Draws the hexagonal cell in the coordinates (intPosX, intPosY) of the
+ * specified framebuffer with the specified color
  */
-int paintHexCell(int intPosX, int intPosY, unsigned short color, unsigned short* framebuffer)
+int paintHexCell(int intPosX,
+                 int intPosY,
+                 unsigned short color,
+                 unsigned short* framebuffer)
 {
 
 	drawHLine(intPosX, intPosY, 3, color, framebuffer);
