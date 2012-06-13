@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.3.4.23.95";
+const std::string strVersionNumber = "0.4.0.0.96";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h

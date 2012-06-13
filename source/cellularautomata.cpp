@@ -1,4 +1,7 @@
 #include <cmath>    // To calculate powers of 2 in the getRuleNumber function. Is it possible to do it in a more simple way? Using binary operators?
+#include <stdlib.h>
+#include <time.h>
+
 #include <nds.h>
 
 #include "cellularautomata.h"
@@ -298,12 +301,37 @@ int CellularAutomata::updateECAruleColors()
 /*
  * Paints the initial cell in the center of the first row for the Elementary Cellular Automata
  */
-int CellularAutomata::paintInitialCell()
+int CellularAutomata::paintInitialState()
 {
-    fb[128] = FG_color;
+    if (ECA_initial_state == ECA_INITIALIZE_ONE_CELL)
+    {
+        fb[128] = FG_color;
     
-    ++population; // The population of alive cells increases
+        ++population; // The population of alive cells increases
+    }
+    else if (ECA_initial_state == ECA_INITIALIZE_RANDOM)
+    {
+        // TODO
+        int rand_value = 0;
+        srand(time(0));
 
+        for (int i = 0; i < SCREEN_WIDTH; ++i)
+        {
+            // Initialize random seed
+            //srand (time(0));
+
+            // Create random value (0 or 1)
+            rand_value = rand() % 2;
+
+            // If the value is 1, paint the corresponding cell with
+            // FG_color and add 1 to the population count
+            if (rand_value == 1)
+            {
+                fb[i] = FG_color;
+                ++population;
+            }
+        }
+    }
     return 0;
 }
 
@@ -551,7 +579,7 @@ int CellularAutomata::resetECA()
     numSteps = 0;   // Reset the number of steps to 0
     population = 0; // Reset the population of "alive" cells to 0
 
-    paintInitialCell();
+    paintInitialState();
     
     return 0;
 }
@@ -571,9 +599,19 @@ int CellularAutomata::initialize()
     if (type == ELEMENTARY_CELLULAR_AUTOMATA)
     {
         updateECAruleColors();
-        
-        paintInitialCell(); // Paints the initial cell in the center of the first row (fb[128] = FG_color)
-        drawAllRules(); // Draw the rules that correspond to the default rule (Rule 90, set in updateECAruleColors())
+
+        // This configuration is for painting the initial cell in
+        // the center of the first row (fb[128] = FG_color)
+        //ECA_initial_state = ECA_INITIALIZE_ONE_CELL;        
+        ECA_initial_state = ECA_INITIALIZE_RANDOM;
+
+        // Paint the first row of the automata that corresponds to the
+        // state set using ECA_initial_state
+        paintInitialState();
+
+        // Draw the rules that correspond to the default rule
+        // (Rule 90, set in updateECAruleColors())
+        drawAllRules();
     }
     else if (type == LANGTON_HEXAGONAL_ANT)
     { 

@@ -56,6 +56,13 @@
 #define FILL_SCREEN_WITH_PENTADECATHLONS 3
 
 /*
+ * Constants to define the different initial states of
+ * the Elementary Cellular Automata
+ */
+#define ECA_INITIALIZE_ONE_CELL 0
+#define ECA_INITIALIZE_RANDOM 1
+
+/*
  * Constants to define the column where each thing is printed
  */
 

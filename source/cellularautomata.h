@@ -12,12 +12,13 @@ class CellularAutomata
         int paintECAcell(int row, int col, unsigned short color);
         
         // For the Elementary Cellular Automata
+        int ECA_initial_state;
         unsigned short ruleLeft[8];
         unsigned short ruleCenter[8];
         unsigned short ruleRight[8];
         unsigned short ruleDown[8];
         int updateECAruleColors();
-        int paintInitialCell();
+        int paintInitialState();
         int drawAllRules();
 
         // For the Langton's ants (normal and hexagonal)
