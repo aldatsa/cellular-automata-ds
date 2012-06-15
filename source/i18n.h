@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.4.0.1.97";
+const std::string strVersionNumber = "0.4.0.2.98";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -56,6 +56,10 @@ std::string stringSelectLanguage = "Select language";
 std::string stringEnglish = "English";
 std::string stringEspanol = "Espanol";
 std::string stringEuskara = "Euskara";
+std::string string1234 = "1    2    3    4";
+std::string string5678 = "5    6    7    8";
+std::string string123 = "1    2    3";
+std::string string456 = "4    5    6"; 
 
 /*
  * Changes the language of the strings of text to the selected language

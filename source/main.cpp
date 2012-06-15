@@ -198,13 +198,13 @@ int printMenu(int intDisplayedMenu)
         printString(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW, 3,
                     stringVonNeumannNeighborhood);
         printString(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 6,
-                    "1    2    3    4");
+                    string1234);
         printString(BA_MENU_MOORE_NEIGHBORHOOD_ROW, 3,
                     stringMooreNeighborhood);
         printString(BA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 6,
-                    "1    2    3    4");
+                    string1234);
         printString(BA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 6,
-                    "5    6    7    8");        
+                    string5678);        
         printString(BA_MENU_BACK_TO_MAIN_ROW, 2,
                     stringBackToMainMenu);
     }
@@ -212,8 +212,8 @@ int printMenu(int intDisplayedMenu)
     {
         printPopulation();
         printString(BHA_MENU_NEIGHBORHOOD_ROW, 2, stringNeighborhood);
-        printString(BHA_MENU_NEIGHBORHOOD_123_ROW, 6, "1    2    3");
-        printString(BHA_MENU_NEIGHBORHOOD_456_ROW, 6, "4    5    6");
+        printString(BHA_MENU_NEIGHBORHOOD_123_ROW, 6, string123);
+        printString(BHA_MENU_NEIGHBORHOOD_456_ROW, 6, string456);
         printString(BHA_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
     }
     else if (displayedMenu == BOOLEAN_TRIANGULAR_AUTOMATA)
@@ -221,14 +221,14 @@ int printMenu(int intDisplayedMenu)
         printPopulation();
         printString(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW, 3,
                     stringVonNeumannNeighborhood);
-        printString(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 6,
-                    "1    2    3");
+        printString(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW, 6,
+                    string123);
         printString(BTA_MENU_MOORE_NEIGHBORHOOD_ROW, 3,
                     stringMooreNeighborhood);
         printString(BTA_MENU_MOORE_NEIGHBORHOOD_1234_ROW, 6,
-                    "1    2    3    4");
+                    string1234);
         printString(BTA_MENU_MOORE_NEIGHBORHOOD_5678_ROW, 6,
-                    "5    6    7    8");        
+                    string5678);        
         printString(BTA_MENU_BACK_TO_MAIN_ROW, 2,
                     stringBackToMainMenu);
     }
@@ -491,29 +491,29 @@ int printMenuAsterisks(int intDisplayedMenu)
         // For the boolean triangular automata with Von Neumann neighborhood
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 0))
         {
-            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 5);
+            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW, 5);
         }
         else
         {
-            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 5);
+            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW, 5);
         }
         
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 1))
         {
-            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 10);
+            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW, 10);
         }
         else
         {
-            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 10);
+            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW, 10);
         }
                 
         if (ca.checkBooleanRuleValue(VON_NEUMANN_NEIGHBORHOOD, 2))
         {
-            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 15);
+            printAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW, 15);
         }
         else
         {
-            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW, 15);
+            deleteAsterisk(BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW, 15);
         }
 
         // {1, 2, 3, 4, 5, 6, 7, 8}
@@ -845,17 +845,17 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         }
         else if (index == 1) // 1
         {
-            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
+            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW;
             column = 3;
         }
         else if (index == 2) // 2
         {
-            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
+            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW;
             column = 8;
         }
         else if (index == 3) // 3
         {
-            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_1234_ROW;
+            row = BTA_MENU_VON_NEUMANN_NEIGHBORHOOD_123_ROW;
             column = 13;
         }
         else if (index == 4) // Moore neighborhood
