@@ -55,6 +55,8 @@ class CellularAutomata
         unsigned short getRuleDown(int index);
         int setRuleDown(int index, unsigned short color);
         int resetECA();
+        int setInitialStateType(int initialStateType);
+        int getInitialStateType();
 
         int setAntNumPixels(int numPixels);
         int getAntNumPixels();

@@ -487,6 +487,18 @@ unsigned int CellularAutomata::getPopulation()
     return population;
 }
 
+int CellularAutomata::getInitialStateType()
+{
+    return ECA_initial_state;
+}
+
+int CellularAutomata::setInitialStateType(int initialStateType)
+{
+    ECA_initial_state = initialStateType;
+
+    return 0;
+}
+
 int CellularAutomata::setAntNumPixels(int numPixels)
 {
     antNumPixels = numPixels;
@@ -602,8 +614,8 @@ int CellularAutomata::initialize()
 
         // This configuration is for painting the initial cell in
         // the center of the first row (fb[128] = FG_color)
-        //ECA_initial_state = ECA_INITIALIZE_ONE_CELL;        
-        ECA_initial_state = ECA_INITIALIZE_RANDOM;
+        ECA_initial_state = ECA_INITIALIZE_ONE_CELL;        
+        //ECA_initial_state = ECA_INITIALIZE_RANDOM;
 
         // Paint the first row of the automata that corresponds to the
         // state set using ECA_initial_state

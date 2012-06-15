@@ -179,7 +179,19 @@ int printMenu(int intDisplayedMenu)
     else if (displayedMenu == ELEMENTARY_CELLULAR_AUTOMATA)
     {
         printPopulation();
-        printString(ECA_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
+
+        printString(ECA_MENU_INITIAL_STATE_ROW,
+                    ECA_MENU_INITIAL_STATE_COLUMN,
+                    stringInitialState);
+        printString(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
+                    ECA_MENU_INITIAL_STATE_ONE_CELL_COLUMN,
+                    stringOneCell);
+        printString(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
+                    ECA_MENU_INITIAL_STATE_RANDOM_COLUMN,
+                    stringRandom);
+        printString(ECA_MENU_BACK_TO_MAIN_ROW,
+                    ECA_MENU_BACK_TO_MAIN_COLUMN,
+                    stringBackToMainMenu);
     }
     else if (displayedMenu == LANGTON_ANT)
     {
@@ -290,10 +302,22 @@ int printMenu(int intDisplayedMenu)
  */
 int printMenuAsterisks(int intDisplayedMenu)
 {
-    
-    if (intDisplayedMenu == BOOLEAN_AUTOMATA)
+    if (intDisplayedMenu == ELEMENTARY_CELLULAR_AUTOMATA)
     {
-        if (ca.getTypeOfNeighborhood() == 0)
+        if (ca.getInitialStateType() == ECA_INITIALIZE_ONE_CELL)
+        {
+            printAsterisk(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
+                          ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COLUMN);
+        }
+        else if (ca.getInitialStateType() == ECA_INITIALIZE_RANDOM)
+        {
+            printAsterisk(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
+                          ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COLUMN);
+        }
+    }
+    else if (intDisplayedMenu == BOOLEAN_AUTOMATA)
+    {
+        if (ca.getTypeOfNeighborhood() == VON_NEUMANN_NEIGHBORHOOD)
         {
             printAsterisk(BA_MENU_VON_NEUMANN_NEIGHBORHOOD_ROW, 2);
             deleteAsterisk(BA_MENU_MOORE_NEIGHBORHOOD_ROW, 2);
@@ -701,6 +725,16 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     else if (intDisplayedMenu == ELEMENTARY_CELLULAR_AUTOMATA)
     {
         if (index == 8)
+        {
+            row = ECA_MENU_INITIAL_STATE_ONE_CELL_ROW;
+            column = ECA_MENU_INITIAL_STATE_ONE_CELL_ARROW_COLUMN;
+        }
+        if (index == 9)
+        {
+            row = ECA_MENU_INITIAL_STATE_RANDOM_ROW;
+            column = ECA_MENU_INITIAL_STATE_RANDOM_ARROW_COLUMN;
+        }
+        else if (index == 10)
         {
             row = ECA_MENU_BACK_TO_MAIN_ROW;
         }
@@ -1331,11 +1365,12 @@ int main(void)
                     printPopulation();
                 }
 
-                if ((automataType == BOOLEAN_AUTOMATA) ||
-                    (automataType == BOOLEAN_HEXAGONAL_AUTOMATA) ||
-                    (automataType == BOOLEAN_TRIANGULAR_AUTOMATA) ||
-                    (automataType == CONWAYS_GAME_OF_LIFE) ||
-                    (automataType == SELECT_LANGUAGE))
+                if (automataType == ELEMENTARY_CELLULAR_AUTOMATA ||
+                    automataType == BOOLEAN_AUTOMATA ||
+                    automataType == BOOLEAN_HEXAGONAL_AUTOMATA ||
+                    automataType == BOOLEAN_TRIANGULAR_AUTOMATA ||
+                    automataType == CONWAYS_GAME_OF_LIFE ||
+                    automataType == SELECT_LANGUAGE)
                 {
                     printMenuAsterisks(automataType);
                 }
@@ -1351,7 +1386,7 @@ int main(void)
 
 		    if(keys_released & KEY_A)
 		    {
-		        if (intArrow < 8)
+		        if (intArrow < 8) // Top screen (Automata rules)
 		        {
 			        if(ca.getRuleDown(intArrow) == FG_color)
 			        {
@@ -1370,8 +1405,36 @@ int main(void)
 
                     printPopulation();
                 }
-                // Go back to the selection of the type of automata
+                // Initial state: One cell
                 else if (intArrow == 8)
+                {
+                    ca.setInitialStateType(ECA_INITIALIZE_ONE_CELL);
+
+                    ca.resetECA();
+
+                    printPopulation();
+
+                    printAsterisk(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
+                                  ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COLUMN);
+                    deleteAsterisk(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
+                                  ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COLUMN);
+                }
+                // Initial state: Random
+                else if (intArrow == 9) 
+                {
+                    ca.setInitialStateType(ECA_INITIALIZE_RANDOM);
+
+                    ca.resetECA();
+
+                    printPopulation();
+
+                    deleteAsterisk(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
+                                   ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COLUMN);
+                    printAsterisk(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
+                                  ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COLUMN);
+                }
+                // Go back to the selection of the type of automata
+                else if (intArrow == 10)
                 {
                     showAutomataTypeMenu();
                 }
@@ -1427,9 +1490,13 @@ int main(void)
 			    {
 			        intArrow = 4;
 			    }
+                else if(intArrow == 9 || intArrow == 10)
+                {
+                    intArrow = intArrow - 1;
+                }
 			    else if(intArrow < 4)
 			    {
-				    intArrow = 8;
+				    intArrow = 10;
 			    }
 			    else
 			    {
@@ -1456,10 +1523,14 @@ int main(void)
 			        printMenuArrow(displayedMenu, intArrow, true);			        
 			    }
 
-			    if (intArrow == 8)
+			    if (intArrow == 10)
 			    {
 			        intArrow = 0;
-			    }			
+			    }
+                else if (intArrow == 8 || intArrow == 9)
+                {
+                    intArrow = intArrow + 1;
+                }
 			    else if(intArrow < 4)
 			    {
 				    intArrow = intArrow + 4;

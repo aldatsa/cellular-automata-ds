@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.4.0.2.98";
+const std::string strVersionNumber = "0.4.1.0.99";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -34,6 +34,8 @@ std::string stringMunchingSquares = "Munching Squares";
 std::string stringSelectColors = "Select colors";
 std::string stringBackToMainMenu = "Back to main menu";
 std::string stringPopulation = "Population:";
+std::string stringOneCell = "One cell";
+std::string stringRandom = "Random";
 std::string stringAntsPixels = "Ant's size (pixels)";
 std::string stringVonNeumannNeighborhood = "Von Neumann neighborhood";
 std::string stringMooreNeighborhood = "Moore neighborhood";
@@ -90,6 +92,9 @@ int changeTextLanguage(int language)
         stringBackToMainMenu = "Back to main menu"; // max 30 characters
         stringPopulation = "Population:";
 
+        stringOneCell = "One cell";
+        stringRandom = "Random";
+
         stringAntsPixels = "Ant's size (pixels)"; // Max 22 characters
         
         stringVonNeumannNeighborhood = "Von Neumann neighborhood";
@@ -139,6 +144,9 @@ int changeTextLanguage(int language)
         stringBackToMainMenu = "Volver al menu principal"; // max 30 characters
         stringPopulation = "Populacion:";
 
+        stringOneCell = "Una celda";
+        stringRandom = "Aleatorio";
+
         stringAntsPixels = "Tamano (pixeles)";
         // It doesn't print 'ñ'. Why?
         // And "Tamano de la hormiga (pixeles)" is too long. Max 22 characters
@@ -187,6 +195,9 @@ int changeTextLanguage(int language)
         stringSelectColors = "Hautatu koloreak"; // max 30 characters
         stringBackToMainMenu = "Itzuli menu nagusira"; // max 30 characters
         stringPopulation = "Populazioa:";
+
+        stringOneCell = "Gelaxka bat";
+        stringRandom = "Ausazkoa";
 
         stringAntsPixels = "Tamaina (pixelak)"; // Max 23 characters
         
