@@ -25,10 +25,12 @@ class CellularAutomata
         unsigned short antPosX;
         unsigned short antPosY;
         unsigned short antAngle;
-        unsigned short antNumPixels; // Only used by the normal ant not by the hexagonal one
+        unsigned short antNumPixels; // Only used by the normal ant
+                                     // not by the hexagonal one
         bool antFinished;    
 
-        int booleanRuleValues[2]; // 0: Von Neumann neighborhood, 1: Moore neighborhood
+        int booleanRuleValues[2]; // 0: Von Neumann neighborhood
+                                  // 1: Moore neighborhood
         int typeOfNeighborhood;
 
         int rotateAnt(unsigned char rotateTo);
@@ -38,7 +40,10 @@ class CellularAutomata
         int initialState;
         int drawInitialState();
 
-        int drawMunchingSquare(int column, int row, int width, unsigned short color);
+        int drawMunchingSquare(int column,
+                               int row,
+                               int width,
+                               unsigned short color);
 
     public:
         int setType(int t);
