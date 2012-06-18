@@ -30,8 +30,9 @@
 #define BOOLEAN_TRIANGULAR_AUTOMATA 6
 #define CONWAYS_GAME_OF_LIFE 7
 #define MUNCHING_SQUARES 8
-#define SELECT_COLORS 9
-#define SELECT_LANGUAGE 10
+#define BML_TRAFFIC_MODEL 9
+#define SELECT_COLORS 10
+#define SELECT_LANGUAGE 11
 
 /*
  * Constants to define the type of neighborhood
@@ -71,6 +72,10 @@
 #define NUM_STEPS_COLUMN 0
 #define RULE_NUMBER_COLUMN 0
 
+// Automata selection menu
+#define AUTOMATA_TYPE_MENU_BML_COL 2
+#define AUTOMATA_TYPE_MENU_BML_ARROW_COL 0
+
 // Elementary Cellular Automata menu
 #define ECA_MENU_INITIAL_STATE_COLUMN 2
 #define ECA_MENU_INITIAL_STATE_ONE_CELL_COLUMN 5
@@ -83,6 +88,10 @@
 
 // Munching squares
 #define MS_MENU_BACK_TO_MAIN_COLUMN 2
+
+// BML traffic model
+#define BML_MENU_BACK_TO_MAIN_COL 2
+#define BML_MENU_BACK_TO_MAIN_ARROW_COL 0
 
 /*
  * Constants to define the row where each thing is printed
@@ -102,8 +111,9 @@
 #define AUTOMATA_TYPE_MENU_BTA_ROW 13
 #define AUTOMATA_TYPE_MENU_CGL_ROW 14
 #define AUTOMATA_TYPE_MENU_MS_ROW 15
-#define AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW 16
-#define AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW 17
+#define AUTOMATA_TYPE_MENU_BML_ROW 16
+#define AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW 17
+#define AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW 18
 
 // Elementary Cellular Automata menu
 #define ECA_MENU_INITIAL_STATE_ROW 12
@@ -150,6 +160,9 @@
 
 // Munching squares
 #define MS_MENU_BACK_TO_MAIN_ROW 13 
+
+// BML traffic model
+#define BML_MENU_BACK_TO_MAIN_ROW 13
 
 /************************
  *   GLOBAL VARIABLES   *

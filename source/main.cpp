@@ -171,6 +171,9 @@ int printMenu(int intDisplayedMenu)
                     stringConwaysGameOfLife);
         printString(AUTOMATA_TYPE_MENU_MS_ROW, 2,
                     stringMunchingSquares);
+        printString(AUTOMATA_TYPE_MENU_BML_ROW,
+                    AUTOMATA_TYPE_MENU_BML_COL,
+                    stringBMLtrafficModel);
         printString(AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW, 2,
                     stringSelectColors);
         printString(AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW, 2,
@@ -264,6 +267,12 @@ int printMenu(int intDisplayedMenu)
     {
         printString(MS_MENU_BACK_TO_MAIN_ROW, 
                     MS_MENU_BACK_TO_MAIN_COLUMN,
+                    stringBackToMainMenu);
+    }
+    else if (displayedMenu == BML_TRAFFIC_MODEL)
+    {
+        printString(BML_MENU_BACK_TO_MAIN_ROW,
+                    BML_MENU_BACK_TO_MAIN_COL,
                     stringBackToMainMenu);
     }
     else if (displayedMenu == SELECT_COLORS)
@@ -711,7 +720,12 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         else if (index == MUNCHING_SQUARES)
         {    
             row = AUTOMATA_TYPE_MENU_MS_ROW;
-        }        
+        }
+        else if (index == BML_TRAFFIC_MODEL)
+        {
+            row = AUTOMATA_TYPE_MENU_BML_ROW;
+            column = AUTOMATA_TYPE_MENU_BML_ARROW_COL;
+        }
         else if (index == SELECT_COLORS)
         {
             row = AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW;
@@ -973,6 +987,14 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = MS_MENU_BACK_TO_MAIN_ROW; // Back to main menu
         }
     }
+    else if (intDisplayedMenu == BML_TRAFFIC_MODEL)
+    {
+        if (index == 0)
+        {
+            row = BML_MENU_BACK_TO_MAIN_ROW; // Back to main menu
+            column = BML_MENU_BACK_TO_MAIN_ARROW_COL;
+        }
+    }
     else if (intDisplayedMenu == SELECT_COLORS)
     {
         if (index == 0) // BG red
@@ -1111,6 +1133,11 @@ int printAutomataType(int automataType)
         printf("%s", stringMunchingSquares.c_str());
     }
     
+    else if (automataType == BML_TRAFFIC_MODEL)
+    {
+        printf("%s", stringBMLtrafficModel.c_str());
+    }
+
     return 0;
 }
 
@@ -1360,7 +1387,8 @@ int main(void)
                     automataType == BOOLEAN_AUTOMATA ||
                     automataType == BOOLEAN_HEXAGONAL_AUTOMATA ||
                     automataType == BOOLEAN_TRIANGULAR_AUTOMATA ||
-                    automataType == CONWAYS_GAME_OF_LIFE)
+                    automataType == CONWAYS_GAME_OF_LIFE ||
+                    automataType == BML_TRAFFIC_MODEL)
                 {
                     printPopulation();
                 }
@@ -2189,15 +2217,37 @@ int main(void)
          */
         else if (displayedMenu == MUNCHING_SQUARES)
         {
-  		    if(keys_released & KEY_A)
-  		    {
-                if (intArrow == 0) // Back to main menu
-  		        {
-  		            showAutomataTypeMenu();
-  		        }
-  		    }
-            
             ca.nextStep();
+
+            printNumSteps();
+            printPopulation();
+
+            if(keys_released & KEY_A)
+            {
+                if (intArrow == 4)
+                {
+                    // Go back to the selection of the type of automata
+                    showAutomataTypeMenu();
+                }
+            }
+        }
+        /*
+         * BML traffic model
+         */
+        else if (displayedMenu == BML_TRAFFIC_MODEL)
+        {
+            ca.nextStep();
+
+            printNumSteps();
+            printPopulation();
+
+            if(keys_released & KEY_A)
+            {
+                if (intArrow == 0) // Back to main menu
+                {
+                    showAutomataTypeMenu();
+                }
+            }
         }
         /*
          * Color selection menu

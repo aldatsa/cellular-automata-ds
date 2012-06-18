@@ -16,6 +16,7 @@ DONE 2012-05-24 * Unify the different print???Asterisks functions
 
 DONE 2012-05-27 * Write rules for version numbering
 
+DONE 2012-06-15 * Create string for "1    2    3    4" and similars
 
 * Must be refactored:
     * CellularAutomata::rotateAnt
@@ -44,4 +45,4 @@ DONE 2012-05-27 * Write rules for version numbering
     * DONE 2012-06-05 Rev.82 Boolean triangular automata
     * DONE 2012-06-05 Rev.83 Conway's game of life
 
-* Create string for "1    2    3    4" and similars
+* Add Biham-Middleton-Levine Traffic Model automata

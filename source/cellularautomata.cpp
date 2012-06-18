@@ -693,7 +693,20 @@ int CellularAutomata::initialize()
 
         drawInitialState();
     }
+    else if (type == BML_TRAFFIC_MODEL)
+    {
+        showFB();
+        dmaCopy(fb, fb2, 128* 1024);
+        showFB2();
 
+        cleanFB(fb);
+        cleanFB(fb2);
+
+        // TODO: Substitute the next 2 lines with random initial values
+        fb[SCREEN_WIDTH * 96] = RGB15(31,0,0);
+        fb[128] = FG_color;
+        ++population;
+    }
     return 0;
 }
 
@@ -1418,7 +1431,63 @@ int CellularAutomata::nextStep()
             swiWaitForVBlank();
         }
     }
-	return 0;
+    else if(type == BML_TRAFFIC_MODEL)
+    {
+    
+        unsigned short* fbRef;
+        unsigned short* fbNew;
+
+        int countFG = 0;
+ 
+        int previousCellStep = 0; // 1 or SCREEN_WIDTH (256)
+        unsigned short currentColor = 0;
+        unsigned short FG_color2 = RGB15(31, 0, 0); // TODO: Create global color FG_color2
+        
+        ++numSteps;
+
+        if (numSteps % 2 == 0 and numSteps != 1)
+        {
+            fbRef = fb2;
+            fbNew = fb;
+            previousCellStep = SCREEN_WIDTH;
+            currentColor = FG_color;
+        }
+        else
+        {
+            fbRef = fb;
+            fbNew = fb2;
+            previousCellStep = 1;
+            currentColor = FG_color2;
+        }
+
+        dmaCopy(fbRef, fbNew, 128*1024);
+
+        for (int i = 1; i < SCREEN_WIDTH; ++i)
+        {
+            for (int j = 1; j < SCREEN_HEIGHT; ++j)
+            {
+                countFG = 0;        
+
+                if (fbRef[SCREEN_WIDTH * j + i - previousCellStep] == currentColor &&
+                    fbRef[SCREEN_WIDTH * j + i] == BG_color)
+                {
+                    fbNew[SCREEN_WIDTH * j + i] = currentColor;
+                    ++population;
+                }            
+            }
+        }
+        
+        if (numSteps % 2 == 0 and numSteps != 1)
+        {
+            showFB();
+        }
+        else
+        {
+            showFB2();
+        }
+        swiWaitForVBlank();
+    }
+    return 0;
 }
 
 /*
