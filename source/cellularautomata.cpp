@@ -726,6 +726,7 @@ int CellularAutomata::initialize()
         fb[228] = FG_color;
         */
     
+        /*
         int tmpVpixels = 140;
         int tmpHpixels = 200;
 
@@ -745,6 +746,28 @@ int CellularAutomata::initialize()
              i != random_h_pixels.size(); i++)
         {
             fb[random_h_pixels[i]] = FG_color;
+        }
+        */
+
+        BML_density = 0.3;
+        int total_pixels = SCREEN_WIDTH * SCREEN_HEIGHT;
+        int vector_length = BML_density * total_pixels;
+
+        std::vector<int> random_pixels = get_random_int_vector(vector_length,
+                                                               0,
+                                                               total_pixels);
+        for (std::vector<int>::size_type i = 0;
+             i != random_pixels.size(); i++)
+        {
+            if (i % 2 == 0)
+            {
+                fb[random_pixels[i]] = FG_color;
+            }
+            else
+            {
+                fb[random_pixels[i]] = RGB15(31,0,0);
+            }
+            ++population;
         }
     }
     return 0;

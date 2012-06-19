@@ -45,7 +45,7 @@ class CellularAutomata
                                int width,
                                unsigned short color);
         //BML traffic model
-        int BML_density;
+        double BML_density;
 
     public:
         int setType(int t);
