@@ -1,6 +1,8 @@
 #include <cmath>    // To calculate powers of 2 in the getRuleNumber function. Is it possible to do it in a more simple way? Using binary operators?
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
+#include <stdio.h>
 
 #include <nds.h>
 
@@ -11,6 +13,7 @@
 #include "triangulargrid.h"
 #include "globals.h"
 #include "initialConditions.h"
+#include "random_numbers.h"
 
 /*
  * References:
@@ -703,9 +706,46 @@ int CellularAutomata::initialize()
         cleanFB(fb2);
 
         // TODO: Substitute the next 2 lines with random initial values
+        //fb[SCREEN_WIDTH * 96] = RGB15(31,0,0);
+        //fb[128] = FG_color;
+        //population = population + 2;
+
+        /*
+        fb[SCREEN_WIDTH * 16] = RGB15(31,0,0);
+        fb[SCREEN_WIDTH * 56] = RGB15(31,0,0);
         fb[SCREEN_WIDTH * 96] = RGB15(31,0,0);
+        fb[SCREEN_WIDTH * 106] = RGB15(31,0,0);
+        fb[SCREEN_WIDTH * 144] = RGB15(31,0,0);
+        fb[SCREEN_WIDTH * 165] = RGB15(31,0,0);
+
+        fb[12] = FG_color;
+        fb[42] = FG_color;
+        fb[78] = FG_color;
         fb[128] = FG_color;
-        ++population;
+        fb[156] = FG_color;
+        fb[228] = FG_color;
+        */
+    
+        int tmpVpixels = 140;
+        int tmpHpixels = 200;
+
+        std::vector<int> random_v_pixels = get_random_int_vector(tmpVpixels,
+                                                                 1,
+                                                                 191);
+        for (std::vector<int>::size_type i = 0;
+             i != random_v_pixels.size(); i++)
+        {
+            fb[SCREEN_WIDTH * random_v_pixels[i]] = RGB15(31,0,0);
+        }
+
+        std::vector<int> random_h_pixels = get_random_int_vector(tmpHpixels,
+                                                                 1,
+                                                                 255);
+        for (std::vector<int>::size_type i = 0;
+             i != random_h_pixels.size(); i++)
+        {
+            fb[random_h_pixels[i]] = FG_color;
+        }
     }
     return 0;
 }
@@ -1471,9 +1511,33 @@ int CellularAutomata::nextStep()
                 if (fbRef[SCREEN_WIDTH * j + i - previousCellStep] == currentColor &&
                     fbRef[SCREEN_WIDTH * j + i] == BG_color)
                 {
-                    fbNew[SCREEN_WIDTH * j + i] = currentColor;
-                    ++population;
-                }            
+                    if (i != SCREEN_WIDTH - 1 && j != SCREEN_HEIGHT - 1)
+                    {
+                        fbNew[SCREEN_WIDTH * j + i] = currentColor;
+                    }
+                    else
+                    {
+                        // Left to right, reached the right side
+                        // and the first cell of the row is empty
+                        if (i == SCREEN_WIDTH - 1 &&
+                            previousCellStep == 1 &&
+                            fbRef[SCREEN_WIDTH * j] == BG_color)
+                        {
+                            // goes back to the left side
+                            fbNew[SCREEN_WIDTH * j] = currentColor;
+                        }
+                        // Top to down, reached the bottom
+                        // and the first cell of the col is empty
+                        if (j == SCREEN_HEIGHT - 1 &&
+                            previousCellStep == SCREEN_WIDTH &&
+                            fbRef[i] == BG_color)
+                        {
+                            // goes back to the top
+                            fbNew[i] = currentColor;
+                        }
+                    }
+                    fbNew[SCREEN_WIDTH * j + i - previousCellStep] = BG_color;
+               }
             }
         }
         
