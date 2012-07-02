@@ -2224,7 +2224,7 @@ int main(void)
 
             if(keys_released & KEY_A)
             {
-                if (intArrow == 4)
+                if (intArrow == 0)
                 {
                     // Go back to the selection of the type of automata
                     showAutomataTypeMenu();

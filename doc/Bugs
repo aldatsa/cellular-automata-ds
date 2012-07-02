@@ -11,7 +11,7 @@ FIXED 2012-05-27 * The alive cells from the top row (row #0) are not included in
 
 * Changing the rules of the neighborhood that is not currently selected should not initialize the automata in the Boolean Square and Triangular Automata.
 
-* Can't go back to the main menu from the munching squares menu:
+FIXED 2012-07-02 * Can't go back to the main menu from the munching squares menu:
 
     intArrow should be 0 here:
         if (intArrow == 4)
