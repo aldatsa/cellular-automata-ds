@@ -38,7 +38,12 @@
  * http://www.conwaylife.com/wiki/Main_Page
  * http://www.argentum.freeserve.co.uk/lex_home.htm (Stephen Silver's Life Lexicon)
  * http://www.ericweisstein.com/encyclopedias/life/ (Eric Weisstein's Treasure Trove of the Life Cellular Automaton)
- * 
+ *
+ * BIHAM-MIDDLETON-LEVINE TRAFFIC MODEL:
+ * http://en.wikipedia.org/wiki/Biham-Middleton-Levine_traffic_model
+ * http://www.jasondavies.com/bml/
+ * http://mae.ucdavis.edu/dsouza/bml.html
+ * http://openprocessing.org/sketch/27491 
  */
 
 //*************************************PRIVATE*******************************************
