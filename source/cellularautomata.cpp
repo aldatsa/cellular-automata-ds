@@ -710,51 +710,8 @@ int CellularAutomata::initialize()
         cleanFB(fb);
         cleanFB(fb2);
 
-        // TODO: Substitute the next 2 lines with random initial values
-        //fb[SCREEN_WIDTH * 96] = RGB15(31,0,0);
-        //fb[128] = FG_color;
-        //population = population + 2;
+        BML_density = 0.3; // TODO: Create a class variable for the density
 
-        /*
-        fb[SCREEN_WIDTH * 16] = RGB15(31,0,0);
-        fb[SCREEN_WIDTH * 56] = RGB15(31,0,0);
-        fb[SCREEN_WIDTH * 96] = RGB15(31,0,0);
-        fb[SCREEN_WIDTH * 106] = RGB15(31,0,0);
-        fb[SCREEN_WIDTH * 144] = RGB15(31,0,0);
-        fb[SCREEN_WIDTH * 165] = RGB15(31,0,0);
-
-        fb[12] = FG_color;
-        fb[42] = FG_color;
-        fb[78] = FG_color;
-        fb[128] = FG_color;
-        fb[156] = FG_color;
-        fb[228] = FG_color;
-        */
-    
-        /*
-        int tmpVpixels = 140;
-        int tmpHpixels = 200;
-
-        std::vector<int> random_v_pixels = get_random_int_vector(tmpVpixels,
-                                                                 1,
-                                                                 191);
-        for (std::vector<int>::size_type i = 0;
-             i != random_v_pixels.size(); i++)
-        {
-            fb[SCREEN_WIDTH * random_v_pixels[i]] = RGB15(31,0,0);
-        }
-
-        std::vector<int> random_h_pixels = get_random_int_vector(tmpHpixels,
-                                                                 1,
-                                                                 255);
-        for (std::vector<int>::size_type i = 0;
-             i != random_h_pixels.size(); i++)
-        {
-            fb[random_h_pixels[i]] = FG_color;
-        }
-        */
-
-        BML_density = 0.3;
         int total_pixels = SCREEN_WIDTH * SCREEN_HEIGHT;
         int vector_length = BML_density * total_pixels;
 
@@ -775,6 +732,42 @@ int CellularAutomata::initialize()
             ++population;
         }
     }
+    else if (type == SELECT_COLORS)
+    {
+        drawRectangle(true, 75, 70, 50, 50);
+        drawRectangle(true, 75, 130, 50, 50);
+
+        // top (horizontal)
+        for (int i = 65; i < 75; ++i)
+        {
+            drawHLine(60, i, 130, line_color, fb);
+        }
+
+        // bottom (horizontal)
+        for (int i = 125; i < 135; ++i)
+        {
+            drawHLine(60, i, 130, line_color, fb);
+        }
+
+        // left (vertical)
+        for (int i = 60; i < 70; ++i)
+        {
+            drawVLine(i, 65, 70, line_color);
+        }
+
+        // center (vertical)
+        for (int i = 120; i < 130; ++i)
+        {
+            drawVLine(i, 65, 70, line_color);
+        }
+
+        // right (vertical)
+        for (int i = 180; i < 190; ++i)
+        {
+            drawVLine(i, 65, 70, line_color);
+        }
+    }
+
     return 0;
 }
 
@@ -1509,7 +1502,6 @@ int CellularAutomata::nextStep()
  
         int cell_step = 0; // 1 or SCREEN_WIDTH (256)
         unsigned short currentColor = 0;
-        unsigned short FG_color2 = RGB15(31, 0, 0); // TODO: Create global color FG_color2
         
         ++numSteps;
 

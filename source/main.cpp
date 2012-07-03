@@ -1183,38 +1183,7 @@ int setLanguage(int language)
  */
 int runAutomata()
 {
-    if(automataType == SELECT_COLORS)
-    {
-        showFB();
-        cleanFB(fb);
-                
-        drawRectangle(true, 75, 100, 50, 50);
-
-        // top
-        for (int i = 65; i < 75; ++i)
-        {
-            drawHLine(90, i, 70, line_color, fb);
-        }
-        
-        // bottom
-        for (int i = 125; i < 135; ++i)
-        {
-            drawHLine(90, i, 70, line_color, fb);
-        }
-
-        // left
-        for (int i = 90; i < 100; ++i)
-        {
-            drawVLine(i, 65, 70, line_color);
-        }
-                
-        // right
-        for (int i = 150; i < 160; ++i)
-        {
-            drawVLine(i, 65, 70, line_color);
-        }
-    }
-    else if (automataType == SELECT_LANGUAGE)
+    if (automataType == SELECT_LANGUAGE)
     {
         showFlash();
         cleanFB(fb);
@@ -1357,8 +1326,7 @@ int main(void)
                 
                 printMenu(displayedMenu);
                 
-                if ((automataType != SELECT_COLORS) &&
-                    (automataType != SELECT_LANGUAGE))
+                if (automataType != SELECT_LANGUAGE)
                 {
                     ca.initialize();
                 }
@@ -2367,7 +2335,7 @@ int main(void)
 		        FG_color = RGB15(FG_R, FG_G, FG_B);
                 line_color = RGB15(line_R, line_G, line_B);		        
                 
-                runAutomata();
+                ca.initialize();
                 
                 swiWaitForVBlank();        
 		    }    
@@ -2443,7 +2411,7 @@ int main(void)
 		        FG_color = RGB15(FG_R, FG_G, FG_B);
                 line_color = RGB15(line_R, line_G, line_B);
                 	      		           		            
-                runAutomata();
+                ca.initialize();
                 
                 swiWaitForVBlank();                                	      		           		            
 		    }    		    
