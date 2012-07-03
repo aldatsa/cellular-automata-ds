@@ -1590,7 +1590,7 @@ int CellularAutomata::nextStep()
                         }
                     }
                     // else if the col is the last one
-                    else if (j == SCREEN_WIDTH - 1)
+                    else if (i == SCREEN_WIDTH - 1)
                     {
                         // If the first cell of the row is empty
                         if (fbRef[SCREEN_WIDTH * j] == BG_color)

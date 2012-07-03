@@ -18,6 +18,8 @@ DONE 2012-05-27 * Write rules for version numbering
 
 DONE 2012-06-15 * Create string for "1    2    3    4" and similars
 
+DONE 2012-07-03 * Add Biham-Middleton-Levine Traffic Model automata
+
 * Must be refactored:
     * CellularAutomata::rotateAnt
     * CellularAutomata::paintAnt
@@ -45,4 +47,3 @@ DONE 2012-06-15 * Create string for "1    2    3    4" and similars
     * DONE 2012-06-05 Rev.82 Boolean triangular automata
     * DONE 2012-06-05 Rev.83 Conway's game of life
 
-* Add Biham-Middleton-Levine Traffic Model automata
