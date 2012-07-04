@@ -727,7 +727,7 @@ int CellularAutomata::initialize()
             }
             else
             {
-                fb[random_pixels[i]] = RGB15(31,0,0);
+                fb[random_pixels[i]] = FG_color2;
             }
             ++population;
         }
