@@ -111,22 +111,22 @@ int drawVLine(int column, int row, int lenght, unsigned short color)
 }
 
 /*
- * Draws a rectangle, filled with FG_color or BG_color
+ * Draws a rectangle, filled with the specified color.
+ * If no color is specified, it draws an empty rectangle (BG_color).
  * This function is used by ca.drawRule() to draw the rectangles
  * to visualize the current rule
  * and in the color selection screen
  */
-int drawRectangle(bool fill,
-                  int intRowStart,
+int drawRectangle(int intRowStart,
                   int intColumnStart,
                   int length,
-                  int width)
+                  int width,
+                  unsigned int fill_color = BG_color)
 {
 	// fill-> true, fill with FG_color		fill -> false, fill with BG_color
 
 	unsigned char column = 0;
 	unsigned char row = 0;
-	unsigned short color;
 	
 	/*
 	 * It must be intRowStart + length - 1 and intColumnStart + width - 1
@@ -168,21 +168,12 @@ int drawRectangle(bool fill,
 	drawVLine(intColumnStart, intRowStart, length, line_color);
 	drawVLine(intColumnStart + width - 1, intRowStart, length, line_color);
 	
-	if(fill == true)
-	{
-		color = FG_color;		
-	}
-	else
-	{
-		color = BG_color;
-	}
-	
 	for(column = intColumnStart + 1;
         column < intColumnStart + width - 1; column++)
 	{
 		for(row = intRowStart + 1; row < intRowStart + length - 1; row++)
 		{
-			fb[row * SCREEN_WIDTH + column] = color;
+			fb[row * SCREEN_WIDTH + column] = fill_color;
 		}
 	} 
 	

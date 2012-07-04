@@ -734,8 +734,8 @@ int CellularAutomata::initialize()
     }
     else if (type == SELECT_COLORS)
     {
-        drawRectangle(true, 75, 70, 50, 50);
-        drawRectangle(true, 75, 130, 50, 50);
+        drawRectangle(75, 70, 50, 50, FG_color);
+        drawRectangle(75, 130, 50, 50, FG_color2);
 
         // top (horizontal)
         for (int i = 65; i < 75; ++i)
@@ -1642,7 +1642,7 @@ int CellularAutomata::drawRule(int nth)
 	const int intLength = 9;
 	const int intWidth = 9;
     
-	bool fill = false;
+    unsigned int color = BG_color;
 	int intRowStart = 0;
 	int intColumnStart = 0;
 	
@@ -1685,37 +1685,40 @@ int CellularAutomata::drawRule(int nth)
 
 	if(ruleLeft[nth] == FG_color)
 	{
-		fill = true;	
+        color = FG_color;
 	}
 	
-	drawRectangle(fill, intRowStart, intColumnStart, intLength, intWidth);
+	drawRectangle(intRowStart, intColumnStart, intLength, intWidth, color);
 
-	fill = false;
+	color = BG_color;
 
 	if(ruleCenter[nth] == FG_color)
 	{
-		fill = true;
+		color = FG_color;
 	}
 		
-	drawRectangle(fill, intRowStart, intColumnStart + intWidth - 1, intLength, intWidth);
+	drawRectangle(intRowStart, intColumnStart + intWidth - 1,
+                  intLength, intWidth, color);
 
-	fill = false;
+    color = BG_color;
 
 	if(ruleRight[nth] == FG_color)
 	{
-        fill = true;
+        color = FG_color;
 	}
 
-	drawRectangle(fill, intRowStart, intColumnStart + (intWidth - 1) * 2, intLength, intWidth);
+	drawRectangle(intRowStart, intColumnStart + (intWidth - 1) * 2,
+                  intLength, intWidth, color);
 
-    fill = false;
+    color = BG_color;
 
 	if(ruleDown[nth] == FG_color)
 	{
-		fill = true;
+        color = FG_color;
 	}
 
-	drawRectangle(fill, intRowStart + intLength - 1, intColumnStart + intWidth -1, intLength, intWidth);
+	drawRectangle(intRowStart + intLength - 1, intColumnStart + intWidth -1,
+                  intLength, intWidth, color);
 	
 	return 0;
 }

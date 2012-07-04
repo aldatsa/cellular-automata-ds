@@ -20,9 +20,9 @@ int drawVLine(int column,
               int lenght,
               unsigned short color);
 
-int drawRectangle(bool fill,
-                  int intRowStart,
+int drawRectangle(int intRowStart,
                   int intColumnStart,
                   int length,
-                  int width);
+                  int width,
+                  unsigned int fill_color);
 #endif
