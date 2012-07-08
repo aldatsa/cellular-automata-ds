@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.5.0.0.110";
+const std::string strVersionNumber = "0.5.0.1.111";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -47,7 +47,8 @@ std::string stringFPentomino = "F-Pentomino";
 std::string stringFillScreenWithPulsars = "Fill screen with pulsars";
 std::string stringFillScreenWithPentadecathlons = "Fill with pentadecathlons";
 std::string stringBackgroundColor = "Background color:";
-std::string stringForegroundColor = "Foreground color:";
+std::string stringForegroundColor = "First foreground color:";
+std::string stringSecondForegroundColor = "Second foreground color:";
 std::string stringLineColor = "Line color:";
 std::string stringRed = "Red";
 std::string stringGreen = "Green";
@@ -110,7 +111,8 @@ int changeTextLanguage(int language)
         stringFillScreenWithPentadecathlons = "Fill with pentadecathlons";
 
         stringBackgroundColor = "Background color:";
-        stringForegroundColor = "Foreground color:";
+        stringForegroundColor = "First foreground color:";
+        stringSecondForegroundColor = "Second foreground color:";
         stringLineColor = "Line color:";
         stringRed = "Red";
         stringGreen = "Green";
@@ -165,7 +167,8 @@ int changeTextLanguage(int language)
         stringFillScreenWithPentadecathlons = "Llenar de pentadecatlones";
 
         stringBackgroundColor = "Color de fondo:";
-        stringForegroundColor = "Color de primer plano:";
+        stringForegroundColor = "Primer color de primer plano:";
+        stringSecondForegroundColor = "Segundo color de primer plano:";
         stringLineColor = "Color de linea:";
         stringRed = "Rojo";
         stringGreen = "Verde";
@@ -216,7 +219,8 @@ int changeTextLanguage(int language)
         stringFillScreenWithPentadecathlons = "Pentadekatlonekin bete";
 
         stringBackgroundColor = "Atzeko planoaren kolorea:";
-        stringForegroundColor = "Aurreko planoaren kolorea:";
+        stringForegroundColor = "Aurreko planoko lehen kolorea:";
+        stringSecondForegroundColor = "Aurreko planoko 2. kolorea:";
         stringLineColor = "Lerroen kolorea:";
         stringRed = "Gorria";
         stringGreen = "Berdea";
