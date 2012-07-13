@@ -148,6 +148,17 @@ int deleteAsterisk(int row, int column)
 }
 
 /*
+ * Prints a line in the specified row and column to display the
+ * number of the corresponding partial color.
+ */
+int printPartialColor(int row, int col, std::string str, int num)
+{
+    iprintf("\x1b[%d;%dH%s < %i > ", row, col,
+                str.c_str(), num);
+    return 0;
+}
+
+/*
  * Prints the menu items but without the arrow.
  * Use printMenuArrow() to print the arrow
  */
@@ -277,22 +288,61 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == SELECT_COLORS)
     {
-        printString(8, 2, stringBackgroundColor);
-        iprintf("\x1b[9;5H%s < %i > ", stringRed.c_str(), BG_R);
-        iprintf("\x1b[10;5H%s < %i > ", stringGreen.c_str(), BG_G);
-        iprintf("\x1b[11;5H%s < %i > ", stringBlue.c_str(), BG_B);
+        printString(CS_MENU_BG_COLOR_ROW,
+                    CS_MENU_MAIN_COL,
+                    stringBackgroundColor);
+        printPartialColor(CS_MENU_BG_COLOR_R_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringRed.c_str(), BG_R);
+        printPartialColor(CS_MENU_BG_COLOR_G_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringGreen.c_str(), BG_G);
+        printPartialColor(CS_MENU_BG_COLOR_B_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringBlue.c_str(), BG_B);
         
-        printString(12, 2, stringForegroundColor);
-        iprintf("\x1b[13;5H%s < %i > ", stringRed.c_str(), FG_R);
-        iprintf("\x1b[14;5H%s < %i > ", stringGreen.c_str(), FG_G);
-        iprintf("\x1b[15;5H%s < %i > ", stringBlue.c_str(), FG_B);
+        printString(CS_MENU_FG_COLOR_ROW,
+                    CS_MENU_MAIN_COL,
+                    stringForegroundColor);
+        printPartialColor(CS_MENU_FG_COLOR_R_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringRed.c_str(), FG_R);
+        printPartialColor(CS_MENU_FG_COLOR_G_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringGreen.c_str(), FG_G);
+        printPartialColor(CS_MENU_FG_COLOR_B_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringBlue.c_str(), FG_B);
+
+        printString(CS_MENU_FG2_COLOR_ROW,
+                    CS_MENU_MAIN_COL,
+                    stringSecondForegroundColor);
+        printPartialColor(CS_MENU_FG2_COLOR_R_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringRed.c_str(), FG_R2);
+        printPartialColor(CS_MENU_FG2_COLOR_G_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringGreen.c_str(), FG_G2);
+        printPartialColor(CS_MENU_FG2_COLOR_B_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringBlue.c_str(), FG_B2);
+
+        printString(CS_MENU_LINE_COLOR_ROW,
+                    CS_MENU_MAIN_COL,
+                    stringLineColor);
+        printPartialColor(CS_MENU_LINE_COLOR_R_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringRed.c_str(), line_R);
+        printPartialColor(CS_MENU_LINE_COLOR_G_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringGreen.c_str(), line_G);
+        printPartialColor(CS_MENU_LINE_COLOR_B_ROW,
+                          CS_MENU_PARTIAL_COLOR_COL,
+                          stringBlue.c_str(), line_B);
                 
-        printString(16, 2, stringLineColor);
-        iprintf("\x1b[17;5H%s < %i > ", stringRed.c_str(), line_R);
-        iprintf("\x1b[18;5H%s < %i > ", stringGreen.c_str(), line_G);
-        iprintf("\x1b[19;5H%s < %i > ", stringBlue.c_str(), line_B);
-                
-        printString(21, 2, stringBackToMainMenu);
+        printString(CS_MENU_BACK_TO_MAIN_ROW,
+                    CS_MENU_MAIN_COL,
+                    stringBackToMainMenu);
     }
     else if (displayedMenu == SELECT_LANGUAGE)
     {
@@ -999,43 +1049,55 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     {
         if (index == 0) // BG red
         {
-            row = 9;
+            row = CS_MENU_BG_COLOR_R_ROW;
         }
         else if (index == 1) // BG green
         {
-            row = 10;
+            row = CS_MENU_BG_COLOR_G_ROW;
         }
         else if (index == 2) // BG blue
         {
-            row = 11;
+            row = CS_MENU_BG_COLOR_B_ROW;
         }
         else if (index == 3) // FG red
         {
-            row = 13;
+            row = CS_MENU_FG_COLOR_R_ROW;
         }
         else if (index == 4) // FG green
         {
-            row = 14;
+            row = CS_MENU_FG_COLOR_G_ROW;
         }
         else if (index == 5) // FG blue
         {
-            row = 15;
+            row = CS_MENU_FG_COLOR_B_ROW;
         }
-        else if (index == 6) // Line color red
+        else if (index == 6) // FG2 red
         {
-            row = 17;
+            row = CS_MENU_FG2_COLOR_R_ROW;
         }
-        else if (index == 7) // Line color green
+        else if (index == 7) // FG2 green
         {
-            row = 18;
+            row = CS_MENU_FG2_COLOR_G_ROW;
         }
-        else if (index == 8) // Line color blue
+        else if (index == 8) // FG2 blue
         {
-            row = 19;
+            row = CS_MENU_FG2_COLOR_B_ROW;
         }
-        else if (index == 9) // Back to main menu
+        else if (index == 9) // Line color red
         {
-            row = 21;
+            row = CS_MENU_LINE_COLOR_R_ROW;
+        }
+        else if (index == 10) // Line color green
+        {
+            row = CS_MENU_LINE_COLOR_G_ROW;
+        }
+        else if (index == 11) // Line color blue
+        {
+            row = CS_MENU_LINE_COLOR_B_ROW;
+        }
+        else if (index == 12) // Back to main menu
+        {
+            row = CS_MENU_BACK_TO_MAIN_ROW;
         }
     }
     else if (intDisplayedMenu == SELECT_LANGUAGE)    
@@ -1283,9 +1345,12 @@ int main(void)
                 ca.setType(automataType);
                 
                 consoleClear();
-
-                printCredits();
                 
+                if (automataType != SELECT_COLORS)
+                {
+                    printCredits();
+                }
+
                 printAutomataType(automataType);
 
                 intArrow = 0;     
@@ -2224,7 +2289,7 @@ int main(void)
         {
   		    if(keys_released & KEY_A)
   		    {
-  		        if (intArrow == 9) // Back to main menu
+  		        if (intArrow == 12) // Back to main menu
   		        {
   		            showAutomataTypeMenu();
   		        }
@@ -2236,7 +2301,7 @@ int main(void)
 		        
 		        if (intArrow == 0)
 		        {
-		            intArrow = 9;
+		            intArrow = 12;
 		        }
 		        else
 		        {
@@ -2251,7 +2316,7 @@ int main(void)
     		    // Delete the previous arrow
 		        printMenuArrow(displayedMenu, intArrow, true);
 		        
-		        if (intArrow == 9)
+		        if (intArrow == 12)
 		        {
 		            intArrow = 0;
 		        }
@@ -2286,7 +2351,7 @@ int main(void)
 		                --BG_B;
 		            }
 		        }		      
-		        if (intArrow == 3)
+		        else if (intArrow == 3)
 		        {
 		            if (FG_R != 0)
 		            {
@@ -2306,22 +2371,43 @@ int main(void)
 		            {
 		                --FG_B;
 		            }
-		        }		   
-		        if (intArrow == 6)
+		        }
+                else if (intArrow == 6)
+                {
+                    if (FG_R2 != 0)
+                    {
+                        --FG_R2;
+                    }
+                }
+                else if (intArrow == 7)
+                {
+                    if (FG_G2 != 0)
+                    {
+                        --FG_G2;
+                    }
+                }
+                else if (intArrow == 8)
+                {
+                    if (FG_B2 != 0)
+                    {
+                        --FG_B2;
+                    }
+                }	   
+		        else if (intArrow == 9)
 		        {
 		            if (line_R != 0)
 		            {
 		                --line_R;
 		            }
 		        }
-		        else if (intArrow == 7)
+		        else if (intArrow == 10)
 		        {
 		            if (line_G != 0)
 		            {
 		                --line_G;
 		            }
 		        }		      
-		        else if (intArrow == 8)
+		        else if (intArrow == 11)
 		        {
 		            if (line_B != 0)
 		            {
@@ -2333,6 +2419,7 @@ int main(void)
                 		        
 		        BG_color = RGB15(BG_R, BG_G, BG_B);
 		        FG_color = RGB15(FG_R, FG_G, FG_B);
+                FG_color2 = RGB15(FG_R2, FG_G2, FG_B2);
                 line_color = RGB15(line_R, line_G, line_B);		        
                 
                 ca.initialize();
@@ -2362,7 +2449,7 @@ int main(void)
 		                ++BG_B;
 		            }
 		        }		      
-		        if (intArrow == 3)
+		        else if (intArrow == 3)
 		        {
 		            if (FG_R != 31)
 		            {
@@ -2382,22 +2469,43 @@ int main(void)
 		            {
 		                ++FG_B;
 		            }
-		        }		   
-		        if (intArrow == 6)
+		        }
+                if (intArrow == 6)
+                {
+                    if (FG_R2 != 31)
+                    {
+                        ++FG_R2;
+                    }
+                }
+                else if (intArrow == 7)
+                {
+                    if (FG_G2 != 31)
+                    {
+                        ++FG_G2;
+                    }
+                }
+                else if (intArrow == 8)
+                {
+                    if (FG_B2 != 31)
+                    {
+                        ++FG_B2;
+                    }
+                }	   
+		        else if (intArrow == 9)
 		        {
 		            if (line_R != 31)
 		            {
 		                ++line_R;
 		            }
 		        }
-		        else if (intArrow == 7)
+		        else if (intArrow == 10)
 		        {
 		            if (line_G != 31)
 		            {
 		                ++line_G;
 		            }
 		        }		      
-		        else if (intArrow == 8)
+		        else if (intArrow == 11)
 		        {
 		            if (line_B != 31)
 		            {
@@ -2409,6 +2517,7 @@ int main(void)
                 		        
 		        BG_color = RGB15(BG_R, BG_G, BG_B);
 		        FG_color = RGB15(FG_R, FG_G, FG_B);
+                FG_color2 = RGB15(FG_R2, FG_G2, FG_B2);
                 line_color = RGB15(line_R, line_G, line_B);
                 	      		           		            
                 ca.initialize();

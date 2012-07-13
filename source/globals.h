@@ -93,6 +93,9 @@
 #define BML_MENU_BACK_TO_MAIN_COL 2
 #define BML_MENU_BACK_TO_MAIN_ARROW_COL 0
 
+// Color selection
+#define CS_MENU_MAIN_COL 2
+#define CS_MENU_PARTIAL_COLOR_COL 5
 /*
  * Constants to define the row where each thing is printed
  */
@@ -163,6 +166,25 @@
 
 // BML traffic model
 #define BML_MENU_BACK_TO_MAIN_ROW 13
+
+// Color selection
+#define CS_MENU_BG_COLOR_ROW 2
+#define CS_MENU_BG_COLOR_R_ROW 3
+#define CS_MENU_BG_COLOR_G_ROW 4
+#define CS_MENU_BG_COLOR_B_ROW 5
+#define CS_MENU_FG_COLOR_ROW 7
+#define CS_MENU_FG_COLOR_R_ROW 8
+#define CS_MENU_FG_COLOR_G_ROW 9
+#define CS_MENU_FG_COLOR_B_ROW 10
+#define CS_MENU_FG2_COLOR_ROW 12
+#define CS_MENU_FG2_COLOR_R_ROW 13
+#define CS_MENU_FG2_COLOR_G_ROW 14
+#define CS_MENU_FG2_COLOR_B_ROW 15
+#define CS_MENU_LINE_COLOR_ROW 17
+#define CS_MENU_LINE_COLOR_R_ROW 18
+#define CS_MENU_LINE_COLOR_G_ROW 19
+#define CS_MENU_LINE_COLOR_B_ROW 20
+#define CS_MENU_BACK_TO_MAIN_ROW 22
 
 /************************
  *   GLOBAL VARIABLES   *
