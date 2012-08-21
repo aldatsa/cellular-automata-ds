@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.5.1.0.112";
+const std::string strVersionNumber = "0.5.1.0.113";
 
 /* This variable sets the language used in the menus
  * using constants defined in globals.h
@@ -64,6 +64,7 @@ std::string string1234 = "1    2    3    4";
 std::string string5678 = "5    6    7    8";
 std::string string123 = "1    2    3";
 std::string string456 = "4    5    6"; 
+std::string stringRestart = "Restart";
 
 /*
  * Changes the language of the strings of text to the selected language
@@ -125,6 +126,8 @@ int changeTextLanguage(int language)
         stringVersion = "version " + strVersionNumber;
         
         stringSelectLanguage = "Select language";
+
+        stringRestart = "Restart";
     }
     else if (language == ES) // Spanish
     {
@@ -181,6 +184,8 @@ int changeTextLanguage(int language)
         stringVersion = "version " + strVersionNumber;
         
         stringSelectLanguage = "Seleccionar lenguaje";
+
+        stringRestart = "Reiniciar";
     }
     else if (language == EU) // Basque
     {
@@ -233,6 +238,8 @@ int changeTextLanguage(int language)
         stringVersion = strVersionNumber + " bertsioa";
         
         stringSelectLanguage = "Hautatu hizkuntza";
+
+        stringRestart = "Berrabiarazi";
     }
     
     return 0;

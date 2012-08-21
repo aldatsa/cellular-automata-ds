@@ -282,6 +282,9 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == BML_TRAFFIC_MODEL)
     {
+        printString(BML_MENU_RESTART_ROW,
+                    BML_MENU_RESTART_COL,
+                    stringRestart);
         printString(BML_MENU_BACK_TO_MAIN_ROW,
                     BML_MENU_BACK_TO_MAIN_COL,
                     stringBackToMainMenu);
@@ -1040,6 +1043,11 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     else if (intDisplayedMenu == BML_TRAFFIC_MODEL)
     {
         if (index == 0)
+        {
+            row = BML_MENU_RESTART_ROW;
+            column = BML_MENU_RESTART_ARROW_COL;
+        }
+        else if (index == 1)
         {
             row = BML_MENU_BACK_TO_MAIN_ROW; // Back to main menu
             column = BML_MENU_BACK_TO_MAIN_ARROW_COL;
@@ -2276,10 +2284,48 @@ int main(void)
 
             if(keys_released & KEY_A)
             {
-                if (intArrow == 0) // Back to main menu
+                if (intArrow == 0)
+                {
+                    // Restart the automata
+                }
+                else if (intArrow == 1) // Back to main menu
                 {
                     showAutomataTypeMenu();
                 }
+            }
+            else if (keys_pressed & KEY_UP)
+            {
+                // Delete the previous arrow
+                printMenuArrow(displayedMenu, intArrow, true);
+
+                if (intArrow == 0)
+                {
+                    intArrow = 1;
+                }
+                else
+                {
+                    intArrow = intArrow - 1;
+                }
+
+                // Print the new arrow
+                printMenuArrow(displayedMenu, intArrow, false);
+            }
+            else if (keys_pressed & KEY_DOWN)
+            {
+                // Delete the previous arrow
+                printMenuArrow(displayedMenu, intArrow, true);
+
+                if (intArrow == 1)
+                {
+                    intArrow = 0;
+                }
+                else
+                {
+                    intArrow = intArrow + 1;
+                }
+
+                // Print the new arrow
+                printMenuArrow(displayedMenu, intArrow, false);
             }
         }
         /*

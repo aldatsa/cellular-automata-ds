@@ -90,6 +90,8 @@
 #define MS_MENU_BACK_TO_MAIN_COLUMN 2
 
 // BML traffic model
+#define BML_MENU_RESTART_COL 2
+#define BML_MENU_RESTART_ARROW_COL 0
 #define BML_MENU_BACK_TO_MAIN_COL 2
 #define BML_MENU_BACK_TO_MAIN_ARROW_COL 0
 
@@ -165,7 +167,8 @@
 #define MS_MENU_BACK_TO_MAIN_ROW 13 
 
 // BML traffic model
-#define BML_MENU_BACK_TO_MAIN_ROW 13
+#define BML_MENU_RESTART_ROW 13
+#define BML_MENU_BACK_TO_MAIN_ROW 14
 
 // Color selection
 #define CS_MENU_BG_COLOR_ROW 2
