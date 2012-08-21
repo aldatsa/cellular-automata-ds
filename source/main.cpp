@@ -2287,6 +2287,8 @@ int main(void)
                 if (intArrow == 0)
                 {
                     // Restart the automata
+                    ca.initialize();
+                    printPopulation();
                 }
                 else if (intArrow == 1) // Back to main menu
                 {
