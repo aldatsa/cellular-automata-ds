@@ -97,6 +97,7 @@ int printBMLdensity()
 {
     iprintf("\x1b[%d;%dH%s: < %d > ", BML_MENU_DENSITY_ROW,
             BML_MENU_DENSITY_COL, stringDensity.c_str(), ca.getBMLdensity());
+    return 0;
 }
 
 /*
