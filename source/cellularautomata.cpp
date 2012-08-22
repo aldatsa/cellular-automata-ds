@@ -585,13 +585,13 @@ int CellularAutomata::setInitialState(int state)
  */
 int CellularAutomata::getBMLdensity()
 {
-    return BML_density * 100;
+    return BML_density;
 }
 
 /*
  * Sets the density of the BML traffic model
  */
-int CellularAutomata::setBMLdensity(double BMLdensity)
+int CellularAutomata::setBMLdensity(int BMLdensity)
 {
     BML_density = BMLdensity;
 
@@ -731,7 +731,8 @@ int CellularAutomata::initialize()
         //BML_density = 0.3; // TODO: Create a class variable for the density
 
         int total_pixels = SCREEN_WIDTH * SCREEN_HEIGHT;
-        int vector_length = BML_density * total_pixels;
+        double BML_density_percent = (double) BML_density / 100;
+        int vector_length = BML_density_percent * total_pixels;
 
         std::vector<int> random_pixels = get_random_int_vector(vector_length,
                                                                0,

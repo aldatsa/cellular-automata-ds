@@ -45,7 +45,7 @@ class CellularAutomata
                                int width,
                                unsigned short color);
         //BML traffic model
-        double BML_density;
+        int BML_density; // 0-100
 
     public:
         int setType(int t);
@@ -82,6 +82,6 @@ class CellularAutomata
         int setInitialState(int state);
 
         int getBMLdensity();
-        int setBMLdensity(double BMLdensity);
+        int setBMLdensity(int BMLdensity);
 };
 #endif

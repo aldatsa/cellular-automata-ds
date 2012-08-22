@@ -1408,7 +1408,7 @@ int main(void)
                 }
                 else if (automataType = BML_TRAFFIC_MODEL)
                 {
-                    ca.setBMLdensity(0.3);
+                    ca.setBMLdensity(30);
                 }
 
                 if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
@@ -2347,6 +2347,22 @@ int main(void)
 
                 // Print the new arrow
                 printMenuArrow(displayedMenu, intArrow, false);
+            }
+            else if (keys_pressed & KEY_LEFT)
+            {
+                if (intArrow == 1 && ca.getBMLdensity() > 0)
+                {
+                    ca.setBMLdensity(ca.getBMLdensity() - 1);
+                    printBMLdensity();
+                }    
+            }
+            else if (keys_pressed & KEY_RIGHT)
+            {
+                if (intArrow == 1 && ca.getBMLdensity() < 100)
+                {
+                    ca.setBMLdensity(ca.getBMLdensity() + 1);
+                    printBMLdensity();
+                }                
             }
         }
         /*
