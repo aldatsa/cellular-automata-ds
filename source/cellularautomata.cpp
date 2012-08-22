@@ -1542,9 +1542,9 @@ int CellularAutomata::nextStep()
 
         dmaCopy(fbRef, fbNew, 128*1024);
 
-        for (int i = 0; i < SCREEN_WIDTH; ++i)
+        for (int col = 0; col < SCREEN_WIDTH; ++col)
         {
-            for (int j = 0; j < SCREEN_HEIGHT; ++j)
+            for (int row = 0; row < SCREEN_HEIGHT; ++row)
             {
                 countFG = 0;        
 
@@ -1552,34 +1552,37 @@ int CellularAutomata::nextStep()
                 if (cell_step == SCREEN_WIDTH)
                 {
                     // If the row is not the last one
-                    if (j != SCREEN_HEIGHT - 1)
+                    if (row != SCREEN_HEIGHT - 1)
                     {
                         // if the current cell is FG_color and
                         // the next cell is BG_color,
                         // move down to the next cell
-                        if (fbRef[SCREEN_WIDTH * j + i] == currentColor &&
-                            fbRef[SCREEN_WIDTH * j + i + cell_step] ==
+                        if (fbRef[SCREEN_WIDTH * row + col] == currentColor &&
+                            fbRef[SCREEN_WIDTH * row + col + cell_step] ==
                                 BG_color)
                         {
                             // Paint the current cell with BG_color
-                            fbNew[SCREEN_WIDTH * j + i] = BG_color;
+                            fbNew[SCREEN_WIDTH * row + col] = BG_color;
 
                             // Paint the next cell with FG_color
-                            fbNew[SCREEN_WIDTH * j + i + cell_step] =
+                            fbNew[SCREEN_WIDTH * row + col + cell_step] =
                                 currentColor;
                         }
                     }
                     // else if the row is the last one
-                    else if (j == SCREEN_HEIGHT - 1)
+                    else if (row == SCREEN_HEIGHT - 1)
                     {
-                        // If the first cell of the col is empty
-                        if (fbRef[i] == BG_color)
+                        // If the first cell of the col is empty (BG_color)
+                        // and the last cell of the column is FG_color2,
+                        // move the current cell to the start of the column
+                        if (fbRef[col] == BG_color &&
+                            fbRef[SCREEN_WIDTH * row + col] == currentColor)
                         {
                             // Paint the current cell with BG_color
-                            fbNew[SCREEN_WIDTH * j + i] = BG_color;
+                            fbNew[SCREEN_WIDTH * row + col] = BG_color;
 
                             // goes back to the top
-                            fbNew[i] = currentColor;
+                            fbNew[col] = currentColor;
                         }
 
                     }
@@ -1588,34 +1591,37 @@ int CellularAutomata::nextStep()
                 else if (cell_step == 1)
                 {   
                     // If the col is not the last one
-                    if (i != SCREEN_WIDTH - 1)
+                    if (col != SCREEN_WIDTH - 1)
                     {
                         // if the current cell is FG_color2 and
                         // the next cell is BG_color,
-                        // move left the current cell to the left
-                        if (fbRef[SCREEN_WIDTH * j + i] == currentColor &&
-                            fbRef[SCREEN_WIDTH * j + i + cell_step] ==
+                        // move the current cell to the left
+                        if (fbRef[SCREEN_WIDTH * row + col] == currentColor &&
+                            fbRef[SCREEN_WIDTH * row + col + cell_step] ==
                                  BG_color)
                         {
                             // Paint the current cell with BG_color
-                            fbNew[SCREEN_WIDTH * j + i] = BG_color;
+                            fbNew[SCREEN_WIDTH * row + col] = BG_color;
 
                             // Paint the next cell with FG_color
-                            fbNew[SCREEN_WIDTH * j + i + cell_step] =
+                            fbNew[SCREEN_WIDTH * row + col + cell_step] =
                                 currentColor;
                         }
                     }
                     // else if the col is the last one
-                    else if (i == SCREEN_WIDTH - 1)
+                    else if (col == SCREEN_WIDTH - 1)
                     {
-                        // If the first cell of the row is empty
-                        if (fbRef[SCREEN_WIDTH * j] == BG_color)
+                        // If the first cell of the row is empty (BG_color)
+                        // and the last cell of the row is FG_color2,
+                        // move the current cell to the start of the row
+                        if (fbRef[SCREEN_WIDTH * row] == BG_color &&
+                            fbRef[SCREEN_WIDTH * row + col] == currentColor)
                         {
                             // Paint the current cell with BG_color
-                            fbNew[SCREEN_WIDTH * j + i] = BG_color;
+                            fbNew[SCREEN_WIDTH * row + col] = BG_color;
 
                             // goes back to the left side
-                            fbNew[SCREEN_WIDTH * j] = currentColor;
+                            fbNew[SCREEN_WIDTH * row] = currentColor;
                         }
 
                     }
