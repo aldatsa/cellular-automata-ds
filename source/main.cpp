@@ -1407,7 +1407,7 @@ int main(void)
                 {
                     ca.setInitialState(ACORN);
                 }
-                else if (automataType = BML_TRAFFIC_MODEL)
+                else if (automataType == BML_TRAFFIC_MODEL)
                 {
                     ca.setBMLdensity(30);
                 }
