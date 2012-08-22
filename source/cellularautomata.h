@@ -80,5 +80,8 @@ class CellularAutomata
 
         int getInitialState();
         int setInitialState(int state);
+
+        int getBMLdensity();
+        int setBMLdensity(double BMLdensity);
 };
 #endif

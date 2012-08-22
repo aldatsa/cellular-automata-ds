@@ -91,6 +91,15 @@ int printAntNumPixels()
 }
 
 /*
+ * Prints the current density of the BML traffic model
+ */
+int printBMLdensity()
+{
+    iprintf("\x1b[%d;%dH%s: < %d > ", BML_MENU_DENSITY_ROW,
+            BML_MENU_DENSITY_COL, stringDensity.c_str(), ca.getBMLdensity());
+}
+
+/*
  * Prints app's credits
  */
 int printCredits()
@@ -285,6 +294,7 @@ int printMenu(int intDisplayedMenu)
         printString(BML_MENU_RESTART_ROW,
                     BML_MENU_RESTART_COL,
                     stringRestart);
+        printBMLdensity();
         printString(BML_MENU_BACK_TO_MAIN_ROW,
                     BML_MENU_BACK_TO_MAIN_COL,
                     stringBackToMainMenu);
@@ -1049,6 +1059,11 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         }
         else if (index == 1)
         {
+            row = BML_MENU_DENSITY_ROW; 
+            column = BML_MENU_DENSITY_ARROW_COL;
+        }
+        else if (index == 2)
+        {
             row = BML_MENU_BACK_TO_MAIN_ROW; // Back to main menu
             column = BML_MENU_BACK_TO_MAIN_ARROW_COL;
         }
@@ -1391,7 +1406,11 @@ int main(void)
                 {
                     ca.setInitialState(ACORN);
                 }
-                
+                else if (automataType = BML_TRAFFIC_MODEL)
+                {
+                    ca.setBMLdensity(0.3);
+                }
+
                 if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
                 {
                     printMenuArrow(displayedMenu, intArrow, false);
@@ -2290,7 +2309,7 @@ int main(void)
                     ca.initialize();
                     printPopulation();
                 }
-                else if (intArrow == 1) // Back to main menu
+                else if (intArrow == 2) // Back to main menu
                 {
                     showAutomataTypeMenu();
                 }
@@ -2302,7 +2321,7 @@ int main(void)
 
                 if (intArrow == 0)
                 {
-                    intArrow = 1;
+                    intArrow = 2;
                 }
                 else
                 {
@@ -2317,7 +2336,7 @@ int main(void)
                 // Delete the previous arrow
                 printMenuArrow(displayedMenu, intArrow, true);
 
-                if (intArrow == 1)
+                if (intArrow == 2)
                 {
                     intArrow = 0;
                 }

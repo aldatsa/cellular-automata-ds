@@ -581,6 +581,24 @@ int CellularAutomata::setInitialState(int state)
 }
 
 /*
+ * Returns the current density of the BML traffic model
+ */
+int CellularAutomata::getBMLdensity()
+{
+    return BML_density * 100;
+}
+
+/*
+ * Sets the density of the BML traffic model
+ */
+int CellularAutomata::setBMLdensity(double BMLdensity)
+{
+    BML_density = BMLdensity;
+
+    return 0;
+}
+
+/*
  * Cleans the current drawing of the Elementary Cellular Automata,
  * sets numSteps (in this case equivalent to row) to zero,
  * and paints the initial cell distribution (row zero).
@@ -710,7 +728,7 @@ int CellularAutomata::initialize()
         cleanFB(fb);
         cleanFB(fb2);
 
-        BML_density = 0.3; // TODO: Create a class variable for the density
+        //BML_density = 0.3; // TODO: Create a class variable for the density
 
         int total_pixels = SCREEN_WIDTH * SCREEN_HEIGHT;
         int vector_length = BML_density * total_pixels;
