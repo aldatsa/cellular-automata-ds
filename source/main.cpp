@@ -215,16 +215,16 @@ int printMenu(int intDisplayedMenu)
         printPopulation();
 
         printString(ECA_MENU_INITIAL_STATE_ROW,
-                    ECA_MENU_INITIAL_STATE_COLUMN,
+                    ECA_MENU_INITIAL_STATE_COL,
                     stringInitialState);
         printString(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
-                    ECA_MENU_INITIAL_STATE_ONE_CELL_COLUMN,
+                    ECA_MENU_INITIAL_STATE_ONE_CELL_COL,
                     stringOneCell);
         printString(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
-                    ECA_MENU_INITIAL_STATE_RANDOM_COLUMN,
+                    ECA_MENU_INITIAL_STATE_RANDOM_COL,
                     stringRandom);
         printString(ECA_MENU_BACK_TO_MAIN_ROW,
-                    ECA_MENU_BACK_TO_MAIN_COLUMN,
+                    ECA_MENU_BACK_TO_MAIN_COL,
                     stringBackToMainMenu);
     }
     else if (displayedMenu == LANGTON_ANT)
@@ -390,12 +390,12 @@ int printMenuAsterisks(int intDisplayedMenu)
         if (ca.getInitialStateType() == ECA_INITIALIZE_ONE_CELL)
         {
             printAsterisk(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
-                          ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COLUMN);
+                          ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COL);
         }
         else if (ca.getInitialStateType() == ECA_INITIALIZE_RANDOM)
         {
             printAsterisk(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
-                          ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COLUMN);
+                          ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COL);
         }
     }
     else if (intDisplayedMenu == BOOLEAN_AUTOMATA)
@@ -815,12 +815,12 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         if (index == 8)
         {
             row = ECA_MENU_INITIAL_STATE_ONE_CELL_ROW;
-            column = ECA_MENU_INITIAL_STATE_ONE_CELL_ARROW_COLUMN;
+            column = ECA_MENU_INITIAL_STATE_ONE_CELL_ARROW_COL;
         }
         if (index == 9)
         {
             row = ECA_MENU_INITIAL_STATE_RANDOM_ROW;
-            column = ECA_MENU_INITIAL_STATE_RANDOM_ARROW_COLUMN;
+            column = ECA_MENU_INITIAL_STATE_RANDOM_ARROW_COL;
         }
         else if (index == 10)
         {
@@ -1514,9 +1514,9 @@ int main(void)
                     printPopulation();
 
                     printAsterisk(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
-                                  ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COLUMN);
+                                  ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COL);
                     deleteAsterisk(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
-                                  ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COLUMN);
+                                  ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COL);
                 }
                 // Initial state: Random
                 else if (intArrow == 9) 
@@ -1528,9 +1528,9 @@ int main(void)
                     printPopulation();
 
                     deleteAsterisk(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
-                                   ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COLUMN);
+                                   ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COL);
                     printAsterisk(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
-                                  ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COLUMN);
+                                  ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COL);
                 }
                 // Go back to the selection of the type of automata
                 else if (intArrow == 10)
