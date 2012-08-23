@@ -84,7 +84,9 @@ int printPopulation()
  */
 int printAntNumPixels()
 {
-    iprintf("\x1b[%d;2H%s: < %d > ", LA_MENU_ANT_SIZE_ROW,
+    iprintf("\x1b[%d;%dH%s: < %d > ",
+            LA_MENU_ANT_SIZE_ROW,
+            LA_MENU_ANT_SIZE_COL,
             stringAntsPixels.c_str(), ca.getAntNumPixels());
     
     return 0;
@@ -231,12 +233,16 @@ int printMenu(int intDisplayedMenu)
     {
         printPopulation();
         printAntNumPixels();
-        printString(LA_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
+        printString(LA_MENU_BACK_TO_MAIN_ROW,
+                    LA_MENU_BACK_TO_MAIN_COL,
+                    stringBackToMainMenu);
     }
     else if (displayedMenu == LANGTON_HEXAGONAL_ANT)
     {
         printPopulation();
-        printString(LHA_MENU_BACK_TO_MAIN_ROW, 2, stringBackToMainMenu);
+        printString(LHA_MENU_BACK_TO_MAIN_ROW,
+                    LHA_MENU_BACK_TO_MAIN_COL,
+                    stringBackToMainMenu);
     }
     else if (displayedMenu == BOOLEAN_AUTOMATA)
     {

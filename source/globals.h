@@ -96,6 +96,13 @@
 #define ECA_MENU_INITIAL_STATE_RANDOM_ARROW_COL 2
 #define ECA_MENU_BACK_TO_MAIN_COL 2
 
+// Langton's ant menu
+#define LA_MENU_ANT_SIZE_COL 2
+#define LA_MENU_BACK_TO_MAIN_COL 2
+
+// Langton's hexagonal ant menu
+#define LHA_MENU_BACK_TO_MAIN_COL 2
+
 // Munching squares
 #define MS_MENU_BACK_TO_MAIN_COLUMN 2
 
