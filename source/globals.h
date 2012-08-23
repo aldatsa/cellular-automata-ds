@@ -1,6 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#include "cellularautomata.h"
 
 /*****************
  *   CONSTANTS   *
@@ -240,5 +241,9 @@ extern int displayedMenu;
  * Select language: ????
  */
 extern int intArrow;
+
+extern CellularAutomata ca;
+
+extern int displayedLanguage;
 
 #endif

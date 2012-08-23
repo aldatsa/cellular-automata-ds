@@ -7,15 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.6.0.6.122";
-
-/* This variable sets the language used in the menus
- * using constants defined in globals.h
- * EN: English
- * ES: Spanish
- * EU: Basque
- */
-int displayedLanguage = EN;
+const std::string strVersionNumber = "0.7.0.0.123";
 
 /*
  * The strings of text used in the app in the default language (english).
