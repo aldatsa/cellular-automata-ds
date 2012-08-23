@@ -176,28 +176,38 @@ int printMenu(int intDisplayedMenu)
 {
     if (displayedMenu == MAIN_MENU) //The menu to select the type of automata
     {
-        printString(AUTOMATA_TYPE_MENU_ECA_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_ECA_ROW,
+                    AUTOMATA_TYPE_MENU_ECA_COL,
                     stringElementaryCellularAutomata);
-        printString(AUTOMATA_TYPE_MENU_LA_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_LA_ROW,
+                    AUTOMATA_TYPE_MENU_LA_COL,
                     stringLangtonsAnt);
-        printString(AUTOMATA_TYPE_MENU_LHA_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_LHA_ROW,
+                    AUTOMATA_TYPE_MENU_LHA_COL,
                     stringLangtonsHexagonalAnt);
-        printString(AUTOMATA_TYPE_MENU_BA_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_BA_ROW,
+                    AUTOMATA_TYPE_MENU_BA_COL,
                     stringBooleanAutomata);
-        printString(AUTOMATA_TYPE_MENU_BHA_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_BHA_ROW,
+                    AUTOMATA_TYPE_MENU_BHA_COL,
                     stringBooleanHexagonalAutomata);
-        printString(AUTOMATA_TYPE_MENU_BTA_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_BTA_ROW, 
+                    AUTOMATA_TYPE_MENU_BTA_COL,
                     stringBooleanTriangularAutomata);
-        printString(AUTOMATA_TYPE_MENU_CGL_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_CGL_ROW,
+                    AUTOMATA_TYPE_MENU_CGL_COL,
                     stringConwaysGameOfLife);
-        printString(AUTOMATA_TYPE_MENU_MS_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_MS_ROW,
+                    AUTOMATA_TYPE_MENU_MS_COL,
                     stringMunchingSquares);
         printString(AUTOMATA_TYPE_MENU_BML_ROW,
                     AUTOMATA_TYPE_MENU_BML_COL,
                     stringBMLtrafficModel);
-        printString(AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW,
+                    AUTOMATA_TYPE_MENU_SELECT_COLORS_COL,
                     stringSelectColors);
-        printString(AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW, 2,
+        printString(AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW,
+                    AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_COL,
                     stringSelectLanguage);
     }
     else if (displayedMenu == ELEMENTARY_CELLULAR_AUTOMATA)
