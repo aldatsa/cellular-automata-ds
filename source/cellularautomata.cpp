@@ -1,4 +1,6 @@
-#include <cmath>    // To calculate powers of 2 in the getRuleNumber function. Is it possible to do it in a more simple way? Using binary operators?
+// I use cmath to calculate powers of 2 in the getRuleNumber function.
+// Is it possible to do it in a more simple way? Using binary operators?
+#include <cmath>
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
@@ -23,7 +25,7 @@
  * http://atlas.wolfram.com/01/01/
  * http://en.wikipedia.org/wiki/Cellular_automaton#Elementary_cellular_automata
  * http://en.wikipedia.org/wiki/Elementary_cellular_automaton
- 
+ *
  * LANGTON'S ANT:
  * http://en.wikipedia.org/wiki/Langton%27s_ant
  * http://mathworld.wolfram.com/LangtonsAnt.html
@@ -36,8 +38,10 @@
  * CONWAY'S GAME OF LIFE:
  * http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
  * http://www.conwaylife.com/wiki/Main_Page
- * http://www.argentum.freeserve.co.uk/lex_home.htm (Stephen Silver's Life Lexicon)
- * http://www.ericweisstein.com/encyclopedias/life/ (Eric Weisstein's Treasure Trove of the Life Cellular Automaton)
+ * Stephen Silver's Life Lexicon:
+ *  http://www.argentum.freeserve.co.uk/lex_home.htm
+ * Eric Weisstein's Treasure Trove of the Life Cellular Automaton:
+ * http://www.ericweisstein.com/encyclopedias/life/
  *
  * BIHAM-MIDDLETON-LEVINE TRAFFIC MODEL:
  * http://en.wikipedia.org/wiki/Biham-Middleton-Levine_traffic_model
@@ -46,7 +50,7 @@
  * http://openprocessing.org/sketch/27491 
  */
 
-//*************************************PRIVATE*******************************************
+/*********************************PRIVATE*************************************/
 
 /*
  * Calculates the new angle of the ant
@@ -58,8 +62,10 @@ int CellularAutomata::rotateAnt(unsigned char rotateTo)
     
     /*
      * Langton's hexagonal ant
-     * Right ('R'): 0 -> 60 -> 120 -> 180 -> 240 -> 300 (limitAngle) -> 0 -> 60 -> ...
-     * Left ('L'): 0 -> 300 (limitAngle) -> 240 -> 180 -> 120 -> 60 -> 0 -> 300 -> ...
+     * Right ('R'): 0 -> 60 -> 120 -> 180 -> 240 ->
+     *            300 (limitAngle) -> 0 -> 60 -> ...
+     * Left ('L'): 0 -> 300 (limitAngle) -> 240 ->
+     *           180 -> 120 -> 60 -> 0 -> 300 -> ...
      */
     if (type == LANGTON_HEXAGONAL_ANT) 
     {
@@ -112,15 +118,17 @@ int CellularAutomata::paintAnt()
 {
 	unsigned short tempColor;
 	
+	// If the cell has FG_color paint it with BG_color
 	if (fb[antPosY * SCREEN_WIDTH + antPosX] == FG_color)
 	{
-		tempColor = BG_color;   // If the cell has FG_color paint it with BG_color
-		--population;           // The population of alive cells decreases
+		tempColor = BG_color;
+		--population; // The population of alive cells decreases
 	}
+	// else if the cell has BG_color paint it with FG_color
 	else
 	{
-		tempColor = FG_color;   // If the cell has BG_color paint it with FG_color
-		++population;           // The population of alive cells increases
+		tempColor = FG_color;
+		++population; // The population of alive cells increases
 	}
 
     if (type == LANGTON_HEXAGONAL_ANT)
@@ -198,7 +206,8 @@ int CellularAutomata::forwardAnt()
 
 /*
  * Draw the square in the position (column, row) with the selected color
- * where column is a value in the range 0-63 and row is a value in the range 0-63.
+ * where column is a value in the range 0-63 and row is a value in the
+ * range 0-63.
  * To calculate the real x and y of the pixel in the upper left of the square:
  *      x = width * column + 32
  *      y = width * row
@@ -222,7 +231,10 @@ int CellularAutomata::forwardAnt()
  *    5     x  x  x
  *    6
  */
-int CellularAutomata::drawMunchingSquare(int column, int row, int width, unsigned short color)
+int CellularAutomata::drawMunchingSquare(int column,
+                                         int row,
+                                         int width,
+                                         unsigned short color)
 {
     for (int k = 0; k < width; k++)
     {
@@ -249,13 +261,17 @@ int CellularAutomata::paintECAcell(int row, int col, unsigned short color)
 }
   
 /*
- * Updates the variables used for the colors of the background, foreground and lines.
- * It's used to update the colors of the rules of the elementary cellular automata
- * when new colors are selected in the color selection menu and to initiliaze the
- * values when the automata is executed for the first time.
+ * Updates the variables used for the colors of the background,
+ * foreground and lines.
+ * It's used to update the colors of the rules of the elementary
+ * cellular automata when new colors are selected in the color selection menu  
+ * and to initiliaze the values when the automata is executed for
+ * the first time.
  *
  *  xxx xxo xox xoo oxx oxo oox ooo
- *   o   x   o   x   x   o   x   o  -> Rule 90: 0*128 + 1*64 + 0*32 + 1*16 + 1*8 + 0*4 + 1*2 + 0*1
+ *   o   x   o   x   x   o   x   o  -> Rule 90
+ * 
+ * 0*128 + 1*64 + 0*32 + 1*16 + 1*8 + 0*4 + 1*2 + 0*1 = 90
  *
  * where x == Foreground color with value 1
  *       o == Background color with value 0
@@ -293,7 +309,10 @@ int CellularAutomata::updateECAruleColors()
     ruleRight[6] = FG_color;
     ruleRight[7] = BG_color;
 
-    // The rule that will be displayed on start on the Elementary Cellular Automata: Rule 90 (Default)
+    /* 
+     * The rule that will be displayed on start on the Elementary Cellular
+     * Automata: Rule 90 (Default)
+     */
     ruleDown[0] = BG_color;
     ruleDown[1] = FG_color;
     ruleDown[2] = BG_color;
@@ -307,7 +326,8 @@ int CellularAutomata::updateECAruleColors()
 }
 
 /*
- * Paints the initial cell in the center of the first row for the Elementary Cellular Automata
+ * Paints the initial cell in the center of the first row for the
+ * Elementary Cellular Automata
  */
 int CellularAutomata::paintInitialState()
 {
@@ -319,7 +339,7 @@ int CellularAutomata::paintInitialState()
     }
     else if (ECA_initial_state == ECA_INITIALIZE_RANDOM)
     {
-        // TODO
+        // TODO ??
         int rand_value = 0;
         srand(time(0));
 
@@ -344,7 +364,8 @@ int CellularAutomata::paintInitialState()
 }
 
 /*
- * Calculates the rule number for the current rule of the Elementary Cellular Automata
+ * Calculates the rule number for the current rule of the
+ * Elementary Cellular Automata
  */ 
 int CellularAutomata::getRuleNumber()
 {
@@ -461,17 +482,21 @@ int CellularAutomata::drawInitialState()
     else if (initialState == FILL_SCREEN_WITH_PULSARS)
     {
         fillScreenWithPulsars();
-        population = population + 13 * 165; //13 cells per pulsar multiplied by 165 pulsars (11 rows of 15 columns)
+        // 13 cells per pulsar multiplied by 165 pulsars
+        // (11 rows of 15 columns)
+        population = population + 13 * 165;
     }
     else if (initialState == FILL_SCREEN_WITH_PENTADECATHLONS)
     {
         fillScreenWithPentadecathlons();
-        population = population + 12 * 266; //12 cells per pentadecathlon multiplied by 266 pentadecathlons (19 rows of 14 columns)
+        // 12 cells per pentadecathlon multiplied by 266 pentadecathlons
+        // (19 rows of 14 columns)
+        population = population + 12 * 266;
     }
     return 0;
 }
 
-//*************************************PUBLIC*******************************************
+/********************************PUBLIC**************************************/
 
 int CellularAutomata::setType(int t)
 {
@@ -520,7 +545,8 @@ int CellularAutomata::getAntNumPixels()
 }
 
 /*
- * I don't like that. I'm sure that there's some other way to initialize class member variables. 
+ * I don't like that.
+ * I'm sure that there's some other way to initialize class member variables. 
  */
 int CellularAutomata::initializeBooleanRuleValues()
 {
@@ -533,19 +559,28 @@ int CellularAutomata::initializeBooleanRuleValues()
 /*
  *
  */
-bool CellularAutomata::checkBooleanRuleValue(int neighborhoodType, int ruleIndex)
+bool CellularAutomata::checkBooleanRuleValue(int neighborhoodType,
+                                             int ruleIndex)
 {
-    return ((booleanRuleValues[neighborhoodType] & (1 << ruleIndex)) == (1 << ruleIndex));
+    return ((booleanRuleValues[neighborhoodType] & (1 << ruleIndex)) ==
+             (1 << ruleIndex));
 }
 
 /*
  *
  */
-int CellularAutomata::toggleBooleanRuleValue(int neighborhoodType, int ruleIndex)
+int CellularAutomata::toggleBooleanRuleValue(int neighborhoodType,
+                                             int ruleIndex)
 {
-    if (ruleIndex != 0) // As we start with only one square, if the first value is not checked the automata enters a loop of start, nothing changes, restart and the screen flashes.
+    /*
+     * As we start with only one square, if the first value is not checked
+     * the automata enters a loop of start, nothing changes, restart and    
+     * the screen flashes.
+     */
+    if (ruleIndex != 0)
     {
-        booleanRuleValues[neighborhoodType] ^= 1 << ruleIndex; // Toggle the bit
+        // Toggle the bit
+        booleanRuleValues[neighborhoodType] ^= 1 << ruleIndex;
     }
 
     return 0;
@@ -689,7 +724,12 @@ int CellularAutomata::initialize()
 
         drawHexGrid();
 
-        typeOfNeighborhood = 1; // Moore neighborhood (In this case it's a hexagonal neighborhood but as the Moore neighborhood is a array of 8 ints there is enough space for 6 ints)
+        /*
+         * 1 is Moore neighborhood (In this case it's a hexagonal neighborhood
+         * but as the Moore neighborhood is a array of 8 ints there is enough
+         * space for 6 ints)
+         */
+        typeOfNeighborhood = 1;
         
         paintHexCell(124, 93, FG_color, fb);
         ++population;
