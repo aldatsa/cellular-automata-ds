@@ -725,11 +725,11 @@ int CellularAutomata::initialize()
         drawHexGrid();
 
         /*
-         * 1 is Moore neighborhood (In this case it's a hexagonal neighborhood
-         * but as the Moore neighborhood is a array of 8 ints there is enough
-         * space for 6 ints)
+         * We use the Moore neighborhood
+         * In this case it's a hexagonal neighborhood but as the Moore 
+         * neighborhood is a array of 8 ints there is enough space for 6 ints.
          */
-        typeOfNeighborhood = 1;
+        typeOfNeighborhood = MOORE_NEIGHBORHOOD;
         
         paintHexCell(124, 93, FG_color, fb);
         ++population;
@@ -959,14 +959,15 @@ int CellularAutomata::nextStep()
      */
     else if (type == BOOLEAN_AUTOMATA)
     {
-        /* typeOfNeighborhood = 0 Von Neumann neighborhood
+        /*
+         * typeOfNeighborhood = VON_NEUMANN_NEIGHBORHOOD (0)
          * 4 neighbors.
          *      x
          *    x o x
          *      x
          * http://en.wikipedia.org/wiki/Von_Neumann_neighborhood
          *
-         * typeOfNeighborhood = 1 -> Moore neighborhood
+         * typeOfNeighborhood = MOORE_NEIGHBORHOOD (1)
          * 8 neighbors.
          *    x x x
          *    x o x
@@ -1038,7 +1039,7 @@ int CellularAutomata::nextStep()
                     countFG++;
                 }
                 
-                if (typeOfNeighborhood == 1)
+                if (typeOfNeighborhood == MOORE_NEIGHBORHOOD)
                 {
                     // Top left
                     if (fbRef[SCREEN_WIDTH * (j - 1) + i - 1] == FG_color)
@@ -1273,7 +1274,9 @@ int CellularAutomata::nextStep()
      */
     else if (type == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
-        /* typeOfNeighborhood = 0 Modified Von Neumann neighborhood
+        /*
+         * typeOfNeighborhood = VON_NEUMANN_NEIGHBORHOOD (0) ->
+         * Modified Von Neumann neighborhood
          * 3 neighbors.
          *
          *      x
@@ -1286,7 +1289,8 @@ int CellularAutomata::nextStep()
          *
          * http://en.wikipedia.org/wiki/Von_Neumann_neighborhood
          *
-         * typeOfNeighborhood = 1 -> Modified Moore neighborhood
+         * typeOfNeighborhood = MOORE_NEIGHBORHOOD (1) ->
+         * Modified Moore neighborhood
          * 8 neighbors.
          *
          *    x x x
@@ -1331,7 +1335,9 @@ int CellularAutomata::nextStep()
 
                 // xxx
                 //  x
-                if (typeOfNeighborhood == 1 or ((i % 2 == 0 and j % 2 == 0) or (i % 2 != 0 and j % 2 != 0)))
+                if (typeOfNeighborhood == MOORE_NEIGHBORHOOD or
+                    ((i % 2 == 0 and j % 2 == 0) or
+                    (i % 2 != 0 and j % 2 != 0)))
                 {    
                     // top 
                     if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
@@ -1341,7 +1347,9 @@ int CellularAutomata::nextStep()
                 }
                 //  x
                 // xxx
-                if (typeOfNeighborhood ==  1 or ((i % 2 != 0 and j % 2 == 0) or (i % 2 == 0 and j % 2 != 0)))
+                if (typeOfNeighborhood ==  MOORE_NEIGHBORHOOD or
+                    ((i % 2 != 0 and j % 2 == 0) or
+                    (i % 2 == 0 and j % 2 != 0)))
             	{
             	    //bottom
                     if (fbRef[SCREEN_WIDTH * (j + 3) + i] == FG_color)
@@ -1362,7 +1370,7 @@ int CellularAutomata::nextStep()
                     countFG++;
                 }
                             
-                if (typeOfNeighborhood == 1)            
+                if (typeOfNeighborhood == MOORE_NEIGHBORHOOD)            
                 {                        
                     // top left
                     if (fbRef[SCREEN_WIDTH * (j - 2) + i - 3] == FG_color)
