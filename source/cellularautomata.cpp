@@ -836,8 +836,10 @@ int CellularAutomata::initialize()
 int CellularAutomata::nextStep()
 {
     /*
-     * If the type of the automata is Langton's ant or Langton's hexagonal ant, this function combines 3 functions:
-     * First, depending on the color of the cell, rotates the ant to one side or the other using rotateAnt().
+     * If the type of the automata is Langton's ant or Langton's hexagonal ant,
+     * this function combines 3 functions:
+     * First, depending on the color of the cell, rotates the ant to one side 
+     * or the other using rotateAnt().
      * Next, paints the cell using paintAnt().
      * Finally, moves the ant to the next cell using forwardAnt().
      */
@@ -857,7 +859,8 @@ int CellularAutomata::nextStep()
 	    ++numSteps;
 	        
 	    // Check if the ant has reached any border of the screen.
-	    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or antPosY + antNumPixels > SCREEN_HEIGHT - 1)
+	    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or
+	        antPosY + antNumPixels > SCREEN_HEIGHT - 1)
 	    {
 	        antFinished = true;
 	    }
@@ -879,28 +882,56 @@ int CellularAutomata::nextStep()
 				    {
 					    if(column != 0 && column != SCREEN_WIDTH - 1)
 					    { 
-						    if (fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(numSteps - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
+						    if (fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)]
+						            == ruleLeft[i] &&
+						        fb[(numSteps - 1) * SCREEN_WIDTH + column] ==
+						            ruleCenter[i] &&
+						        fb[(numSteps - 1) * SCREEN_WIDTH + (column+1)] 
+						            == ruleRight[i])
 						    {
-						        paintECAcell(numSteps, column, ruleDown[i]); // Paint the Elementary Cellular Automata's cell with ruleDown[i] color
-						                                                     // and if the color matches FG_color increment the population of alive cells
+						        // Paint the Elementary Cellular Automata's
+						        // cell with ruleDown[i] color
+						        // and if the color matches FG_color increment 
+						        // the population of alive cells
+						        paintECAcell(numSteps, column, ruleDown[i]);
 							}
 					    }
 					    else if(column == 0)
 					    {
-						    // The left cell is out of the screen, instead we'll use the center cell (column 0) to compare to ruleLeft
-						    if(fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleLeft[i]  && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(numSteps - 1) * SCREEN_WIDTH + (column+1)] == ruleRight[i])
+						    // The left cell is out of the screen, instead
+						    // we'll use the center cell (column 0) to compare
+						    // to ruleLeft
+						    if(fb[(numSteps - 1) * SCREEN_WIDTH + column] ==
+						            ruleLeft[i]
+						       && fb[(numSteps - 1) * SCREEN_WIDTH + column]
+						            == ruleCenter[i]
+						       && fb[(numSteps - 1) * SCREEN_WIDTH +
+						            (column+1)] == ruleRight[i])
 						    {
-						        paintECAcell(numSteps, column, ruleDown[i]); // Paint the Elementary Cellular Automata's cell with ruleDown[i] color
-						                                                     // and if the color matches FG_color increment the population of alive cells
+    						    // Paint the Elementary Cellular Automata's
+    						    // cell with ruleDown[i] color
+    						    // and if the color matches FG_color increment
+    						    // the population of alive cells
+						        paintECAcell(numSteps, column, ruleDown[i]); 
             			    }
 					    }	
 					    else if(column == SCREEN_WIDTH - 1)
 					    {
-                            // The right cell is out of the screen, instead we'll use the center cell (column 255) to compare to ruleRight
-						    if(fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)] == ruleLeft[i] && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleCenter[i] && fb[(numSteps - 1) * SCREEN_WIDTH + column] == ruleRight[i])
+                            // The right cell is out of the screen, instead
+                            // we'll use the center cell (column 255) to
+                            // compare to ruleRight
+						    if(fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)]
+						            == ruleLeft[i]
+						       && fb[(numSteps - 1) * SCREEN_WIDTH + column]
+						            == ruleCenter[i]
+						       && fb[(numSteps - 1) * SCREEN_WIDTH + column]
+						            == ruleRight[i])
                             {
-						        paintECAcell(numSteps, column, ruleDown[i]); // Paint the Elementary Cellular Automata's cell with ruleDown[i] color
-						                                                     // and if the color matches FG_color increment the population of alive cells
+                                // Paint the Elementary Cellular Automata's
+                                // cell with ruleDown[i] color
+                                // and if the color matches FG_color increment
+                                // the population of alive cells
+						        paintECAcell(numSteps, column, ruleDown[i]);
 						    }
 					    }
 				    }
@@ -912,29 +943,38 @@ int CellularAutomata::nextStep()
 		    }
 	    }
     }
-    /* Else if the type of the automata is Munching squares , it draws the next step of the munching squares.
-     * We use a grid of 64 squares height x 64 squares width where each square is 3 pixels x 3 pixels
+    /*
+     * Else if the type of the automata is Munching squares , it draws the
+     * next step of the munching squares.
+     * We use a grid of 64 squares height x 64 squares width where each square
+     * is 3 pixels x 3 pixels
      * 64 * 3 = 192 pixels (the height of the screen)
      * See the comments of the function drawSquare above.
      * 
-     * XOR is the logical operator "exclusive disjunction", also called "exclusive or".
+     * XOR is the logical operator "exclusive disjunction", also called
+     * "exclusive or".
      * http://en.wikipedia.org/wiki/XOR#Bitwise_operation
-     * XOR is a type of logical disjunction on two operands that results in a value of true if exactly one of the operands has a value of true.
+     * XOR is a type of logical disjunction on two operands that results in a
+     * value of true if exactly one of the operands has a value of true.
      * 1 xor 1 = 0
      * 1 xor 0 = 1
      * 0 xor 1 = 1
      * 0 xor 0 = 0
      * For example, 1110 xor 1001 = 0111
-     *
      */
     else if (type == MUNCHING_SQUARES)
     {
         if (numSteps < 64)   
         {
-            // For each combination of i and j where i = 0, 1, ... 63 and j = 0, 1, ... 63
-            // we check if the value of (i xor j) is smaller than numSteps.
-            // If the result of this comparation is true then we draw a square of 3 pixels x 3 pixels using FG color
-            // using the function drawMunchingSquare starting from the column i and the row j.
+            /*
+             * For each combination of i and j where i = 0, 1, ... 63 and
+             * j = 0, 1, ... 63
+             * we check if the value of (i xor j) is smaller than numSteps.
+             * If the result of this comparation is true then we draw a square
+             * of 3 pixels x 3 pixels using FG color
+             * using the function drawMunchingSquare starting from the column
+             * i and the row j.
+             */
             for (int i = 0; i < 64; i++)
             {
                 for (int j = 0; j < 64; j++)
@@ -949,7 +989,12 @@ int CellularAutomata::nextStep()
         }
         else
         {
-            initialize(); // Paint the framebuffer with the BG color to erase the last step of the munching squares and initialize the variables to start another cycle
+            /*
+             * Paint the framebuffer with the BG color to erase the last step
+             * of the munching squares and initialize the variables to start
+             * another cycle
+             */
+            initialize();
         }            
     }
     /*
@@ -979,17 +1024,20 @@ int CellularAutomata::nextStep()
         unsigned short* fbNew;
         
         /*
-         * changeCount is used to know if the next step is different from the current step.
-         * If changeCount == 0 then there're no changes and the automata has finished,
-         * so we can start again from step 0.
+         * changeCount is used to know if the next step is different from the
+         * current step.
+         * If changeCount == 0 then there're no changes and the automata has
+         * finished, so we can start again from step 0.
          * If changeCount != 0 then the automata has not finished yet.
          */ 
         int changeCount = 0; 
 
-        /* This two lines were used to debug the implementation of changeCount (changeCount wasn't 0 when the automata finishes)
-        iprintf("\x1b[20;3HChange count:        ");    
-        iprintf("\x1b[20;3HChange count: %d", changeCount);
-        */
+        /*
+         * This two lines were used to debug the implementation of changeCount
+         * (changeCount wasn't 0 when the automata finishes)
+         * iprintf("\x1b[20;3HChange count:        ");    
+         * iprintf("\x1b[20;3HChange count: %d", changeCount);
+         */
         
         int countFG = 0;
 
@@ -1065,25 +1113,38 @@ int CellularAutomata::nextStep()
                         countFG++;
                     }            
                 }
-                            
-                if (countFG != 0 and checkBooleanRuleValue(typeOfNeighborhood, countFG - 1)) // if the count of surrounding cells with FG_color is n we'll check if the index n-1 of the boolean rule is checked(value=1)
+                /*
+                 * if the count of surrounding cells with FG_color is n we'll
+                 * check if the index n-1 of the boolean rule is checked
+                 * (value=1)
+                 */
+                if (countFG != 0
+                    and checkBooleanRuleValue(typeOfNeighborhood,
+                                              countFG - 1)) 
                 {
-                    // If the current cell's color is not already changed, change it to FG_color.
-                    // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                    /*
+                     * If the current cell's color is not already changed,
+                     * change it to FG_color.
+                     * Without this condition each cell is painted more than
+                     * one time and changeCount is never equal to 0.
+                     */
                     if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
                     {
                         fbNew[SCREEN_WIDTH * j + i] = FG_color;
                         ++changeCount;
-                        ++population; // The population of alive cells increases
+                        // The population of alive cells increases
+                        ++population;
                     }
                 }
             }
         }
         
-        /* This two lines were used to debug the implementation of changeCount (changeCount wasn't 0 when the automata finishes)
-        iprintf("\x1b[21;3HChange count end:        ");    
-        iprintf("\x1b[21;3HChange count end: %d", changeCount);
-        */
+        /*
+         * This two lines were used to debug the implementation of changeCount
+         * (changeCount wasn't 0 when the automata finishes)
+         * iprintf("\x1b[21;3HChange count end:        ");    
+         * iprintf("\x1b[21;3HChange count end: %d", changeCount);
+         */
         
         if (changeCount == 0)
         {
@@ -1114,8 +1175,10 @@ int CellularAutomata::nextStep()
         unsigned short* fbNew;
 
         /*
-         * changeCount is used to know if the next step is different from the current step.
-         * If changeCount == 0 then there're no changes and the automata has finished,
+         * changeCount is used to know if the next step is different from the
+         * current step.
+         * If changeCount == 0 then there're no changes and the automata has
+         * finished,
          * so we can start again from step 0.
          * If changeCount != 0 then the automata has not finished yet.
          */ 
@@ -1180,16 +1243,28 @@ int CellularAutomata::nextStep()
                 {
                     countFG++;
                 }
-                            
-                if (countFG != 0 and checkBooleanRuleValue(typeOfNeighborhood, countFG - 1)) // if the count of surrounding cells with FG_color is n we'll check if the index n-1 of the boolean rule is checked(value=1)
+
+                /*
+                 * if the count of surrounding cells with FG_color is n we'll
+                 * check if the index n-1 of the boolean rule is checked
+                 * (value=1)
+                 */
+                if (countFG != 0
+                    and checkBooleanRuleValue(typeOfNeighborhood,
+                                              countFG - 1))
                 {
-                    // If the current cell's color is not already changed, change it to FG_color.
-                    // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                    /*
+                     * If the current cell's color is not already changed,
+                     * change it to FG_color.
+                     * Without this condition each cell is painted more than
+                     * one time and changeCount is never equal to 0.
+                     */
                     if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
                     {
                         paintHexCell(i, j, FG_color, fbNew);
                         ++changeCount;
-                        ++population; // The population of alive cells increases
+                        // The population of alive cells increases
+                        ++population;
                     }
                 }
             }
@@ -1236,11 +1311,22 @@ int CellularAutomata::nextStep()
                 {
                     countFG++;
                 }
-                            
-                if (countFG != 0 and checkBooleanRuleValue(typeOfNeighborhood, countFG - 1)) // if the count of surrounding cells with FG_color is n we'll check if the index n-1 of the boolean rule is checked(value=1)
+
+                /*
+                 * if the count of surrounding cells with FG_color is n we'll
+                 * check if the index n-1 of the boolean rule is checked
+                 * (value=1)
+                 */
+                if (countFG != 0
+                    and checkBooleanRuleValue(typeOfNeighborhood,
+                                              countFG - 1))
                 {
-                    // If the current cell's color is not already changed, change it to FG_color.
-                    // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                    /*
+                     * If the current cell's color is not already changed,
+                     * change it to FG_color.
+                     * Without this condition each cell is painted more than
+                     * one time and changeCount is never equal to 0.
+                     */
                     if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
                     {
                         paintHexCell(i, j, FG_color, fbNew);
@@ -1250,7 +1336,8 @@ int CellularAutomata::nextStep()
             }
         }
 
-        if (changeCount == 0) // The automata has finished so we are going to reinitiate the cycle
+        // The automata has finished so we are going to reinitiate the cycle
+        if (changeCount == 0)
         {
             initialize();
         }
