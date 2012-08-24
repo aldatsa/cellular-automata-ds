@@ -1517,8 +1517,6 @@ int CellularAutomata::nextStep()
         unsigned short* fbRef;
         unsigned short* fbNew;
 
-        int countFG = 0;
- 
         int cell_step = 0; // 1 or SCREEN_WIDTH (256)
         unsigned short currentColor = 0;
         
@@ -1546,8 +1544,6 @@ int CellularAutomata::nextStep()
         {
             for (int row = 0; row < SCREEN_HEIGHT; ++row)
             {
-                countFG = 0;        
-
                 // Vertical movement
                 if (cell_step == SCREEN_WIDTH)
                 {
