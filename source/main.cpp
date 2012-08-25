@@ -32,19 +32,6 @@
  */
 touchPosition touch;
 
-/*
- *
- */
-int runAutomata()
-{
-    if (automataType == SELECT_LANGUAGE)
-    {
-        showFlash();
-        cleanFB(fb);
-    }
-    
-    return 0;
-}
 
 /*************************** START MAIN FUNCTION *****************************/
 
@@ -185,14 +172,7 @@ int main(void)
                 
                 printMenu(displayedMenu);
                 
-                if (automataType != SELECT_LANGUAGE)
-                {
-                    ca.initialize();
-                }
-                else
-                {
-                    runAutomata();
-                }
+                ca.initialize();
 
                 if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
                 {

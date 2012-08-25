@@ -662,10 +662,17 @@ int CellularAutomata::resetECA()
  * and initiliazes the values of the variables used for the cellular automata.
  */
 int CellularAutomata::initialize()
-{   
-    showFB();
-    cleanFB(fb);
-    
+{
+    if (type == SELECT_LANGUAGE)
+    {
+        showFlash();
+    }
+    else
+    {
+        showFB();
+        cleanFB(fb);
+    }
+
     numSteps = 0;   // Reset the number of steps to 0
     population = 0; // Reset the population of "alive" cells to 0
 
