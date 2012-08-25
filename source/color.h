@@ -26,7 +26,8 @@ extern unsigned short FG_B2;
 extern unsigned short FG_color2;
 
 /*
- * Variables for the color of the lines (different grids, squares for the rules, ...)
+ * Variables for the color of the lines (different grids,
+ * squares for the rules, ...)
  */
 extern unsigned short line_R;
 extern unsigned short line_G;
