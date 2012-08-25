@@ -27,12 +27,6 @@
 #include "globals.h"
 #include "menus.h"
 
-/*
- * A variable for the position of the touch
- */
-touchPosition touch;
-
-
 /*************************** START MAIN FUNCTION *****************************/
 
 /*
@@ -40,6 +34,11 @@ touchPosition touch;
  */
 int main(void)
 {           
+    /*
+     * A variable for the position of the touch
+     */
+    touchPosition touch;
+
 	consoleDemoInit();
 
     showAutomataTypeMenu();
