@@ -1390,8 +1390,10 @@ int CellularAutomata::nextStep()
         unsigned short* fbNew;
 
         /*
-         * changeCount is used to know if the next step is different from the current step.
-         * If changeCount == 0 then there're no changes and the automata has finished,
+         * changeCount is used to know if the next step is different from
+         * the current step.
+         * If changeCount == 0 then there're no changes and the automata
+         * has finished,
          * so we can start again from step 0.
          * If changeCount != 0 then the automata has not finished yet.
          */ 
@@ -1484,23 +1486,37 @@ int CellularAutomata::nextStep()
                     }
                 }
                 
-                if (countFG != 0 and checkBooleanRuleValue(typeOfNeighborhood, countFG - 1)) // if the count of surrounding cells with FG_color is n we'll check if the index n-1 of the boolean rule is checked(value=1)
+                /*
+                 * if the count of surrounding cells with FG_color is n we'll
+                 * check if the index n-1 of the boolean rule is checked
+                 * (value=1)
+                 */
+                if (countFG != 0
+                    and checkBooleanRuleValue(typeOfNeighborhood,
+                                              countFG - 1))
                 {
-                    // If the current cell's color is not already changed, change it to FG_color.
-                    // Without this condition each cell is painted more than one time and changeCount is never equal to 0.
+                    /*
+                     * If the current cell's color is not already changed,
+                     * change it to FG_color.
+                     * Without this condition each cell is painted more than
+                     * one time and changeCount is never equal to 0.
+                     */
                     if (fbNew[SCREEN_WIDTH * j + i] != FG_color) 
                     {
                         paintTriangularCell(i, j, FG_color, fbNew);
                         changeCount++;
-                        ++population; // The population of alive cells increases
+                        // The population of alive cells increases
+                        ++population;
                     }
                 }
             }
         }
 
-        //return changeCount;
-
-        if (changeCount == 0) // The automata has finished so we are going to reinitiate the cycle
+        /*
+         * If no cell has changed the automata has finished so we are going
+         * to reinitiate the cycle
+         */
+        if (changeCount == 0)
         {
             initialize();
         }
@@ -1524,8 +1540,10 @@ int CellularAutomata::nextStep()
         unsigned short* fbNew;
 
         /*
-         * changeCount is used to know if the next step is different from the current step.
-         * If changeCount == 0 then there're no changes and the automata has finished,
+         * changeCount is used to know if the next step is different from the
+         * current step.
+         * If changeCount == 0 then there're no changes and the automata has
+         * finished,
          * so we can start again from step 0.
          * If changeCount != 0 then the automata has not finished yet.
          */ 
@@ -1602,25 +1620,45 @@ int CellularAutomata::nextStep()
                     countFG++;
                 }
                 
-                if (countFG < 2 && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+                /*
+                 * Any live cell with fewer than two live neighbours dies,
+                 * as if caused by under-population.
+                 */
+                if (countFG < 2 && fbRef[SCREEN_WIDTH * j + i] == FG_color) 
                 {
                     fbNew[SCREEN_WIDTH * j + i] = BG_color;
                     changeCount++;
                     --population;
                 }
-                if ((countFG == 2 || countFG == 3) && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with two or three live neighbours lives on to the next generation.
+                
+                /*
+                 * Any live cell with two or three live neighbours lives on to
+                 * the next generation.
+                 */
+                if ((countFG == 2 || countFG == 3)
+                    && fbRef[SCREEN_WIDTH * j + i] == FG_color) 
                 {
                     fbNew[SCREEN_WIDTH * j + i] = FG_color;
                     changeCount++;
                     // the population doesn't change in this case
                 }
-                if (countFG > 3 && fbRef[SCREEN_WIDTH * j + i] == FG_color) // Any live cell with more than three live neighbours dies, as if by overcrowding.
+                
+                /*
+                 * Any live cell with more than three live neighbours dies,
+                 * as if by overcrowding.
+                 */
+                if (countFG > 3 && fbRef[SCREEN_WIDTH * j + i] == FG_color)
                 {
                     fbNew[SCREEN_WIDTH * j + i] = BG_color;
                     changeCount++;
                     --population;
                 }
-                if (countFG == 3 && fbRef[SCREEN_WIDTH * j + i] == BG_color) // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+                
+                /*
+                 * Any dead cell with exactly three live neighbours becomes
+                 * a live cell, as if by reproduction.
+                 */
+                if (countFG == 3 && fbRef[SCREEN_WIDTH * j + i] == BG_color)
                 {
                     fbNew[SCREEN_WIDTH * j + i] = FG_color;
                     changeCount++;
@@ -1629,7 +1667,11 @@ int CellularAutomata::nextStep()
             }
         }
         
-        if (changeCount == 0) // The automata has finished so we are going to reinitiate the cycle
+        /*
+         * If no cell has changed the automata has finished so we are going to
+         * reinitiate the cycle.
+         */
+        if (changeCount == 0) 
         {
             initialize();
         }
