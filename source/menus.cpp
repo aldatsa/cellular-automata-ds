@@ -1230,7 +1230,7 @@ int printNumSteps()
 /*
  *
  */
-int setLanguage(int language)
+int setLanguage(int language, int intArrow)
 {
     displayedLanguage = language;
     

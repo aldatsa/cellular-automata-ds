@@ -39,6 +39,23 @@ int main(void)
      */
     touchPosition touch;
 
+    /*
+     * The position of the arrow
+     * Select automata menu: ????
+     * Elementary Cellular Automata:
+     * in the top screen (0-7) and in the bottom screen (8)
+     * Langton's ant: ????
+     * Langton's hexagonal ant: ????
+     * Boolean automata menu: ?????
+     * Boolean Hexagonal Automata menu: ????
+     * Boolean Triangular Automata menu: ????
+     * Conway's game of life: ????
+     * Munching Squares: in the bottom screen (0-2)
+     * Select colors: ????
+     * Select language: ????
+     */
+    int intArrow = 0;
+
 	consoleDemoInit();
 
     showAutomataTypeMenu();
@@ -1364,17 +1381,17 @@ int main(void)
       		    // Change language to english
   		        if (intArrow == 0)
   		        {
-  		            setLanguage(EN);
+  		            setLanguage(EN, intArrow);
   		        }
   		        // Change language to spanish
   		        else if (intArrow == 1)
   		        {
-  		            setLanguage(ES);
+  		            setLanguage(ES, intArrow);
   		        }
   		        // Change language to basque
   		        else if (intArrow == 2)
   		        {
-  		            setLanguage(EU);
+  		            setLanguage(EU, intArrow);
   		        }
   		        // Back to main menu
   		        else if (intArrow == 3)

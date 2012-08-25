@@ -18,6 +18,6 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete);
 int showAutomataTypeMenu();
 int printAutomataType(int automataType);
 int printNumSteps();
-int setLanguage(int language);
+int setLanguage(int language, int intArrow);
 
 #endif
