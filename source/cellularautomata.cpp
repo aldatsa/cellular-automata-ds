@@ -498,6 +498,11 @@ int CellularAutomata::drawInitialState()
 
 /********************************PUBLIC**************************************/
 
+// Class constructor
+CellularAutomata::CellularAutomata()
+{
+}
+
 int CellularAutomata::setType(int t)
 {
     type = t;

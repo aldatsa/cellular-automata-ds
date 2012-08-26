@@ -48,6 +48,9 @@ class CellularAutomata
         int BML_density; // 0-100
 
     public:
+
+        CellularAutomata();
+
         int setType(int t);
         int getType();
         
