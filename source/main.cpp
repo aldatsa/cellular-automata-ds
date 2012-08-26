@@ -159,18 +159,18 @@ int main(void)
                     // Von Neumann neighborhood (default)
                     ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
 
-                    ca.initializeBooleanRuleValues();
+                    ca.setDefaultBooleanRuleValues();
                 }
                 else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
                 {   
-                    ca.initializeBooleanRuleValues();
+                    ca.setDefaultBooleanRuleValues();
                 }
                 else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
                     // Von Neumann neighborhood (default)
                     ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
 
-                    ca.initializeBooleanRuleValues();
+                    ca.setDefaultBooleanRuleValues();
                 }
                 else if (automataType == CONWAYS_GAME_OF_LIFE)
                 {

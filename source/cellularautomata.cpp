@@ -501,6 +501,7 @@ int CellularAutomata::drawInitialState()
 // Class constructor
 CellularAutomata::CellularAutomata()
 {
+    setDefaultBooleanRuleValues();
 }
 
 int CellularAutomata::setType(int t)
@@ -550,10 +551,9 @@ int CellularAutomata::getAntNumPixels()
 }
 
 /*
- * I don't like that.
- * I'm sure that there's some other way to initialize class member variables. 
+ * Sets the default boolean rule values
  */
-int CellularAutomata::initializeBooleanRuleValues()
+int CellularAutomata::setDefaultBooleanRuleValues()
 {
     booleanRuleValues[VON_NEUMANN_NEIGHBORHOOD] = 1;
     booleanRuleValues[MOORE_NEIGHBORHOOD] = 1;

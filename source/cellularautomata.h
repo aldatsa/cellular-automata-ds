@@ -75,7 +75,7 @@ class CellularAutomata
         int initialize();
         int nextStep();
         
-        int initializeBooleanRuleValues();
+        int setDefaultBooleanRuleValues();
         bool checkBooleanRuleValue(int neighborhoodType, int ruleIndex);
         int toggleBooleanRuleValue(int neighborhoodType, int ruleIndex);
         int setTypeOfNeighborhood(int value);
