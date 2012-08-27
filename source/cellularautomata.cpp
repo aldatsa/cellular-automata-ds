@@ -326,7 +326,7 @@ int CellularAutomata::updateECAruleColors()
 }
 
 /*
- * Paints the initial cell in the center of the first row for the
+ * Paints the initial cell configuration of the first row for the
  * Elementary Cellular Automata
  */
 int CellularAutomata::paintInitialState()
@@ -339,15 +339,14 @@ int CellularAutomata::paintInitialState()
     }
     else if (ECA_initial_state == ECA_INITIALIZE_RANDOM)
     {
-        // TODO ??
         int rand_value = 0;
+
+        // Initialize random seed
         srand(time(0));
 
+        // Move along the cells of the first row (0-255)
         for (int i = 0; i < SCREEN_WIDTH; ++i)
         {
-            // Initialize random seed
-            //srand (time(0));
-
             // Create random value (0 or 1)
             rand_value = rand() % 2;
 

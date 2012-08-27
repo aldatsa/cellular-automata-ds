@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.9.0.0.134";
+const std::string strVersionNumber = "0.9.0.1.135";
 
 /*
  * The strings of text used in the app in the default language (english).
