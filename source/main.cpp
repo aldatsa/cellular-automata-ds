@@ -152,7 +152,7 @@ int main(void)
                 
                 if (automataType == LANGTON_ANT)
                 {
-                    ca.setAntNumPixels(4);
+                    ca.setAntNumPixels(LA_INITIAL_NUM_PIXELS);
                 }
                 else if (automataType == BOOLEAN_AUTOMATA)
                 {

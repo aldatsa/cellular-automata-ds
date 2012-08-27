@@ -65,6 +65,13 @@
 #define ECA_INITIALIZE_RANDOM 1
 
 /*
+ * Constants to define the initial values of the Langton's ant
+ */
+#define LA_INITIAL_X 127
+#define LA_INITIAL_Y 95
+#define LA_INITIAL_ANGLE 90
+#define LA_INITIAL_NUM_PIXELS 4
+/*
  * Constant to define the initial value of the density
  * of the Biham-Middleton-Levine traffic model
  */

@@ -709,9 +709,9 @@ int CellularAutomata::initialize()
     }
     else if (type == LANGTON_ANT)
     {
-        antPosX = 127;
-        antPosY = 95;
-        antAngle = 90;
+        antPosX = LA_INITIAL_X;
+        antPosY = LA_INITIAL_Y;
+        antAngle = LA_INITIAL_ANGLE;
         antFinished = false;
     }
     else if (type == BOOLEAN_AUTOMATA)
