@@ -501,6 +501,8 @@ int CellularAutomata::drawInitialState()
 CellularAutomata::CellularAutomata()
 {
     setDefaultBooleanRuleValues();
+
+    BML_density = BML_INITIAL_DENSITY;
 }
 
 int CellularAutomata::setType(int t)
@@ -778,8 +780,6 @@ int CellularAutomata::initialize()
 
         cleanFB(fb);
         cleanFB(fb2);
-
-        //BML_density = 0.3; // TODO: Create a class variable for the density
 
         int total_pixels = SCREEN_WIDTH * SCREEN_HEIGHT;
         double BML_density_percent = (double) BML_density / 100;

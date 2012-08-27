@@ -65,6 +65,12 @@
 #define ECA_INITIALIZE_RANDOM 1
 
 /*
+ * Constant to define the initial value of the density
+ * of the Biham-Middleton-Levine traffic model
+ */
+#define BML_INITIAL_DENSITY 40
+
+/*
  * Constants to define the column where each thing is printed
  */
 
