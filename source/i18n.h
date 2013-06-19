@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.9.0.3.137";
+const std::string strVersionNumber = "0.9.0.4.138";
 
 /*
  * The strings of text used in the app in the default language (english).
@@ -24,6 +24,7 @@ std::string stringBooleanTriangularAutomata = "Boolean triangular automata";
 std::string stringConwaysGameOfLife = "Conway's game of life";
 std::string stringMunchingSquares = "Munching Squares";
 std::string stringBMLtrafficModel = "BML traffic model";
+std::string stringCyclicCellularAutomaton = "Cyclic cellular automaton";
 std::string stringSelectColors = "Select colors";
 std::string stringBackToMainMenu = "Back to main menu";
 std::string stringPopulation = "Population:";
@@ -85,6 +86,7 @@ int changeTextLanguage(int language)
         stringConwaysGameOfLife = "Conway's game of life";
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringBMLtrafficModel = "BML traffic model";
+        stringCyclicCellularAutomaton = "Cyclic cellular automaton"; 
         stringSelectColors = "Select colors"; // max 30 characters
         stringBackToMainMenu = "Back to main menu"; // max 30 characters
         stringPopulation = "Population:";
@@ -144,6 +146,7 @@ int changeTextLanguage(int language)
         stringBMLtrafficModel = "Modelo de trafico BML";
         stringSelectColors = "Seleccionar colores";
         // max 30 characters        
+        stringCyclicCellularAutomaton = "Automata celular ciclico";
         stringBackToMainMenu = "Volver al menu principal"; // max 30 characters
         stringPopulation = "Populacion:";
 
@@ -201,6 +204,7 @@ int changeTextLanguage(int language)
         stringConwaysGameOfLife = "Conway-ren biziaren jokoa";
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringBMLtrafficModel = "BML trafiko eredua";
+        stringCyclicCellularAutomaton = "Automata zelular ziklikoa";
         stringSelectColors = "Hautatu koloreak"; // max 30 characters
         stringBackToMainMenu = "Itzuli menu nagusira"; // max 30 characters
         stringPopulation = "Populazioa:";
