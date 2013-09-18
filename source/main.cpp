@@ -1125,6 +1125,18 @@ int main(void)
             }
         }
         /*
+         * Cyclic Cellular Automata menu
+         */
+        else if (displayedMenu == CYCLIC_CELLULAR_AUTOMATA) {
+            if (keys_released & KEY_A)
+            {
+                if (intArrow == 0) // Back to the main menu
+                {
+                    showAutomataTypeMenu();
+                }
+            } 
+        }
+        /*
          * Color selection menu
          */
         else if (displayedMenu == SELECT_COLORS)

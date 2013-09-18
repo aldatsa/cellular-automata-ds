@@ -290,6 +290,12 @@ int printMenu(int intDisplayedMenu)
                     BML_MENU_BACK_TO_MAIN_COL,
                     stringBackToMainMenu);
     }
+    else if (displayedMenu == CYCLIC_CELLULAR_AUTOMATA)
+    {
+        printString(CCA_MENU_BACK_TO_MAIN_ROW,
+                    CCA_MENU_BACK_TO_MAIN_COL,
+                    stringBackToMainMenu);
+    }
     else if (displayedMenu == SELECT_COLORS)
     {
         printString(CS_MENU_BG_COLOR_ROW,
@@ -1062,6 +1068,13 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {
             row = BML_MENU_BACK_TO_MAIN_ROW; // Back to main menu
             column = BML_MENU_BACK_TO_MAIN_ARROW_COL;
+        }
+    }
+    else if (intDisplayedMenu == CYCLIC_CELLULAR_AUTOMATA)
+    {
+        if (index == 0) {   // Back to main menu
+            row = CCA_MENU_BACK_TO_MAIN_ROW;
+            column = CCA_MENU_BACK_TO_MAIN_ARROW_COL;
         }
     }
     else if (intDisplayedMenu == SELECT_COLORS)
