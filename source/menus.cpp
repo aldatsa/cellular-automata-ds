@@ -81,7 +81,7 @@ int printCredits()
 	printf("Cellular Automata DS\n");
 	printf("%s\n", stringVersion.c_str());
 	printf("\n");
-    printf("(c) 2012\n");
+    printf("(c) 2012, 2013\n");
     printf("Asier Iturralde Sarasola\n");
     printf("\n");
     
