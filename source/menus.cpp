@@ -176,6 +176,9 @@ int printMenu(int intDisplayedMenu)
         printString(AUTOMATA_TYPE_MENU_BML_ROW,
                     AUTOMATA_TYPE_MENU_BML_COL,
                     stringBMLtrafficModel);
+        printString(AUTOMATA_TYPE_MENU_CCA_ROW,
+                    AUTOMATA_TYPE_MENU_CCA_COL,
+                    stringCyclicCellularAutomaton);
         printString(AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW,
                     AUTOMATA_TYPE_MENU_SELECT_COLORS_COL,
                     stringSelectColors);
@@ -776,6 +779,11 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {
             row = AUTOMATA_TYPE_MENU_BML_ROW;
             column = AUTOMATA_TYPE_MENU_BML_ARROW_COL;
+        }
+        else if (index == CYCLIC_CELLULAR_AUTOMATA)
+        {
+            row = AUTOMATA_TYPE_MENU_CCA_ROW;
+            column = AUTOMATA_TYPE_MENU_CCA_ARROW_COL;
         }
         else if (index == SELECT_COLORS)
         {

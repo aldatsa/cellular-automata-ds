@@ -10,17 +10,19 @@
 /*
  * Constants to define the type of automata and the corresponding menu:
  * Used in the variables: automataType and displayedMenu
- * 0: Main menu
- * 1: Elementary Cellular Automata
- * 2: Langton's ant
- * 3: Langton's hexagonal ant
- * 4: Boolean Square Automata
- * 5: Boolean Hexagonal Automata
- * 6: Boolean Triangular Automata
- * 7: Conway's game of life
- * 8: Munching Squares
- * 9: Select colors
- * 10: Select language
+ *  0: Main menu
+ *  1: Elementary Cellular Automata
+ *  2: Langton's ant
+ *  3: Langton's hexagonal ant
+ *  4: Boolean Square Automata
+ *  5: Boolean Hexagonal Automata
+ *  6: Boolean Triangular Automata
+ *  7: Conway's game of life
+ *  8: Munching Squares
+ *  9: Biham-Middleton-Levine traffic model
+ * 10 Cyclic Cellular Automata
+ * 11: Select colors
+ * 12: Select language
  */
 #define MAIN_MENU 0
 #define ELEMENTARY_CELLULAR_AUTOMATA 1
@@ -32,8 +34,9 @@
 #define CONWAYS_GAME_OF_LIFE 7
 #define MUNCHING_SQUARES 8
 #define BML_TRAFFIC_MODEL 9
-#define SELECT_COLORS 10
-#define SELECT_LANGUAGE 11
+#define CYCLIC_CELLULAR_AUTOMATA 10
+#define SELECT_COLORS 11
+#define SELECT_LANGUAGE 12
 
 /*
  * Constants to define the type of neighborhood
@@ -97,6 +100,8 @@
 #define AUTOMATA_TYPE_MENU_MS_COL 2
 #define AUTOMATA_TYPE_MENU_BML_COL 2
 #define AUTOMATA_TYPE_MENU_BML_ARROW_COL 0
+#define AUTOMATA_TYPE_MENU_CCA_COL 2
+#define AUTOMATA_TYPE_MENU_CCA_ARROW_COL 0
 #define AUTOMATA_TYPE_MENU_SELECT_COLORS_COL 2
 #define AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_COL 2
 
@@ -131,6 +136,7 @@
 // Color selection
 #define CS_MENU_MAIN_COL 2
 #define CS_MENU_PARTIAL_COLOR_COL 5
+
 /*
  * Constants to define the row where each thing is printed
  */
@@ -150,8 +156,9 @@
 #define AUTOMATA_TYPE_MENU_CGL_ROW 14
 #define AUTOMATA_TYPE_MENU_MS_ROW 15
 #define AUTOMATA_TYPE_MENU_BML_ROW 16
-#define AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW 17
-#define AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW 18
+#define AUTOMATA_TYPE_MENU_CCA_ROW 17
+#define AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW 18
+#define AUTOMATA_TYPE_MENU_SELECT_LANGUAGE_ROW 19
 
 // Elementary Cellular Automata menu
 #define ECA_MENU_INITIAL_STATE_ROW 12
