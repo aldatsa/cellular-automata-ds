@@ -1225,11 +1225,14 @@ int printAutomataType(int automataType)
     else if (automataType == MUNCHING_SQUARES)
     {
         printf("%s", stringMunchingSquares.c_str());
-    }
-    
+    } 
     else if (automataType == BML_TRAFFIC_MODEL)
     {
         printf("%s", stringBMLtrafficModel.c_str());
+    }
+    else if (automataType == CYCLIC_CELLULAR_AUTOMATA)
+    {
+        printf("%s", stringCyclicCellularAutomaton.c_str());
     }
 
     return 0;
