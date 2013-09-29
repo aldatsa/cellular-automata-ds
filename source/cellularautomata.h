@@ -18,7 +18,6 @@ class CellularAutomata
         unsigned short ruleRight[8];
         unsigned short ruleDown[8];
         int updateECAruleColors();
-        int paintInitialState();
         int drawAllRules();
 
         // For the Langton's ants (normal and hexagonal)

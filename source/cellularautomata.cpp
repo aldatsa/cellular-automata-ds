@@ -326,43 +326,6 @@ int CellularAutomata::updateECAruleColors()
 }
 
 /*
- * Paints the initial cell configuration of the first row for the
- * Elementary Cellular Automata
- */
-int CellularAutomata::paintInitialState()
-{
-    if (ECA_initial_state == ECA_INITIALIZE_ONE_CELL)
-    {
-        fb[128] = FG_color;
-    
-        ++population; // The population of alive cells increases
-    }
-    else if (ECA_initial_state == ECA_INITIALIZE_RANDOM)
-    {
-        int rand_value = 0;
-
-        // Initialize random seed
-        srand(time(0));
-
-        // Move along the cells of the first row (0-255)
-        for (int i = 0; i < SCREEN_WIDTH; ++i)
-        {
-            // Create random value (0 or 1)
-            rand_value = rand() % 2;
-
-            // If the value is 1, paint the corresponding cell with
-            // FG_color and add 1 to the population count
-            if (rand_value == 1)
-            {
-                fb[i] = FG_color;
-                ++population;
-            }
-        }
-    }
-    return 0;
-}
-
-/*
  * Calculates the rule number for the current rule of the
  * Elementary Cellular Automata
  */ 
@@ -464,34 +427,71 @@ int CellularAutomata::drawArrow(char nth, unsigned short color)
 }
 
 /*
- * Draws the initial state of the Conway's game of life
+ * Draws the initial state of the cellular automata
  */
 int CellularAutomata::drawInitialState()
 {   
-    if (initialState == ACORN)
+    if (type == ELEMENTARY_CELLULAR_AUTOMATA)
     {
-        drawAcorn(120, 90);
-        population = population + 7; // 7 initial cells
+        // Paint the initial cell configuration of the first row for the
+        // Elementary Cellular Automata
+        if (ECA_initial_state == ECA_INITIALIZE_ONE_CELL)
+        {
+            fb[128] = FG_color;
+        
+            ++population; // The population of alive cells increases
+        }
+        else if (ECA_initial_state == ECA_INITIALIZE_RANDOM)
+        {
+            int rand_value = 0;
+
+            // Initialize random seed
+            srand(time(0));
+
+            // Move along the cells of the first row (0-255)
+            for (int i = 0; i < SCREEN_WIDTH; ++i)
+            {
+                // Create random value (0 or 1)
+                rand_value = rand() % 2;
+
+                // If the value is 1, paint the corresponding cell with
+                // FG_color and add 1 to the population count
+                if (rand_value == 1)
+                {
+                    fb[i] = FG_color;
+                    ++population;
+                }
+            }
+        }
     }
-    else if (initialState == FPENTOMINO)
+    else if (type == CONWAYS_GAME_OF_LIFE) //Conway's game of life
     {
-        drawFpentomino(120, 90);
-        population = population + 5; // 5 initial cells
+        if (initialState == ACORN)
+        {
+            drawAcorn(120, 90);
+            population = population + 7; // 7 initial cells
+        }
+        else if (initialState == FPENTOMINO)
+        {
+            drawFpentomino(120, 90);
+            population = population + 5; // 5 initial cells
+        }
+        else if (initialState == FILL_SCREEN_WITH_PULSARS)
+        {
+            fillScreenWithPulsars();
+            // 13 cells per pulsar multiplied by 165 pulsars
+            // (11 rows of 15 columns)
+            population = population + 13 * 165;
+        }
+        else if (initialState == FILL_SCREEN_WITH_PENTADECATHLONS)
+        {
+            fillScreenWithPentadecathlons();
+            // 12 cells per pentadecathlon multiplied by 266 pentadecathlons
+            // (19 rows of 14 columns)
+            population = population + 12 * 266;
+        }
     }
-    else if (initialState == FILL_SCREEN_WITH_PULSARS)
-    {
-        fillScreenWithPulsars();
-        // 13 cells per pulsar multiplied by 165 pulsars
-        // (11 rows of 15 columns)
-        population = population + 13 * 165;
-    }
-    else if (initialState == FILL_SCREEN_WITH_PENTADECATHLONS)
-    {
-        fillScreenWithPentadecathlons();
-        // 12 cells per pentadecathlon multiplied by 266 pentadecathlons
-        // (19 rows of 14 columns)
-        population = population + 12 * 266;
-    }
+    
     return 0;
 }
 
@@ -658,7 +658,7 @@ int CellularAutomata::resetECA()
     numSteps = 0;   // Reset the number of steps to 0
     population = 0; // Reset the population of "alive" cells to 0
 
-    paintInitialState();
+    drawInitialState();
     
     return 0;
 }
@@ -693,7 +693,7 @@ int CellularAutomata::initialize()
 
         // Paint the first row of the automata that corresponds to the
         // state set using ECA_initial_state
-        paintInitialState();
+        drawInitialState();
 
         // Draw the rules that correspond to the default rule
         // (Rule 90, set in updateECAruleColors())
