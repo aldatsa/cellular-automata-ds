@@ -491,6 +491,24 @@ int CellularAutomata::drawInitialState()
             population = population + 12 * 266;
         }
     }
+    else if (type == CYCLIC_CELLULAR_AUTOMATA)
+    {
+        int rand_value = 0;
+
+        // Initialize random seed
+        srand(time(0));
+
+        // Move along the cells of the first row (0-255)
+        for (int i = 0; i < SCREEN_WIDTH; ++i)
+        {
+            // Create random value between 0 and 3 (n = 4)
+            rand_value = rand() % 4;
+            
+            // Paint the cell with the corresponding color
+            fb2[i] = cyclicAutomataColors[rand_value];
+            ++population;
+        }
+    }
     
     return 0;
 }
@@ -801,6 +819,22 @@ int CellularAutomata::initialize()
             }
             ++population;
         }
+    }
+    else if (type == CYCLIC_CELLULAR_AUTOMATA)
+    {
+        showFB();
+        dmaCopy(fb, fb2, 128 * 1024);
+        showFB2();
+
+        cleanFB(fb);
+        cleanFB(fb2);
+        
+        cyclicAutomataColors[0] = FG_color;
+        cyclicAutomataColors[1] = FG_color2;
+        cyclicAutomataColors[2] = FG_color3;
+        cyclicAutomataColors[3] = FG_color4;
+     
+        drawInitialState();
     }
     else if (type == SELECT_COLORS)
     {

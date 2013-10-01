@@ -46,6 +46,9 @@ class CellularAutomata
         //BML traffic model
         int BML_density; // 0-100
 
+        // For the cyclic cellular automata
+        unsigned short cyclicAutomataColors[4];
+
     public:
 
         CellularAutomata();
