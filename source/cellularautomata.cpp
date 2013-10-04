@@ -505,7 +505,7 @@ int CellularAutomata::drawInitialState()
             rand_value = rand() % 4;
             
             // Paint the cell with the corresponding color
-            fb2[i] = cyclicAutomataColors[rand_value];
+            fb[i] = cyclicAutomataColors[rand_value];
             ++population;
         }
     }
@@ -1846,7 +1846,7 @@ int CellularAutomata::nextStep()
                 }
             }
         }
-        
+ 
         if (numSteps % 2 == 0 and numSteps != 1)
         {
             showFB();
@@ -1857,6 +1857,41 @@ int CellularAutomata::nextStep()
         }
         swiWaitForVBlank();
     }
+    else if (type == CYCLIC_CELLULAR_AUTOMATA)
+	{
+		unsigned short* fbRef;
+		unsigned short* fbNew;
+
+		++numSteps;
+
+		if (numSteps % 2 == 0 and numSteps != 1)
+		{
+			fbRef = fb2;
+			fbNew = fb;
+		}
+		else
+		{
+			fbRef = fb;
+			fbNew = fb2;
+		}
+
+		dmaCopy(fbRef, fbNew, 128*1024);
+
+		/*for (int column = 0; column < SCREEN_WIDTH; column++)
+		{
+						
+		}*/
+		
+		if (numSteps % 2 == 0 and numSteps != 1)
+        {
+            showFB();
+        }
+        else
+        {
+            showFB2();
+        }
+        swiWaitForVBlank();
+	}
     return 0;
 }
 

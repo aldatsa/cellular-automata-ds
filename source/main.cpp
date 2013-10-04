@@ -1128,6 +1128,11 @@ int main(void)
          * Cyclic Cellular Automata menu
          */
         else if (displayedMenu == CYCLIC_CELLULAR_AUTOMATA) {
+			ca.nextStep();
+            
+            printNumSteps();
+            printPopulation();
+            
             if (keys_released & KEY_A)
             {
                 if (intArrow == 0) // Back to the main menu
