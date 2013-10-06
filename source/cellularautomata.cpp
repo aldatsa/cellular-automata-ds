@@ -1862,27 +1862,28 @@ int CellularAutomata::nextStep()
 		unsigned short* fbRef;
 		unsigned short* fbNew;
 
-		++numSteps;
+        ++numSteps;
 
-		if (numSteps % 2 == 0 and numSteps != 1)
-		{
-			fbRef = fb2;
-			fbNew = fb;
-		}
-		else
-		{
-			fbRef = fb;
-			fbNew = fb2;
-		}
+  		if (numSteps % 2 == 0 and numSteps != 1)
+    	{
+	    	fbRef = fb2;
+		    fbNew = fb;
+	    }
+	    else
+	    {
+		    fbRef = fb;
+		    fbNew = fb2;
+	    }
 
-		dmaCopy(fbRef, fbNew, 128*1024);
+	    dmaCopy(fbRef, fbNew, 128*1024);
 
-		/*for (int column = 0; column < SCREEN_WIDTH; column++)
-		{
-						
-		}*/
+        for (int column = 0; column < SCREEN_WIDTH; column++)
+	    {
+		    fbNew[SCREEN_WIDTH * numSteps + column] = 
+                fbRef[SCREEN_WIDTH * (numSteps - 1) + column];	
+	    }
 		
-		if (numSteps % 2 == 0 and numSteps != 1)
+       	if (numSteps % 2 == 0 and numSteps != 1)
         {
             showFB();
         }
@@ -1890,6 +1891,7 @@ int CellularAutomata::nextStep()
         {
             showFB2();
         }
+        
         swiWaitForVBlank();
 	}
     return 0;
