@@ -1862,6 +1862,10 @@ int CellularAutomata::nextStep()
 		unsigned short* fbRef;
 		unsigned short* fbNew;
 
+        unsigned short currentColorIndex;
+        unsigned short currentLeftColorIndex;
+        unsigned short currentRightColorIndex;
+
         ++numSteps;
 
   		if (numSteps % 2 == 0 and numSteps != 1)
@@ -1879,8 +1883,43 @@ int CellularAutomata::nextStep()
 
         for (int column = 0; column < SCREEN_WIDTH; column++)
 	    {
-		    fbNew[SCREEN_WIDTH * numSteps + column] = 
-                fbRef[SCREEN_WIDTH * (numSteps - 1) + column];	
+            // Determine the index of the color of the current cell
+            for (int i = 0; i < 4; i++) {
+                if (cyclicAutomataColors[i] == 
+                        fbRef[SCREEN_WIDTH * (numSteps - 1) + column]) 
+                {
+                    currentColorIndex = i;
+                }                
+            }
+            
+            // Determine the index of the color of the cell on the left side
+            // of the current cell
+            for (int i = 0; i < 4; i++) {
+                if (cyclicAutomataColors[i] == 
+                        fbRef[SCREEN_WIDTH * (numSteps - 1) + column - 1])
+                {
+                    currentLeftColorIndex = i;
+                } 
+            }
+
+            // Determine the index of the color of the cell on the right side
+            // of the current cell
+            for (int i = 0; i < 4; i++) {
+                if (cyclicAutomataColors[i] ==
+                        fbRef[SCREEN_WIDTH * (numSteps - 1) + column + 1])
+                {
+                    currentRightColorIndex = i;
+                } 
+            }
+            
+            // Check if the indexes of the left and right neighbour are the
+            // successors of the index of the current cell
+            if ((currentColorIndex + 1) % 4 == currentLeftColorIndex or
+                (currentColorIndex + 1) % 4 == currentRightColorIndex)
+            {
+                fbNew[SCREEN_WIDTH * numSteps + column] = 
+                    cyclicAutomataColors[(currentColorIndex + 1) % 4];
+            }
 	    }
 		
        	if (numSteps % 2 == 0 and numSteps != 1)
