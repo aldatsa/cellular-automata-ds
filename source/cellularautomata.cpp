@@ -1912,13 +1912,28 @@ int CellularAutomata::nextStep()
                 } 
             }
             
-            // Check if the indexes of the left and right neighbour are the
-            // successors of the index of the current cell
-            if ((currentColorIndex + 1) % 4 == currentLeftColorIndex or
-                (currentColorIndex + 1) % 4 == currentRightColorIndex)
+            // If the index of the left neighbour is the
+            // successor of the index of the current cell
+            // the cell on the next row gets the successor color.
+            if (currentColorIndex == (currentLeftColorIndex + 1) % 4)
+            {
+                fbNew[SCREEN_WIDTH * numSteps + column] =
+                    cyclicAutomataColors[currentLeftColorIndex];
+            }
+            // If the index of the right neighbour is the
+            // successor of the index of the current cell
+            // the cell on the next row gets the successor color.
+            else if (currentColorIndex == (currentRightColorIndex + 1) % 4)
             {
                 fbNew[SCREEN_WIDTH * numSteps + column] = 
-                    cyclicAutomataColors[(currentColorIndex + 1) % 4];
+                    cyclicAutomataColors[currentRightColorIndex];
+            }
+            // Else the cell on the next row gets the same color
+            // as the current cell.
+            else
+            {
+                fbNew[SCREEN_WIDTH * numSteps + column] =
+                    cyclicAutomataColors[currentColorIndex];
             }
 	    }
 		
