@@ -828,12 +828,17 @@ int CellularAutomata::initialize()
 
         cleanFB(fb);
         cleanFB(fb2);
-        
+       
+        numStates = CCA_INITIAL_NUM_STATES;
+
         cyclicAutomataColors[0] = FG_color;
         cyclicAutomataColors[1] = FG_color2;
         cyclicAutomataColors[2] = FG_color3;
-        cyclicAutomataColors[3] = FG_color4;
-     
+
+        if (numStates == 4) {
+            cyclicAutomataColors[3] = FG_color4;
+        }
+
         drawInitialState();
     }
     else if (type == SELECT_COLORS)
@@ -1884,7 +1889,7 @@ int CellularAutomata::nextStep()
         for (int column = 0; column < SCREEN_WIDTH; column++)
 	    {
             // Determine the index of the color of the current cell
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < numStates; i++) {
                 if (cyclicAutomataColors[i] == 
                         fbRef[SCREEN_WIDTH * (numSteps - 1) + column]) 
                 {
@@ -1894,7 +1899,7 @@ int CellularAutomata::nextStep()
             
             // Determine the index of the color of the cell on the left side
             // of the current cell
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < numStates; i++) {
                 if (cyclicAutomataColors[i] == 
                         fbRef[SCREEN_WIDTH * (numSteps - 1) + column - 1])
                 {
@@ -1904,7 +1909,7 @@ int CellularAutomata::nextStep()
 
             // Determine the index of the color of the cell on the right side
             // of the current cell
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < numStates; i++) {
                 if (cyclicAutomataColors[i] ==
                         fbRef[SCREEN_WIDTH * (numSteps - 1) + column + 1])
                 {
@@ -1915,7 +1920,7 @@ int CellularAutomata::nextStep()
             // If the index of the left neighbour is the
             // successor of the index of the current cell
             // the cell on the next row gets the successor color.
-            if (currentColorIndex == (currentLeftColorIndex + 1) % 4)
+            if (currentColorIndex == (currentLeftColorIndex + 1) % numStates)
             {
                 fbNew[SCREEN_WIDTH * numSteps + column] =
                     cyclicAutomataColors[currentLeftColorIndex];
@@ -1923,7 +1928,7 @@ int CellularAutomata::nextStep()
             // If the index of the right neighbour is the
             // successor of the index of the current cell
             // the cell on the next row gets the successor color.
-            else if (currentColorIndex == (currentRightColorIndex + 1) % 4)
+            else if (currentColorIndex == (currentRightColorIndex + 1) % numStates)
             {
                 fbNew[SCREEN_WIDTH * numSteps + column] = 
                     cyclicAutomataColors[currentRightColorIndex];

@@ -8,6 +8,7 @@ class CellularAutomata
         
         unsigned int numSteps;
         unsigned int population;
+        int numStates;
 
         int paintECAcell(int row, int col, unsigned short color);
         

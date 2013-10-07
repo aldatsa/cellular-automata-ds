@@ -16,5 +16,3 @@
 * The minor number must be increased when there are new APIs that don't change the existing ones.
 
 * The bugfix number must be increased with changes that don't create new APIs or change the existing ones.
-
-* The revision number must be increased with each change that is commited and must match the current revision number in the bzr repository.

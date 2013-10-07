@@ -74,11 +74,18 @@
 #define LA_INITIAL_Y 95
 #define LA_INITIAL_ANGLE 90
 #define LA_INITIAL_NUM_PIXELS 4
+
 /*
  * Constant to define the initial value of the density
  * of the Biham-Middleton-Levine traffic model
  */
 #define BML_INITIAL_DENSITY 40
+
+/*
+ * Constant to define the initial number of states
+ * of the cyclic cellular automata.
+ */
+#define CCA_INITIAL_NUM_STATES 3
 
 /*
  * Constants to define the column where each thing is printed
