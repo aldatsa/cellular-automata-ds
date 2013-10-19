@@ -6,6 +6,7 @@ int printRuleNumber(int intRuleNumber);
 int printPopulation();
 int printAntNumPixels();
 int printBMLdensity();
+int printCCANumStates();
 int printCredits();
 int printArrow(int row, int column);
 int deleteArrow(int row, int column);

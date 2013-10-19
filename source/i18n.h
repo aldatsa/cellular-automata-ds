@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.10.2.0";
+const std::string strVersionNumber = "0.10.3.0";
 
 /*
  * The strings of text used in the app in the default language (english).
@@ -31,6 +31,7 @@ std::string stringPopulation = "Population:";
 std::string stringOneCell = "One cell";
 std::string stringRandom = "Random";
 std::string stringAntsPixels = "Ant's size (pixels)";
+std::string stringNumStates = "Number of states";
 std::string stringVonNeumannNeighborhood = "Von Neumann neighborhood";
 std::string stringMooreNeighborhood = "Moore neighborhood";
 std::string stringNeighborhood = "Neighborhood:";
@@ -95,7 +96,7 @@ int changeTextLanguage(int language)
         stringRandom = "Random";
 
         stringAntsPixels = "Ant's size (pixels)"; // Max 22 characters
-        
+        stringNumStates = "Number of states";        
         stringVonNeumannNeighborhood = "Von Neumann neighborhood";
         stringMooreNeighborhood = "Moore neighborhood";
         stringNeighborhood = "Neighborhood:";
@@ -156,7 +157,8 @@ int changeTextLanguage(int language)
         stringAntsPixels = "Tamano (pixeles)";
         // It doesn't print 'ñ'. Why?
         // And "Tamano de la hormiga (pixeles)" is too long. Max 22 characters
-        
+        stringNumStates = "Numero de estados";
+         
         stringVonNeumannNeighborhood = "Vecindad de Von Neumann";
         stringMooreNeighborhood = "Vecindad de Moore";
         stringNeighborhood = "Vecindad:";
@@ -213,7 +215,7 @@ int changeTextLanguage(int language)
         stringRandom = "Ausazkoa";
 
         stringAntsPixels = "Tamaina (pixelak)"; // Max 23 characters
-        
+        stringNumStates = "Egoera kopurua"; 
         stringVonNeumannNeighborhood = "Von Neumann-en auzoa";
         stringMooreNeighborhood = "Moore-en auzoa";
         stringNeighborhood = "Auzoa:";

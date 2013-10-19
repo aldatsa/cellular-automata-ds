@@ -74,6 +74,19 @@ int printBMLdensity()
 }
 
 /*
+ * Prints the number of states of the cyclic cellular automata
+ */
+int printCCANumStates()
+{
+    iprintf("\x1b[%d;%dH%s: < %d > ",
+            CCA_MENU_NUM_STATES_ROW,
+            CCA_MENU_NUM_STATES_COL,
+            stringNumStates.c_str(), ca.getNumStates());
+
+    return 0;
+}
+
+/*
  * Prints app's credits
  */
 int printCredits()
@@ -292,6 +305,7 @@ int printMenu(int intDisplayedMenu)
     }
     else if (displayedMenu == CYCLIC_CELLULAR_AUTOMATA)
     {
+        printCCANumStates();
         printString(CCA_MENU_BACK_TO_MAIN_ROW,
                     CCA_MENU_BACK_TO_MAIN_COL,
                     stringBackToMainMenu);
@@ -1072,7 +1086,12 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
     }
     else if (intDisplayedMenu == CYCLIC_CELLULAR_AUTOMATA)
     {
-        if (index == 0) {   // Back to main menu
+        if (index == 0) {
+            row = CCA_MENU_NUM_STATES_ROW;
+            column = CCA_MENU_NUM_STATES_ARROW_COL;
+        }
+        else if (index == 1) // Back to main menu
+        {
             row = CCA_MENU_BACK_TO_MAIN_ROW;
             column = CCA_MENU_BACK_TO_MAIN_ARROW_COL;
         }

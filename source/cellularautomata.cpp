@@ -48,6 +48,9 @@
  * http://www.jasondavies.com/bml/
  * http://mae.ucdavis.edu/dsouza/bml.html
  * http://openprocessing.org/sketch/27491 
+ *
+ * CYCLIC CELLULAR AUTOMATA:
+ * http://en.wikipedia.org/wiki/Cyclic_cellular_automaton
  */
 
 /*********************************PRIVATE*************************************/
@@ -545,6 +548,18 @@ unsigned int CellularAutomata::getPopulation()
     return population;
 }
 
+int CellularAutomata::getNumStates()
+{
+    return numStates;
+}
+
+int CellularAutomata::setNumStates(int n)
+{
+    numStates = n;
+
+    return 0;
+}
+
 int CellularAutomata::getInitialStateType()
 {
     return ECA_initial_state;
@@ -829,15 +844,10 @@ int CellularAutomata::initialize()
         cleanFB(fb);
         cleanFB(fb2);
        
-        numStates = CCA_INITIAL_NUM_STATES;
-
         cyclicAutomataColors[0] = FG_color;
         cyclicAutomataColors[1] = FG_color2;
         cyclicAutomataColors[2] = FG_color3;
-
-        if (numStates == 4) {
-            cyclicAutomataColors[3] = FG_color4;
-        }
+        cyclicAutomataColors[3] = FG_color4;
 
         drawInitialState();
     }

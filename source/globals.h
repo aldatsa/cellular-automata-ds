@@ -141,6 +141,8 @@
 #define BML_MENU_BACK_TO_MAIN_ARROW_COL 0
 
 // Cyclic Cellular Automata
+#define CCA_MENU_NUM_STATES_COL 2
+#define CCA_MENU_NUM_STATES_ARROW_COL 0
 #define CCA_MENU_BACK_TO_MAIN_COL 2
 #define CCA_MENU_BACK_TO_MAIN_ARROW_COL 0
 
@@ -223,7 +225,8 @@
 #define BML_MENU_BACK_TO_MAIN_ROW 15
 
 // Cyclic Cellular Automata
-#define CCA_MENU_BACK_TO_MAIN_ROW 13
+#define CCA_MENU_NUM_STATES_ROW  13
+#define CCA_MENU_BACK_TO_MAIN_ROW 14
 
 // Color selection
 #define CS_MENU_BG_COLOR_ROW 2

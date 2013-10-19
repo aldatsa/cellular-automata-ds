@@ -59,6 +59,9 @@ class CellularAutomata
         
         unsigned int getNumSteps();
 
+        int getNumStates();
+        int setNumStates(int n);
+
         unsigned int getPopulation();
         
         int drawElementaryCellularAutomata();

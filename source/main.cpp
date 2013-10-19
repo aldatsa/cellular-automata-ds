@@ -176,6 +176,10 @@ int main(void)
                 {
                     ca.setInitialState(ACORN);
                 }
+                else if (automataType == CYCLIC_CELLULAR_AUTOMATA)
+                {
+                    ca.setNumStates(CCA_INITIAL_NUM_STATES);
+                }
 
                 if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
                 {
@@ -1137,11 +1141,69 @@ int main(void)
             }
             if (keys_released & KEY_A)
             {
-                if (intArrow == 0) // Back to the main menu
+                if (intArrow == 1) // Back to the main menu
                 {
                     showAutomataTypeMenu();
                 }
-            } 
+            }
+            else if(keys_pressed & KEY_UP)
+            {
+                // Delete the previous arrow
+                printMenuArrow(displayedMenu, intArrow, true);
+
+                if (intArrow == 0)
+                {
+                    intArrow = 1;
+                }
+                else
+                {
+                    intArrow = intArrow - 1;
+                }
+
+                // Print the new arrow
+                printMenuArrow(displayedMenu, intArrow, false);
+            }
+            else if(keys_pressed & KEY_DOWN)
+            {
+                // Delete the previous arrow
+                printMenuArrow(displayedMenu, intArrow, true);
+
+                if (intArrow == 1)
+                {
+                    intArrow = 0;
+                }
+                else
+                {
+                    intArrow = intArrow + 1;
+                }
+
+                // Print the new arrow
+                printMenuArrow(displayedMenu, intArrow, false);
+            }
+            else if (keys_pressed & KEY_LEFT)
+            {
+                if (intArrow == 0 && ca.getNumStates() > 3)
+                {
+                    ca.setNumStates(ca.getNumStates() - 1);
+                    printCCANumStates();
+
+                    ca.initialize();
+                    printPopulation();
+                    printNumSteps();
+                }
+            }
+            else if (keys_pressed & KEY_RIGHT)
+            {
+                if (intArrow == 0 && ca.getNumStates() < 4)
+                {
+                    ca.setNumStates(ca.getNumStates() + 1);
+                    printCCANumStates();
+
+                    ca.initialize();
+                    printPopulation();
+                    printNumSteps();
+                }
+            }
         }
         /*
          * Color selection menu
