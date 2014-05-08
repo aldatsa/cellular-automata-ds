@@ -25,6 +25,7 @@ std::string stringConwaysGameOfLife = "Conway's game of life";
 std::string stringMunchingSquares = "Munching Squares";
 std::string stringBMLtrafficModel = "BML traffic model";
 std::string stringCyclicCellularAutomaton = "Cyclic cellular automaton";
+std::string stringSteppingStone = "Stepping stone";
 std::string stringSelectColors = "Select colors";
 std::string stringBackToMainMenu = "Back to main menu";
 std::string stringPopulation = "Population:";
@@ -87,7 +88,8 @@ int changeTextLanguage(int language)
         stringConwaysGameOfLife = "Conway's game of life";
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringBMLtrafficModel = "BML traffic model";
-        stringCyclicCellularAutomaton = "Cyclic cellular automaton"; 
+        stringCyclicCellularAutomaton = "Cyclic cellular automaton";
+        stringSteppingStone = "Stepping stone";
         stringSelectColors = "Select colors"; // max 30 characters
         stringBackToMainMenu = "Back to main menu"; // max 30 characters
         stringPopulation = "Population:";
@@ -148,6 +150,7 @@ int changeTextLanguage(int language)
         stringSelectColors = "Seleccionar colores";
         // max 30 characters        
         stringCyclicCellularAutomaton = "Automata celular ciclico";
+        stringSteppingStone = "Camino de piedras";
         stringBackToMainMenu = "Volver al menu principal"; // max 30 characters
         stringPopulation = "Populacion:";
 
@@ -207,6 +210,7 @@ int changeTextLanguage(int language)
         stringMunchingSquares = "Munching Squares"; // max 30 characters
         stringBMLtrafficModel = "BML trafiko eredua";
         stringCyclicCellularAutomaton = "Automata zelular ziklikoa";
+        stringSteppingStone = "Harri bidea";
         stringSelectColors = "Hautatu koloreak"; // max 30 characters
         stringBackToMainMenu = "Itzuli menu nagusira"; // max 30 characters
         stringPopulation = "Populazioa:";
