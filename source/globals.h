@@ -20,9 +20,10 @@
  *  7: Conway's game of life
  *  8: Munching Squares
  *  9: Biham-Middleton-Levine traffic model
- * 10 Cyclic Cellular Automata
- * 11: Select colors
- * 12: Select language
+ * 10: Cyclic Cellular Automata
+ * 11: Stepping stone
+ * 12: Select colors
+ * 13: Select language
  */
 #define MAIN_MENU 0
 #define ELEMENTARY_CELLULAR_AUTOMATA 1
@@ -35,8 +36,9 @@
 #define MUNCHING_SQUARES 8
 #define BML_TRAFFIC_MODEL 9
 #define CYCLIC_CELLULAR_AUTOMATA 10
-#define SELECT_COLORS 11
-#define SELECT_LANGUAGE 12
+#define STEPPING_STONE 11
+#define SELECT_COLORS 12
+#define SELECT_LANGUAGE 13
 
 /*
  * Constants to define the type of neighborhood
