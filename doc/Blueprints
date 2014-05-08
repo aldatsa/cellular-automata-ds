@@ -47,3 +47,5 @@ DONE 2012-07-03 * Add Biham-Middleton-Levine Traffic Model automata
     * DONE 2012-06-05 Rev.82 Boolean triangular automata
     * DONE 2012-06-05 Rev.83 Conway's game of life
 
+* Create a new cellular automata: The stepping stone.
+    http://www.dartmouth.edu/~matc/math5.pattern/FinalProject/Hoke.html
