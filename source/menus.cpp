@@ -808,6 +808,11 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = AUTOMATA_TYPE_MENU_CCA_ROW;
             column = AUTOMATA_TYPE_MENU_CCA_ARROW_COL;
         }
+	else if (index == STEPPING_STONE)
+	{
+	    row = AUTOMATA_TYPE_MENU_ST_ROW;
+	    column = AUTOMATA_TYPE_MENU_ST_ARROW_COL;
+	}
         else if (index == SELECT_COLORS)
         {
             row = AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW;
