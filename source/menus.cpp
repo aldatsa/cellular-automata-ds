@@ -192,6 +192,9 @@ int printMenu(int intDisplayedMenu)
         printString(AUTOMATA_TYPE_MENU_CCA_ROW,
                     AUTOMATA_TYPE_MENU_CCA_COL,
                     stringCyclicCellularAutomaton);
+	printString(AUTOMATA_TYPE_MENU_ST_ROW,
+		    AUTOMATA_TYPE_MENU_ST_COL,
+		    stringSteppingStone);
         printString(AUTOMATA_TYPE_MENU_SELECT_COLORS_ROW,
                     AUTOMATA_TYPE_MENU_SELECT_COLORS_COL,
                     stringSelectColors);
