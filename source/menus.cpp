@@ -1275,6 +1275,10 @@ int printAutomataType(int automataType)
     {
         printf("%s", stringCyclicCellularAutomaton.c_str());
     }
+    else if (automataType == STEPPING_STONE)
+    {
+	printf("%s", stringSteppingStone.c_str());
+    }
 
     return 0;
 }
