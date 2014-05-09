@@ -313,6 +313,12 @@ int printMenu(int intDisplayedMenu)
                     CCA_MENU_BACK_TO_MAIN_COL,
                     stringBackToMainMenu);
     }
+    else if (displayedMenu == STEPPING_STONE)
+    {
+        printString(ST_MENU_BACK_TO_MAIN_ROW,
+                    ST_MENU_BACK_TO_MAIN_COL,
+                    stringBackToMainMenu);
+    }
     else if (displayedMenu == SELECT_COLORS)
     {
         printString(CS_MENU_BG_COLOR_ROW,
@@ -1102,6 +1108,14 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
         {
             row = CCA_MENU_BACK_TO_MAIN_ROW;
             column = CCA_MENU_BACK_TO_MAIN_ARROW_COL;
+        }
+    }
+    else if (intDisplayedMenu == STEPPING_STONE)
+    {
+        if (index == 0) // Back to main menu
+        {
+            row = ST_MENU_BACK_TO_MAIN_ROW;
+            column = ST_MENU_BACK_TO_MAIN_ARROW_COL;
         }
     }
     else if (intDisplayedMenu == SELECT_COLORS)

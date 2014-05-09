@@ -150,6 +150,10 @@
 #define CCA_MENU_BACK_TO_MAIN_COL 2
 #define CCA_MENU_BACK_TO_MAIN_ARROW_COL 0
 
+// Stepping stone
+#define ST_MENU_BACK_TO_MAIN_COL 2
+#define ST_MENU_BACK_TO_MAIN_ARROW_COL 0
+
 // Color selection
 #define CS_MENU_MAIN_COL 2
 #define CS_MENU_PARTIAL_COLOR_COL 5
@@ -232,6 +236,9 @@
 // Cyclic Cellular Automata
 #define CCA_MENU_NUM_STATES_ROW  13
 #define CCA_MENU_BACK_TO_MAIN_ROW 14
+
+// Stepping stone
+#define ST_MENU_BACK_TO_MAIN_ROW 13
 
 // Color selection
 #define CS_MENU_BG_COLOR_ROW 2
