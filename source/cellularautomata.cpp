@@ -51,6 +51,10 @@
  *
  * CYCLIC CELLULAR AUTOMATA:
  * http://en.wikipedia.org/wiki/Cyclic_cellular_automaton
+ *
+ * STEPPING STONE:
+ * http://www.dartmouth.edu/~matc/math5.pattern/FinalProject/Hoke.html
+ *
  */
 
 /*********************************PRIVATE*************************************/
