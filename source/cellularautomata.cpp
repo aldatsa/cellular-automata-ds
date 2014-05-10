@@ -2015,6 +2015,8 @@ int CellularAutomata::nextStep()
 	// A random number between 0 and 1 that we are going to use to decide if a cell gets updated or not.
 	double randomReferenceNumber = (double) rand() / (RAND_MAX);
 	
+        unsigned short randomNeighbor = 0;
+	
         ++numSteps;
 	
         if (numSteps % 2 == 0 and numSteps != 1)
@@ -2027,9 +2029,9 @@ int CellularAutomata::nextStep()
 	    fbRef = fb;
 	    fbNew = fb2;
 	}
-
+	
         dmaCopy(fbRef, fbNew, 128*1024);
-
+	
         for (int col = 0; col < SCREEN_WIDTH; ++col)
         {
             for (int row = 0; row < SCREEN_HEIGHT; ++row)
@@ -2040,15 +2042,57 @@ int CellularAutomata::nextStep()
 		// If the random number for this cell is higher than the reference number
 		if (randomNumberForCell > randomReferenceNumber)
 		{
-		    // We are going to set the color of the cell to the color of the cell in it's right.
-		    // We should select the neighbor randomly.
-		    if (col < SCREEN_WIDTH - 1)
+		    // Create a random value between 0 and 3 to decide which neighbor
+		    // we are going to use to update the color of the current cell.
+		    randomNeighbor = rand() % 4;
+		    
+		    // 0: the neighbor on the top
+		    if (randomNeighbor == 0)
 		    {
-			fbNew[SCREEN_WIDTH * row + col] = fbNew[SCREEN_WIDTH * row + col + 1];
+			if (row > 0)
+			{
+			    fbNew[SCREEN_WIDTH * row + col] = fbRef[SCREEN_WIDTH * (row - 1) + col];
+			}
+			else
+			{
+			    fbNew[SCREEN_WIDTH * row + col] = fbRef[SCREEN_WIDTH * (SCREEN_HEIGHT - 1) + col];
+			}
 		    }
-		    else
+		    // 1: the neighbor on the right
+		    else if (randomNeighbor == 1)
 		    {
-			fbNew[SCREEN_WIDTH * row + col] = fbNew[SCREEN_WIDTH * row];
+			if (col < SCREEN_WIDTH - 1)
+			{
+			    fbNew[SCREEN_WIDTH * row + col] = fbRef[SCREEN_WIDTH * row + col + 1];
+			}
+			else
+			{
+			    fbNew[SCREEN_WIDTH * row + col] = fbRef[SCREEN_WIDTH * row];
+			}
+		    }
+		    // 2: the neighbor on the bottom
+		    else if (randomNeighbor == 2)
+		    {
+			if (row < SCREEN_HEIGHT - 1)
+			{
+			    fbNew[SCREEN_WIDTH * row + col] = fbRef[SCREEN_WIDTH * (row + 1) + col];
+			}
+			else
+			{
+			    fbNew[SCREEN_WIDTH * row + col] = fbRef[col];
+			}
+		    }
+		    // 3: the neighbor on the left
+		    else if (randomNeighbor == 2)
+		    {
+			if (col > 0)
+			{
+			    fbNew[SCREEN_WIDTH * row + col] = fbRef[SCREEN_WIDTH * row + col - 1];
+			}
+			else
+			{
+			    fbNew[SCREEN_WIDTH * row + col] = fbRef[SCREEN_WIDTH * row + SCREEN_WIDTH - 1];
+			}
 		    }
 		}
 	    }
