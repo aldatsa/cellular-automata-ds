@@ -891,9 +891,6 @@ int CellularAutomata::initialize()
         cleanFB(fb2);
 
         drawInitialState();
-	
-	// Only added to see if the initial state is drawn as expected.
-	showFB();
     }
     else if (type == SELECT_COLORS)
     {
@@ -2006,7 +2003,68 @@ int CellularAutomata::nextStep()
         }
         
         swiWaitForVBlank();
+    }
+    else if (type == STEPPING_STONE)
+    {
+	unsigned short* fbRef;
+        unsigned short* fbNew;
+        
+	// Initialize random seed
+        srand(time(0));
+	
+	// A random number between 0 and 1 that we are going to use to decide if a cell gets updated or not.
+	double randomReferenceNumber = (double) rand() / (RAND_MAX);
+	
+        ++numSteps;
+	
+        if (numSteps % 2 == 0 and numSteps != 1)
+    	{
+	    fbRef = fb2;
+	    fbNew = fb;
 	}
+	else
+	{
+	    fbRef = fb;
+	    fbNew = fb2;
+	}
+
+        dmaCopy(fbRef, fbNew, 128*1024);
+
+        for (int col = 0; col < SCREEN_WIDTH; ++col)
+        {
+            for (int row = 0; row < SCREEN_HEIGHT; ++row)
+	    {
+		// A random number between 0 and 1.
+		double randomNumberForCell = (double) rand() / (RAND_MAX);
+		
+		// If the random number for this cell is higher than the reference number
+		if (randomNumberForCell > randomReferenceNumber)
+		{
+		    // We are going to set the color of the cell to the color of the cell in it's right.
+		    // We should select the neighbor randomly.
+		    if (col < SCREEN_WIDTH - 1)
+		    {
+			fbNew[SCREEN_WIDTH * row + col] = fbNew[SCREEN_WIDTH * row + col + 1];
+		    }
+		    else
+		    {
+			fbNew[SCREEN_WIDTH * row + col] = fbNew[SCREEN_WIDTH * row];
+		    }
+		}
+	    }
+	}
+	
+	if (numSteps % 2 == 0 and numSteps != 1)
+        {
+            showFB();
+        }
+        else
+        {
+            showFB2();
+        }
+        
+        swiWaitForVBlank();
+    }
     return 0;
 }
 

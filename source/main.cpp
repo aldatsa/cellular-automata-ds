@@ -1209,6 +1209,9 @@ int main(void)
          * Cyclic Cellular Automata menu
          */
         else if (displayedMenu == STEPPING_STONE) {
+	    
+	    ca.nextStep();
+	    
 	    if (keys_released & KEY_A)
             {
                 if (intArrow == 0) // Back to the main menu
