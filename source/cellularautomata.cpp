@@ -512,6 +512,30 @@ int CellularAutomata::drawInitialState()
             ++population;
         }
     }
+    else if (type == STEPPING_STONE)
+    {
+	int rand_value = 0;
+	
+	int color_r = 0;
+	int color_g = 0;
+	int color_b = 0;
+	
+	// Initializa random seed.
+	srand(time(0));
+	
+	for (int i = 0; i < SCREEN_WIDTH; ++i)
+	{
+	    for (int j = 0; j < SCREEN_HEIGHT; ++j)
+	    {
+		// Create a random value between 0 and 31.
+		color_r = rand() % 32;
+		color_g = rand() % 32;
+		color_b = rand() % 32;
+		
+		fb[j * SCREEN_WIDTH + i] = RGB15(color_r, color_g, color_b);
+	    }
+	}
+    }
     
     return 0;
 }
@@ -850,6 +874,19 @@ int CellularAutomata::initialize()
         cyclicAutomataColors[3] = FG_color4;
 
         drawInitialState();
+    }
+    else if (type == STEPPING_STONE)
+    {
+        showFB();
+        dmaCopy(fb, fb2, 128 * 1024);
+        showFB2();
+
+        cleanFB(fb);
+        cleanFB(fb2);
+
+        drawInitialState();
+	
+	showFB();
     }
     else if (type == SELECT_COLORS)
     {
