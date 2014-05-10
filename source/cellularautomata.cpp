@@ -498,13 +498,13 @@ int CellularAutomata::drawInitialState()
     {
         int rand_value = 0;
 
-        // Initialize random seed
+        // Initialize a random seed
         srand(time(0));
 
         // Move along the cells of the first row (0-255)
         for (int i = 0; i < SCREEN_WIDTH; ++i)
         {
-            // Create random value between 0 and 3 (n = 4)
+            // Create a random value between 0 and 3 (n = 4)
             rand_value = rand() % 4;
             
             // Paint the cell with the corresponding color
@@ -520,18 +520,20 @@ int CellularAutomata::drawInitialState()
 	int color_g = 0;
 	int color_b = 0;
 	
-	// Initializa random seed.
+	// Initialize a random seed.
 	srand(time(0));
 	
+	// Move along all the cells.
 	for (int i = 0; i < SCREEN_WIDTH; ++i)
 	{
 	    for (int j = 0; j < SCREEN_HEIGHT; ++j)
 	    {
-		// Create a random value between 0 and 31.
+		// Create a random value between 0 and 31 for the three components of the RGB15 color.
 		color_r = rand() % 32;
 		color_g = rand() % 32;
 		color_b = rand() % 32;
 		
+		// Paint the cell with a random RGB15 color.
 		fb[j * SCREEN_WIDTH + i] = RGB15(color_r, color_g, color_b);
 	    }
 	}
@@ -886,6 +888,7 @@ int CellularAutomata::initialize()
 
         drawInitialState();
 	
+	// Only added to see if the initial state is drawn as expected.
 	showFB();
     }
     else if (type == SELECT_COLORS)
