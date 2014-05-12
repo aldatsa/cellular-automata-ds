@@ -1212,6 +1212,8 @@ int main(void)
 	    
 	    ca.nextStep();
 	    
+	    printNumSteps();
+	    
 	    if (keys_released & KEY_A)
             {
                 if (intArrow == 0) // Back to the main menu
