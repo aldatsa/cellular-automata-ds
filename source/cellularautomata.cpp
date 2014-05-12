@@ -92,28 +92,28 @@ int CellularAutomata::rotateAnt(unsigned char rotateTo)
     
     if (rotateTo == 'R')
     {
-	    if (antAngle < limitAngle)
-	    {
-		    antAngle = antAngle + stepAngle;
-	    }
-	    else
-	    {
-		    antAngle = 0;
-	    }
+	if (antAngle < limitAngle)
+	{
+	    antAngle = antAngle + stepAngle;
+	}
+	else
+	{
+	    antAngle = 0;
+	}
     }
     else if (rotateTo == 'L')
     {
-	    if (antAngle != 0)
-	    {
-		    antAngle = antAngle - stepAngle;
-	    }
-	    else
-	    {
-		    antAngle = limitAngle;
-	    }
+	if (antAngle != 0)
+	{
+	    antAngle = antAngle - stepAngle;
+	}
+	else
+	{
+	    antAngle = limitAngle;
+	}
     }
     
-	return 0;
+    return 0;
 }
 
 /*
@@ -123,37 +123,37 @@ int CellularAutomata::rotateAnt(unsigned char rotateTo)
  */
 int CellularAutomata::paintAnt()
 {
-	unsigned short tempColor;
-	
-	// If the cell has FG_color paint it with BG_color
-	if (fb[antPosY * SCREEN_WIDTH + antPosX] == FG_color)
-	{
-		tempColor = BG_color;
-		--population; // The population of alive cells decreases
-	}
-	// else if the cell has BG_color paint it with FG_color
-	else
-	{
-		tempColor = FG_color;
-		++population; // The population of alive cells increases
-	}
+    unsigned short tempColor;
+    
+    // If the cell has FG_color paint it with BG_color
+    if (fb[antPosY * SCREEN_WIDTH + antPosX] == FG_color)
+    {
+	tempColor = BG_color;
+	--population; // The population of alive cells decreases
+    }
+    // else if the cell has BG_color paint it with FG_color
+    else
+    {
+	tempColor = FG_color;
+	++population; // The population of alive cells increases
+    }
 
     if (type == LANGTON_HEXAGONAL_ANT)
     {
-	    paintHexCell(antPosX, antPosY, tempColor, fb);
-	}
-	else if (type == LANGTON_ANT)
+	paintHexCell(antPosX, antPosY, tempColor, fb);
+    }
+    else if (type == LANGTON_ANT)
+    {
+	for(int i = 0; i < antNumPixels; i++)
 	{
-	    for(int i = 0; i < antNumPixels; i++)
-	    {
-		    for(int j = 0; j < antNumPixels; j++)
-		    {		
-			    fb[(antPosY + j) * SCREEN_WIDTH + (antPosX + i)] = tempColor;
-		    }
+	    for(int j = 0; j < antNumPixels; j++)
+	    {		
+		fb[(antPosY + j) * SCREEN_WIDTH + (antPosX + i)] = tempColor;
 	    }
+	}
     }
 
-	return 0;
+    return 0;
 }
 
 /*
@@ -163,50 +163,49 @@ int CellularAutomata::forwardAnt()
 {
     if (type == LANGTON_HEXAGONAL_ANT)
     {
-	    switch(antAngle)
-	    {
-		    case 0:
-		     	antPosY = antPosY - 4;
-			    break;
-		    case 60:
-			    antPosX = antPosX + 4;
-			    antPosY = antPosY - 2;
-			    break;
-		    case 120:
-			    antPosX = antPosX + 4;
-			    antPosY = antPosY + 2;
-			    break;
-
-		    case 180:
-			    antPosY = antPosY + 4;
-			    break;
-		    case 240:
-			    antPosX = antPosX - 4;
-			    antPosY = antPosY + 2;
-			    break;
-		    case 300:
-			    antPosX = antPosX - 4;
-			    antPosY = antPosY - 2;
-			    break;
-	    }
+	switch(antAngle)
+	{
+	    case 0:
+	        antPosY = antPosY - 4;
+		break;
+	    case 60:
+		antPosX = antPosX + 4;
+		antPosY = antPosY - 2;
+		break;
+	    case 120:
+		antPosX = antPosX + 4;
+		antPosY = antPosY + 2;
+		break;	
+	    case 180:
+		antPosY = antPosY + 4;
+		break;
+	    case 240:
+		antPosX = antPosX - 4;
+		antPosY = antPosY + 2;
+		break;
+	    case 300:
+		antPosX = antPosX - 4;
+		antPosY = antPosY - 2;
+		break;
+	}
     }
     else if (type == LANGTON_ANT)
     {
     	switch (antAngle)
-	    {
-		    case 0:
-			    antPosX = antPosX + antNumPixels;
-			    break;
-		    case 90:
-			    antPosY = antPosY - antNumPixels;
-			    break;
-		    case 180:
-			    antPosX = antPosX - antNumPixels;
-			    break;
-		    case 270:
-			    antPosY = antPosY + antNumPixels;
-			    break;
-	    }
+	{
+	    case 0:
+		antPosX = antPosX + antNumPixels;
+		break;
+	    case 90:
+		antPosY = antPosY - antNumPixels;
+		break;
+	    case 180:
+		antPosX = antPosX - antNumPixels;
+		break;
+	    case 270:
+		antPosY = antPosY + antNumPixels;
+		break;
+	}
     }
 	return 0;
 }
@@ -388,38 +387,38 @@ int CellularAutomata::drawArrow(char nth, unsigned short color)
      
 	switch (nth)
 	{
-		case 0 :
-			intRow = intTopRow;
-			intColumn = intColumn1;
-		 	break;
-		case 1 :
-			intRow = intTopRow;
-			intColumn = intColumn2;
-		 	break;		
-		case 2 :
-			intRow = intTopRow;
-			intColumn = intColumn3;
-		 	break;	
-		case 3 :
-			intRow = intTopRow;
-			intColumn = intColumn4;
-		 	break;	
-		case 4 :
-			intRow = intBottomRow;
-			intColumn = intColumn1;
-		 	break;
-		case 5 :
-			intRow = intBottomRow;
-			intColumn = intColumn2;
-		 	break;		
-		case 6 :
-			intRow = intBottomRow;
-			intColumn = intColumn3;
-		 	break;	
-		case 7 :
-			intRow = intBottomRow;
-			intColumn = intColumn4;
-		 	break;	
+	    case 0 :
+		intRow = intTopRow;
+		intColumn = intColumn1;
+		break;
+	    case 1 :
+		intRow = intTopRow;
+		intColumn = intColumn2;
+		break;		
+	    case 2 :
+		intRow = intTopRow;
+		intColumn = intColumn3;
+		break;	
+	    case 3 :
+		intRow = intTopRow;
+		intColumn = intColumn4;
+		break;	
+	    case 4 :
+		intRow = intBottomRow;
+		intColumn = intColumn1;
+		break;
+	    case 5 :
+		intRow = intBottomRow;
+		intColumn = intColumn2;
+		break;		
+	    case 6 :
+		intRow = intBottomRow;
+		intColumn = intColumn3;
+		break;	
+	    case 7 :
+		intRow = intBottomRow;
+		intColumn = intColumn4;
+		break;	
 	}
 	
 	drawHLine(intColumn - 3, intRow - 3, 1, color, fb);
@@ -451,16 +450,16 @@ int CellularAutomata::drawInitialState()
         else if (ECA_initial_state == ECA_INITIALIZE_RANDOM)
         {
             int rand_value = 0;
-
+	    
             // Initialize random seed
             srand(time(0));
-
+	    
             // Move along the cells of the first row (0-255)
             for (int i = 0; i < SCREEN_WIDTH; ++i)
             {
                 // Create random value (0 or 1)
                 rand_value = rand() % 2;
-
+		
                 // If the value is 1, paint the corresponding cell with
                 // FG_color and add 1 to the population count
                 if (rand_value == 1)
@@ -501,10 +500,10 @@ int CellularAutomata::drawInitialState()
     else if (type == CYCLIC_CELLULAR_AUTOMATA)
     {
         int rand_value = 0;
-
+	
         // Initialize a random seed
         srand(time(0));
-
+	
         // Move along the cells of the first row (0-255)
         for (int i = 0; i < SCREEN_WIDTH; ++i)
         {
@@ -632,7 +631,7 @@ bool CellularAutomata::checkBooleanRuleValue(int neighborhoodType,
                                              int ruleIndex)
 {
     return ((booleanRuleValues[neighborhoodType] & (1 << ruleIndex)) ==
-             (1 << ruleIndex));
+            (1 << ruleIndex));
 }
 
 /*
