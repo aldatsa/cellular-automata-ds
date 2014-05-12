@@ -747,16 +747,16 @@ int CellularAutomata::initialize()
     if (type == ELEMENTARY_CELLULAR_AUTOMATA)
     {
         updateECAruleColors();
-
+	
         // This configuration is for painting the initial cell in
         // the center of the first row (fb[128] = FG_color)
         ECA_initial_state = ECA_INITIALIZE_ONE_CELL;        
         //ECA_initial_state = ECA_INITIALIZE_RANDOM;
-
+	
         // Paint the first row of the automata that corresponds to the
         // state set using ECA_initial_state
         drawInitialState();
-
+	
         // Draw the rules that correspond to the default rule
         // (Rule 90, set in updateECAruleColors())
         drawAllRules();
@@ -784,7 +784,7 @@ int CellularAutomata::initialize()
         
         cleanFB(fb);
         cleanFB(fb2);
-    
+	
         fb[91 * SCREEN_WIDTH + 127] = FG_color; // Paint the initial point
         ++population;
     }
@@ -796,9 +796,9 @@ int CellularAutomata::initialize()
         
         cleanFB(fb);
         cleanFB(fb2);
-
+	
         drawHexGrid();
-
+	
         /*
          * We use the Moore neighborhood
          * In this case it's a hexagonal neighborhood but as the Moore 
@@ -817,7 +817,7 @@ int CellularAutomata::initialize()
         
         cleanFB(fb);
         cleanFB(fb2);
-
+	
         drawTriangularGrid();
         
         paintTriangularCell(127, 91, FG_color, fb);
@@ -831,7 +831,7 @@ int CellularAutomata::initialize()
         
         cleanFB(fb);
         cleanFB(fb2);
-
+	
         drawInitialState();
     }
     else if (type == BML_TRAFFIC_MODEL)
@@ -839,14 +839,14 @@ int CellularAutomata::initialize()
         showFB();
         dmaCopy(fb, fb2, 128* 1024);
         showFB2();
-
+	
         cleanFB(fb);
         cleanFB(fb2);
-
+	
         int total_pixels = SCREEN_WIDTH * SCREEN_HEIGHT;
         double BML_density_percent = (double) BML_density / 100;
         int vector_length = BML_density_percent * total_pixels;
-
+	
         std::vector<int> random_pixels = get_random_int_vector(vector_length,
                                                                0,
                                                                total_pixels);
@@ -869,7 +869,7 @@ int CellularAutomata::initialize()
         showFB();
         dmaCopy(fb, fb2, 128 * 1024);
         showFB2();
-
+	
         cleanFB(fb);
         cleanFB(fb2);
        
@@ -877,7 +877,7 @@ int CellularAutomata::initialize()
         cyclicAutomataColors[1] = FG_color2;
         cyclicAutomataColors[2] = FG_color3;
         cyclicAutomataColors[3] = FG_color4;
-
+	
         drawInitialState();
     }
     else if (type == STEPPING_STONE)
@@ -885,41 +885,41 @@ int CellularAutomata::initialize()
         showFB();
         dmaCopy(fb, fb2, 128 * 1024);
         showFB2();
-
+	
         cleanFB(fb);
         cleanFB(fb2);
-
+	
         drawInitialState();
     }
     else if (type == SELECT_COLORS)
     {
         drawRectangle(75, 70, 50, 50, FG_color);
         drawRectangle(75, 130, 50, 50, FG_color2);
-
+	
         // top (horizontal)
         for (int i = 65; i < 75; ++i)
         {
             drawHLine(60, i, 130, line_color, fb);
         }
-
+	
         // bottom (horizontal)
         for (int i = 125; i < 135; ++i)
         {
             drawHLine(60, i, 130, line_color, fb);
         }
-
+	
         // left (vertical)
         for (int i = 60; i < 70; ++i)
         {
             drawVLine(i, 65, 70, line_color);
         }
-
+	
         // center (vertical)
         for (int i = 120; i < 130; ++i)
         {
             drawVLine(i, 65, 70, line_color);
         }
-
+	
         // right (vertical)
         for (int i = 180; i < 190; ++i)
         {
@@ -947,101 +947,101 @@ int CellularAutomata::nextStep()
     {
         if (fb[antPosY * SCREEN_WIDTH + antPosX] == BG_color)
         {
-	        rotateAnt('R');
-	    }
-	    else
-	    {
-	        rotateAnt('L');
-	    }
-	        
-	    paintAnt();
-	    forwardAnt();
-	    ++numSteps;
-	        
-	    // Check if the ant has reached any border of the screen.
-	    if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or
-	        antPosY + antNumPixels > SCREEN_HEIGHT - 1)
-	    {
-	        antFinished = true;
-	    }
+	    rotateAnt('R');
+	}
+	else
+	{
+	    rotateAnt('L');
+	}
+	
+	paintAnt();
+	forwardAnt();
+	++numSteps;
+	
+	// Check if the ant has reached any border of the screen.
+	if (antPosX < 0 or antPosX + antNumPixels > 254 or antPosY < 0 or
+	    antPosY + antNumPixels > SCREEN_HEIGHT - 1)
+	{
+	    antFinished = true;
+	}
     }
     else if (type == ELEMENTARY_CELLULAR_AUTOMATA)
     {
         int column;
-	    unsigned char i;
-
+	unsigned char i;
+	
         ++numSteps; // In this case numSteps is equivalent to the actual row
         
-	    if (numSteps < 130)
+	if (numSteps < 130)
+	{
+	    for(column = 0; column < SCREEN_WIDTH; column++)
 	    {
-		    for(column = 0; column < SCREEN_WIDTH; column++)
+		if(numSteps < 128)
+		{
+		    for(i = 0; i <= 7; i++)
 		    {
-			    if(numSteps < 128)
+			if(column != 0 && column != SCREEN_WIDTH - 1)
+			{ 
+			    if (fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)]
+				    == ruleLeft[i] &&
+				fb[(numSteps - 1) * SCREEN_WIDTH + column] ==
+				    ruleCenter[i] &&
+				fb[(numSteps - 1) * SCREEN_WIDTH + (column+1)] 
+				    == ruleRight[i])
 			    {
-				    for(i = 0; i <= 7; i++)
-				    {
-					    if(column != 0 && column != SCREEN_WIDTH - 1)
-					    { 
-						    if (fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)]
-						            == ruleLeft[i] &&
-						        fb[(numSteps - 1) * SCREEN_WIDTH + column] ==
-						            ruleCenter[i] &&
-						        fb[(numSteps - 1) * SCREEN_WIDTH + (column+1)] 
-						            == ruleRight[i])
-						    {
-						        // Paint the Elementary Cellular Automata's
-						        // cell with ruleDown[i] color
-						        // and if the color matches FG_color increment 
-						        // the population of alive cells
-						        paintECAcell(numSteps, column, ruleDown[i]);
-							}
-					    }
-					    else if(column == 0)
-					    {
-						    // The left cell is out of the screen, instead
-						    // we'll use the center cell (column 0) to compare
-						    // to ruleLeft
-						    if(fb[(numSteps - 1) * SCREEN_WIDTH + column] ==
-						            ruleLeft[i]
-						       && fb[(numSteps - 1) * SCREEN_WIDTH + column]
-						            == ruleCenter[i]
-						       && fb[(numSteps - 1) * SCREEN_WIDTH +
-						            (column+1)] == ruleRight[i])
-						    {
-    						    // Paint the Elementary Cellular Automata's
-    						    // cell with ruleDown[i] color
-    						    // and if the color matches FG_color increment
-    						    // the population of alive cells
-						        paintECAcell(numSteps, column, ruleDown[i]); 
-            			    }
-					    }	
-					    else if(column == SCREEN_WIDTH - 1)
-					    {
-                            // The right cell is out of the screen, instead
-                            // we'll use the center cell (column 255) to
-                            // compare to ruleRight
-						    if(fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)]
-						            == ruleLeft[i]
-						       && fb[(numSteps - 1) * SCREEN_WIDTH + column]
-						            == ruleCenter[i]
-						       && fb[(numSteps - 1) * SCREEN_WIDTH + column]
-						            == ruleRight[i])
-                            {
-                                // Paint the Elementary Cellular Automata's
-                                // cell with ruleDown[i] color
-                                // and if the color matches FG_color increment
-                                // the population of alive cells
-						        paintECAcell(numSteps, column, ruleDown[i]);
-						    }
-					    }
-				    }
+				// Paint the Elementary Cellular Automata's
+				// cell with ruleDown[i] color
+				// and if the color matches FG_color increment 
+				// the population of alive cells
+				paintECAcell(numSteps, column, ruleDown[i]);
 			    }
-			    else if(numSteps == 129)
+			}
+			else if(column == 0)
+			{
+			    // The left cell is out of the screen, instead
+			    // we'll use the center cell (column 0) to compare
+			    // to ruleLeft
+			    if(fb[(numSteps - 1) * SCREEN_WIDTH + column] ==
+				    ruleLeft[i]
+			       && fb[(numSteps - 1) * SCREEN_WIDTH + column]
+				    == ruleCenter[i]
+			       && fb[(numSteps - 1) * SCREEN_WIDTH +
+				    (column+1)] == ruleRight[i])
 			    {
-				    fb[numSteps * SCREEN_WIDTH + column] = FG_color;
+				// Paint the Elementary Cellular Automata's
+				// cell with ruleDown[i] color
+				// and if the color matches FG_color increment
+				// the population of alive cells
+				paintECAcell(numSteps, column, ruleDown[i]); 
 			    }
+			}
+			else if(column == SCREEN_WIDTH - 1)
+			{
+			    // The right cell is out of the screen, instead
+			    // we'll use the center cell (column 255) to
+			    // compare to ruleRight
+			    if(fb[(numSteps - 1) * SCREEN_WIDTH + (column-1)]
+				    == ruleLeft[i]
+			       && fb[(numSteps - 1) * SCREEN_WIDTH + column]
+				    == ruleCenter[i]
+			       && fb[(numSteps - 1) * SCREEN_WIDTH + column]
+				    == ruleRight[i])
+			    {
+				// Paint the Elementary Cellular Automata's
+				// cell with ruleDown[i] color
+				// and if the color matches FG_color increment
+				// the population of alive cells
+				paintECAcell(numSteps, column, ruleDown[i]);
+			    }
+			}
 		    }
+		}
+		else if(numSteps == 129)
+		{
+		    fb[numSteps * SCREEN_WIDTH + column] = FG_color;
+		}
 	    }
+	}
     }
     /*
      * Else if the type of the automata is Munching squares , it draws the
@@ -1079,13 +1079,13 @@ int CellularAutomata::nextStep()
             {
                 for (int j = 0; j < 64; j++)
                 {	
-				    if (((i xor j) < numSteps) == true)
-				    {
-					    drawMunchingSquare(i, j, 3, FG_color);
-				    }
+		    if (((i xor j) < numSteps) == true)
+		    {
+			    drawMunchingSquare(i, j, 3, FG_color);
+		    }
                 }
             }
-		    numSteps++;
+	    numSteps++;
         }
         else
         {
@@ -1131,7 +1131,7 @@ int CellularAutomata::nextStep()
          * If changeCount != 0 then the automata has not finished yet.
          */ 
         int changeCount = 0; 
-
+	
         /*
          * This two lines were used to debug the implementation of changeCount
          * (changeCount wasn't 0 when the automata finishes)
@@ -1140,7 +1140,7 @@ int CellularAutomata::nextStep()
          */
         
         int countFG = 0;
-
+	
         ++numSteps;
         
         if (numSteps % 2 == 0 and numSteps != 1)
@@ -1162,7 +1162,7 @@ int CellularAutomata::nextStep()
             {
                 countFG = 0;        
                 
-
+		
                 // top 
                 if (fbRef[SCREEN_WIDTH * (j - 1) + i] == FG_color)
                 {
@@ -1285,7 +1285,7 @@ int CellularAutomata::nextStep()
         int changeCount = 0; 
             
         int countFG = 0;
-
+	
         ++numSteps;
         
         if (numSteps % 2 == 0 and numSteps != 1)
@@ -1306,19 +1306,18 @@ int CellularAutomata::nextStep()
             for (int j = 3; j < SCREEN_HEIGHT - 1; j = j + 4)
             {
                 countFG = 0;        
-
+		
                 // top left
                 if (fbRef[SCREEN_WIDTH * j + i - 2] == FG_color)
                 {
                     countFG++;
                 }
-
+		
                 // top 
                 if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
                 {
                     countFG++;
                 }
-                
                 
                 // top right
                 if (fbRef[SCREEN_WIDTH * j + i + 4] == FG_color)
@@ -1337,13 +1336,13 @@ int CellularAutomata::nextStep()
                 {
                     countFG++;
                 }
-
-                // bottom right                         
+		
+		// bottom right                         
                 if (fbRef[SCREEN_WIDTH * (j + 2) + i + 4] == FG_color)
                 {
                     countFG++;
                 }
-
+		
                 /*
                  * if the count of surrounding cells with FG_color is n we'll
                  * check if the index n-1 of the boolean rule is checked
@@ -1374,19 +1373,18 @@ int CellularAutomata::nextStep()
             for (int j = 5; j < 189; j = j + 4)
             {
                 countFG = 0;        
-
+		
                 // top left
                 if (fbRef[SCREEN_WIDTH * j + i - 2] == FG_color)
                 {
                     countFG++;
                 }
-
+		
                 // top 
                 if (fbRef[SCREEN_WIDTH * (j - 2) + i] == FG_color)
                 {
                     countFG++;
                 }
-                
                 
                 // top right
                 if (fbRef[SCREEN_WIDTH * j + i + 4] == FG_color)
@@ -1405,13 +1403,13 @@ int CellularAutomata::nextStep()
                 {
                     countFG++;
                 }
-
+		
                 // bottom right                         
                 if (fbRef[SCREEN_WIDTH * (j + 2) + i + 4] == FG_color)
                 {
                     countFG++;
                 }
-
+		
                 /*
                  * if the count of surrounding cells with FG_color is n we'll
                  * check if the index n-1 of the boolean rule is checked
@@ -1435,7 +1433,7 @@ int CellularAutomata::nextStep()
                 }
             }
         }
-
+	
         // The automata has finished so we are going to reinitiate the cycle
         if (changeCount == 0)
         {
@@ -1500,9 +1498,9 @@ int CellularAutomata::nextStep()
         int changeCount = 0; 
             
         int countFG = 0;
-
+	
         ++numSteps;
-
+	
         if (numSteps % 2 == 0 and numSteps != 1)
         {
             fbRef = fb2;
@@ -1521,7 +1519,7 @@ int CellularAutomata::nextStep()
             for (int j = 4; j < 187; j = j + 3)
             {
                 countFG = 0;        
-
+		
                 // xxx
                 //  x
                 if (typeOfNeighborhood == MOORE_NEIGHBORHOOD or
@@ -1552,7 +1550,7 @@ int CellularAutomata::nextStep()
                 {
                     countFG++;
                 }
-
+		
                 // right
                 if (fbRef[SCREEN_WIDTH * j + i + 3] == FG_color)
                 {
@@ -1578,7 +1576,7 @@ int CellularAutomata::nextStep()
                     {
                         countFG++;
                     }
-
+		    
                     // bottom right                         
                     if (fbRef[SCREEN_WIDTH * (j + 3) + i + 3] == FG_color)
                     {
@@ -1611,7 +1609,7 @@ int CellularAutomata::nextStep()
                 }
             }
         }
-
+	
         /*
          * If no cell has changed the automata has finished so we are going
          * to reinitiate the cycle
@@ -1635,10 +1633,10 @@ int CellularAutomata::nextStep()
     }
     else if(type == CONWAYS_GAME_OF_LIFE)
     {
-    
+	
         unsigned short* fbRef;
         unsigned short* fbNew;
-
+	
         /*
          * changeCount is used to know if the next step is different from the
          * current step.
@@ -1648,11 +1646,11 @@ int CellularAutomata::nextStep()
          * If changeCount != 0 then the automata has not finished yet.
          */ 
         int changeCount = 0; 
-
+	
         int countFG = 0;
- 
+     
         ++numSteps;
-
+	
         if (numSteps % 2 == 0 and numSteps != 1)
         {
             fbRef = fb2;
@@ -1663,22 +1661,22 @@ int CellularAutomata::nextStep()
             fbRef = fb;
             fbNew = fb2;
         }
-
+	
         dmaCopy(fbRef, fbNew, 128*1024);
-
+	
         for (int i = 1; i < 254; ++i)
         {
             for (int j = 1; j < SCREEN_HEIGHT - 1; ++j)
             {
                 countFG = 0;        
-
+		
                 // top 
                 if (fbRef[SCREEN_WIDTH * (j - 1) + i] == FG_color)
                 {
                     countFG++;
                 }
-
-          	    //bottom
+		
+	        //bottom
                 if (fbRef[SCREEN_WIDTH * (j + 1) + i] == FG_color)
                 {
                     countFG++;
@@ -1689,13 +1687,13 @@ int CellularAutomata::nextStep()
                 {
                     countFG++;
                 }
-
+		
                 // right
                 if (fbRef[SCREEN_WIDTH * j + i + 1] == FG_color)
                 {
                     countFG++;
                 }
-                            
+                
                 // top left
                 if (fbRef[SCREEN_WIDTH * (j - 1) + i - 1] == FG_color)
                 {
@@ -1713,7 +1711,7 @@ int CellularAutomata::nextStep()
                 {
                     countFG++;
                 }
-
+		
                 // bottom right                         
                 if (fbRef[SCREEN_WIDTH * (j + 1) + i + 1] == FG_color)
                 {
@@ -1790,15 +1788,15 @@ int CellularAutomata::nextStep()
     }
     else if(type == BML_TRAFFIC_MODEL)
     {
-    
+	
         unsigned short* fbRef;
         unsigned short* fbNew;
-
+	
         int cell_step = 0; // 1 or SCREEN_WIDTH (256)
         unsigned short currentColor = 0;
         
         ++numSteps;
-
+	
         if (numSteps % 2 == 0 and numSteps != 1)
         // move vertically (top to bottom)
         {
@@ -1814,9 +1812,9 @@ int CellularAutomata::nextStep()
             cell_step = 1;
             currentColor = FG_color2;
         }
-
+	
         dmaCopy(fbRef, fbNew, 128*1024);
-
+	
         for (int col = 0; col < SCREEN_WIDTH; ++col)
         {
             for (int row = 0; row < SCREEN_HEIGHT; ++row)
@@ -1836,7 +1834,7 @@ int CellularAutomata::nextStep()
                         {
                             // Paint the current cell with BG_color
                             fbNew[SCREEN_WIDTH * row + col] = BG_color;
-
+			    
                             // Paint the next cell with FG_color
                             fbNew[SCREEN_WIDTH * row + col + cell_step] =
                                 currentColor;
@@ -1853,11 +1851,11 @@ int CellularAutomata::nextStep()
                         {
                             // Paint the current cell with BG_color
                             fbNew[SCREEN_WIDTH * row + col] = BG_color;
-
+			    
                             // goes back to the top
                             fbNew[col] = currentColor;
                         }
-
+			
                     }
                 }
                 // Horizontal movement
@@ -1875,7 +1873,7 @@ int CellularAutomata::nextStep()
                         {
                             // Paint the current cell with BG_color
                             fbNew[SCREEN_WIDTH * row + col] = BG_color;
-
+			    
                             // Paint the next cell with FG_color
                             fbNew[SCREEN_WIDTH * row + col + cell_step] =
                                 currentColor;
@@ -1892,16 +1890,16 @@ int CellularAutomata::nextStep()
                         {
                             // Paint the current cell with BG_color
                             fbNew[SCREEN_WIDTH * row + col] = BG_color;
-
+			    
                             // goes back to the left side
                             fbNew[SCREEN_WIDTH * row] = currentColor;
                         }
-
+			
                     }
                 }
             }
         }
- 
+	
         if (numSteps % 2 == 0 and numSteps != 1)
         {
             showFB();
@@ -1913,39 +1911,39 @@ int CellularAutomata::nextStep()
         swiWaitForVBlank();
     }
     else if (type == CYCLIC_CELLULAR_AUTOMATA)
-	{
-		unsigned short* fbRef;
-		unsigned short* fbNew;
-
+    {
+	unsigned short* fbRef;
+	unsigned short* fbNew;
+	
         unsigned short currentColorIndex;
         unsigned short currentLeftColorIndex;
         unsigned short currentRightColorIndex;
-
+	
         ++numSteps;
-
-  		if (numSteps % 2 == 0 and numSteps != 1)
+	
+  	if (numSteps % 2 == 0 and numSteps != 1)
     	{
-	    	fbRef = fb2;
-		    fbNew = fb;
-	    }
-	    else
-	    {
-		    fbRef = fb;
-		    fbNew = fb2;
-	    }
-
-	    dmaCopy(fbRef, fbNew, 128*1024);
-
+	    fbRef = fb2;
+	    fbNew = fb;
+	}
+	else
+	{
+	    fbRef = fb;
+	    fbNew = fb2;
+	}
+	
+	dmaCopy(fbRef, fbNew, 128*1024);
+	
         for (int column = 0; column < SCREEN_WIDTH; column++)
-	    {
-            // Determine the index of the color of the current cell
-            for (int i = 0; i < numStates; i++) {
-                if (cyclicAutomataColors[i] == 
-                        fbRef[SCREEN_WIDTH * (numSteps - 1) + column]) 
-                {
-                    currentColorIndex = i;
-                }                
-            }
+	{
+	    // Determine the index of the color of the current cell
+	    for (int i = 0; i < numStates; i++) {
+		if (cyclicAutomataColors[i] == 
+		    fbRef[SCREEN_WIDTH * (numSteps - 1) + column]) 
+		{
+		    currentColorIndex = i;
+		}                
+	    }
             
             // Determine the index of the color of the cell on the left side
             // of the current cell
@@ -1956,7 +1954,7 @@ int CellularAutomata::nextStep()
                     currentLeftColorIndex = i;
                 } 
             }
-
+	    
             // Determine the index of the color of the cell on the right side
             // of the current cell
             for (int i = 0; i < numStates; i++) {
@@ -1990,8 +1988,8 @@ int CellularAutomata::nextStep()
                 fbNew[SCREEN_WIDTH * numSteps + column] =
                     cyclicAutomataColors[currentColorIndex];
             }
-	    }
-		
+	}
+	
        	if (numSteps % 2 == 0 and numSteps != 1)
         {
             showFB();
@@ -2133,88 +2131,87 @@ int CellularAutomata::drawRule(int nth)
     const int intColumn3 = 144;
     const int intColumn4 = 200;
 
-	const int intLength = 9;
-	const int intWidth = 9;
+    const int intLength = 9;
+    const int intWidth = 9;
     
     unsigned int color = BG_color;
-	int intRowStart = 0;
-	int intColumnStart = 0;
-	
-	switch (nth)
-	{
-		case 0 :
-			intRowStart = intTopRow;
-			intColumnStart = intColumn1;
-		 	break;
-		case 1 :
-			intRowStart = intTopRow;
-			intColumnStart = intColumn2;
-		 	break;		
-		case 2 :
-			intRowStart = intTopRow;
-			intColumnStart = intColumn3;
-		 	break;	
-		case 3 :
-			intRowStart = intTopRow;
-			intColumnStart = intColumn4;
-		 	break;	
+    int intRowStart = 0;
+    int intColumnStart = 0;
 
-		case 4 :
-			intRowStart = intBottomRow;
-			intColumnStart = intColumn1;
-		 	break;
-		case 5 :
-			intRowStart = intBottomRow;
-			intColumnStart = intColumn2;
-		 	break;		
-		case 6 :
-			intRowStart = intBottomRow;
-			intColumnStart = intColumn3;
-		 	break;	
-		case 7 :
-			intRowStart = intBottomRow;
-			intColumnStart = intColumn4;
-		 	break;	
-	}
+    switch (nth)
+    {
+	case 0 :
+	    intRowStart = intTopRow;
+	    intColumnStart = intColumn1;
+	    break;
+	case 1 :
+	    intRowStart = intTopRow;
+	    intColumnStart = intColumn2;
+	    break;
+	case 2 :
+	    intRowStart = intTopRow;
+	    intColumnStart = intColumn3;
+	    break;
+	case 3 :
+	    intRowStart = intTopRow;
+	    intColumnStart = intColumn4;
+	    break;
+	case 4 :
+	    intRowStart = intBottomRow;
+	    intColumnStart = intColumn1;
+	    break;
+	case 5 :
+	    intRowStart = intBottomRow;
+	    intColumnStart = intColumn2;
+	    break;
+	case 6 :
+	    intRowStart = intBottomRow;
+	    intColumnStart = intColumn3;
+	    break;
+	case 7 :
+	    intRowStart = intBottomRow;
+	    intColumnStart = intColumn4;
+	    break;
+    }
 
-	if(ruleLeft[nth] == FG_color)
-	{
+    if(ruleLeft[nth] == FG_color)
+    {
         color = FG_color;
-	}
-	
-	drawRectangle(intRowStart, intColumnStart, intLength, intWidth, color);
+    }
 
-	color = BG_color;
+    drawRectangle(intRowStart, intColumnStart, intLength, intWidth, color);
 
-	if(ruleCenter[nth] == FG_color)
-	{
-		color = FG_color;
-	}
-		
-	drawRectangle(intRowStart, intColumnStart + intWidth - 1,
+    color = BG_color;
+
+    if(ruleCenter[nth] == FG_color)
+    {
+	    color = FG_color;
+    }
+	    
+    drawRectangle(intRowStart, intColumnStart + intWidth - 1,
+	      intLength, intWidth, color);
+
+    color = BG_color;
+
+    if(ruleRight[nth] == FG_color)
+    {
+        color = FG_color;
+    }
+
+    drawRectangle(intRowStart, intColumnStart + (intWidth - 1) * 2,
                   intLength, intWidth, color);
 
     color = BG_color;
 
-	if(ruleRight[nth] == FG_color)
-	{
+    if(ruleDown[nth] == FG_color)
+    {
         color = FG_color;
-	}
+    }
 
-	drawRectangle(intRowStart, intColumnStart + (intWidth - 1) * 2,
+    drawRectangle(intRowStart + intLength - 1, intColumnStart + intWidth -1,
                   intLength, intWidth, color);
 
-    color = BG_color;
-
-	if(ruleDown[nth] == FG_color)
-	{
-        color = FG_color;
-	}
-
-	drawRectangle(intRowStart + intLength - 1, intColumnStart + intWidth -1,
-                  intLength, intWidth, color);
-	
-	return 0;
+    return 0;
 }
 
 /*
@@ -2222,10 +2219,10 @@ int CellularAutomata::drawRule(int nth)
  */
 int CellularAutomata::drawAllRules()
 {
-	for (int i = 0; i < 8; i++)
-	{
-	    drawRule(i);
-	}
-	
-	return 0;
+    for (int i = 0; i < 8; i++)
+    {
+	drawRule(i);
+    }
+    
+    return 0;
 }
