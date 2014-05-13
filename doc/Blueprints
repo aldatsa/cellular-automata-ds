@@ -20,6 +20,8 @@ DONE 2012-06-15 * Create string for "1    2    3    4" and similars
 
 DONE 2012-07-03 * Add Biham-Middleton-Levine Traffic Model automata
 
+DONE 2014-05-12 * Create a new cellular automata: The stepping stone. http://www.dartmouth.edu/~matc/math5.pattern/FinalProject/Hoke.html
+        
 * Must be refactored:
     * CellularAutomata::rotateAnt
     * CellularAutomata::paintAnt
@@ -47,5 +49,4 @@ DONE 2012-07-03 * Add Biham-Middleton-Levine Traffic Model automata
     * DONE 2012-06-05 Rev.82 Boolean triangular automata
     * DONE 2012-06-05 Rev.83 Conway's game of life
 
-* Create a new cellular automata: The stepping stone.
-    http://www.dartmouth.edu/~matc/math5.pattern/FinalProject/Hoke.html
+* Add option to choose the neighborhood type in the Stepping stone.
