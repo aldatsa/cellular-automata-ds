@@ -6,6 +6,15 @@ Introduction
 
 Cellular Automata DS is a homebrew cellular automata simulator for the Nintendo DS.
 
+Requirements
+------------
+
+* The devkitARM SDK available at http://devkitpro.org.
+
+  Follow this instructions to install the SDK: http://devkitpro.org/wiki/Getting_Started/devkitARM
+
+* libnds http://libnds.devkitpro.org/
+
 How to build and run Cellular Automata DS
 -----------------------------------------
 
