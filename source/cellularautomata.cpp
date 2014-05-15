@@ -474,6 +474,8 @@ int CellularAutomata::drawInitialState()
     {
 	// The initial cell in the middle of the screen.
 	fb[91 * SCREEN_WIDTH + 127] = FG_color;
+	
+	++population;
     }
     else if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
     {
@@ -805,7 +807,6 @@ int CellularAutomata::initialize()
 	
         // Paint the initial point
 	drawInitialState();
-        ++population;
     }
     else if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
     {        
