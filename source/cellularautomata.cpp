@@ -517,6 +517,29 @@ int CellularAutomata::drawInitialState()
             population = population + 12 * 266;
         }
     }
+    else if (type == BML_TRAFFIC_MODEL)
+    {
+	int total_pixels = SCREEN_WIDTH * SCREEN_HEIGHT;
+        double BML_density_percent = (double) BML_density / 100;
+        int vector_length = BML_density_percent * total_pixels;
+	
+        std::vector<int> random_pixels = get_random_int_vector(vector_length,
+                                                               0,
+                                                               total_pixels);
+        for (std::vector<int>::size_type i = 0;
+             i != random_pixels.size(); i++)
+        {
+            if (i % 2 == 0)
+            {
+                fb[random_pixels[i]] = FG_color;
+            }
+            else
+            {
+                fb[random_pixels[i]] = FG_color2;
+            }
+            ++population;
+        }
+    }
     else if (type == CYCLIC_CELLULAR_AUTOMATA)
     {
         int rand_value = 0;
@@ -861,26 +884,7 @@ int CellularAutomata::initialize()
         cleanFB(fb);
         cleanFB(fb2);
 	
-        int total_pixels = SCREEN_WIDTH * SCREEN_HEIGHT;
-        double BML_density_percent = (double) BML_density / 100;
-        int vector_length = BML_density_percent * total_pixels;
-	
-        std::vector<int> random_pixels = get_random_int_vector(vector_length,
-                                                               0,
-                                                               total_pixels);
-        for (std::vector<int>::size_type i = 0;
-             i != random_pixels.size(); i++)
-        {
-            if (i % 2 == 0)
-            {
-                fb[random_pixels[i]] = FG_color;
-            }
-            else
-            {
-                fb[random_pixels[i]] = FG_color2;
-            }
-            ++population;
-        }
+	drawInitialState();
     }
     else if (type == CYCLIC_CELLULAR_AUTOMATA)
     {
