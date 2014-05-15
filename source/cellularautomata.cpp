@@ -475,6 +475,13 @@ int CellularAutomata::drawInitialState()
 	// The initial cell in the middle of the screen.
 	fb[91 * SCREEN_WIDTH + 127] = FG_color;
     }
+    else if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
+    {
+        
+        paintHexCell(124, 93, FG_color, fb);
+	
+	population++;
+    }
     else if (type == CONWAYS_GAME_OF_LIFE) //Conway's game of life
     {
         if (initialState == ACORN)
@@ -803,17 +810,17 @@ int CellularAutomata::initialize()
         cleanFB(fb);
         cleanFB(fb2);
 	
-        drawHexGrid();
-	
-        /*
+	/*
          * We use the Moore neighborhood
          * In this case it's a hexagonal neighborhood but as the Moore 
          * neighborhood is a array of 8 ints there is enough space for 6 ints.
          */
         typeOfNeighborhood = MOORE_NEIGHBORHOOD;
-        
-        paintHexCell(124, 93, FG_color, fb);
-        ++population;
+	
+	drawHexGrid();
+	
+	// Paint the hexagonal grid and the initial hexagon.
+	drawInitialState();
     }
     else if (type == BOOLEAN_TRIANGULAR_AUTOMATA)
     {
