@@ -480,7 +480,13 @@ int CellularAutomata::drawInitialState()
         
         paintHexCell(124, 93, FG_color, fb);
 	
-	population++;
+	++population;
+    }
+    else if (type == BOOLEAN_TRIANGULAR_AUTOMATA)
+    {
+	paintTriangularCell(127, 91, FG_color, fb);
+	
+        ++population;
     }
     else if (type == CONWAYS_GAME_OF_LIFE) //Conway's game of life
     {
@@ -819,7 +825,6 @@ int CellularAutomata::initialize()
 	
 	drawHexGrid();
 	
-	// Paint the hexagonal grid and the initial hexagon.
 	drawInitialState();
     }
     else if (type == BOOLEAN_TRIANGULAR_AUTOMATA)
@@ -832,9 +837,8 @@ int CellularAutomata::initialize()
         cleanFB(fb2);
 	
         drawTriangularGrid();
-        
-        paintTriangularCell(127, 91, FG_color, fb);
-        ++population;
+	
+	drawInitialState();
     }
     else if (type == CONWAYS_GAME_OF_LIFE)
     {
