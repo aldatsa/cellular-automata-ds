@@ -470,6 +470,11 @@ int CellularAutomata::drawInitialState()
             }
         }
     }
+    else if (type == BOOLEAN_AUTOMATA)
+    {
+	// The initial cell in the middle of the screen.
+	fb[91 * SCREEN_WIDTH + 127] = FG_color;
+    }
     else if (type == CONWAYS_GAME_OF_LIFE) //Conway's game of life
     {
         if (initialState == ACORN)
@@ -785,7 +790,8 @@ int CellularAutomata::initialize()
         cleanFB(fb);
         cleanFB(fb2);
 	
-        fb[91 * SCREEN_WIDTH + 127] = FG_color; // Paint the initial point
+        // Paint the initial point
+	drawInitialState();
         ++population;
     }
     else if (type == BOOLEAN_HEXAGONAL_AUTOMATA)
