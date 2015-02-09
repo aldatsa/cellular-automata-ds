@@ -7,7 +7,7 @@
 /*
  * Constant for the version number of the application
  */
-const std::string strVersionNumber = "0.10.4.0";
+const std::string strVersionNumber = "0.10.5.0";
 
 /*
  * The strings of text used in the app in the default language (english).
@@ -58,7 +58,7 @@ std::string stringEuskara = "Euskara";
 std::string string1234 = "1    2    3    4";
 std::string string5678 = "5    6    7    8";
 std::string string123 = "1    2    3";
-std::string string456 = "4    5    6"; 
+std::string string456 = "4    5    6";
 std::string stringRestart = "Restart";
 std::string stringDensity = "Density";
 
@@ -74,7 +74,7 @@ int changeTextLanguage(int language)
     if (language == EN) // English
     {
         stringRuleNumber = "Rule number";
-        
+
         stringElementaryCellularAutomata = "Elementary cellular automata";
         // max 30 characters
         stringLangtonsAnt = "Langton's ant"; // max 30 characters
@@ -98,7 +98,7 @@ int changeTextLanguage(int language)
         stringRandom = "Random";
 
         stringAntsPixels = "Ant's size (pixels)"; // Max 22 characters
-        stringNumStates = "Number of states";        
+        stringNumStates = "Number of states";
         stringVonNeumannNeighborhood = "Von Neumann neighborhood";
         stringMooreNeighborhood = "Moore neighborhood";
         stringNeighborhood = "Neighborhood:";
@@ -116,13 +116,13 @@ int changeTextLanguage(int language)
         stringRed = "Red";
         stringGreen = "Green";
         stringBlue = "Blue";
-        
+
         stringSteps = "Steps";
-        
+
         stringAutomataType = "Automata type";
-        
+
         stringVersion = "version " + strVersionNumber;
-        
+
         stringSelectLanguage = "Select language";
 
         stringRestart = "Restart";
@@ -132,7 +132,7 @@ int changeTextLanguage(int language)
     else if (language == ES) // Spanish
     {
         stringRuleNumber = "Regla numero"; // It doesn't print 'ú'. Why?
-        
+
         stringElementaryCellularAutomata = "Automata celular elemental";
         // max 30 characters
         stringLangtonsAnt = "Hormiga de Langton"; // max 30 characters
@@ -148,7 +148,7 @@ int changeTextLanguage(int language)
         // max 30 characters
         stringBMLtrafficModel = "Modelo de trafico BML";
         stringSelectColors = "Seleccionar colores";
-        // max 30 characters        
+        // max 30 characters
         stringCyclicCellularAutomaton = "Automata celular ciclico";
         stringSteppingStone = "Camino de piedras";
         stringBackToMainMenu = "Volver al menu principal"; // max 30 characters
@@ -161,7 +161,7 @@ int changeTextLanguage(int language)
         // It doesn't print 'ñ'. Why?
         // And "Tamano de la hormiga (pixeles)" is too long. Max 22 characters
         stringNumStates = "Numero de estados";
-         
+
         stringVonNeumannNeighborhood = "Vecindad de Von Neumann";
         stringMooreNeighborhood = "Vecindad de Moore";
         stringNeighborhood = "Vecindad:";
@@ -179,13 +179,13 @@ int changeTextLanguage(int language)
         stringRed = "Rojo";
         stringGreen = "Verde";
         stringBlue = "Azul";
-        
+
         stringSteps = "Pasos";
-        
+
         stringAutomataType = "Tipo de automata";
-        
+
         stringVersion = "version " + strVersionNumber;
-        
+
         stringSelectLanguage = "Seleccionar lenguaje";
 
         stringRestart = "Reiniciar";
@@ -195,7 +195,7 @@ int changeTextLanguage(int language)
     else if (language == EU) // Basque
     {
         stringRuleNumber = "Arau zenbakia";
-        
+
         stringElementaryCellularAutomata = "Oinarrizko automata zelularra";
         // max 30 characters
         stringLangtonsAnt = "Langton-en inurria"; // max 30 characters
@@ -219,7 +219,7 @@ int changeTextLanguage(int language)
         stringRandom = "Ausazkoa";
 
         stringAntsPixels = "Tamaina (pixelak)"; // Max 23 characters
-        stringNumStates = "Egoera kopurua"; 
+        stringNumStates = "Egoera kopurua";
         stringVonNeumannNeighborhood = "Von Neumann-en auzoa";
         stringMooreNeighborhood = "Moore-en auzoa";
         stringNeighborhood = "Auzoa:";
@@ -237,20 +237,20 @@ int changeTextLanguage(int language)
         stringRed = "Gorria";
         stringGreen = "Berdea";
         stringBlue = "Urdina";
-        
+
         stringSteps = "Pausoak";
-        
+
         stringAutomataType = "Automata mota";
-        
+
         stringVersion = strVersionNumber + " bertsioa";
-        
+
         stringSelectLanguage = "Hautatu hizkuntza";
 
         stringRestart = "Berrabiarazi";
 
         stringDensity = "Dentsitatea";
     }
-    
+
     return 0;
 }
 

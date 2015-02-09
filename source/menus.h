@@ -16,9 +16,11 @@ int printPartialColor(int row, int col, std::string str, int num);
 int printMenu(int intDisplayedMenu);
 int printMenuAsterisks(int intDisplayedMenu);
 int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete);
+int showInitialLanguageSelectionMenu();
 int showAutomataTypeMenu();
 int printAutomataType(int automataType);
 int printNumSteps();
+int setInitialLanguage(int language);
 int setLanguage(int language, int intArrow);
 
 #endif

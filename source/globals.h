@@ -10,35 +10,37 @@
 /*
  * Constants to define the type of automata and the corresponding menu:
  * Used in the variables: automataType and displayedMenu
- *  0: Main menu
- *  1: Elementary Cellular Automata
- *  2: Langton's ant
- *  3: Langton's hexagonal ant
- *  4: Boolean Square Automata
- *  5: Boolean Hexagonal Automata
- *  6: Boolean Triangular Automata
- *  7: Conway's game of life
- *  8: Munching Squares
- *  9: Biham-Middleton-Levine traffic model
- * 10: Cyclic Cellular Automata
- * 11: Stepping stone
- * 12: Select colors
- * 13: Select language
+ *  0: Initial language selection menu
+ *  1: Main menu
+ *  2: Elementary Cellular Automata
+ *  3: Langton's ant
+ *  4: Langton's hexagonal ant
+ *  5: Boolean Square Automata
+ *  6: Boolean Hexagonal Automata
+ *  7: Boolean Triangular Automata
+ *  8: Conway's game of life
+ *  9: Munching Squares
+ * 10: Biham-Middleton-Levine traffic model
+ * 11: Cyclic Cellular Automata
+ * 12: Stepping stone
+ * 13: Select colors
+ * 14: Select language
  */
-#define MAIN_MENU 0
-#define ELEMENTARY_CELLULAR_AUTOMATA 1
-#define LANGTON_ANT 2
-#define LANGTON_HEXAGONAL_ANT 3
-#define BOOLEAN_AUTOMATA 4
-#define BOOLEAN_HEXAGONAL_AUTOMATA 5
-#define BOOLEAN_TRIANGULAR_AUTOMATA 6
-#define CONWAYS_GAME_OF_LIFE 7
-#define MUNCHING_SQUARES 8
-#define BML_TRAFFIC_MODEL 9
-#define CYCLIC_CELLULAR_AUTOMATA 10
-#define STEPPING_STONE 11
-#define SELECT_COLORS 12
-#define SELECT_LANGUAGE 13
+#define INITIAL_LANGUAGE_MENU 0
+#define MAIN_MENU 1
+#define ELEMENTARY_CELLULAR_AUTOMATA 2
+#define LANGTON_ANT 3
+#define LANGTON_HEXAGONAL_ANT 4
+#define BOOLEAN_AUTOMATA 5
+#define BOOLEAN_HEXAGONAL_AUTOMATA 6
+#define BOOLEAN_TRIANGULAR_AUTOMATA 7
+#define CONWAYS_GAME_OF_LIFE 8
+#define MUNCHING_SQUARES 9
+#define BML_TRAFFIC_MODEL 10
+#define CYCLIC_CELLULAR_AUTOMATA 11
+#define STEPPING_STONE 12
+#define SELECT_COLORS 13
+#define SELECT_LANGUAGE 14
 
 /*
  * Constants to define the type of neighborhood
@@ -97,6 +99,12 @@
 #define POPULATION_COLUMN 0
 #define NUM_STEPS_COLUMN 0
 #define RULE_NUMBER_COLUMN 0
+
+// Initial language selection menu
+#define INITIAL_LANGUAGE_MENU_EN_COL 10
+#define INITIAL_LANGUAGE_MENU_ES_COL 10
+#define INITIAL_LANGUAGE_MENU_EU_COL 10
+#define INITIAL_LANGUAGE_MENU_ARROW_COL 8
 
 // Automata selection menu
 #define AUTOMATA_TYPE_MENU_ECA_COL 2
@@ -167,6 +175,14 @@
 #define NUM_STEPS_ROW 9
 #define RULE_NUMBER_ROW 9
 
+// Initial language selection menu
+#define INITIAL_LANGUAGE_MENU_EN_ROW 13
+#define INITIAL_LANGUAGE_MENU_EN_ARROW_ROW 13
+#define INITIAL_LANGUAGE_MENU_ES_ROW 14
+#define INITIAL_LANGUAGE_MENU_ES_ARROW_ROW 14
+#define INITIAL_LANGUAGE_MENU_EU_ROW 15
+#define INITIAL_LANGUAGE_MENU_EU_ARROW_ROW 15
+
 // Automata selection menu
 #define AUTOMATA_TYPE_MENU_ECA_ROW 8
 #define AUTOMATA_TYPE_MENU_LA_ROW 9
@@ -226,7 +242,7 @@
 #define CGL_MENU_BACK_TO_MAIN_ROW 19
 
 // Munching squares
-#define MS_MENU_BACK_TO_MAIN_ROW 13 
+#define MS_MENU_BACK_TO_MAIN_ROW 13
 
 // BML traffic model
 #define BML_MENU_RESTART_ROW 13
@@ -262,7 +278,7 @@
 /************************
  *   GLOBAL VARIABLES   *
  ************************/
- 
+
 /*
  * This variable sets the type of automata that is going to be executed
  * (Uses the constants defined above)

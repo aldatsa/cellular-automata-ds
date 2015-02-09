@@ -33,7 +33,7 @@
  *
  */
 int main(void)
-{           
+{
     /*
      * A variable for the position of the touch
      */
@@ -58,8 +58,8 @@ int main(void)
 
     consoleDemoInit();
 
-    showAutomataTypeMenu();
-    
+    showInitialLanguageSelectionMenu();
+
 /*    printf("This program is free software:\n");
     printf("you can redistribute it and/or\n");
     printf("modify it under the terms of the\n");
@@ -69,44 +69,89 @@ int main(void)
     printf("or any later version.\n");
     printf("This program is distributed in the\n");
     printf("hope that it will be useful, but\n");
-    printf("WITHOUT ANY WARRANTY; without even\n");    
-    printf("the implied warranty of\n");    
-    printf("MERCHANTABILITY or FITNESS FOR A\n");    
-    printf("PARTICULAR PURPOSE. See the GNU\n"); 
-    printf("General Public License for more\n"); 
-    printf("details.\n"); 
+    printf("WITHOUT ANY WARRANTY; without even\n");
+    printf("the implied warranty of\n");
+    printf("MERCHANTABILITY or FITNESS FOR A\n");
+    printf("PARTICULAR PURPOSE. See the GNU\n");
+    printf("General Public License for more\n");
+    printf("details.\n");
     printf("You should have received a copy of\n");
-    printf("the GNU General Public License\n");                             
-    printf("along with this program. If not, see\n");     
-    printf("<http://www.gnu.org/licenses/>\n"); 
+    printf("the GNU General Public License\n");
+    printf("along with this program. If not, see\n");
+    printf("<http://www.gnu.org/licenses/>\n");
 */
-    
+
     showFlash();
-    
+
     while (true)
     {
         int keys_pressed, keys_held, keys_released;
-	
+
 	// get key state
 	scanKeys();
-	
+
 	// get touchscreen touch coord.
 	touchRead(&touch);
-	
+
 	keys_pressed = keysDown();
 	keys_held = keysHeld();
 	keys_released = keysUp();
-	
+
+        /*
+        * The initial language selection menu
+        */
+        if (displayedMenu == INITIAL_LANGUAGE_MENU)
+        {
+            if (keys_released & KEY_UP)
+            {
+                // Delete previous arrow
+                printMenuArrow(displayedMenu, intArrow, true);
+
+                if (intArrow != 0)
+                {
+                    intArrow = intArrow - 1;
+                }
+                else
+                {
+                    intArrow = 2;
+                }
+                // Print new arrow
+                printMenuArrow(displayedMenu, intArrow, false);
+            }
+            else if (keys_released & KEY_DOWN)
+            {
+                // Delete previous arrow
+                printMenuArrow(displayedMenu, intArrow, true);
+
+                if (intArrow != 2)
+                {
+                    intArrow = intArrow + 1;
+                }
+                else
+                {
+                    intArrow = 0;
+                }
+                // Print new arrow
+                printMenuArrow(displayedMenu, intArrow, false);
+            }
+            else if (keys_released & KEY_A)
+            {
+                setInitialLanguage(intArrow);
+                //displayedLanguage = intArrow;
+
+                showAutomataTypeMenu();
+            }
+        }
         /*
          * The main menu to select the type of automata
-         */        
-        if (displayedMenu == MAIN_MENU)
+         */
+        else if (displayedMenu == MAIN_MENU)
         {
             if (keys_released & KEY_UP)
             {
                 // Delete previous arrow
                 printMenuArrow(displayedMenu, automataType, true);
-		
+
                 if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
                 {
                     automataType = automataType - 1;
@@ -116,13 +161,13 @@ int main(void)
                     automataType = SELECT_LANGUAGE;
                 }
                 // Print new arrow
-                printMenuArrow(displayedMenu, automataType, false);  
+                printMenuArrow(displayedMenu, automataType, false);
             }
             else if (keys_released & KEY_DOWN)
             {
                 // Delete previous arrow
                 printMenuArrow(displayedMenu, automataType, true);
-		
+
                 if (automataType != SELECT_LANGUAGE)
                 {
                     automataType = automataType + 1;
@@ -131,27 +176,27 @@ int main(void)
                 {
                     automataType = ELEMENTARY_CELLULAR_AUTOMATA;
                 }
-		
-                // Print new arrow                
+
+                // Print new arrow
                 printMenuArrow(displayedMenu, automataType, false);
             }
             else if (keys_released & KEY_A)
             {
                 ca.setType(automataType);
-                
+
                 consoleClear();
-                
+
                 if (automataType != SELECT_COLORS)
                 {
                     printCredits();
                 }
-		
+
 		printAutomataType(automataType);
-		
-                intArrow = 0;     
-                
+
+                intArrow = 0;
+
                 displayedMenu = automataType;
-                
+
                 if (automataType == LANGTON_ANT)
                 {
                     ca.setAntNumPixels(LA_INITIAL_NUM_PIXELS);
@@ -160,18 +205,18 @@ int main(void)
                 {
                     // Von Neumann neighborhood (default)
                     ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
-		    
+
                     ca.setDefaultBooleanRuleValues();
                 }
                 else if (automataType == BOOLEAN_HEXAGONAL_AUTOMATA)
-                {   
+                {
                     ca.setDefaultBooleanRuleValues();
                 }
                 else if (automataType == BOOLEAN_TRIANGULAR_AUTOMATA)
                 {
                     // Von Neumann neighborhood (default)
                     ca.setTypeOfNeighborhood(VON_NEUMANN_NEIGHBORHOOD);
-		    
+
                     ca.setDefaultBooleanRuleValues();
                 }
                 else if (automataType == CONWAYS_GAME_OF_LIFE)
@@ -182,28 +227,28 @@ int main(void)
                 {
                     ca.setNumStates(CCA_INITIAL_NUM_STATES);
                 }
-		
+
                 if (automataType != ELEMENTARY_CELLULAR_AUTOMATA)
                 {
                     printMenuArrow(displayedMenu, intArrow, false);
                 }
-                
+
                 printMenu(displayedMenu);
-                
+
                 ca.initialize();
-		
+
                 if (automataType == ELEMENTARY_CELLULAR_AUTOMATA)
                 {
                     // The rule number must be printed after
                     //  the initialization of the automata
                     printRuleNumber(ca.getRuleNumber());
-		    
+
                     // Draw the arrow in the default position
                     // (intArrow = 0, top left rule (2^7),
                     //  set in ca.initialize())
                     ca.drawArrow(intArrow, line_color);
-                }                
-                
+                }
+
                 // Include the other types of automata when the population
                 // count for them is implemented
                 if (automataType == ELEMENTARY_CELLULAR_AUTOMATA ||
@@ -217,7 +262,7 @@ int main(void)
                 {
                     printPopulation();
                 }
-		
+
                 if (automataType == ELEMENTARY_CELLULAR_AUTOMATA ||
                     automataType == BOOLEAN_AUTOMATA ||
                     automataType == BOOLEAN_HEXAGONAL_AUTOMATA ||
@@ -231,12 +276,12 @@ int main(void)
         }
         /*
          * The Elementary Cellular Automata menu
-         */                
+         */
         else if (displayedMenu == ELEMENTARY_CELLULAR_AUTOMATA)
         {
             ca.nextStep();
             printPopulation();
-	    
+
 	    if(keys_released & KEY_A)
 	    {
 	        if (intArrow < 8) // Top screen (Automata rules)
@@ -249,38 +294,38 @@ int main(void)
 		    {
 		        ca.setRuleDown(intArrow, FG_color);
 		    }
-		    
+
 		    printRuleNumber(ca.getRuleNumber());
-		    
+
 		    ca.drawRule(intArrow);  // Draw the rule that has changed
-		    
+
 		    ca.resetECA();
-		    
+
 		    printPopulation();
 		}
 		// Initial state: One cell
 		else if (intArrow == 8)
 		{
 		    ca.setInitialStateType(ECA_INITIALIZE_ONE_CELL);
-		    
+
 		    ca.resetECA();
-		    
+
 		    printPopulation();
-		    
+
 		    printAsterisk(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
 			      ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COL);
 		    deleteAsterisk(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
 			      ECA_MENU_INITIAL_STATE_RANDOM_ASTERISK_COL);
 		}
 		// Initial state: Random
-		else if (intArrow == 9) 
+		else if (intArrow == 9)
 		{
 		    ca.setInitialStateType(ECA_INITIALIZE_RANDOM);
-		    
+
 		    ca.resetECA();
-		    
+
 		    printPopulation();
-		    
+
 		    deleteAsterisk(ECA_MENU_INITIAL_STATE_ONE_CELL_ROW,
 			       ECA_MENU_INITIAL_STATE_ONE_CELL_ASTERISK_COL);
 		    printAsterisk(ECA_MENU_INITIAL_STATE_RANDOM_ROW,
@@ -292,13 +337,13 @@ int main(void)
 		    showAutomataTypeMenu();
 		}
 	    }
-	    
+
 	    if(keys_pressed & KEY_RIGHT)
 	    {
 	        if (intArrow < 8)
 		{
 		    ca.drawArrow(intArrow, BG_color);
-		  
+
 		    if(intArrow < 7)
 		    {
 			intArrow = intArrow + 1;
@@ -307,27 +352,27 @@ int main(void)
 		    {
 		        intArrow = 0;
 		    }
-		    
+
 		    ca.drawArrow(intArrow, line_color);
-		}					     			
+		}
 	    }
 	    else if(keys_pressed & KEY_LEFT)
 	    {
                 if (intArrow < 8)
-		{		    
+		{
 		    ca.drawArrow(intArrow, BG_color);
-		    
+
 		    if(intArrow > 0)
 		    {
 		        intArrow = intArrow - 1;
-		    }		
+		    }
 		    else
 		    {
 		        intArrow = 7;
 		    }
-		    
+
 		    ca.drawArrow(intArrow, line_color);
-                }			        
+                }
 	    }
 	    else if(keys_pressed & KEY_UP)
 	    {
@@ -339,7 +384,7 @@ int main(void)
 	        {
 	            printMenuArrow(displayedMenu, intArrow, true);
 	        }
-		
+
 		if (intArrow == 8)
 		{
 		    intArrow = 4;
@@ -356,12 +401,12 @@ int main(void)
 		{
 		    intArrow = intArrow - 4;
 		}
-		
+
 		if (intArrow < 8)
 		{
 		    ca.drawArrow(intArrow, line_color);
 		}
-		else 
+		else
 		{
 		    printMenuArrow(displayedMenu, intArrow, false);
 		}
@@ -374,9 +419,9 @@ int main(void)
 	        }
 	        else
 	        {
-	            printMenuArrow(displayedMenu, intArrow, true);			        
+	            printMenuArrow(displayedMenu, intArrow, true);
 	        }
-		
+
 	        if (intArrow == 10)
 	        {
 	            intArrow = 0;
@@ -393,20 +438,20 @@ int main(void)
 	        {
 		    intArrow = 8;
 	        }
-		
+
 		if (intArrow < 8)
 		{
 		    ca.drawArrow(intArrow, line_color);
 		}
 		else
 		{
-		    printMenuArrow(displayedMenu, intArrow, false);			        
+		    printMenuArrow(displayedMenu, intArrow, false);
 		}
 	    }
         }
         /*
          * Langton's ant menu
-         */                
+         */
         else if (displayedMenu == LANGTON_ANT)
         {
     	    if (ca.hasFinished() == false)
@@ -416,21 +461,21 @@ int main(void)
                 printPopulation();
     	        swiWaitForVBlank();
     	    }
-    	    
+
     	    if(keys_released & KEY_A)
 	    {
 	        if (intArrow == 1)
 	        {
 	            // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
-                }                    
+                }
 	    }
 	    else if(keys_pressed & KEY_UP)
 	    {
                 // Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-		
-	        // Calculate the next position of the arrow		        
+
+	        // Calculate the next position of the arrow
 	        if (intArrow == 0)
 	        {
 	            intArrow = 1;
@@ -439,7 +484,7 @@ int main(void)
 	        {
 	            intArrow = intArrow - 1;
 	        }
-		
+
 	        // Print the new arrow
 	        printMenuArrow(displayedMenu, intArrow, false);
 	    }
@@ -447,8 +492,8 @@ int main(void)
 	    {
                 // Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-	     
-	        // Calculate the next position of the arrow   
+
+	        // Calculate the next position of the arrow
 	        if (intArrow == 1)
 	        {
 	            intArrow = 0;
@@ -457,8 +502,8 @@ int main(void)
 	        {
 	            intArrow = intArrow + 1;
 	        }
-		
-	        // Print the new arrow   
+
+	        // Print the new arrow
 	        printMenuArrow(displayedMenu, intArrow, false);
 	    }
 	    else if (keys_pressed & KEY_LEFT)
@@ -472,8 +517,8 @@ int main(void)
                         ca.initialize();
                         printPopulation();
                         printNumSteps();
-                    }                        
-                }		        
+                    }
+                }
 	    }
 	    else if (keys_pressed & KEY_RIGHT)
 	    {
@@ -484,12 +529,12 @@ int main(void)
                     ca.initialize();
                     printPopulation();
                     printNumSteps();
-                }		    
+                }
 	    }
         }
         /*
          * Langton's hexagonal ant menu
-         */                
+         */
         else if (displayedMenu == LANGTON_HEXAGONAL_ANT)
         {
             // If the ant hasn't finished continue with the next step
@@ -500,14 +545,14 @@ int main(void)
                 printPopulation();
     	        swiWaitForVBlank();
     	    }
-    	    
+
     	    if(keys_released & KEY_A)
 	    {
 	        if (intArrow == 0)
 	        {
 	            // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
-                }                    
+                }
 	    }
         }
         /*
@@ -518,9 +563,9 @@ int main(void)
             ca.nextStep();
             printNumSteps();
             printPopulation();
-            
+
        	    if(keys_released & KEY_A)
-	    {   
+	    {
 	        if (intArrow == 14)
 	        {
 	            // Go back to the selection of the type of automata
@@ -550,7 +595,7 @@ int main(void)
                         ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD,
                                                   intArrow - 6);
 	            }
-		    
+
 	            printMenuAsterisks(BOOLEAN_AUTOMATA);
                     ca.initialize();
                 }
@@ -559,7 +604,7 @@ int main(void)
 	    {
                // Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-	        
+
 	        if (intArrow == 0) // Von Neumann -> Back to main menu
 	        {
 	            intArrow = 14;
@@ -590,15 +635,15 @@ int main(void)
 	        {
 	            intArrow = 10;
 	        }
-		
+
 	        // Print the new arrow
-	        printMenuArrow(displayedMenu, intArrow, false);		        
+	        printMenuArrow(displayedMenu, intArrow, false);
 	    }
             else if(keys_released & KEY_DOWN)
 	    {
                 // Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-		
+
 		if (intArrow == 0) // Von Neumann -> 1 from Von Neumann
 		{
 		    intArrow = 1;
@@ -630,15 +675,15 @@ int main(void)
 		{
 		    intArrow = 0;
 		}
-		
+
 		// Print the new arrow
-		printMenuArrow(displayedMenu, intArrow, false);		        
+		printMenuArrow(displayedMenu, intArrow, false);
 	    }
 	    else if (keys_released & KEY_LEFT)
 	    {
                 // Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-		
+
                 // 1 -> 4 (Von Neumann), 1 -> 4, 5 -> 8 (Moore)
 		if (intArrow == 1 || intArrow == 6 || intArrow == 10)		                   {
 		            intArrow = intArrow + 3;
@@ -648,19 +693,19 @@ int main(void)
 		else if (intArrow == 2 || intArrow == 3 ||
                          intArrow == 4 || intArrow == 7 ||
                          intArrow == 8 || intArrow == 9 ||
-                         intArrow == 11 || intArrow == 12 || intArrow == 13) 
+                         intArrow == 11 || intArrow == 12 || intArrow == 13)
 		{
 		    intArrow = intArrow - 1;
 		}
-                
+
 		// Print the new arrow
-		printMenuArrow(displayedMenu, intArrow, false);     		   
+		printMenuArrow(displayedMenu, intArrow, false);
 	    }
 	    else if (keys_released & KEY_RIGHT)
 	    {
                 // Delete the previous arrow
 		printMenuArrow(displayedMenu, intArrow, true);
-		
+
                 // 4 -> 1 (Von Neumann), 4 -> 1, 8 -> 5 (Moore)
 		if (intArrow == 4 || intArrow == 9 || intArrow == 13)
 		{
@@ -671,22 +716,22 @@ int main(void)
 		else if (intArrow == 1 || intArrow == 2 ||
                          intArrow == 3 || intArrow == 6 ||
                          intArrow == 7 || intArrow == 8 ||
-                         intArrow == 10 || intArrow == 11 || intArrow == 12) 
+                         intArrow == 10 || intArrow == 11 || intArrow == 12)
 		{
 		    intArrow = intArrow + 1;
 		}
-                
+
 		// Print the new arrow
 		printMenuArrow(displayedMenu, intArrow, false);
 	    }
         }
         /*
          * Boolean hexagonal automata menu
-         */                
+         */
         else if (displayedMenu == BOOLEAN_HEXAGONAL_AUTOMATA)
         {
             ca.nextStep();
-            
+
             printNumSteps();
             printPopulation();
 
@@ -697,22 +742,22 @@ int main(void)
                     intArrow == 4 || intArrow == 5)
 		{
                     ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD, intArrow);
-		    
+
 		    printMenuAsterisks(BOOLEAN_HEXAGONAL_AUTOMATA);
-		    
+
 		    ca.initialize();
-		}                
+		}
                 else if (intArrow == 6)
 		{
 		    // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
-                }                    		        
+                }
 	    }
             else if(keys_released & KEY_UP)
             {
                 // Delete the previous arrow
 		printMenuArrow(displayedMenu, intArrow, true);
-		
+
                 // 1, 2, 3-> Back to main menu
 		if (intArrow == 0 or intArrow == 1 or intArrow == 2)
 		{
@@ -729,8 +774,8 @@ int main(void)
                 }
 
                 // Print the new arrow
-		printMenuArrow(displayedMenu, intArrow, false);		        		        		        
-            }		    
+		printMenuArrow(displayedMenu, intArrow, false);
+            }
             else if(keys_released & KEY_DOWN)
             {
                 // Delete the previous arrow
@@ -749,16 +794,16 @@ int main(void)
 		else if (intArrow == 6) // Back to main menu -> 1
 		{
 		    intArrow = 0;
-                }		            
-		
+                }
+
 		// Print the new arrow
-		printMenuArrow(displayedMenu, intArrow, false);		        		        		        
-            }		                
+		printMenuArrow(displayedMenu, intArrow, false);
+            }
             else if(keys_released & KEY_LEFT)
             {
                 // Delete the previous arrow
 		printMenuArrow(displayedMenu, intArrow, true);
-		
+
 		if (intArrow == 0 or intArrow == 3) // 1 -> 3, 4 -> 6
 		{
 		    intArrow = intArrow + 2;
@@ -769,15 +814,15 @@ int main(void)
 		{
 		    intArrow = intArrow - 1;
 		}
-		
+
                 // Print the new arrow
 		printMenuArrow(displayedMenu, intArrow, false);
-            }		        		        		        		                    
+            }
             else if(keys_released & KEY_RIGHT)
             {
                 // Delete the previous arrow
 		printMenuArrow(displayedMenu, intArrow, true);
-		
+
 		if (intArrow == 2 or intArrow == 5) // 3 -> 1, 6 -> 4
 		{
 		    intArrow = intArrow - 2;
@@ -795,7 +840,7 @@ int main(void)
         }
         /*
          * Boolean triangular automata menu
-         */                
+         */
         else if (displayedMenu == BOOLEAN_TRIANGULAR_AUTOMATA)
         {
             ca.nextStep();
@@ -835,7 +880,7 @@ int main(void)
                         ca.toggleBooleanRuleValue(MOORE_NEIGHBORHOOD,
                                                   intArrow - 5);
 		    }
-		    
+
 		    printMenuAsterisks(BOOLEAN_TRIANGULAR_AUTOMATA);
 		    ca.initialize();
 		}
@@ -843,8 +888,8 @@ int main(void)
             else if(keys_released & KEY_UP)
 	    {
                 // Delete the previous arrow
-		printMenuArrow(displayedMenu, intArrow, true);		        		    
-		
+		printMenuArrow(displayedMenu, intArrow, true);
+
 		if (intArrow == 0) // Von Neumann -> Back to main menu
 		{
 		    intArrow = 13;
@@ -875,7 +920,7 @@ int main(void)
 		{
 		    intArrow = 9;
 		}
-		
+
 		// Print the new arrow
 		printMenuArrow(displayedMenu, intArrow, false);
 	    }
@@ -883,7 +928,7 @@ int main(void)
 	    {
     		// Delete the previous arrow
 		printMenuArrow(displayedMenu, intArrow, true);
-		
+
 		if (intArrow == 0) // Von Neumann -> 1 from Von Neumann
 		{
 		    intArrow = 1;
@@ -914,7 +959,7 @@ int main(void)
 		{
 		    intArrow = 0;
 		}
-		
+
 		// Print the new arrow
 		printMenuArrow(displayedMenu, intArrow, false);
 	    }
@@ -922,7 +967,7 @@ int main(void)
 	    {
 		// Delete the previous arrow
 		printMenuArrow(displayedMenu, intArrow, true);
-		
+
 		if (intArrow == 1)
 		{
 		    intArrow = 3;
@@ -936,7 +981,7 @@ int main(void)
                 // 2 -> 1, 3 -> 2, 4 -> 3, 6 -> 5, 7 -> 6, 8 -> 7 (Moore)
 		else if (intArrow == 2 || intArrow == 3 || intArrow == 6 ||
 			 intArrow == 7 || intArrow == 8 || intArrow == 10 ||
-		         intArrow == 11 || intArrow == 12) 
+		         intArrow == 11 || intArrow == 12)
 		{
 		    intArrow = intArrow - 1;
 		}
@@ -948,7 +993,7 @@ int main(void)
 	    {
 		// Delete the previous arrow
 		printMenuArrow(displayedMenu, intArrow, true);
-		
+
 		if (intArrow == 3)
 		{
 		    intArrow = 1;
@@ -963,25 +1008,25 @@ int main(void)
 		else if (intArrow == 1 || intArrow == 2 ||
 			 intArrow == 5 || intArrow == 6 ||
 		         intArrow == 7 || intArrow == 9 ||
-		         intArrow == 10 || intArrow == 11) 
+		         intArrow == 10 || intArrow == 11)
 		{
 		    intArrow = intArrow + 1;
 		}
-		
+
 		// Print the new arrow
 		printMenuArrow(displayedMenu, intArrow, false);
-	    }		                
+	    }
         }
         /*
          * Conway's game of life
-         */                
+         */
         else if (displayedMenu == CONWAYS_GAME_OF_LIFE)
-        {    	    
+        {
             ca.nextStep();
-            
+
             printNumSteps();
             printPopulation();
-	    
+
     	    if(keys_released & KEY_A)
 	    {
 		if (intArrow == 4)
@@ -1011,7 +1056,7 @@ int main(void)
 	                ca.setInitialState(FILL_SCREEN_WITH_PENTADECATHLONS);
 	                ca.initialize();
 	            }
-		    
+
 	            printMenuAsterisks(CONWAYS_GAME_OF_LIFE);
                 }
 	    }
@@ -1019,7 +1064,7 @@ int main(void)
 	    {
 	        // Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-	        
+
 	        if (intArrow == 0)
 	        {
 	            intArrow = 4;
@@ -1028,7 +1073,7 @@ int main(void)
 	        {
 	            intArrow = intArrow - 1;
 	        }
-		
+
 	        // Print the new arrow
 	        printMenuArrow(displayedMenu, intArrow, false);
 	    }
@@ -1036,7 +1081,7 @@ int main(void)
 	    {
 		// Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-		
+
 	        if (intArrow == 4)
 	        {
 	            intArrow = 0;
@@ -1045,7 +1090,7 @@ int main(void)
 	        {
 	            intArrow = intArrow + 1;
 	        }
-		
+
 	        // Print the new arrow
 	        printMenuArrow(displayedMenu, intArrow, false);
 	    }
@@ -1056,10 +1101,10 @@ int main(void)
         else if (displayedMenu == MUNCHING_SQUARES)
         {
             ca.nextStep();
-	    
+
             printNumSteps();
             printPopulation();
-	    
+
             if(keys_released & KEY_A)
             {
                 if (intArrow == 0)
@@ -1075,10 +1120,10 @@ int main(void)
         else if (displayedMenu == BML_TRAFFIC_MODEL)
         {
             ca.nextStep();
-	    
+
             printNumSteps();
             printPopulation();
-	    
+
             if(keys_released & KEY_A)
             {
                 if (intArrow == 0)
@@ -1096,7 +1141,7 @@ int main(void)
             {
                 // Delete the previous arrow
                 printMenuArrow(displayedMenu, intArrow, true);
-		
+
                 if (intArrow == 0)
                 {
                     intArrow = 2;
@@ -1105,7 +1150,7 @@ int main(void)
                 {
                     intArrow = intArrow - 1;
                 }
-		
+
                 // Print the new arrow
                 printMenuArrow(displayedMenu, intArrow, false);
             }
@@ -1113,7 +1158,7 @@ int main(void)
             {
                 // Delete the previous arrow
                 printMenuArrow(displayedMenu, intArrow, true);
-		
+
                 if (intArrow == 2)
                 {
                     intArrow = 0;
@@ -1122,7 +1167,7 @@ int main(void)
                 {
                     intArrow = intArrow + 1;
                 }
-		
+
                 // Print the new arrow
                 printMenuArrow(displayedMenu, intArrow, false);
             }
@@ -1132,7 +1177,7 @@ int main(void)
                 {
                     ca.setBMLdensity(ca.getBMLdensity() - 1);
                     printBMLdensity();
-                }    
+                }
             }
             else if (keys_pressed & KEY_RIGHT)
             {
@@ -1140,7 +1185,7 @@ int main(void)
                 {
                     ca.setBMLdensity(ca.getBMLdensity() + 1);
                     printBMLdensity();
-                }                
+                }
             }
         }
         /*
@@ -1150,7 +1195,7 @@ int main(void)
             if (ca.getNumSteps() < 192)
             {
 		ca.nextStep();
-	        
+
                 printNumSteps();
                 printPopulation();
             }
@@ -1165,7 +1210,7 @@ int main(void)
             {
                 // Delete the previous arrow
                 printMenuArrow(displayedMenu, intArrow, true);
-		
+
                 if (intArrow == 0)
                 {
                     intArrow = 1;
@@ -1174,7 +1219,7 @@ int main(void)
                 {
                     intArrow = intArrow - 1;
                 }
-		
+
                 // Print the new arrow
                 printMenuArrow(displayedMenu, intArrow, false);
             }
@@ -1182,7 +1227,7 @@ int main(void)
             {
                 // Delete the previous arrow
 		printMenuArrow(displayedMenu, intArrow, true);
-		
+
                 if (intArrow == 1)
                 {
                     intArrow = 0;
@@ -1191,7 +1236,7 @@ int main(void)
                 {
                     intArrow = intArrow + 1;
                 }
-		
+
                 // Print the new arrow
                 printMenuArrow(displayedMenu, intArrow, false);
             }
@@ -1201,7 +1246,7 @@ int main(void)
                 {
                     ca.setNumStates(ca.getNumStates() - 1);
                     printCCANumStates();
-		    
+
                     ca.initialize();
                     printPopulation();
                     printNumSteps();
@@ -1213,7 +1258,7 @@ int main(void)
                 {
                     ca.setNumStates(ca.getNumStates() + 1);
                     printCCANumStates();
-		    
+
                     ca.initialize();
                     printPopulation();
                     printNumSteps();
@@ -1224,11 +1269,11 @@ int main(void)
          * Cyclic Cellular Automata menu
          */
         else if (displayedMenu == STEPPING_STONE) {
-	    
+
 	    ca.nextStep();
-	    
+
 	    printNumSteps();
-	    
+
 	    if (keys_released & KEY_A)
             {
                 if (intArrow == 0) // Back to the main menu
@@ -1253,7 +1298,7 @@ int main(void)
 	    {
 		// Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-	        
+
 	        if (intArrow == 0)
 	        {
 	            intArrow = 12;
@@ -1262,7 +1307,7 @@ int main(void)
 	        {
 	            intArrow = intArrow - 1;
 	        }
-	        
+
 	        // Print the new arrow
 	        printMenuArrow(displayedMenu, intArrow, false);
 	    }
@@ -1270,7 +1315,7 @@ int main(void)
 	    {
 		// Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-	        
+
 	        if (intArrow == 12)
 	        {
 	            intArrow = 0;
@@ -1279,7 +1324,7 @@ int main(void)
 	        {
 	            intArrow = intArrow + 1;
 	        }
-	        
+
 	        // Print the new arrow
 	        printMenuArrow(displayedMenu, intArrow, false);
 	    }
@@ -1298,14 +1343,14 @@ int main(void)
 	            {
 	                --BG_G;
 	            }
-	        }		      
+	        }
 	        else if (intArrow == 2)
 	        {
 	            if (BG_B != 0)
 	            {
 	                --BG_B;
 	            }
-	        }		      
+	        }
 	        else if (intArrow == 3)
 	        {
 	            if (FG_R != 0)
@@ -1319,7 +1364,7 @@ int main(void)
 	            {
 	                --FG_G;
 	            }
-	        }		      
+	        }
 	        else if (intArrow == 5)
 	        {
 	            if (FG_B != 0)
@@ -1347,7 +1392,7 @@ int main(void)
                     {
                         --FG_B2;
                     }
-                }	   
+                }
 	        else if (intArrow == 9)
 	        {
 	            if (line_R != 0)
@@ -1361,26 +1406,26 @@ int main(void)
 	            {
 	                --line_G;
 	            }
-	        }		      
+	        }
 	        else if (intArrow == 11)
 	        {
 	            if (line_B != 0)
 	            {
 	                --line_B;
 	            }
-	        }		      		           		            
-		
-                printMenu(displayedMenu);		
-                		        
+	        }
+
+                printMenu(displayedMenu);
+
 	        BG_color = RGB15(BG_R, BG_G, BG_B);
 	        FG_color = RGB15(FG_R, FG_G, FG_B);
                 FG_color2 = RGB15(FG_R2, FG_G2, FG_B2);
-                line_color = RGB15(line_R, line_G, line_B);		        
-                
+                line_color = RGB15(line_R, line_G, line_B);
+
                 ca.initialize();
-                
-                swiWaitForVBlank();        
-	    }    
+
+                swiWaitForVBlank();
+	    }
 	    else if (keys_pressed & KEY_RIGHT)
 	    {
 	        if (intArrow == 0)
@@ -1396,14 +1441,14 @@ int main(void)
 	            {
 	                ++BG_G;
 	            }
-	        }		      
+	        }
 	        else if (intArrow == 2)
 	        {
 	            if (BG_B != 31)
 	            {
 	                ++BG_B;
 	            }
-	        }		      
+	        }
 	        else if (intArrow == 3)
 	        {
 	            if (FG_R != 31)
@@ -1417,7 +1462,7 @@ int main(void)
 	            {
 	                ++FG_G;
 	            }
-	        }		      
+	        }
 	        else if (intArrow == 5)
 	        {
 	            if (FG_B != 31)
@@ -1425,7 +1470,7 @@ int main(void)
 	                ++FG_B;
 	            }
 	        }
-                
+
 		if (intArrow == 6)
                 {
                     if (FG_R2 != 31)
@@ -1446,7 +1491,7 @@ int main(void)
                     {
                         ++FG_B2;
                     }
-                }	   
+                }
 	        else if (intArrow == 9)
 	        {
 	            if (line_R != 31)
@@ -1460,26 +1505,26 @@ int main(void)
 	            {
 	                ++line_G;
 	            }
-	        }		      
+	        }
 	        else if (intArrow == 11)
 	        {
 	            if (line_B != 31)
 	            {
 	                ++line_B;
 	            }
-	        }	
-	        
+	        }
+
                 printMenu(displayedMenu);
-                
+
 	        BG_color = RGB15(BG_R, BG_G, BG_B);
 	        FG_color = RGB15(FG_R, FG_G, FG_B);
                 FG_color2 = RGB15(FG_R2, FG_G2, FG_B2);
                 line_color = RGB15(line_R, line_G, line_B);
-		
+
                 ca.initialize();
-                
-                swiWaitForVBlank();                                	      		           		            
-	    }    		    
+
+                swiWaitForVBlank();
+	    }
         }
         /*
          * Language selection menu
@@ -1513,7 +1558,7 @@ int main(void)
 	    {
 		// Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-	        
+
 	        if (intArrow == 0)
 	        {
 	            intArrow = 3;
@@ -1522,7 +1567,7 @@ int main(void)
 	        {
 	            intArrow = intArrow - 1;
 	        }
-	        
+
 	        // Print the new arrow
 	        printMenuArrow(displayedMenu, intArrow, false);
 	    }
@@ -1530,7 +1575,7 @@ int main(void)
 	    {
 	        // Delete the previous arrow
 	        printMenuArrow(displayedMenu, intArrow, true);
-	        
+
 	        if (intArrow == 3)
 	        {
 	            intArrow = 0;
@@ -1539,13 +1584,13 @@ int main(void)
 	        {
 	            intArrow = intArrow + 1;
 	        }
-	        
+
 	        // Print the new arrow
 	        printMenuArrow(displayedMenu, intArrow, false);
 	    }
         }
     }
-    
+
 	return 0;
 }
 /***************************** END MAIN FUNCTION ****************************/
