@@ -2,3 +2,18 @@
 ---
 
 @import "{{ site.theme }}";
+
+.container {
+    max-width: 800px;
+}
+#main_content {
+    h2 {
+        margin-top: 50px;
+        margin-bottom: 0px;
+    }
+    .license {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+}
