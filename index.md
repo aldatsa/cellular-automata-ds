@@ -1,10 +1,23 @@
-Cellular Automata DS
-====================
-
-Introduction
+Screenshots
 ------------
 
-Cellular Automata DS is a homebrew cellular automata simulator for the Nintendo DS.
+![alt text](assets/img/screenshots/automata-selection.png "Automata selection menu")
+![alt text](assets/img/screenshots/elementary-cellular-automata-rule-30.png "Elementary cellular automata rule 30")
+![alt text](assets/img/screenshots/elementary-cellular-automata-rule-126-random.png "Elementary cellular automata rule 126 random initial state")
+![alt text](assets/img/screenshots/langton-ant.png "Langton's ant")
+![alt text](assets/img/screenshots/langton-hexagonal-ant.png "Langton's hexagonal ant")
+![alt text](assets/img/screenshots/boolean-automata-von-neumann-neighborhood.png "Boolean automata Von Neumann neighborhood")
+![alt text](assets/img/screenshots/boolean-automata-moore-neighborhood.png "Boolean automata Moore neighborhood")
+![alt text](assets/img/screenshots/boolean-hexagonal-automata.png "Boolean hexagonal automata")
+![alt text](assets/img/screenshots/boolean-triangular-automata.png "Boolean triangular automata Von Neumann neighborhood")
+![alt text](assets/img/screenshots/boolean-triangular-automata-moore-neighborhood.png "Boolean triangular automata Moore neighborhood")
+![alt text](assets/img/screenshots/conway-game-of-life.png "Conway's game of life")
+![alt text](assets/img/screenshots/munching-squares.png "Munching squares")
+![alt text](assets/img/screenshots/BML-traffic-model.png "BML traffic model")
+![alt text](assets/img/screenshots/cyclic-cellular-automata.png "Cyclic cellular automata")
+![alt text](assets/img/screenshots/stepping-stone.png "Stepping stone")
+![alt text](assets/img/screenshots/color-selection-menu.png "Color selection menu")
+![alt text](assets/img/screenshots/language-selection.png "Language selection menu")
 
 Requirements
 ------------
