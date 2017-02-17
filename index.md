@@ -1,5 +1,5 @@
-Screenshots
-------------
+## Screenshots
+---
 
 ![alt text](assets/img/screenshots/automata-selection.png "Automata selection menu")
 ![alt text](assets/img/screenshots/elementary-cellular-automata-rule-101.png "Elementary cellular automata rule 101")
@@ -19,8 +19,8 @@ Screenshots
 ![alt text](assets/img/screenshots/color-selection-menu.png "Color selection menu")
 ![alt text](assets/img/screenshots/language-selection.png "Language selection menu")
 
-Requirements
-------------
+## Requirements for building Cellular Automata DS
+---
 
 * The devkitARM SDK available at [devkitPro.org](http://devkitpro.org).
 
@@ -29,8 +29,8 @@ Follow [these](http://devkitpro.org/wiki/Getting_Started/devkitARM) instructions
 * [libnds](http://libnds.devkitpro.org/)
 
 
-How to build and run Cellular Automata DS
------------------------------------------
+## How to build and run Cellular Automata DS
+---
 
 Clone this repository:
 
@@ -46,8 +46,8 @@ and type the following:
 
 When it's done compiling, transfer the generated cellularautomatads.nds file to the root of your SD card.
 
-Developer
----------
+## Developer
+---
 
 Asier Iturralde Sarasola
 
@@ -60,8 +60,8 @@ Asier Iturralde Sarasola
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </span>
 
-License
--------
+## License
+---
 
 Cellular Automata DS is free software/open source, and is distributed under the [GNU General Public License (GPL) version 3 license](http://www.gnu.org/licenses/gpl.html).
 
