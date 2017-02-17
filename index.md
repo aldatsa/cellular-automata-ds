@@ -49,7 +49,7 @@ When it's done compiling, transfer the generated cellularautomatads.nds file to 
 ## Developer
 ---
 
-Asier Iturralde Sarasola
+Asier Iturralde Sarasola [aldatsa.eus](http://aldatsa.eus)
 
 <span class="social-buttons">
     <!-- Place this tag where you want the button to render. -->
