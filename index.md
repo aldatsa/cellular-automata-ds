@@ -2,7 +2,7 @@ Screenshots
 ------------
 
 ![alt text](assets/img/screenshots/automata-selection.png "Automata selection menu")
-![alt text](assets/img/screenshots/elementary-cellular-automata-rule-30.png "Elementary cellular automata rule 30")
+![alt text](assets/img/screenshots/elementary-cellular-automata-rule-101.png "Elementary cellular automata rule 101")
 ![alt text](assets/img/screenshots/elementary-cellular-automata-rule-126-random.png "Elementary cellular automata rule 126 random initial state")
 ![alt text](assets/img/screenshots/langton-ant.png "Langton's ant")
 ![alt text](assets/img/screenshots/langton-hexagonal-ant.png "Langton's hexagonal ant")
