@@ -94,7 +94,7 @@ int printCredits()
     printf("Cellular Automata DS\n");
     printf("%s\n", stringVersion.c_str());
     printf("\n");
-    printf("(c) 2012, 2013, 2014, 2015\n");
+    printf("2012-2017 GNU GPLv3\n");
     printf("Asier Iturralde Sarasola\n");
     printf("\n");
 
