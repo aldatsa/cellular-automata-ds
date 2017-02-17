@@ -6,6 +6,18 @@
 .container {
     max-width: 800px;
 }
+#downloads {
+    .btn-nds-rom-download {
+        .icon {
+            opacity: 0.6;
+            background: url("../img/nintendo_ds_lite_23x23.png") 0 0 no-repeat;
+            display: block;
+            height: 23px;
+            padding-left: 5px;
+            margin-top: -2px;
+        }
+    }
+}
 #main_content {
     h2 {
         margin-top: 50px;
