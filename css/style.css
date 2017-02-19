@@ -52,7 +52,7 @@
 
 .highlight .ss { color: #90a959; }
 
-body { margin: 0; padding: 0; background: #151515 url("../images/bkg.png") 0 0; color: #eaeaea; font-size: 16px; line-height: 1.5; font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace; }
+body { margin: 0; padding: 0; background: #151515 url("../img/bkg.png") 0 0; color: #eaeaea; font-size: 16px; line-height: 1.5; font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace; }
 
 /* General & 'Reset' Stuff */
 .container { width: 90%; max-width: 600px; margin: 0 auto; }
@@ -121,7 +121,7 @@ hr { height: 0; border: 0; border-bottom: 1px dashed #b5e853; color: #b5e853; }
 
 .btn .icon { display: inline-block; width: 16px; height: 16px; margin: 1px 8px 0 0; float: left; }
 
-.btn-github .icon { opacity: 0.6; background: url("../images/blacktocat.png") 0 0 no-repeat; }
+.btn-github .icon { opacity: 0.6; background: url("../img/blacktocat.png") 0 0 no-repeat; }
 
 /* Links a, a:hover, a:visited
 */
