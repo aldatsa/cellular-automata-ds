@@ -54,15 +54,6 @@ When it's done compiling, transfer the generated cellularautomatads.nds file to 
 
 Asier Iturralde Sarasola [aldatsa.eus](http://aldatsa.eus)
 
-<span class="social-buttons">
-    <!-- Place this tag where you want the button to render. -->
-    <a data-style="mega" href="https://github.com/aldatsa" class="github-button">Follow @aldatsa</a>
-    <!-- Place this tag right after the last button or just before your close body tag. -->
-    <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
-    <a href="https://twitter.com/aldatsa" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @aldatsa</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</span>
-
 ## License
 
 Cellular Automata DS is free software/open source, and is distributed under the [GNU General Public License (GPL) version 3 license](http://www.gnu.org/licenses/gpl.html).
