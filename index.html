@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <link rel="stylesheet" href="/css/style.css">
+        <title>Cellular Automata DS by aldatsa</title>
+    </head>
+
+    <body>
+
+        <header>
+            <div class="container">
+                <h1>Cellular Automata DS</h1>
+                <h2>Homebrew cellular automata simulator for the Nintendo DS.</h2>
+
+                <section id="downloads">
+
+                    <a href="https://github.com/aldatsa/cellular-automata-ds/archive/v0.10.6.0.zip" class="btn">Download as .zip</a>
+                    <a href="https://github.com/aldatsa/cellular-automata-ds/archive/v0.10.6.0.tar.gz" class="btn">Download as .tar.gz</a>
+
+                    <a href="https://github.com/aldatsa/cellular-automata-ds/releases/download/v0.10.6.0/cellular-automata-ds.nds" class="btn btn-nds-rom-download"><span class="icon"></span>Download NintendoDS ROM</a>
+
+
+                    <a href="http://github.com/aldatsa/cellular-automata-ds" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+                </section>
+            </div>
+        </header>
+
+        <div class="container">
+            <section id="main_content">
+                <h2 id="screenshots">Screenshots</h2>
+                <hr>
+
+                <p>
+                    <img src="/img/screenshots/automata-selection.png" alt="alt text" title="Automata selection menu">
+                    <img src="/img/screenshots/elementary-cellular-automata-rule-101.png" alt="alt text" title="Elementary cellular automata rule 101">
+                    <img src="/img/screenshots/elementary-cellular-automata-rule-126-random.png" alt="alt text" title="Elementary cellular automata rule 126 random initial state">
+                    <img src="/img/screenshots/langton-ant.png" alt="alt text" title="Langton's ant">
+                    <img src="/img/screenshots/langton-hexagonal-ant.png" alt="alt text" title="Langton's hexagonal ant">
+                    <img src="/img/screenshots/boolean-automata-von-neumann-neighborhood.png" alt="alt text" title="Boolean automata Von Neumann neighborhood">
+                    <img src="/img/screenshots/boolean-automata-moore-neighborhood.png" alt="alt text" title="Boolean automata Moore neighborhood">
+                    <img src="/img/screenshots/boolean-hexagonal-automata.png" alt="alt text" title="Boolean hexagonal automata">
+                    <img src="/img/screenshots/boolean-triangular-automata.png" alt="alt text" title="Boolean triangular automata Von Neumann neighborhood">
+                    <img src="/img/screenshots/boolean-triangular-automata-moore-neighborhood.png" alt="alt text" title="Boolean triangular automata Moore neighborhood">
+                    <img src="/img/screenshots/conway-game-of-life.png" alt="alt text" title="Conway's game of life">
+                    <img src="/img/screenshots/munching-squares.png" alt="alt text" title="Munching squares">
+                    <img src="/img/screenshots/BML-traffic-model.png" alt="alt text" title="BML traffic model">
+                    <img src="/img/screenshots/cyclic-cellular-automata.png" alt="alt text" title="Cyclic cellular automata">
+                    <img src="/img/screenshots/stepping-stone.png" alt="alt text" title="Stepping stone">
+                    <img src="/img/screenshots/color-selection-menu.png" alt="alt text" title="Color selection menu">
+                    <img src="/img/screenshots/language-selection.png" alt="alt text" title="Language selection menu">
+                </p>
+
+                <h2 id="requirements-for-building-cellular-automata-ds">Requirements for building Cellular Automata DS</h2>
+                <hr>
+
+                <ul>
+                    <li>The devkitARM SDK available at <a href="http://devkitpro.org">devkitPro.org</a>.</li>
+                </ul>
+
+                <p>Follow <a href="http://devkitpro.org/wiki/Getting_Started/devkitARM">these</a> instructions to install the SDK.</p>
+
+                <ul>
+                    <li><a href="http://libnds.devkitpro.org/">libnds</a></li>
+                </ul>
+
+                <h2 id="how-to-build-and-run-cellular-automata-ds">How to build and run Cellular Automata DS</h2>
+                <hr>
+
+                <p>Clone this repository:</p>
+
+                <div class="highlighter-rouge">
+                    <pre class="highlight">
+                        <code>git clone https://github.com/aldatsa/cellular-automata-ds.git</code>
+                    </pre>
+                </div>
+
+                <p><code class="highlighter-rouge">cd</code> to the project’s directory:</p>
+
+                <div class="highlighter-rouge">
+                    <pre class="highlight">
+                        <code>cd cellular-automata-ds</code>
+                    </pre>
+                </div>
+
+                <p>and type the following:</p>
+
+                <div class="highlighter-rouge">
+                    <pre class="highlight">
+                        <code>make</code>
+                    </pre>
+                </div>
+
+                <p>When it’s done compiling, transfer the generated cellularautomatads.nds file to the root of your SD card.</p>
+
+                <h2 id="developer">Developer</h2>
+                <hr>
+
+                <p>Asier Iturralde Sarasola <a href="http://aldatsa.eus">aldatsa.eus</a></p>
+
+                <p><span class="social-buttons">
+                    <!-- Place this tag where you want the button to render. -->
+                    <a data-style="mega" href="https://github.com/aldatsa" class="github-button">Follow @aldatsa</a>
+                    <!-- Place this tag right after the last button or just before your close body tag. -->
+                    <script async="" defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+                    <a href="https://twitter.com/aldatsa" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @aldatsa</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                </span></p>
+
+                <h2 id="license">License</h2>
+                <hr>
+
+                <p>Cellular Automata DS is free software/open source, and is distributed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License (GPL) version 3 license</a>.</p>
+
+                <p><a class="license" rel="license" href="http://www.gnu.org/licenses/gpl.html"><img alt="GNU General Public License version 3" style="border-width:0" src="/img/GPLv3_Logo.svg.png"></a></p>
+                
+            </section>
+        </div>
+    </body>
+</html>
