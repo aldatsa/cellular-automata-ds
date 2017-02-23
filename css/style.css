@@ -360,6 +360,18 @@ a {
     text-decoration: underline;
 }
 
+@media (max-width: 444px) {
+    header h1 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 400px) {
+    header h1 {
+        font-size: 24px;
+    }
+}
+
 #downloads .btn-nds-rom-download .icon {
     opacity: 0.6;
     background: url("../img/nintendo_ds_lite_23x23.png") 0 0 no-repeat;
@@ -369,6 +381,17 @@ a {
     margin-top: -2px;
 }
 
+@media (max-width: 460px) {
+
+    #downloads {
+        text-align: center;
+    }
+
+    #downloads .btn-github {
+        margin-top: 20px;
+    }
+}
+
 #main_content h2 {
     margin-top: 50px;
     margin-bottom: 0px;
@@ -376,6 +399,27 @@ a {
 
 #main_content h2:first-child {
     margin-top: 0px;
+}
+
+#main_content .screenshots {
+    text-align: center;
+}
+
+#main_content .screenshots img {
+    width: 32%;
+}
+
+@media (max-width: 889px) {
+    #main_content .screenshots img {
+        width: 40%;
+    }
+}
+
+@media (max-width: 650px) {
+    #main_content .screenshots img {
+        width: 80%;
+        margin-top: 20px;
+    }
 }
 
 #main_content .license {
