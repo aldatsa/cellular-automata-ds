@@ -38,7 +38,7 @@ Follow [these](http://devkitpro.org/wiki/Getting_Started) instructions to instal
 
 Clone this repository:
 
-    git clone https://github.com/aldatsa/cellular-automata-ds.git
+    git clone https://gitlab.com/aldatsa/cellular-automata-ds.git
 
 `cd` to the project's directory:
 
