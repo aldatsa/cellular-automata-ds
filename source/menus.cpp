@@ -299,6 +299,8 @@ int printMenu(int intDisplayedMenu)
                     stringFillScreenWithPulsars);
         printString(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 3,
                     stringFillScreenWithPentadecathlons);
+        printString(CGL_MENU_RIP_JOHN_CONWAY_ROW, 3,
+                    stringRipJohnConway);
         printString(CGL_MENU_BACK_TO_MAIN_ROW, 2,
                     stringBackToMainMenu);
     }
@@ -726,6 +728,7 @@ int printMenuAsterisks(int intDisplayedMenu)
             deleteAsterisk(CGL_MENU_FPENTOMINO_ROW, 2);
             deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 2);
             deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 2);
+            deleteAsterisk(CGL_MENU_RIP_JOHN_CONWAY_ROW, 2);
         }
         else if (ca.getInitialState() == FPENTOMINO)
         {
@@ -733,6 +736,7 @@ int printMenuAsterisks(int intDisplayedMenu)
             printAsterisk(CGL_MENU_FPENTOMINO_ROW, 2);
             deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 2);
             deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 2);
+            deleteAsterisk(CGL_MENU_RIP_JOHN_CONWAY_ROW, 2);
         }
         else if (ca.getInitialState() == FILL_SCREEN_WITH_PULSARS)
         {
@@ -740,6 +744,7 @@ int printMenuAsterisks(int intDisplayedMenu)
             deleteAsterisk(CGL_MENU_FPENTOMINO_ROW, 2);
             printAsterisk(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 2);
             deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 2);
+            deleteAsterisk(CGL_MENU_RIP_JOHN_CONWAY_ROW, 2);
         }
         else if (ca.getInitialState() == FILL_SCREEN_WITH_PENTADECATHLONS)
         {
@@ -747,6 +752,15 @@ int printMenuAsterisks(int intDisplayedMenu)
             deleteAsterisk(CGL_MENU_FPENTOMINO_ROW, 2);
             deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 2);
             printAsterisk(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 2);
+            deleteAsterisk(CGL_MENU_RIP_JOHN_CONWAY_ROW, 2);
+        }
+        else if (ca.getInitialState() == RIP_JOHN_CONWAY)
+        {
+            deleteAsterisk(CGL_MENU_ACORN_ROW, 2);
+            deleteAsterisk(CGL_MENU_FPENTOMINO_ROW, 2);
+            deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW, 2);
+            deleteAsterisk(CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW, 2);
+            printAsterisk(CGL_MENU_RIP_JOHN_CONWAY_ROW, 2);
         }
     }
     else if (displayedMenu == SELECT_LANGUAGE)
@@ -1099,6 +1113,12 @@ int printMenuArrow(int intDisplayedMenu, int index, bool boolDelete)
             row = CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW;
         }
         else if (index == 4)
+        {
+            // RIP JOHN CONWAY (1937-2020)
+            // https://xkcd.com/2293/
+            row = CGL_MENU_RIP_JOHN_CONWAY_ROW;
+        }
+        else if (index == 5)
         {
             row = CGL_MENU_BACK_TO_MAIN_ROW; // Back to main menu
         }

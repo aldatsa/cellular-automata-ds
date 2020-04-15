@@ -41,6 +41,7 @@ std::string stringAcorn = "Acorn";
 std::string stringFPentomino = "F-Pentomino";
 std::string stringFillScreenWithPulsars = "Fill screen with pulsars";
 std::string stringFillScreenWithPentadecathlons = "Fill with pentadecathlons";
+std::string stringRipJohnConway = "RIP JOHN CONWAY";
 std::string stringBackgroundColor = "Background color:";
 std::string stringForegroundColor = "First foreground color:";
 std::string stringSecondForegroundColor = "Second foreground color:";
@@ -108,6 +109,7 @@ int changeTextLanguage(int language)
         stringFPentomino = "F-Pentomino";
         stringFillScreenWithPulsars = "Fill screen with pulsars";
         stringFillScreenWithPentadecathlons = "Fill with pentadecathlons";
+        stringRipJohnConway = "RIP JOHN CONWAY";
 
         stringBackgroundColor = "Background color:";
         stringForegroundColor = "First foreground color:";
@@ -171,6 +173,7 @@ int changeTextLanguage(int language)
         stringFPentomino = "F-Pentomino";
         stringFillScreenWithPulsars = "Llenar pantalla de pulsares";
         stringFillScreenWithPentadecathlons = "Llenar de pentadecatlones";
+        stringRipJohnConway = "DEP JOHN CONWAY";
 
         stringBackgroundColor = "Color de fondo:";
         stringForegroundColor = "Primer color de primer plano:";
@@ -229,6 +232,7 @@ int changeTextLanguage(int language)
         stringFPentomino = "F-Pentomino";
         stringFillScreenWithPulsars = "Pantaila pulsarekin bete";
         stringFillScreenWithPentadecathlons = "Pentadekatlonekin bete";
+        stringRipJohnConway = "GB JOHN CONWAY";
 
         stringBackgroundColor = "Atzeko planoaren kolorea:";
         stringForegroundColor = "Aurreko planoko lehen kolorea:";

@@ -7,4 +7,5 @@ int drawFpentomino(int intX, int intY);
 int drawAcorn(int intX, int intY);
 int drawPentadecathlon(int intX, int intY);
 int fillScreenWithPentadecathlons();
+int drawRIPJohnConway(int intX, int intY);
 #endif

@@ -63,7 +63,7 @@
 #define FPENTOMINO 1
 #define FILL_SCREEN_WITH_PULSARS 2
 #define FILL_SCREEN_WITH_PENTADECATHLONS 3
-
+#define RIP_JOHN_CONWAY 4
 /*
  * Constants to define the different initial states of
  * the Elementary Cellular Automata
@@ -239,7 +239,8 @@
 #define CGL_MENU_FPENTOMINO_ROW 15
 #define CGL_MENU_FILL_SCREEN_WITH_PULSARS_ROW 16
 #define CGL_MENU_FILL_SCREEN_WITH_PENTADECATHLONS_ROW 17
-#define CGL_MENU_BACK_TO_MAIN_ROW 19
+#define CGL_MENU_RIP_JOHN_CONWAY_ROW 18
+#define CGL_MENU_BACK_TO_MAIN_ROW 20
 
 // Munching squares
 #define MS_MENU_BACK_TO_MAIN_ROW 13

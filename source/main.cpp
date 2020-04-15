@@ -986,7 +986,7 @@ int main(void)
 		    intArrow = intArrow - 1;
 		}
 
-                // Print the new arrow
+        // Print the new arrow
 		printMenuArrow(displayedMenu, intArrow, false);
 	    }
 	    else if (keys_released & KEY_RIGHT)
@@ -1003,8 +1003,8 @@ int main(void)
 		{
 		    intArrow = intArrow - 3;
 		}
-                // 1 -> 2, 2 -> 3, 3 -> 4 (Von Neumann),
-                // 1 -> 2, 2 -> 3, 3 -> 4, 5 -> 6, 6 -> 7, 7 -> 8 (Moore)
+        // 1 -> 2, 2 -> 3, 3 -> 4 (Von Neumann),
+        // 1 -> 2, 2 -> 3, 3 -> 4, 5 -> 6, 6 -> 7, 7 -> 8 (Moore)
 		else if (intArrow == 1 || intArrow == 2 ||
 			 intArrow == 5 || intArrow == 6 ||
 		         intArrow == 7 || intArrow == 9 ||
@@ -1028,72 +1028,77 @@ int main(void)
             printPopulation();
 
     	    if(keys_released & KEY_A)
-	    {
-		if (intArrow == 4)
-		{
-		    // Go back to the selection of the type of automata
+	        {
+		        if (intArrow == 5)
+		        {
+		            // Go back to the selection of the type of automata
                     showAutomataTypeMenu();
                 }
                 else
                 {
-		    if (intArrow == 0)
-	            {
-	                ca.setInitialState(ACORN);
-	                ca.initialize();
-	            }
-	            else if (intArrow == 1)
-	            {
-	                ca.setInitialState(FPENTOMINO);
-	                ca.initialize();
-	            }
-	            else if (intArrow == 2)
-	            {
-	                ca.setInitialState(FILL_SCREEN_WITH_PULSARS);
-	                ca.initialize();
-	            }
-	            else if (intArrow == 3)
-	            {
-	                ca.setInitialState(FILL_SCREEN_WITH_PENTADECATHLONS);
-	                ca.initialize();
-	            }
+		            if (intArrow == 0)
+	                {
+	                    ca.setInitialState(ACORN);
+	                    ca.initialize();
+	                }
+	                else if (intArrow == 1)
+	                {
+	                    ca.setInitialState(FPENTOMINO);
+	                    ca.initialize();
+	                }
+	                else if (intArrow == 2)
+	                {
+	                    ca.setInitialState(FILL_SCREEN_WITH_PULSARS);
+	                    ca.initialize();
+	                }
+	                else if (intArrow == 3)
+	                {
+	                    ca.setInitialState(FILL_SCREEN_WITH_PENTADECATHLONS);
+	                    ca.initialize();
+	                }
+                    else if (intArrow == 4)
+	                {
+	                    ca.setInitialState(RIP_JOHN_CONWAY);
+	                    ca.initialize();
+	                }
 
-	            printMenuAsterisks(CONWAYS_GAME_OF_LIFE);
+	                printMenuAsterisks(CONWAYS_GAME_OF_LIFE);
                 }
-	    }
-	    else if(keys_pressed & KEY_UP)
-	    {
-	        // Delete the previous arrow
-	        printMenuArrow(displayedMenu, intArrow, true);
-
-	        if (intArrow == 0)
-	        {
-	            intArrow = 4;
 	        }
-	        else
+	        else if(keys_pressed & KEY_UP)
 	        {
-	            intArrow = intArrow - 1;
+	            // Delete the previous arrow
+	            printMenuArrow(displayedMenu, intArrow, true);
+
+	            if (intArrow == 0)
+	            {
+	                intArrow = 5;
+	            }
+	            else
+	            {
+	                intArrow = intArrow - 1;
+	            }
+
+	            // Print the new arrow
+	            printMenuArrow(displayedMenu, intArrow, false);
 	        }
-
-	        // Print the new arrow
-	        printMenuArrow(displayedMenu, intArrow, false);
-	    }
-	    else if(keys_pressed & KEY_DOWN)
-	    {
-		// Delete the previous arrow
-	        printMenuArrow(displayedMenu, intArrow, true);
-
-	        if (intArrow == 4)
+	        else if(keys_pressed & KEY_DOWN)
 	        {
-	            intArrow = 0;
-	        }
-	        else
-	        {
-	            intArrow = intArrow + 1;
-	        }
+		        // Delete the previous arrow
+	            printMenuArrow(displayedMenu, intArrow, true);
 
-	        // Print the new arrow
-	        printMenuArrow(displayedMenu, intArrow, false);
-	    }
+	            if (intArrow == 5)
+	            {
+	                intArrow = 0;
+	            }
+	            else
+	            {
+	                intArrow = intArrow + 1;
+	            }
+
+	            // Print the new arrow
+	            printMenuArrow(displayedMenu, intArrow, false);
+	        }
         }
         /*
          * Munching squares menu
