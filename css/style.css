@@ -324,6 +324,10 @@ hr {
     background: url("../img/blacktocat.png") 0 0 no-repeat;
 }
 
+.btn-gitlab .icon {
+    opacity: 0.6;
+    background: url("../img/gitlab-icon-1-color-white-rgb.png") 0 0 no-repeat;
+}
 
 /* Links a, a:hover, a:visited
 */
